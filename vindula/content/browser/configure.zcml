@@ -1,0 +1,14 @@
+<configure
+    xmlns:browser="http://namespaces.zope.org/browser"
+	xmlns="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="vindula.content">
+
+  <!-- -*- extra stuff goes here -*- -->
+  
+  <resourceDirectory
+      name="vindula.content.images"
+      directory="images"
+      />
+	  
+</configure>

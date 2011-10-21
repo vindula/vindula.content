@@ -10,18 +10,18 @@
 	  <metal:content-core define-macro="content-core">
 	    <div id="parent-fieldname-description" class="documentDescription kssattr-atfieldname-description kssattr-templateId-kss_generic_macros kssattr-macro-description-field-view" tal:condition="context/summary" tal:content="context/summary">Title inserted here</div>
 		<div id="content-core">
-			<div class="newsImageContainer">
+			<!--div class="newsImageContainer">
 				<a id="parent-fieldname-image" href="http://localhost:8080/vindula/biblioteca/image/image_view_fullscreen">
 				    <img class="newsImage" width="200" height="85" title="Titulo Imagem" alt="Biblioteca" src="http://localhost:8080/vindula/biblioteca/image_mini">
 				</a>
 				<p class="discreet">
 				    <span id="parent-fieldname-imageCaption" class=" kssattr-atfieldname-imageCaption kssattr-templateId-widgets/string kssattr-macro-string-field-view" tal:content="context/imageCaption"></span>
 				</p>
-			</div>
-			<div id="parent-fieldname-text" class="plain kssattr-atfieldname-text kssattr-templateId-newsitem_view kssattr-macro-text-field-view" tal:content="context/text"></div>
+			</div-->
+			<!--div id="parent-fieldname-text" class="plain kssattr-atfieldname-text kssattr-templateId-newsitem_view kssattr-macro-text-field-view" tal:content="context/text"></div>
 		    <div tal:condition="context/text" tal:content="context/text">Title inserted here</div>
 		    <div tal:condition="context/image" tal:content="context/image">Title inserted here</div>
-		    <div tal:condition="context/imageCaption" tal:content="context/imageCaption">Title inserted here</div>
+		    <div tal:condition="context/imageCaption" tal:content="context/imageCaption">Title inserted here</div-->
 		</div>
 	  </metal:content-core>
 	</metal:main>
