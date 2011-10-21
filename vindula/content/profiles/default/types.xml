@@ -7,5 +7,7 @@
      which supports Plone's "display" menu.
   -->
 <object name="portal_types" meta_type="Plone Types Tool">
-  <!-- -*- extra stuff goes here -*- -->
+	
+  <object name="vindula.content.content.vindulanews" meta_type="Dexterity FTI" />
+  
 </object>
