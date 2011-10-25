@@ -13,5 +13,6 @@ vindula.content.egg-info/requires.txt
 vindula.content.egg-info/top_level.txt
 vindula/content/__init__.py
 vindula/content/tests.py
+vindula/content/browser/__init__.py
 vindula/content/content/__init__.py
 vindula/content/content/vindulanews.py

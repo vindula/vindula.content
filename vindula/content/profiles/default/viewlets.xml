@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object>
+	<order manager="plone.belowcontentbody" skinname="*">
+		
+ 		<viewlet name="vindula.content.share" 
+		         insert-before="plone.abovecontenttitle.documentactions"/>
+				 
+	</order>
+</object> 

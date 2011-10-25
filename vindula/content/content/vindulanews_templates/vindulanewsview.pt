@@ -5,27 +5,86 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="vindula.content">
+
 <body>
-	<metal:main fill-slot="content-core">
-	  <metal:content-core define-macro="content-core">
-	    <div id="parent-fieldname-description" class="documentDescription kssattr-atfieldname-description kssattr-templateId-kss_generic_macros kssattr-macro-description-field-view" tal:condition="context/summary" tal:content="context/summary">Title inserted here</div>
-		<div id="content-core">
-			<!--div class="newsImageContainer">
-				<a id="parent-fieldname-image" href="http://localhost:8080/vindula/biblioteca/image/image_view_fullscreen">
-				    <img class="newsImage" width="200" height="85" title="Titulo Imagem" alt="Biblioteca" src="http://localhost:8080/vindula/biblioteca/image_mini">
-				</a>
-				<p class="discreet">
-				    <span id="parent-fieldname-imageCaption" class=" kssattr-atfieldname-imageCaption kssattr-templateId-widgets/string kssattr-macro-string-field-view" tal:content="context/imageCaption"></span>
-				</p>
-			</div-->
-			<!--div id="parent-fieldname-text" class="plain kssattr-atfieldname-text kssattr-templateId-newsitem_view kssattr-macro-text-field-view" tal:content="context/text"></div>
-		    <div tal:condition="context/text" tal:content="context/text">Title inserted here</div>
-		    <div tal:condition="context/image" tal:content="context/image">Title inserted here</div>
-		    <div tal:condition="context/imageCaption" tal:content="context/imageCaption">Title inserted here</div-->
-		</div>
-	  </metal:content-core>
-	</metal:main>
+<metal:main fill-slot="content-core">
+ 	<metal:content-core define-macro="content-core">
+			<div class="topoBox_colunaTotal">
+				<div class="info_topoBoxTipo">
+					<div class="info_data">
+						<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%m')"></h4>
+					</div>
+					<!--div class="indicacao_comentario">
+						<h4>Comentário (3)</h4>
+					</div-->
+					<div class="visualClear"></div>
+				</div>
+			</div>
+			<div class="geral_contBox">
+				<div class="contBox_colunaTotal">
+					<div class="info"> 
+						<div class="titulo_info">
+							<h2 tal:content="context/Title"></h2>
+							<div class="descricao_titulo">
+								<h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4>
+								<p tal:content="context/summary"></p>
+							</div>
+						</div>
+						<!-- viewlet compartilhar -->
+						
+						<div class="img_descricao">
+							<div class="img_info">
+								<div class="bk_topo_imgDestaque">
+									<img alt="" src="++theme++vindula.themedefault/images/bk_topo_imgDestaque.png"/>
+								</div>
+								<div class="bk_cont_imgDestaque">
+									<img alt="" width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
+																alt context/imageCaption; title context/imageCaption;"/>
+								</div>
+								<div class="bk_rodape_imgDestaque">
+									<img alt="" src="++theme++vindula.themedefault/images/bk_rodape_imgDestaque.png"/>
+								</div>
+							</div>							
+							
+							<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output">
+								
+							</div>
+							<div class="visualClear"></div>
+						</div>
+						<!-- viewlet compartilhar -->
 	
+					</div>
+					
+					<div class="geral_lista_comentarios">
+						<div class="titulo_area">
+							<h2>Comentários (3)</h2>
+						</div>
+						<div class="descricao_titulo">
+							<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est.</p>
+						</div>
+						<div class="bt_comentar">
+							<input type="submit" value="Comentar" class="">
+						</div>
+						<div class="lista_comentarios">
+							<div class="item_lista">
+								<h4><span>José da Silva</span><span> | </span>09/11/2011 - 14h12</h4>
+								<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis. Vestibulum eu dui eget erat semper commodo. Curabitur eu nisl eu ipsum varius consequat id quis leo.</p>
+							</div>
+							<div class="item_lista">
+								<h4><span>Maria do Socorro</span><span> | </span>09/11/2011 - 14h12</h4>
+								<p>Blandit convallis. Vestibulum eu dui eget erat semper commodo. Curabitur eu nisl eu ipsum varius consequat id quis leo. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis..</p>
+							</div>
+							<div class="item_lista borderBottomNone paddingNone">
+								<h4><span>Pedro Miranda</span><span> | </span>09/11/2011 - 14h12</h4>
+								<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis.</p>
+							</div>
+						</div>
+					</div>
+					
+					
+				
+			</div>
+	</metal:content-core>
+</metal:main>
 </body>
 </html>
-
