@@ -4,11 +4,17 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="vindula.content">
 
+    <include package="z3c.jbot" file="meta.zcml" />
+    
+	<browser:jbot
+      	  directory="templates" />		
+
   <!-- -*- extra stuff goes here -*- -->
   
   <resourceDirectory
       name="vindula.content.images"
       directory="images"
       />
+	  
 	  
 </configure>

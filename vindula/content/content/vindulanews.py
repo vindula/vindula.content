@@ -7,9 +7,14 @@ from plone.app.textfield import RichText
 from vindula.themedefault import MessageFactory as _
 from z3c.relationfield.schema import RelationChoice
 
-from plone.app.layout.viewlets.interfaces import IBelowContentBody
-from plone.app.layout.viewlets.interfaces import IBelowContent
+from plone.app.layout.viewlets.interfaces import IBelowContent 
+
 from zope.interface import Interface
+from plone.app.discussion.interfaces import IConversation
+
+#from Products.CMFCore.interfaces import ISiteRoot
+from zope.interface import Interface
+
 # Interface and schema
 
 class IVindulaNews(form.Schema):
@@ -53,17 +58,23 @@ class VindulaNewsView(grok.View):
     
  
     
-class ShareViewlet(grok.Viewlet):
-    #grok.context(IVindulaNews)
-    grok.context(Interface) 
-    grok.name('vindula.content.share') 
-    grok.require('zope2.View')
-    grok.viewletmanager(IBelowContentBody)     
+class ShareView(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View') 
+    grok.name('vindula-content-share')
     
+class VindulaCommentsView(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View') 
+    grok.name('vindula-comments-view')
     
+    def render(self):
+        pass
     
-    
-    
-    
-    
+    def cont_comments(self, context):
+        conversation = IConversation(context)
+        if conversation.total_comments > 0:
+            return conversation.total_comments
+        else:
+            return 0
     

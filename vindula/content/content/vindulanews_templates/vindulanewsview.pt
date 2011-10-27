@@ -8,16 +8,17 @@
 
 <body>
 <metal:main fill-slot="content-core">
- 	<metal:content-core define-macro="content-core">
-			
+ 	<metal:content-core define-macro="content-core"
+						tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
+				  					contcomments python:vindulacomments.cont_comments(context);">
 		<!-- Data -->
 		<div class="info_topoBoxTipo">
-			<div class="info_data">
+			<div class="info_data" tal:condition="context/effective_date">
 				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%m')"></h4>
 			</div>
-			<!--div class="indicacao_comentario">
-				<h4>Comentário (3)</h4>
-			</div-->
+			<div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
+				<h4 tal:content="string:Comentários (${contcomments})"></h4>
+			</div>
 			<div class="visualClear"></div>
 		</div>
 			
@@ -31,9 +32,11 @@
 					<p tal:content="context/summary"></p>
 				</div>
 			</div>
-	
+		
+			<div metal:use-macro="context/vindula-content-share/macros/share" />
+		
 			<div class="img_descricao">
-				<div class="img_info">
+				<div class="img_info" tal:condition="context/image">
 					<div class="bk_topo_imgDestaque">
 						<img alt="" src="++theme++vindula.themedefault/images/bk_topo_imgDestaque.png"/>
 					</div>
@@ -51,36 +54,7 @@
 		
 		</div>
 		<!-- end: New -->
-		
-		
-		<!-- start: Comments -->		
-		<!--div class="geral_lista_comentarios">
-			<div class="titulo_area">
-				<h2>Comentários (3)</h2>
-			</div>
-			<div class="descricao_titulo">
-				<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est.</p>
-			</div>
-			<div class="bt_comentar">
-				<input type="submit" value="Comentar" class="">
-			</div>
-			<div class="lista_comentarios">
-				<div class="item_lista">
-					<h4><span>José da Silva</span><span> | </span>09/11/2011 - 14h12</h4>
-					<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis. Vestibulum eu dui eget erat semper commodo. Curabitur eu nisl eu ipsum varius consequat id quis leo.</p>
-				</div>
-				<div class="item_lista">
-					<h4><span>Maria do Socorro</span><span> | </span>09/11/2011 - 14h12</h4>
-					<p>Blandit convallis. Vestibulum eu dui eget erat semper commodo. Curabitur eu nisl eu ipsum varius consequat id quis leo. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis..</p>
-				</div>
-				<div class="item_lista borderBottomNone paddingNone">
-					<h4><span>Pedro Miranda</span><span> | </span>09/11/2011 - 14h12</h4>
-					<p>Donec nec elit ut nunc blandit convallis. Nullam quis odio eget erat tempus imperdiet et a est. Suspendisse quis dolor vitae arcu sagittis ultricies a et felis.</p>
-				</div>
-			</div>
-		</div-->
-		<!-- end: Comments -->	
-			
+		<div metal:use-macro="context/vindula-content-share/macros/share" />
 	</metal:content-core>
 </metal:main>
 </body>
