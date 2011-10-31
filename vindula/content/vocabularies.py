@@ -6,7 +6,7 @@ from zope.schema.vocabulary import SimpleTerm
 from Products.CMFCore.utils import getToolByName
 from vindula.content import MessageFactory as _
 
-class TypesAgenda(object):
+class Categories(object):
     """ Create SimpleVocabulary for Category Field"""
     
     implements(IContextSourceBinder)
@@ -15,14 +15,22 @@ class TypesAgenda(object):
         self.type = type
 
     def __call__(self, context):
-        pc = getToolByName(context, 'portal_catalog')
-        objetos = pc(portal_type=self.type, review_state='published')
-        
         terms = []
-        if objetos is not None:
-            for obj in objetos:
-                path = '/'.join(obj.getObject().getPhysicalPath())
-                title = obj.getObject().Title()
-                terms.append(SimpleTerm(path, path, _(u'opcao_agenda', default=unicode(title))))
-                                
+        terms.append(SimpleTerm('', '--NOVALUE--', _(u'option_category', default=unicode('Selecione'))))
+        
+        try:
+            obj = context['control-panel-objects']['vindula_categories']
+        except:
+            obj = None
+        
+        if obj:
+            D = {'orgstructure' : obj.orgstructure.splitlines() if obj.orgstructure is not None else None}
+            
+            categories = D[self.type]
+   
+            if categories is not None:
+                for item in categories:
+                    id = item.lower().replace(' ', '-')
+                    terms.append(SimpleTerm(id, id, _(u'option_category', default=unicode(item))))
+                                    
         return SimpleVocabulary(terms)
