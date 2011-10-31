@@ -4,6 +4,7 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="vindula.content">
 
+	<!-- Necessario adicionar no buildout: eggs = z3c.jbot -->
     <include package="z3c.jbot" file="meta.zcml" />
     
 	<browser:jbot

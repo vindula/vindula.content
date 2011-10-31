@@ -4,7 +4,7 @@ from zope import schema
 from plone.directives import form
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.app.textfield import RichText
-from vindula.themedefault import MessageFactory as _
+from vindula.content import MessageFactory as _
 from z3c.relationfield.schema import RelationChoice
 
 from plone.app.layout.viewlets.interfaces import IBelowContent 
