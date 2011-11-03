@@ -38,14 +38,14 @@
 			<div class="img_descricao">
 				<div class="img_info" tal:condition="context/image">
 					<div class="bk_topo_imgDestaque">
-						<img alt="" src="++theme++vindula.themedefault/images/bk_topo_imgDestaque.png"/>
+						<img alt="" src="++theme++vindula.themedefault/images/bkgs/bk_topo_imgDestaque.png"/>
 					</div>
 					<div class="bk_cont_imgDestaque">
 						<img alt="" width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
 													alt context/imageCaption; title context/imageCaption;"/>
 					</div>
 					<div class="bk_rodape_imgDestaque">
-						<img alt="" src="++theme++vindula.themedefault/images/bk_rodape_imgDestaque.png"/>
+						<img alt="" src="++theme++vindula.themedefault/images/bkgs/bk_rodape_imgDestaque.png"/>
 					</div>
 				</div>							
 				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output">Text</div>
