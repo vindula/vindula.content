@@ -6,7 +6,7 @@ from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from vindula.content import MessageFactory as _
-from vindula.content.vocabularies import Categories
+from vindula.controlpanel.vocabularies import ControlPanelObjects
 
 
 # Interface and schema
@@ -18,13 +18,17 @@ class IOrganizationalStructure(form.Schema):
          title=_(u"Categoria"),
          description=_(u"Selecione a categoria desta estrutura.\
                          Para gerenciar as categorias <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
-         source=Categories('orgstructure'),
-         required=True,
+         source=ControlPanelObjects('vindula_categories', 'orgstructure'),
+         required=False,
         )
     
-    structures = schema.TextLine(
+    structures = RelationChoice(
         title=_(u"Estrutura Organizacional"),
         description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+        source=ObjPathSourceBinder(
+            portal_type = 'vindula.content.content.orgstructure',  
+            review_state='published'      
+            ),
         required=False,
         )
     

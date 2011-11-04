@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from zope import schema
 from plone.directives import form
+from plone.formwidget.contenttree import ObjPathSourceBinder
+from z3c.relationfield.schema import RelationChoice
 from vindula.content import MessageFactory as _
 
 # Interface and schema
@@ -11,14 +13,21 @@ class IUnit(form.Schema):
     address = schema.TextLine(
         title=_(u"Endereço"),
         description=u"Localização com endereço completo, será utilizado para gerar o mapa.",
+        required=False,
         )
-    
-    orgstructures = schema.TextLine(
+
+    structures = RelationChoice(
         title=_(u"Estruturas Organizacionais"),
         description=u"Relacionamentos com as estruturas organizacionais.",
+        source=ObjPathSourceBinder(
+            portal_type = 'vindula.content.content.orgstructure',  
+            review_state='published'      
+            ),
+        required=False,
         )
 
     users = schema.TextLine(
         title=_(u"Usuários"),
         description=u"Relacionamentos com os usuários.",
+        required=False,
         )
