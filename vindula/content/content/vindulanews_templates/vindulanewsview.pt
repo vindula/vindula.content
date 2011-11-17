@@ -8,17 +8,17 @@
 
 <body>
 <metal:main fill-slot="content-core">
- 	<metal:content-core define-macro="content-core"
-						tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
-				  					contcomments python:vindulacomments.cont_comments(context);">
+ 	<metal:content-core define-macro="content-core">
+						<!--tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
+				  					contcomments python:vindulacomments.cont_comments(context);"-->
 		<!-- Data -->
 		<div class="info_topoBoxTipo">
 			<div class="info_data" tal:condition="context/effective_date">
 				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%m')"></h4>
 			</div>
-			<div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
+			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
 				<h4 tal:content="string:Comentários (${contcomments})"></h4>
-			</div>
+			</div-->
 			<div class="visualClear"></div>
 		</div>
 			
@@ -48,7 +48,7 @@
 						<img alt="" src="++theme++vindula.themedefault/images/bkgs/bk_rodape_imgDestaque.png"/>
 					</div>
 				</div>							
-				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output">Text</div>
+				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output|nothing">Text</div>
 				<div class="visualClear"></div>
 			</div>
 		

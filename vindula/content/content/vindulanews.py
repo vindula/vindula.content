@@ -48,33 +48,30 @@ class IVindulaNews(form.Schema):
         title=_(u"Título da Imagem "),
         required=False,        
         )
+
     
+    form.fieldset('settings', label=u"Settings",
+                  fields=['activ_comment'])
+
+    activ_comment = schema.Bool(
+                title=_(u'label_activ_comment', default=u'Ativar Comentario'),
+                description=_(u'help_activ_comment', default=u'Se selecionado, Ativa a opção de comentarios teste conteudo'),
+                default=False
+                )
+
+   
 # View
     
 class VindulaNewsView(grok.View):
     grok.context(IVindulaNews)
     grok.require('zope2.View')
     grok.name('view')
-    
+  
  
     
 class ShareView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View') 
     grok.name('vindula-content-share')
-    
-class VindulaCommentsView(grok.View):
-    grok.context(Interface)
-    grok.require('zope2.View') 
-    grok.name('vindula-comments-view')
-    
-    def render(self):
-        pass
-    
-    def cont_comments(self, context):
-        conversation = IConversation(context)
-        if conversation.total_comments > 0:
-            return conversation.total_comments
-        else:
-            return 0
-    
+
+
