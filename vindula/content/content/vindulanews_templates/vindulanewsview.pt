@@ -23,7 +23,7 @@
 		</div>
 			
 		<!-- start: New -->
-		<div class="info"> 
+		<div> 
 		
 			<div class="titulo_info">
 				<h2 tal:content="context/Title"></h2>
@@ -35,18 +35,14 @@
 		
 			<div metal:use-macro="context/vindula-content-share/macros/share" />
 		
-			<div class="img_descricao">
+			<div>
 				<div class="img_info" tal:condition="context/image">
-					<div class="bk_topo_imgDestaque">
-						<img alt="" src="++theme++vindula.themedefault/images/bkgs/bk_topo_imgDestaque.png"/>
-					</div>
+					<div class="bk_topo_imgDestaque"></div>
 					<div class="bk_cont_imgDestaque">
-						<img alt="" width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
-													alt context/imageCaption; title context/imageCaption;"/>
+						<img width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
+														 alt context/imageCaption; title context/imageCaption;"/>
 					</div>
-					<div class="bk_rodape_imgDestaque">
-						<img alt="" src="++theme++vindula.themedefault/images/bkgs/bk_rodape_imgDestaque.png"/>
-					</div>
+					<div class="bk_rodape_imgDestaque"></div>
 				</div>							
 				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output|nothing">Text</div>
 				<div class="visualClear"></div>
