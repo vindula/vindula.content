@@ -36,14 +36,17 @@
 			<div metal:use-macro="context/vindula-content-share/macros/share" />
 		
 			<div>
-				<div class="img_info" tal:condition="context/image">
-					<div class="bk_topo_imgDestaque"></div>
-					<div class="bk_cont_imgDestaque">
-						<img width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
-														 alt context/imageCaption; title context/imageCaption;"/>
-					</div>
-					<div class="bk_rodape_imgDestaque"></div>
-				</div>							
+				<tal:condition condition="context/image">
+					<div class="img_info" tal:condition="context/image/to_object">
+						<div class="bk_topo_imgDestaque"></div>
+						<div class="bk_cont_imgDestaque">
+							<img width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
+															 alt context/imageCaption; title context/imageCaption;"/>
+						</div>
+						<div class="bk_rodape_imgDestaque"></div>
+					</div>	
+				</tal:condition>		
+								
 				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output|nothing">Text</div>
 				<div class="visualClear"></div>
 			</div>
