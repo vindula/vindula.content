@@ -32,9 +32,13 @@
 					<p tal:content="context/summary"></p>
 				</div>
 			</div>
-		
-			<div metal:use-macro="context/vindula-content-share/macros/share" />
-		
+			
+			<tal:cont condition="view/check_share|nothing">
+				<tal:cont condition="context/activ_share|nothing">
+					<div metal:use-macro="context/vindula-content-share/macros/share" />
+				</tal:cont>
+			</tal:cont>
+			
 			<div>
 				<tal:condition condition="context/image">
 					<div id="newsImageContainer" tal:condition="context/image/to_object">
@@ -66,7 +70,11 @@
 		
 		</div>
 		<!-- end: New -->
-		<div metal:use-macro="context/vindula-content-share/macros/share" />
+		<tal:cont condition="view/check_share|nothing">
+			<tal:cont condition="context/activ_share|nothing">
+					<div metal:use-macro="context/vindula-content-share/macros/share" />
+			</tal:cont>
+		</tal:cont>
 	</metal:content-core>
 </metal:main>
 </body>

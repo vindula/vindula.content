@@ -7,7 +7,8 @@ from plone.app.textfield import RichText
 from vindula.content import MessageFactory as _
 from z3c.relationfield.schema import RelationChoice
 
-from plone.app.layout.viewlets.interfaces import IBelowContent 
+from plone.app.layout.viewlets.interfaces import IBelowContent
+from zope.app.component.hooks import getSite 
 
 from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
@@ -51,7 +52,7 @@ class IVindulaNews(form.Schema):
 
     
     form.fieldset('settings', label=u"Settings",
-                  fields=['activ_comment'])
+                  fields=['activ_comment','activ_share'])
 
     activ_comment = schema.Bool(
                 title=_(u'label_activ_comment', default=u'Ativar Comentario'),
@@ -59,6 +60,11 @@ class IVindulaNews(form.Schema):
                 default=False
                 )
 
+    activ_share = schema.Bool(
+                title=_(u'label_activ_share', default=u'Ativar Compartilhamento'),
+                description=_(u'help_activ_share', default=u'Se selecionado, Ativa a opção de compartilhamento entre redes sociais'),
+                default=True
+                )
    
 # View
     
@@ -66,6 +72,19 @@ class VindulaNewsView(grok.View):
     grok.context(IVindulaNews)
     grok.require('zope2.View')
     grok.name('view')
+  
+    def check_share(self):
+        if 'control-panel-objects' in getSite().keys():
+            control = getSite()['control-panel-objects']
+            if 'vindula_vindulanewsconfig' in control.keys():
+                config = control['vindula_vindulanewsconfig']
+                return config.ativa_conpartilhamento
+            else:
+                return False
+          
+        else:
+            return False
+  
   
  
     
