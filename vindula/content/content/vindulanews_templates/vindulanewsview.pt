@@ -14,7 +14,7 @@
 		<!-- Data -->
 		<div class="info_topoBoxTipo">
 			<div class="info_data" tal:condition="context/effective_date">
-				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%m')"></h4>
+				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
 			</div>
 			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
 				<h4 tal:content="string:Comentários (${contcomments})"></h4>
