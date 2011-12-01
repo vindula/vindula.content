@@ -4,5 +4,6 @@
   <object name="vindula.content.content.vindulanews" meta_type="Dexterity FTI" />
   <object name="vindula.content.content.orgstructure" meta_type="Dexterity FTI" />
   <object name="vindula.content.content.unit" meta_type="Dexterity FTI" />
+  <object name="vindula.content.content.vindulacontentmacro" meta_type="Dexterity FTI" />
   
 </object>

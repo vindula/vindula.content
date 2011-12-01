@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+
+<body>
+<metal:main fill-slot="content-core" tal:define="macro string:context/${context/page|nothing}/macros/${context/macro|nothsing}">
+		
+ 		<!--div tal:define="macro string:context/${context/page|nothing}/macros/${context/macro|nothsing}" 
+			 tal:replace="structure python:path(macro)" /-->
+		<metal:block metal:use-macro="python:path(macro)"/>
+		 	
+</metal:main>
+</body>
+</html>		
