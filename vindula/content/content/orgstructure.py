@@ -97,5 +97,11 @@ class OrganizationalStructure(grok.View):
         else:
             return self.context.absolute_url()+'/defaultUser.png'
     
-
-
+    def update(self):
+        id_grupo = self.context.id
+        portalGroup = self.context.portal_groups 
+        if not id_grupo in portalGroup.listGroupIds():
+            nome_grupo = 'Estrutura Organizacional: ' + self.context.title
+            portalGroup.addGroup(id_grupo, title=nome_grupo)
+            #Adiciona o grupo a 'AuthenticatedUsers'
+            portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  
