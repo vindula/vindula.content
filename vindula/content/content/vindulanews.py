@@ -56,7 +56,7 @@ class IVindulaNews(form.Schema):
 
     activ_comment = schema.Bool(
                 title=_(u'label_activ_comment', default=u'Ativar Comentario'),
-                description=_(u'help_activ_comment', default=u'Se selecionado, Ativa a opção de comentarios teste conteudo'),
+                description=_(u'help_activ_comment', default=u'Se selecionado, Ativa a opção de comentarios deste conteudo'),
                 default=False
                 )
 
