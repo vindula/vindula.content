@@ -17,4 +17,5 @@ vindula/content/browser/__init__.py
 vindula/content/content/__init__.py
 vindula/content/content/orgstructure.py
 vindula/content/content/unit.py
+vindula/content/content/vindulacontentmacro.py
 vindula/content/content/vindulanews.py

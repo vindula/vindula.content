@@ -7,12 +7,10 @@
       i18n:domain="vindula.content">
 
 <body>
-<metal:main fill-slot="content-core" tal:define="macro string:context/${context/page|nothing}/macros/${context/macro|nothsing}">
-		
- 		<!--div tal:define="macro string:context/${context/page|nothing}/macros/${context/macro|nothsing}" 
-			 tal:replace="structure python:path(macro)" /-->
-		<metal:block metal:use-macro="python:path(macro)"/>
-		 	
+<metal:main fill-slot="content-core" tal:define="macro view/getMacro">
+		<tal:cond condition="macro">
+			<metal:block metal:use-macro="python:path(macro)"/>
+		</tal:cond>
 </metal:main>
 </body>
 </html>		
