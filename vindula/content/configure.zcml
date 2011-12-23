@@ -14,6 +14,9 @@
   <grok:grok package="." />
   
   <include package=".browser" />
+  <include package="plone.behavior" file="meta.zcml" />
+  <include package="plone.directives.form" file="meta.zcml" />
+  <include package="plone.directives.form" />
   
   <i18n:registerTranslations directory="locales" />
 
@@ -26,6 +29,16 @@
       description="Extension profile for Vindula Content"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+    <grok:grok package=".behaviors" />
+
+    <plone:behavior
+        title="CommentEnable"
+        description="Use to enable comments on the content."
+        provides=".behaviors.ICommentEnable"
+        factory=".behaviors.CommentEnable"
+        />
+
 
   <!-- -*- extra stuff goes here -*- -->
 

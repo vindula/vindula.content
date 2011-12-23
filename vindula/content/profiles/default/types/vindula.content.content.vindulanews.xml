@@ -29,6 +29,8 @@
 	<element value="plone.app.dexterity.behaviors.metadata.IPublication"/>
 	<element value="plone.app.dexterity.behaviors.metadata.IOwnership"/>
 	<element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />
+	
+	<element value="vindula.content.behaviors.ICommentEnable" />
  </property>
  
  <!-- View information -->

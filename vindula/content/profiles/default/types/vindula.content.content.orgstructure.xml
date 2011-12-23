@@ -27,6 +27,8 @@
      <element value="plone.app.content.interfaces.INameFromTitle" />
      <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
 	 <element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />
+	 
+	 <element value="vindula.content.behaviors.ICommentEnable" />
  </property>
  
  <!-- View information -->

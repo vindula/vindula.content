@@ -54,11 +54,11 @@ class IVindulaNews(form.Schema):
     form.fieldset('settings', label=u"Settings",
                   fields=['activ_comment','activ_share'])
 
-    activ_comment = schema.Bool(
-                title=_(u'label_activ_comment', default=u'Ativar Comentario'),
-                description=_(u'help_activ_comment', default=u'Se selecionado, Ativa a opção de comentarios deste conteudo'),
-                default=False
-                )
+#    activ_comment = schema.Bool(
+#                title=_(u'label_activ_comment', default=u'Ativar Comentario'),
+#                description=_(u'help_activ_comment', default=u'Se selecionado, Ativa a opção de comentarios deste conteudo'),
+#                default=True
+#                )
 
     activ_share = schema.Bool(
                 title=_(u'label_activ_share', default=u'Ativar Compartilhamento'),
