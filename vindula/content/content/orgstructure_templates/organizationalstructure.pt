@@ -7,86 +7,168 @@
       i18n:domain="vindula.content">
 	
 	<head>
+		
+		<metal:styleslot fill-slot="style_slot">
+    		<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/content_organization.css">
+		</metal:styleslot>
+		
 		<metal:js fill-slot="javascript_head_slot">
     		<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/ajax_comments-curtir.js"></script>
 			<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/comments.js"></script>
 		</metal:js>	
 	
 	</head>
-<body>
-<metal:main fill-slot="content-core" tal:define="item_id view/get_UID|nothing;
-												 member python:context.portal_membership.getAuthenticatedMember();
-					   							 logado python:str(member)!='Anonymous User';">
- 	<metal:content-core define-macro="content-core">
-	<input type="hidden" id="portal_url" tal:attributes="value context/portal_url|nothing">	
-	<input type="hidden" id="context_url" tal:attributes="value context/absolute_url|nothing">
-	<input type="hidden" id="username" name="username" value="" tal:attributes="value context/@@plone_portal_state/member|nothing">
+	<body>
+		<metal:main fill-slot="content-core" tal:define="item_id view/get_UID|nothing;
+														 member python:context.portal_membership.getAuthenticatedMember();
+							   							 logado python:str(member)!='Anonymous User';">
+		 	<metal:content-core define-macro="content-core">
+				<p>Categoria: <span tal:content="context/category|nothing"></span> </p>
+				<p>Estrutura Organizacional: <span tal:content="context/structures|nothing"></span></p>
+				
+				<div>
+					<a class="img-text" tal:attributes="href string:${context/image/to_object/absolute_url|nothing}/image_view_fullscreen">
+						<img tal:attributes="src string:${context/image/to_object/absolute_url|nothing}/image_mini;">
+					</a>
+					<p tal:content="structure context/text/output|nothing"></p>
+				</div>	
+				<br />
+				<div class="row">
+					<div class="cell width-9 position-0">
+						<h2>Gestor</h2>
+						<div id="boxPortlet" tal:define="manage context/manager|nothing;
+														 user_manage python:view.get_prefs_user(manage)">
+							<div class="row">
+								<div class="cell width-5 position-0">
+									<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
+					                    <img src="defaultUser.png"
+						             		 alt="" border="0" width="90" height="85"
+											 tal:define="photo user_manage/photograph|nothing"
+						             		 tal:attributes="src python:view.getPhoto(photo);
+									 						 alt user_manage/name|nothing;
+															 title user_manage/name|nothing;" />
+									</a>
+				                </div>
+								<div class="portlet-user-info cell width-9 position-5"> 											     	      	
+						        	<h4><a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
+										   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
+						        	<p>
+						        		<span tal:replace="user_manage/position|nothing" /><br />
+										<tal:def define="departamentos python: view.get_department(manage)">
+							        		<tal:rep repeat="departamento departamentos">
+							        			<span tal:content="departamento/Title">Departamento</span>
+												<span tal:define="cont repeat/departamento/length;
+															      last repeat/departamento/end"
+										  			  tal:condition="python: cont > 1 and not last"> | </span>
+							        		</tal:rep>
+											<br />	
+							        	</tal:def>
+						        		<!--span tal:replace="obj/departamento/name|nothing" /><br /-->
 	
-	<p tal:content="context/category|nothing"></p>
-	<p tal:content="context/structures|nothing"></p>
-	<p tal:content="context/employees|nothing"></p>
-	<p tal:content="context/manager|nothing"></p>
-	
-	<a tal:attributes="href string:${context/image/to_object/absolute_url|nothing}/image_view_fullscreen">
-		<img tal:attributes="src string:${context/image/to_object/absolute_url|nothing}/image_mini;">
-	</a>
-	
-	<p tal:content="structure context/text/output|nothing"></p>
-	
-	<tal:def define="items python:view.get_howareu_departament(item_id);">
-		<div id="howareu" class="userpage geral_lista_comentarios" tal:condition="items">
-			<h2 class="h2title">Em que estão pensando agora sobre o Departamento!</h2>
-				<tal:rep tal:repeat="item items">
-					<div class="comment item_lista" tal:define="user item/username|nothing;
-																form_data python:view.get_prefs_user(user) or {};"> 
-						<div class="commentImage">
-		                    <img src="defaultUser.png"
-			             		 alt="" border="0"
-			             		 height="30"
-			             		 tal:attributes="src python:view.getPhoto(user);
-						 						 alt form_data/name|nothing;
-												 title form_data/name|nothing;" />
-		                </div>
-						<div class="documentByLine name-user">
-							<h4>
-								<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${user}">
-									<span tal:replace="form_data/name|nothing" /> | 
-			                    	<span tal:replace="python:item.date_creation.strftime('%d/%m/%Y')" />
-								</a>
-							</h4>
-		                </div>
-						<div id="like" tal:condition="logado">
-							<div tal:attributes="id item/id|nothing">
-								<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
-								<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
+										<span tal:replace="user_manage/phone_number|nothing" /><br />
+						        		<span tal:replace="user_manage/email|nothing" /><br />
+						      	  	</p>
+								</div>
 							</div>
-							<div metal:use-macro="context/myvindula-like-macro/macros/like" />
-	
-						</div>
-						
-		                <div class="comment-body">
-		                    <p tal:replace="item/text|nothing" />
-				  		</div>
-						<!-- campos input necessario para a criação de comentariso -->
-						<div id="comments" tal:condition="logado" >
-							<div tal:attributes="id item/id|nothing">
-								
-								<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
-								<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
-							</div>
-							<input type="button" value="Comentar" class="comments bt_comments" tal:attributes="id item/id|nothing" />
-							<div id="new-comments"></div>
-						</div>
+					 	</div>
 					</div>
-					<div metal:use-macro="context/myvindula-comments-macro/macros/comments" />
-				</tal:rep>	
-	        
-		</div>
-	</tal:def>
+					<div class="cell width-7 position-9">
+						<h2>Colaboradores</h2>
+						<tal:def define="employees context/employees|nothing">  
+							<tal:rep repeat="func employees">
+									<a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}">
+					                    <img src="defaultUser.png"
+						             		 alt="" border="0" height="30"
+											 tal:define="user_func python:view.get_prefs_user(func);
+											 			 photo user_func/photograph|nothing"
+						             		 tal:attributes="src python:view.getPhoto(photo);
+									 						 alt user_func/name|nothing;
+															 title user_func/name|nothing;" />
+									</a>
+							</tal:rep>
+						</tal:def>
+					</div>
+				</div>
+				<br />
 
-
-
-	</metal:content-core>
-</metal:main>
-</body>
+				<br />
+				<!--div id="interna">
+					<h2>Ultimas atualizações</h2>
+					<table width="100%">
+						<tr>
+							<th width="40%">Titulo</th>
+							<th width="30%">Descrição</th>
+							<th width="30%" >Tipo</th>
+						</tr>
+						<tal:rep repeat="obj view/get_LastContent|nothing">
+							<tr>
+								<tal:def define="item obj/getObject|nothing">
+									<td><a target="_blank" tal:attributes="href item/absolute_url|nothing" tal:content="item/Title|nothing"></a></td>
+									<td><span tal:content="item/description|nothing"></span></td>
+									<td><span tal:content="item/portal_type|nothing"></span> </td>
+					            </tal:def>
+							</tr>
+						</tal:rep>
+					</table>
+				</div-->
+				<br />
+				<div>
+					<!-- Pensamentos para a unidade Organizacional  -->
+					<tal:def define="items python:view.get_howareu_departament(item_id);">
+						<input type="hidden" id="portal_url" tal:attributes="value context/portal_url|nothing">	
+						<input type="hidden" id="context_url" tal:attributes="value context/absolute_url|nothing">
+						<input type="hidden" id="username" name="username" value="" tal:attributes="value context/@@plone_portal_state/member|nothing">
+				
+						<div id="howareu" class="userpage geral_lista_comentarios" tal:condition="items">
+							<h2 class="h2title">Em que estão pensando agora sobre o Departamento!</h2>
+							<tal:rep tal:repeat="item items">
+								<div class="comment item_lista" tal:define="user item/username|nothing;
+																			form_data python:view.get_prefs_user(user) or {};"> 
+									<div class="commentImage">
+					                    <img src="defaultUser.png"
+						             		 alt="" border="0"
+						             		 height="30"
+						             		 tal:attributes="src python:view.getPhoto(user);
+									 						 alt form_data/name|nothing;
+															 title form_data/name|nothing;" />
+					                </div>
+									<div class="documentByLine name-user">
+										<h4>
+											<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${user}">
+												<span tal:replace="form_data/name|nothing" /> | 
+						                    	<span tal:replace="python:item.date_creation.strftime('%d/%m/%Y')" />
+											</a>
+										</h4>
+					                </div>
+									<div id="like" tal:condition="logado">
+										<div tal:attributes="id item/id|nothing">
+											<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
+											<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
+										</div>
+										<div metal:use-macro="context/myvindula-like-macro/macros/like" />
+				
+									</div>
+									
+					                <div class="comment-body">
+					                    <p tal:replace="item/text|nothing" />
+							  		</div>
+									<!-- campos input necessario para a criação de comentariso -->
+									<div id="comments" tal:condition="logado" >
+										<div tal:attributes="id item/id|nothing">
+											
+											<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
+											<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
+										</div>
+										<input type="button" value="Comentar" class="comments bt_comments" tal:attributes="id item/id|nothing" />
+										<div id="new-comments"></div>
+									</div>
+								</div>
+								<div metal:use-macro="context/myvindula-comments-macro/macros/comments" />
+							</tal:rep>	
+						</div>
+					</tal:def>
+				</div>
+			</metal:content-core>
+		</metal:main>
+	</body>
 </html>

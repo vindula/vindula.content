@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 from five import grok
 from zope import schema
-from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationChoice, RelationList
 from plone.directives import form, dexterity
 from plone.app.textfield import RichText
+
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from vindula.content import MessageFactory as _
 from vindula.controlpanel.vocabularies import ControlPanelObjects
+from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from plone.uuid.interfaces import IUUID
+from zope.app.component.hooks import getSite
 
-from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu
+from vindula.controlpanel.vocabularies import ListUserPortal
+
+from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
+
 
 # Interface and schema
-
 class IOrganizationalStructure(form.Schema):
     """ Organizational Structure """
     
@@ -34,17 +39,29 @@ class IOrganizationalStructure(form.Schema):
         required=False,
         )
     
-    employees = schema.TextLine(
-        title=_(u"Colaboradores"),
-        description=_(u"Indique quais são os colaboradores dessa estrutura organizacional."),
-        required=False,
+    employees = schema.List(title=_(u"Colaboradores"),
+                            description=_(u"Indique quais são os colaboradores dessa estrutura organizacional."),
+                            value_type=schema.Choice(source=ListUserPortal()),
+                            required=False,
         )
     
-    manager = schema.TextLine(
-        title=_(u"Gestor"),
-        description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-        required=False,
-        )
+    manager = schema.Choice(title=_(u"Gestor"),
+                            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+                            source=ListUserPortal(),
+                            required=False,)
+
+    
+#    employees = schema.TextLine(
+#        title=_(u"Colaboradores"),
+#        description=_(u"Indique quais são os colaboradores dessa estrutura organizacional."),
+#        required=False,
+#        )
+    
+#    manager = schema.TextLine(
+#        title=_(u"Gestor"),
+#        description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+#        required=False,
+#        )
     
     text = RichText(
         title=_(u"Anotações"),
@@ -61,6 +78,15 @@ class IOrganizationalStructure(form.Schema):
         required=False,
         )
     
+@grok.subscribe(IOrganizationalStructure, IObjectCreatedEvent)
+def CreatFormDataBase(context, event):
+    id_grupo = context.id
+    portalGroup = context.portal_groups 
+    if not id_grupo in portalGroup.listGroupIds():
+        nome_grupo = 'Estrutura Organizacional: ' + self.context.title
+        portalGroup.addGroup(id_grupo, title=nome_grupo)
+        #Adiciona o grupo a 'AuthenticatedUsers'
+        portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  
     
     
 class OrganizationalStructure(grok.View):
@@ -83,25 +109,33 @@ class OrganizationalStructure(grok.View):
             user_id = user 
 
         return ModelsFuncDetails().get_FuncDetails(user_id)
+    
+    def get_department(self, user):
+        try:
+            user_id = unicode(user, 'utf-8')    
+        except:
+            user_id = user
+        
+        return ModelsDepartment().get_departmentByUsername(user_id)    
+
 
     def getPhoto(self,photo):
-        prefs_user = self.get_prefs_user(photo)
-        if prefs_user:
-            if prefs_user.photograph is not None and \
-                not ' ' in prefs_user.photograph  and \
-                not prefs_user.photograph == '':
-                return BaseFunc().get_imageVindulaUser(prefs_user.photograph)
-                #return self.context.absolute_url()+'/'+prefs_user.photograph # + '/image_thumb'
+        if photo is not None and not ' ' in photo:
+            url_foto = BaseFunc().get_imageVindulaUser(photo)
+            if url_foto:
+                return url_foto
+                #return self.context.absolute_url()+'/'+photo # + '/image_thumb'
             else:
                 return self.context.absolute_url()+'/defaultUser.png'
         else:
-            return self.context.absolute_url()+'/defaultUser.png'
-    
-    def update(self):
-        id_grupo = self.context.id
-        portalGroup = self.context.portal_groups 
-        if not id_grupo in portalGroup.listGroupIds():
-            nome_grupo = 'Estrutura Organizacional: ' + self.context.title
-            portalGroup.addGroup(id_grupo, title=nome_grupo)
-            #Adiciona o grupo a 'AuthenticatedUsers'
-            portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  
+            return self.context.absolute_url()+'/defaultUser.png'       
+
+    def get_LastContent(self):
+        ctool = getSite().portal_catalog
+        objs = ctool(path = {'query': '/'.join(self.context.getPhysicalPath()), 'depth': 1},
+                      sort_on='modified', sort_order='decrescent')   
+
+        if objs:
+            return objs
+        else:
+            return []
