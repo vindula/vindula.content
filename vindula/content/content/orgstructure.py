@@ -81,9 +81,9 @@ class IOrganizationalStructure(form.Schema):
 @grok.subscribe(IOrganizationalStructure, IObjectCreatedEvent)
 def CreatFormDataBase(context, event):
     id_grupo = context.id
-    portalGroup = context.portal_groups 
+    portalGroup = getSite().portal_groups 
     if not id_grupo in portalGroup.listGroupIds():
-        nome_grupo = 'Estrutura Organizacional: ' + self.context.title
+        nome_grupo = 'Estrutura Organizacional: ' + context.title
         portalGroup.addGroup(id_grupo, title=nome_grupo)
         #Adiciona o grupo a 'AuthenticatedUsers'
         portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  

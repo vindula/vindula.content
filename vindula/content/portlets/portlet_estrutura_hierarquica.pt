@@ -1,0 +1,28 @@
+<dl class="portlet" tal:define="view view/data">
+
+    <dt class="portletHeader">
+        <span class="tile" tal:content="view/get_title">Portlet Title</span>
+    </dt>
+    <dd class="portletItem" >
+		<div class="portlet-estrutura">
+			<div >
+				<p>sdkadjkasdbsjkdsajk</p>
+				
+				<div tal:define="relacinamento view/get_relacionados|nothing">
+					<p tal:content="relacinamento"></p>
+					<tal:rep repeat="item relacinamento">
+						
+						<p><a tal:content="item/title|nothing" tal:attributes="href item/absolute_url|nothing" /></p>						
+						<p tal:condition="not: repeat/item/end">▲<br/>
+																▲<br/>
+																▲<br/>
+																▲ </p>
+					</tal:rep>
+					
+				</div>
+			</div>
+		</div>
+    </dd>
+    <dd class="portletFooter"></dd>
+	<div class="visualClear"></div>
+</dl>
