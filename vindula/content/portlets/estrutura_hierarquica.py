@@ -8,6 +8,7 @@ from zope import schema
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
+from Products.CMFCore.utils import getToolByName
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -53,25 +54,58 @@ class Renderer(base.Renderer):
     
     def get_title(self):
         return self.data.title_portlet
+
+    def get_OrgStructureRelationship(self, obj):
+        pc = getToolByName(self.context, 'portal_catalog')
+        objs = pc(portal_type='vindula.content.content.orgstructure',
+                review_state='published',
+                path={'query':'/'})
+        L =[]
+        for item in objs:
+            i = item .getObject()
+            if i.structures:
+                if obj == i.structures.to_object:
+                    L.append(i)
+        return L
     
-    def get_relacionados(self):
-        import pdb;pdb.set_trace()
+    def get_RelationshipContext(self):
         ctx = self.context
         L =[]
-        cont = 2
         if ctx.structures:
-            ctx = ctx.structures.to_object
             L.append(ctx)
+            ctx = ctx.structures.to_object
             while ctx.structures:
                 L.append(ctx)
                 ctx = ctx.structures.to_object
             else:
                 L.append(ctx)
-                
+        else:
+            L.append(ctx)
         L.reverse()        
         return L
 
-    
+    def get_NavigationContext(self):
+        relacionado = self.get_RelationshipContext()
+        L=[]
+        for item in relacionado:
+            D={}
+            objetos = self.get_OrgStructureRelationship(item)
+            D['objeto'] = item
+            D['relacionado'] = objetos
+            L.append(D)
+
+        cont = 1
+        for i in L:
+            quant = len(L)-1
+            if cont <= quant:
+                relacionado = i['relacionado']
+                item = L[cont]['objeto']
+                if item in relacionado:
+                    i['relacionado'].remove(item)
+                    L[cont]['nivelDown'] = True
+                cont += 1
+                
+        return L       
         
 class AddForm(base.AddForm):
     """Portlet add form.

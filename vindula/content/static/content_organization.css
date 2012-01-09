@@ -7,3 +7,15 @@
 	float:left;
 	margin:3px;
 }
+
+#portlet-estrutura p{
+	margin:5px 0 5px 0;
+}
+
+.nivel2{
+	padding-left:10px;
+}
+.destaqueObj{
+	font-weight:bolder;
+	margin-left:3px;
+}

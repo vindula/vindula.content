@@ -3,13 +3,13 @@
 <portlets
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-  <!--
+  
 	<portlet
 		addview="vindula.content.PortletEstruturaHierarquica"
 		title="Portlet Estrutura Hierárquica"
 		description="Portlet Estrutura Hierárquica">
 			
-			<--for interface="vindula.content.content.orgstructure.IOrganizationalStructure" />
+			<!--for interface="vindula.content.content.orgstructure.IOrganizationalStructure" /-->
 	</portlet>	
--->
+
 </portlets>

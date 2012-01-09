@@ -1,28 +1,69 @@
-<dl class="portlet" tal:define="view view/data">
-
-    <dt class="portletHeader">
-        <span class="tile" tal:content="view/get_title">Portlet Title</span>
-    </dt>
-    <dd class="portletItem" >
-		<div class="portlet-estrutura">
-			<div >
-				<p>sdkadjkasdbsjkdsajk</p>
-				
-				<div tal:define="relacinamento view/get_relacionados|nothing">
-					<p tal:content="relacinamento"></p>
-					<tal:rep repeat="item relacinamento">
-						
-						<p><a tal:content="item/title|nothing" tal:attributes="href item/absolute_url|nothing" /></p>						
-						<p tal:condition="not: repeat/item/end">▲<br/>
-																▲<br/>
-																▲<br/>
-																▲ </p>
-					</tal:rep>
+<tal:cond condition="python:context.portal_type=='vindula.content.content.orgstructure'">
+	<dl class="portlet" tal:define="view view/data">
+	
+		<!--script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/portlet_estrutura.js"></script-->
+	    <dt class="portletHeader">
+	        <span class="tile" tal:content="view/get_title">Portlet Title</span>
+	    </dt>
+	    <dd class="portletItem" >
+			<div id="portlet-estrutura">
+				<div>
+					<div tal:define="objs view/get_RelationshipContext|python:{}">
+						<tal:rep repeat="item objs">
+							<div class="nivel1">
+								<p><a tal:content="item/title|nothing"
+										  tal:attributes="href item/absolute_url|nothing;
+										  				 class python:item==context and 'destaqueObj'" />
+								</p>
+								<p tal:condition="not: repeat/item/end">▲</p>
+								<tal:cond condition="repeat/item/end">
+									<tal:def define="nivel python:view.get_OrgStructureRelationship(item)">
+										<tal:rep repeat="i nivel">
+											<tal:cond condition="python: not i in objs">
+												<div class="nivel2">
+													<p tal:condition="not: repeat/i/end">▲</p>
+													<p><a tal:content="i/title|nothing" 
+														  tal:attributes="href i/absolute_url|nothing" /></p>
+												</div>
+											</tal:cond>
+										</tal:rep>
+									</tal:def>	
+								</tal:cond>
+							</div>
+						</tal:rep>
 					
+					</div>
+					<!--div tal:define="obj view/get_NavigationContext|python:{}">
+						<tal:rep repeat="item obj">
+							<div class="nivel1" tal:define="x python:item['objeto'] or None"
+												tal:attributes="class python:item.get('nivelDown',False)==True and 'nivel2'">
+								<p tal:attributes="id x/id|nothing">
+									<a tal:content="x/title|nothing"
+									  tal:attributes="href x/absolute_url|nothing;
+									  				 class python:x==context and 'destaqueObj'" />
+								</p>
+								<!--p tal:condition="not: repeat/item/end">▲</p--
+								<tal:def define="nivel item/relacionado|nothing">
+									<tal:rep repeat="i nivel">
+											<div class="nivel2">
+												<!--p tal:condition="not: repeat/i/end">▲</p--
+												<p tal:attributes="id string:nivel2-${i/id|nothing}"
+												><a tal:content="i/title|nothing" 
+													  tal:attributes="href i/absolute_url|nothing" /></p>
+											</div>
+									</tal:rep>
+								</tal:def>
+							</div>
+						</tal:rep>
+					</div-->
 				</div>
 			</div>
-		</div>
-    </dd>
-    <dd class="portletFooter"></dd>
-	<div class="visualClear"></div>
-</dl>
+	    </dd>
+	    <dd class="portletFooter"></dd>
+		<div class="visualClear"></div>
+	</dl>
+</tal:cond>
+
+<!--p><a tal:content="item/title|nothing" tal:attributes="href item/absolute_url|nothing" /></p>						
+						<p tal:condition="not: repeat/item/end">▲<br/>
+																▲ </p-->
