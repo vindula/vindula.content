@@ -21,6 +21,11 @@
   <include package="plone.directives.form" />
   
   <i18n:registerTranslations directory="locales" />
+  <!-- -*- extra stuff goes here -*- -->
+  <five:registerPackage package="." initialize=".initialize" />
+  
+  <subscriber for=".content.interfaces.IOrgstructureModifiedEvent"
+   			  handler=".content.orgstructure.CreatGroupInPloneSite" />
 
   <!-- Register an extension profile to make the product installable
        in Plone -->

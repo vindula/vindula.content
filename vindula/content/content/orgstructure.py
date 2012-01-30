@@ -1,95 +1,172 @@
 # -*- coding: utf-8 -*-
 from five import grok
-from zope import schema
-from z3c.relationfield.schema import RelationChoice, RelationList
-from plone.directives import form, dexterity
-from plone.app.textfield import RichText
 
-from plone.formwidget.contenttree import ObjPathSourceBinder
 from vindula.content import MessageFactory as _
-from vindula.controlpanel.vocabularies import ControlPanelObjects
-from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from plone.uuid.interfaces import IUUID
 from zope.app.component.hooks import getSite
-
-from vindula.controlpanel.vocabularies import ListUserPortal
+from zope.event import notify
 
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
+from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
+from Products.ATContentTypes.content.folder import ATFolder
+
+from zope.interface import implements
+from Products.Archetypes.atapi import *
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from vindula.content.config import *
 
 
-# Interface and schema
-class IOrganizationalStructure(form.Schema):
-    """ Organizational Structure """
+OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     
-    category = schema.Choice(
-         title=_(u"Categoria"),
-         description=_(u"Selecione a categoria desta estrutura.\
+    StringField(
+        name='categoria',
+        widget=SelectionWidget(
+            label=_(u"Categoria"),
+            description=_(u"Selecione a categoria desta estrutura.\
                          Para gerenciar as categorias <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
-         source=ControlPanelObjects('vindula_categories', 'orgstructure'),
-         required=False,
-        )
-    
-    structures = RelationChoice(
-        title=_(u"Estrutura Organizacional"),
-        description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
-        source=ObjPathSourceBinder(
-            portal_type = 'vindula.content.content.orgstructure',  
-            review_state='published'      
-            ),
-        required=False,
-        )
-    
-    employees = schema.List(title=_(u"Colaboradores"),
-                            description=_(u"Indique quais são os colaboradores dessa estrutura organizacional."),
-                            value_type=schema.Choice(source=ListUserPortal()),
-                            required=False,
-        )
-    
-    manager = schema.Choice(title=_(u"Gestor"),
-                            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-                            source=ListUserPortal(),
-                            required=False,)
 
-    
-#    employees = schema.TextLine(
-#        title=_(u"Colaboradores"),
-#        description=_(u"Indique quais são os colaboradores dessa estrutura organizacional."),
-#        required=False,
-#        )
-    
-#    manager = schema.TextLine(
-#        title=_(u"Gestor"),
-#        description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-#        required=False,
-#        )
-    
-    text = RichText(
-        title=_(u"Anotações"),
-        description=_(u"Insira aqui as anotações da estrutura."),
+            format = 'select',
+        ),
+        vocabulary='voc_categoria',
         required=False,
-        )
+    ),
     
-    image = RelationChoice(
-        title=_(u"Imagem"),
-        description=_(u"Logo da estrutura organizacional."),
-        source=ObjPathSourceBinder(
-            portal_type = 'Image',
+    ReferenceField('structures',
+        multiValued=0,
+        allowed_types=('OrganizationalStructure',),
+        relationship='structures',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Estrutura Organizacional"),
+            description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+
             ),
+        required=False
+    ),
+
+    StringField(
+            name='employees',
+            widget=InAndOutWidget(
+                label=_(u"Estrutura Organizacional"),
+                description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+                
+            ),
+            required=0,
+            vocabulary='voc_employees',
+    ),
+
+    StringField(
+        name='manager',
+        widget=SelectionWidget(
+            label=_(u"Gestor"),
+            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+
+            format = 'select',
+        ),
+        vocabulary='voc_employees',
         required=False,
-        )
+    ),
+
+    TextField(
+            name='text',
+            default_content_type = 'text/restructured',
+            default_output_type = 'text/x-html-safe',
+            widget=RichWidget(
+                label=_(u"Anotações"),
+                description=_(u"Insira aqui as anotações da estrutura."),
+                rows="10",
+            ),
+            required=False,
+    ),
+
+    ReferenceField('image',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Imagem "),
+        relationship='Imagem',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Imagem "),
+            description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')
+    ),
+
+))
+
+finalizeATCTSchema(OrganizationalStructure_schema, folderish=True)
+
+class OrganizationalStructure(ATFolder):
+    """ OrganizationalStructure """
     
-@grok.subscribe(IOrganizationalStructure, IObjectCreatedEvent)
-def CreatFormDataBase(context, event):
-    id_grupo = context.id
+    implements(IOrganizationalStructure)
+    portal_type = 'OrganizationalStructure'
+    _at_rename_after_creation = True
+    schema = OrganizationalStructure_schema
+    
+    def at_post_create_script(self):
+        """Notify that the employee has been saved.
+        """
+        notify(OrgstructureModifiedEvent(self))
+
+    def at_post_edit_script(self):
+        """Notify that the employee has been saved.
+        """
+        notify(OrgstructureModifiedEvent(self))
+    
+    
+    def voc_categoria(self):
+        terms = []
+        try:obj = getSite()['control-panel-objects']['vindula_categories']
+        except:obj = None
+        
+        if obj:
+            try:
+                field = obj.__getattribute__( 'orgstructure')
+            except:
+                field = None
+            if field is not None:
+                terms = field.splitlines()
+                      
+        return terms    
+    
+    
+    def voc_employees(self):
+        users = ModelsFuncDetails().get_allFuncDetails()
+        terms = []
+        result = ''
+        
+        if users is not None:
+            for user in users:
+                member_id = user.username
+                member_name = user.name or member_id
+                terms.append((member_id, unicode(member_name)))
+        
+        result = DisplayList(tuple(terms))
+        return result
+    
+
+registerType(OrganizationalStructure, PROJECTNAME) 
+
+class OrgstructureModifiedEvent(object):
+    """Event to notify that Orgstructure have been saved.
+    """
+    implements(IOrgstructureModifiedEvent)
+
+    def __init__(self, context):
+        self.context = context
+
+def CreatGroupInPloneSite(event):
+    ctx = event.context
+    id_grupo = ctx.id
     portalGroup = getSite().portal_groups 
     if not id_grupo in portalGroup.listGroupIds():
-        nome_grupo = 'Estrutura Organizacional: ' + context.title
+        nome_grupo = 'Estrutura Organizacional: ' + ctx.title
         portalGroup.addGroup(id_grupo, title=nome_grupo)
         #Adiciona o grupo a 'AuthenticatedUsers'
         portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  
     
     
-class OrganizationalStructure(grok.View):
+class OrganizationalStructureView(grok.View):
     grok.context(IOrganizationalStructure)
     grok.require('zope2.View')
     grok.name('view')

@@ -1,4 +1,4 @@
-<tal:cond condition="python:context.portal_type=='vindula.content.content.orgstructure'">
+<tal:cond condition="python:context.portal_type=='OrganizationalStructure'">
 	<dl class="portlet" tal:define="view view/data">
 	
 		<!--script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/portlet_estrutura.js"></script-->
@@ -63,7 +63,3 @@
 		<div class="visualClear"></div>
 	</dl>
 </tal:cond>
-
-<!--p><a tal:content="item/title|nothing" tal:attributes="href item/absolute_url|nothing" /></p>						
-						<p tal:condition="not: repeat/item/end">▲<br/>
-																▲ </p-->

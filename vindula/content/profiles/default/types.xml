@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 <object name="portal_types" meta_type="Plone Types Tool">
 	
-  <object name="vindula.content.content.vindulanews" meta_type="Dexterity FTI" />
-  <object name="vindula.content.content.orgstructure" meta_type="Dexterity FTI" />
-  <object name="vindula.content.content.unit" meta_type="Dexterity FTI" />
   <object name="vindula.content.content.vindulacontentmacro" meta_type="Dexterity FTI" />
   
+    <object name="VindulaNews"	
+			meta_type="Factory-based Type Information with dynamic views"/> 
+    
+	<object name="OrganizationalStructure"	
+			meta_type="Factory-based Type Information with dynamic views"/>
+	
+	<object name="Unit"	
+			meta_type="Factory-based Type Information with dynamic views"/>  
+ 
 </object>

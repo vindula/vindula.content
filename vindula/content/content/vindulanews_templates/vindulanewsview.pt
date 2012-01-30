@@ -13,7 +13,7 @@
 				  					contcomments python:vindulacomments.cont_comments(context);"-->
 		<!-- Data -->
 		<div class="info_topoBoxTipo">
-			<div class="info_data" tal:condition="context/effective_date">
+			<div class="info_data" tal:condition="context/effective_date|nothing">
 				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
 			</div>
 			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
@@ -29,7 +29,7 @@
 				<h2 tal:content="context/Title"></h2>
 				<div class="descricao_titulo">
 					<h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4>
-					<p tal:content="context/summary"></p>
+					<p tal:content="context/Description"></p>
 				</div>
 			</div>
 			
@@ -40,12 +40,12 @@
 			</tal:cont>
 			
 			<div>
-				<tal:condition condition="context/image">
-					<div id="newsImageContainer" tal:condition="context/image/to_object">
+				<tal:condition condition="context/getActiv_image">
+					<div id="newsImageContainer" tal:condition="context/getImageRelac">
 						<div id="parent-fieldname-image">
 							<div class="bk_imagem">
-								<a tal:attributes="href string:${context/image/to_object/absolute_url}/image_view_fullscreen">
-									<img tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
+								<a tal:attributes="href python: context.getImageRelac().absolute_url() +'/image_view_fullscreen'">
+									<img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
 														     alt context/imageCaption; title context/imageCaption;">
 								</a>
 								<p class="discreet img_legenda" tal:condition="context/imageCaption">
@@ -64,7 +64,7 @@
 					</div-->	
 				</tal:condition>		
 								
-				<div class="descricao_destaque texto_pagina" tal:content="structure context/text/output|nothing">Text</div>
+				<div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
 				<div class="visualClear"></div>
 			</div>
 		
