@@ -7,8 +7,7 @@
       i18n:domain="vindula.content">
 
 <body>
-<metal:main fill-slot="content-core">
- 	<metal:content-core define-macro="content-core">
+<metal:main fill-slot="main">
 						<!--tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
 				  					contcomments python:vindulacomments.cont_comments(context);"-->
 		<!-- Data -->
@@ -75,7 +74,7 @@
 					<div metal:use-macro="context/vindula-content-share/macros/share" />
 			</tal:cont>
 		</tal:cont>
-	</metal:content-core>
+
 </metal:main>
 </body>
 </html>

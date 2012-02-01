@@ -13,10 +13,14 @@ vindula.content.egg-info/requires.txt
 vindula.content.egg-info/top_level.txt
 vindula/content/__init__.py
 vindula/content/behaviors.py
+vindula/content/config.py
 vindula/content/tests.py
 vindula/content/browser/__init__.py
 vindula/content/content/__init__.py
+vindula/content/content/interfaces.py
 vindula/content/content/orgstructure.py
 vindula/content/content/unit.py
 vindula/content/content/vindulacontentmacro.py
 vindula/content/content/vindulanews.py
+vindula/content/portlets/__init__.py
+vindula/content/portlets/estrutura_hierarquica.py
