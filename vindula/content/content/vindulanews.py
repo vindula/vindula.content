@@ -7,6 +7,7 @@ from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
 from vindula.content.content.interfaces import IVindulaNews
 
+from AccessControl import ClassSecurityInfo
 from zope.interface import implements
 from Products.Archetypes.atapi import *
 from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
@@ -62,6 +63,7 @@ VindulaNews_schema.moveField('imageRelac', before='imageCaption')
 
 class VindulaNews(ATNewsItem):
     """ Reserve Content for VindulaNews"""
+    security = ClassSecurityInfo()    
     
     implements(IVindulaNews)    
     portal_type = 'Relacionado'

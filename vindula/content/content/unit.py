@@ -5,6 +5,7 @@ from vindula.content.content.interfaces import IUnit
 from Products.ATContentTypes.content.folder import ATFolder
 
 from vindula.myvindula.user import ModelsFuncDetails
+from AccessControl import ClassSecurityInfo
 
 from zope.interface import implements
 from Products.Archetypes.atapi import *
@@ -55,6 +56,7 @@ finalizeATCTSchema(Unit_schema, folderish=True)
 
 class Unit(ATFolder):
     """ Unit Folder """
+    security = ClassSecurityInfo()
     
     implements(IUnit)    
     portal_type = 'Unit'

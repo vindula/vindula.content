@@ -5,6 +5,7 @@ from vindula.content import MessageFactory as _
 from plone.uuid.interfaces import IUUID
 from zope.app.component.hooks import getSite
 from zope.event import notify
+from AccessControl import ClassSecurityInfo
 
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
@@ -98,6 +99,7 @@ finalizeATCTSchema(OrganizationalStructure_schema, folderish=True)
 class OrganizationalStructure(ATFolder):
     """ OrganizationalStructure """
     
+    security = ClassSecurityInfo()
     implements(IOrganizationalStructure)
     portal_type = 'OrganizationalStructure'
     _at_rename_after_creation = True
