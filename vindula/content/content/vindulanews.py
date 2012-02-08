@@ -66,7 +66,7 @@ class VindulaNews(ATNewsItem):
     security = ClassSecurityInfo()    
     
     implements(IVindulaNews)    
-    portal_type = 'Relacionado'
+    portal_type = 'VindulaNews'
     _at_rename_after_creation = True
     schema = VindulaNews_schema
 

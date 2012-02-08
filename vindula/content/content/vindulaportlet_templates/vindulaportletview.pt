@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="pt-br"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+	<head>
+		
+		<metal:styleslot fill-slot="style_slot">
+    		<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/vindulaportlet.css">
+		</metal:styleslot>
+	</head>
+	<body>
+		<metal:main fill-slot="content-core">
+			<div id="view-portlet">
+				<div class="portletWrapper" >
+					<dl class="portlet portletStaticText">
+						<dt class="portletHeader">
+					        <span class="portletTopLeft"></span>
+					        <span tal:content="context/Title|nothing">Title Portlet</span>
+					        <span class="portletTopRight"></span>
+					    </dt>
+					
+					    <dd class="portletItem odd">
+							<img width="80" border="0" style="float:left;margin:5px;" 
+																   tal:condition="context/getImageRelac|nothing" 
+																   tal:attributes="alt context/title_image; title context/title_image;
+																				   src python: context.getImageRelac().absolute_url()+'/image_thumb';" />
+							<p tal:replace="structure context/getText|Nothing">conteudo</p>		
+					    </dd>
+						<tal:cont tal:condition="context/getLinkRelac|nothing">
+							<dd class="portletFooter">
+						        <span class="saibamais">
+						           <a tal:content="context/title_link|string: Saíba Mais"
+								  	  tal:attributes="href python: context.getLinkRelac().absolute_url()"></a> 
+						        </span>
+						    </dd>
+						</tal:cont>
+						<tal:cont tal:condition="not: context/getLinkRelac|nothing">
+							<dd class="portletFooter" ></dd>
+						</tal:cont>
+					</dl>
+				</div>
+			</div>
+		</metal:main>
+	</body>
+</html>

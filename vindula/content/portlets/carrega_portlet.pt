@@ -1,0 +1,36 @@
+<tal:def define="view  view/data|nothing;
+				 portlets view/getPortlets|nothing">
+	<tal:rep repeat="obj portlets">
+		<div class="portletWrapper" >
+			<dl class="portlet portletStaticText">
+				<dt class="portletHeader">
+			        <span class="portletTopLeft"></span>
+			        <span tal:content="obj/Title|nothing">Title Portlet</span>
+			        <span class="portletTopRight"></span>
+			    </dt>
+			
+			    <dd class="portletItem odd">
+					<img width="80" border="0" style="float:left;margin:5px;" 
+														   tal:condition="obj/getImageRelac|nothing" 
+														   tal:attributes="alt obj/title_image; title obj/title_image;
+																		   src python: obj.getImageRelac().absolute_url()+'/image_thumb';" />
+					<p tal:replace="structure obj/getText|Nothing">conteudo</p>		
+			    </dd>
+	   			<tal:cont tal:condition="obj/getLinkRelac|nothing">
+					<dd class="portletFooter">
+				        <span class="portletBottomLeft"></span>
+				        <span>
+				           <a tal:content="obj/title_link|string: Saíba Mais"
+						  	  tal:attributes="href python: obj.getLinkRelac().absolute_url()"></a> 
+				        </span>
+				        <span class="portletBottomRight"></span>
+				    </dd>
+				</tal:cont>
+				<tal:cont tal:condition="not: obj/getLinkRelac|nothing">
+					<dd class="portletFooter" ></dd>
+				</tal:cont>
+			</dl>
+		</div>
+		<div class="visualClear"></div>
+	</tal:rep>
+</tal:def>

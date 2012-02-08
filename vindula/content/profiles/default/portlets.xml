@@ -12,4 +12,12 @@
 			<!--for interface="vindula.content.content.orgstructure.IOrganizationalStructure" /-->
 	</portlet>	
 
+	<portlet
+		addview="vindula.content.VindulaCarregaPortlet"
+		title="Vindula Carrega Portlet"
+		description="Vindula Carrega Portlet">
+		
+	</portlet>	
+
+
 </portlets>

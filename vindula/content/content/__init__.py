@@ -2,3 +2,4 @@
 import vindulanews
 import orgstructure
 import unit
+import vindulaportlet

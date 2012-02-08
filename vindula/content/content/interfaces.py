@@ -9,6 +9,9 @@ class IOrganizationalStructure(Interface):
     
 class IUnit(Interface):
    """ Interface for Unit content type """   
+
+class IVindulaPortlet(Interface):
+   """ Interface for VindulaPortlet content type """  
    
    
 class IOrgstructureModifiedEvent(Interface):
