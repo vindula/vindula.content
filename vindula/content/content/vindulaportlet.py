@@ -66,6 +66,16 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         ),
         required=False,
     ),
+
+    BooleanField(
+        name='bloquea_portlet',
+        default=False,
+        widget=BooleanWidget(
+            label="Bloquea Portlets dos níveis superiores",
+            description='Se selecionado, Ira bloquear todos os portlets dos níveis superiores do portal.(Cautela para usar esta opção)',
+        ),
+        required=False,
+    ),
     
 
 ))

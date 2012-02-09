@@ -66,12 +66,16 @@ class Renderer(base.Renderer):
             ctx = context.aq_inner.aq_parent
         
         portlets = self.findContextualPortlet(aq_parent,[])
-
+        recurviso = True
+        
         for portlet in portlets:
             if portlet in ctx.objectValues():  
                 L.append(portlet)
+                if portlet.bloquea_portlet:
+                    recurviso = False
+                    
             else:
-                if portlet.getActiv_recurcividade():
+                if portlet.getActiv_recurcividade() and recurviso:
                     L.append(portlet)
         
        
