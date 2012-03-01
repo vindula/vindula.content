@@ -3,6 +3,7 @@ from five import grok
 from vindula.content import MessageFactory as _
 
 from zope.app.component.hooks import getSite 
+from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
 from vindula.content.content.interfaces import IVindulaNews
@@ -91,6 +92,17 @@ class VindulaNewsView(grok.View):
           
         else:
             return False
+
+    def creator(self):
+        return self.context.Creator()
+
+    def author(self):
+        membership = getToolByName(self.context, 'portal_membership')
+        return membership.getMemberInfo(self.creator())
+
+    def authorname(self):
+        author = self.author()
+        return author and author['fullname'] or self.creator()
  
     
 class ShareView(grok.View):

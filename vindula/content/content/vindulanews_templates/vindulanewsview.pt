@@ -27,13 +27,13 @@
 			<div class="titulo_info">
 				<h2 tal:content="context/Title"></h2>
 				<div class="descricao_titulo">
-					<tal:def define="pas_member context/@@pas_member|nothing;
-									 item_creator new/Creator|nothing;
+					<!--tal:def define="pas_member context/@@pas_member|nothing;
+									 item_creator context/Creator|nothing;
 									 author python:pas_member.info(item_creator) or None;">
 												
 						<h4 tal:content="string: Autor: ${author/name_or_id|nothing}">Author</h4>
-					</tal:def>
-					
+					</tal:def-->
+					<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
 					<!--h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4-->
 					<p tal:content="context/Description"></p>
 				</div>

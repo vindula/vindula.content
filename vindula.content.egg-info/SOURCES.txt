@@ -22,5 +22,7 @@ vindula/content/content/orgstructure.py
 vindula/content/content/unit.py
 vindula/content/content/vindulacontentmacro.py
 vindula/content/content/vindulanews.py
+vindula/content/content/vindulaportlet.py
 vindula/content/portlets/__init__.py
+vindula/content/portlets/carrega_portlet.py
 vindula/content/portlets/estrutura_hierarquica.py
