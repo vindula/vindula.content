@@ -39,7 +39,8 @@
 				</div>
 			</div>
 			
-			<tal:cont condition="view/check_share|nothing">
+			<tal:cont define="enable context/@@myvindula-conf-userpanel/check_share|nothing"
+				  	  condition="enable">
 				<tal:cont condition="context/activ_share|nothing">
 					<div metal:use-macro="context/vindula-content-share/macros/share" />
 				</tal:cont>
@@ -76,7 +77,8 @@
 		
 		</div>
 		<!-- end: New -->
-		<tal:cont condition="view/check_share|nothing">
+		<tal:cont define="enable context/@@myvindula-conf-userpanel/check_share|nothing"
+				  condition="enable">
 			<tal:cont condition="context/activ_share|nothing">
 					<div metal:use-macro="context/vindula-content-share/macros/share" />
 			</tal:cont>

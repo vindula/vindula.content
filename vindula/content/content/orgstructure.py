@@ -49,8 +49,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     StringField(
             name='employees',
             widget=InAndOutWidget(
-                label=_(u"Estrutura Organizacional"),
-                description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+                label=_(u"Funcionarios desta Estrutura Organizacional"),
+                description=_(u"Selecione os fncionarios que estão nesta estrutura organizacional."),
                 
             ),
             required=0,
