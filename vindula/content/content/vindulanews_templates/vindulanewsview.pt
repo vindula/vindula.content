@@ -65,10 +65,10 @@
 					<div id="newsImageContainer" tal:condition="context/getImageRelac">
 						<div id="parent-fieldname-image">
 							<div class="bk_imagem">
-								<a tal:attributes="href python: context.getImageRelac().absolute_url() +'/image_view_fullscreen'" class="image_accordion">
+								<a tal:attributes="href python: context.getImageRelac().absolute_url()" class="image_accordion">
 									
 									<img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
-														     alt context/imageCaption; title context/imageCaption;" class="imagemAccordionOff">
+														 alt context/imageCaption; title context/imageCaption;" class="imagemAccordionOff">
 								</a>
 								<p class="discreet img_legenda" tal:condition="context/imageCaption">
 									<span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
