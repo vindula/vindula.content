@@ -58,7 +58,7 @@ class Renderer(base.Renderer):
     def get_OrgStructureRelationship(self, obj):
         pc = getToolByName(self.context, 'portal_catalog')
         objs = pc(portal_type='OrganizationalStructure',
-                review_state='published',
+                #review_state='published',
                 path={'query':'/'})
         L =[]
         for item in objs:

@@ -23,6 +23,10 @@ from Products.Archetypes import listTypes
 from Products.Archetypes.utils import capitalize
 from config import *
 
+# first fix the validator
+from Products.validation import validation
+from validators import SameUserValidator
+validation.register(SameUserValidator('isUserUpdate'))
 
 def initialize(context):
     import content
@@ -38,4 +42,7 @@ def initialize(context):
         permission         = DEFAULT_ADD_CONTENT_PERMISSION,
         extra_constructors = constructors,
         fti                = ftis,
-        ).initialize(context)              
+        ).initialize(context)  
+        
+        
+               

@@ -88,11 +88,18 @@ class Renderer(base.Renderer):
         portal = context.portal_url.getPortalObject()
 
         if context.restrictedTraverse('@@plone').isStructuralFolder():
-            items = context.objectValues('VindulaPortlet')
+            caminho = {'query': '/'.join(context.getPhysicalPath()), 'depth': 1}
+            ctool = getSite().portal_catalog
+            items = ctool(portal_type=('VindulaPortlet'),
+                             path=caminho,
+                             sort_on='getObjPositionInParent')    
+            
+            #items = context.objectValues('VindulaPortlet')
             tmp = []
             for item in items:
-                if self.checaEstado(context,item):
-                    tmp.append(item) 
+                #if self.checaEstado(context,item):
+                i = item.getObject()
+                tmp.append(i) 
             
             items = tmp
         else:

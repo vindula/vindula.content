@@ -33,6 +33,7 @@ setup(name='vindula.content',
           'zope.interface',
           'zope.component',
           'rwproperty',
+          'Products.SmartColorWidget',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
