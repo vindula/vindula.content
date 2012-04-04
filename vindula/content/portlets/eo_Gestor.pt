@@ -34,8 +34,11 @@
 				        	</tal:def>
 			        		<!--span tal:replace="obj/departamento/name|nothing" /><br /-->
 	
-							<span tal:replace="user_manage/phone_number|nothing" /><br />
-			        		<span tal:replace="user_manage/email|nothing" /><br />
+							<span tal:content="user_manage/phone_number|nothing" /><br />
+			        		<a tal:define="email user_manage/email|python:''" 
+			        			tal:content="python:email[:16]+'...'" 
+			        			tal:attributes="alt email;title email;
+			        							href string:mailto:${email}" /><br />
 			      	  	</p>
 	
 		 			</div>
