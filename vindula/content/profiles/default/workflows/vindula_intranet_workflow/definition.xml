@@ -188,6 +188,7 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
