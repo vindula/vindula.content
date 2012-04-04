@@ -17,7 +17,21 @@
 		title="Vindula Carrega Portlet"
 		description="Vindula Carrega Portlet">
 		
-	</portlet>	
+	</portlet>
+	
+	<portlet
+		addview="vindula.content.PortletEO_Gestor"
+		title="Portlet EH - Gestor"
+		description="Portlet EH - Gestor">
+		
+	</portlet>
+	<portlet
+		addview="vindula.content.PortletEO_Colaboradores"
+		title="Portlet EH - Colaboradores"
+		description="Portlet EH - Colaboradores">
+		
+	</portlet>
+					
 
 
 </portlets>

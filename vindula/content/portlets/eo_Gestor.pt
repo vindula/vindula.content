@@ -1,0 +1,49 @@
+<dl class="portlet" tal:define="view view/data">
+
+	<dt class="portletHeader">
+        <span class="tile" tal:content="view/get_title">Portlet Title</span>
+    </dt>
+    <dd class="portletItem" >
+		<div id="portlet-estrutura"
+			 tal:define="manage view/get_EO_Context|python:{};
+											 user_manage python:view.get_prefs_user(manage)">
+				<div class="row">
+					<div class="cell width-9 position-0">	
+						<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
+		                    <img src="defaultUser.png"
+			             		 alt="" border="0" width="70" height="85"
+								 tal:define="photo user_manage/photograph|nothing"
+			             		 tal:attributes="src python:view.getPhoto(photo);
+						 						 alt user_manage/name|nothing;
+												 title user_manage/name|nothing;" />
+						</a>
+					</div>
+					<div class="portlet-user-info cell width-9 position-6"> 											     	      	
+			        	<h4><a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
+							   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
+			        	<p>
+			        		<span tal:replace="user_manage/position|nothing" /><br />
+							<tal:def define="departamentos python: view.get_department(manage)">
+				        		<tal:rep repeat="departamento departamentos">
+				        			<span tal:content="departamento/Title">Departamento</span>
+									<span tal:define="cont repeat/departamento/length;
+												      last repeat/departamento/end"
+							  			  tal:condition="python: cont > 1 and not last"> | </span>
+				        		</tal:rep>
+								<br />	
+				        	</tal:def>
+			        		<!--span tal:replace="obj/departamento/name|nothing" /><br /-->
+	
+							<span tal:replace="user_manage/phone_number|nothing" /><br />
+			        		<span tal:replace="user_manage/email|nothing" /><br />
+			      	  	</p>
+	
+		 			</div>
+		 		</div>
+		 		<div class="visualClear"></div>
+		
+		</div>
+    </dd>
+    <dd class="portletFooter"></dd>
+	<div class="visualClear"></div>
+</dl>
