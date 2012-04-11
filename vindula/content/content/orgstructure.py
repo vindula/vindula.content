@@ -5,7 +5,9 @@ from vindula.content import MessageFactory as _
 from plone.uuid.interfaces import IUUID
 from zope.app.component.hooks import getSite
 from zope.event import notify
+from zope.interface import Interface
 from AccessControl import ClassSecurityInfo
+from Products.CMFCore.utils import getToolByName
 
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
@@ -218,3 +220,52 @@ class OrganizationalStructureView(grok.View):
             return objs
         else:
             return []
+
+class FolderOrganizationalStructureView(grok.View, BaseFunc):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('folder-organizational-structure')
+    
+    def getCategorias(self):
+        return OrganizationalStructure(self.context).voc_categoria();
+    
+    def getOrgStruc(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        L = []
+        
+        if 'categoria' in self.request.form.keys():
+            categoria = self.request.form.get('categoria')
+        
+        if categoria:
+            results = catalog(portal_type='OrganizationalStructure',
+                      review_state='published',
+                      categoria = categoria,
+                      )
+            if results:
+                for item in results:
+                    item = item.getObject()
+                    D = {}
+                    D['title'] = item.Title()
+                    D['url'] =   item.absolute_url()
+                    L.append(D)
+        return L
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

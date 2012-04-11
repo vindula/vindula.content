@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+
+	<head>
+		<metal:css fill-slot="style_slot">
+			<link type="text/css" charset="utf-8" rel="stylesheet"  tal:attributes="href string:${context/portal_url}/++resource++vindula.content/jquery.fancybox-1.3.4.css">
+		</metal:css>
+		<metal:js fill-slot="javascript_head_slot">
+			<script type="text/javascript"  tal:attributes="src string:${context/portal_url}/++resource++vindula.content/jquery.fancybox-1.3.4.pack.js"></script>
+			<script type="text/javascript">
+				$j = jQuery.noConflict();
+				$j(document).ready(function(){
+					$j('a.image_accordion').fancybox();
+				});
+			</script>
+		</metal:js>
+	</head>
+<body>
+<metal:main fill-slot="main" tal:define="is_anonymous python: context.portal_membership.isAnonymousUser() or None">
+						<!--tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
+				  					contcomments python:vindulacomments.cont_comments(context);"-->
+		<!-- Data -->
+		<div class="info_topoBoxTipo" tal:condition="not: is_anonymous">
+			<div class="info_data" tal:condition="context/effective_date|nothing">
+				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+			</div>
+			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
+				<h4 tal:content="string:Comentários (${contcomments})"></h4>
+			</div-->
+			<div class="visualClear"></div>
+		</div>
+			
+		<!-- start: New -->
+		<div> 
+		
+			<div class="titulo_info" tal:condition="not: is_anonymous">
+				<h2 tal:content="context/Title"></h2>
+				<div class="descricao_titulo">
+					<!--tal:def define="pas_member context/@@pas_member|nothing;
+									 item_creator context/Creator|nothing;
+									 author python:pas_member.info(item_creator) or None;">
+												
+						<h4 tal:content="string: Autor: ${author/name_or_id|nothing}">Author</h4>
+					</tal:def-->
+					<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
+					<!--h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4-->
+					<p tal:content="context/Description"></p>
+				</div>
+			</div>
+			
+			<tal:cont define="enable context/@@myvindula-conf-userpanel/check_share|nothing"
+				  	  condition="enable">
+				<tal:cont condition="context/activ_share|nothing">
+					<div metal:use-macro="context/vindula-content-share/macros/share" />
+				</tal:cont>
+			</tal:cont>
+			
+			<div>
+				<tal:condition condition="context/getActiv_image">
+					<div id="newsImageContainer" tal:condition="context/getImageRelac">
+						<div id="parent-fieldname-image">
+							<div class="bk_imagem">
+								<a tal:attributes="href python: context.getImageRelac().absolute_url()" class="image_accordion">
+									
+									<img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
+														 alt context/imageCaption; title context/imageCaption;" class="imagemAccordionOff">
+								</a>
+								<p class="discreet img_legenda" tal:condition="context/imageCaption">
+									<span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<!--div class="img_info" tal:condition="context/image/to_object">
+						<div class="bk_topo_imgDestaque"></div>
+						<div class="bk_cont_imgDestaque">
+							<img width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
+															 alt context/imageCaption; title context/imageCaption;"/>
+						</div>
+						<div class="bk_rodape_imgDestaque"></div>
+					</div-->	
+				</tal:condition>		
+								
+				<div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
+				<div class="visualClear"></div>
+			</div>
+		
+		</div>
+		<!-- end: New -->
+		<tal:cont define="enable context/@@myvindula-conf-userpanel/check_share|nothing"
+				  condition="enable">
+			<tal:cont condition="context/activ_share|nothing">
+					<div metal:use-macro="context/vindula-content-share/macros/share" />
+			</tal:cont>
+		</tal:cont>
+
+</metal:main>
+</body>
+</html>
