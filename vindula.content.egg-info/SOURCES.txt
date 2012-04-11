@@ -15,6 +15,7 @@ vindula/content/__init__.py
 vindula/content/behaviors.py
 vindula/content/config.py
 vindula/content/tests.py
+vindula/content/validators.py
 vindula/content/browser/__init__.py
 vindula/content/content/__init__.py
 vindula/content/content/interfaces.py

@@ -44,14 +44,14 @@
 								<div class="cell width-5 position-0">
 									<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
 					                    <img src="defaultUser.png"
-						             		 alt="" border="0" width="90" height="85"
+						             		 alt="" border="0" width="70" height="85"
 											 tal:define="photo user_manage/photograph|nothing"
 						             		 tal:attributes="src python:view.getPhoto(photo);
 									 						 alt user_manage/name|nothing;
 															 title user_manage/name|nothing;" />
 									</a>
 				                </div>
-								<div class="portlet-user-info cell width-9 position-5"> 											     	      	
+								<div class="portlet-user-info cell width-9 position-6"> 											     	      	
 						        	<h4><a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
 										   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
 						        	<p>

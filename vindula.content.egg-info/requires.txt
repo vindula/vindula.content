@@ -6,3 +6,4 @@ zope.schema
 zope.interface
 zope.component
 rwproperty
+Products.SmartColorWidget

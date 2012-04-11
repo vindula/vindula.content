@@ -32,6 +32,29 @@
 		 addview=".carrega_portlet.AddForm"
 		 editview=".carrega_portlet.EditForm"
 	 	/>	
+
+	 <plone:portlet
+		 name="vindula.content.PortletEO_Gestor"
+		 interface=".eo_Gestor.IPortletEO_Gestor"
+		 assignment=".eo_Gestor.Assignment"
+		 view_permission="zope2.View"
+		 edit_permission="cmf.ManagePortal"
+		 renderer=".eo_Gestor.Renderer"
+		 addview=".eo_Gestor.AddForm"
+		 editview=".eo_Gestor.EditForm"
+	 	/>	
+	
+	 <plone:portlet
+		 name="vindula.content.PortletEO_Colaboradores"
+		 interface=".eo_Colaboradores.IPortletEO_Colaboradores"
+		 assignment=".eo_Colaboradores.Assignment"
+		 view_permission="zope2.View"
+		 edit_permission="cmf.ManagePortal"
+		 renderer=".eo_Colaboradores.Renderer"
+		 addview=".eo_Colaboradores.AddForm"
+		 editview=".eo_Colaboradores.EditForm"
+	 	/>	
+	
 	
 			
 </configure>

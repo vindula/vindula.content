@@ -1,0 +1,31 @@
+<dl class="portlet" tal:define="view view/data">
+
+	<dt class="portletHeader">
+        <span class="tile" tal:content="view/get_title">Portlet Title</span>
+    </dt>
+    <dd class="portletItem" >
+		<div id="portlet-estrutura"
+			 tal:define="employees view/get_EO_Context|python:[];">
+			<div class="row">
+				<div class="cell width-full position-0">
+					<tal:rep repeat="func employees">
+						<tal:cond condition="func">
+							<a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}">
+			                    <img src="defaultUser.png"
+				             		 alt="" border="0" height="30"
+									 tal:define="user_func python:view.get_prefs_user(func);
+									 			 photo user_func/photograph|nothing"
+				             		 tal:attributes="src python:view.getPhoto(photo);
+							 						 alt user_func/name|nothing;
+													 title user_func/name|nothing;" />
+							</a>
+						</tal:cond>
+					</tal:rep>
+				</div>
+	 		</div>
+	 		<div class="visualClear"></div>
+		</div>
+    </dd>
+    <dd class="portletFooter"></dd>
+	<div class="visualClear"></div>
+</dl>

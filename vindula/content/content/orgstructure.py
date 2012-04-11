@@ -8,10 +8,13 @@ from zope.event import notify
 from zope.interface import Interface
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.utils import getToolByName
+from zope.interface import Interface
+
 
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
-from Products.ATContentTypes.content.folder import ATFolder
+from plone.app.folder.folder import ATFolder
+from Products.SmartColorWidget.Widget import SmartColorWidget
 
 from zope.interface import implements
 from Products.Archetypes.atapi import *
@@ -52,7 +55,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             name='employees',
             widget=InAndOutWidget(
                 label=_(u"Funcionarios desta Estrutura Organizacional"),
-                description=_(u"Selecione os fncionarios que estão nesta estrutura organizacional."),
+                description=_(u"Selecione os funcionarios que estão nesta estrutura organizacional."),
                 
             ),
             required=0,
@@ -94,9 +97,122 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')
     ),
 
+#---------------------abas de permições no Objeto---------------------------------
+     
+    StringField(
+            name='Groups_view',
+            widget=InAndOutWidget(
+                label=_(u"Grupo de usuários para visualização"),
+                description=_(u"Selecione os grupos que teram permisão de visualizar este unidade Organizacional."),
+                
+            ),
+            required=0,
+            vocabulary='voc_listGroups',
+            schemata = 'Permisões',
+            #validators = ('isUserUpdate',),
+    ),
+    
+    StringField(
+            name='Groups_edit',
+            widget=InAndOutWidget(
+                label=_(u"Grupo de usuários de gerencia o conteudo"),
+                description=_(u"Selecione os grupos que teram permisão de gerenciar o conteudo  desta unidade Organizacional."),
+            ),
+            required=0,
+            vocabulary='voc_listGroups',
+            schemata = 'Permisões',
+            #validators = ('isUserUpdate',),
+    ),
+
+    StringField(
+            name='Groups_admin',
+            widget=InAndOutWidget(
+                label=_(u"Grupo de usuários de adiministração"),
+                description=_(u"Selecione os grupos que teram permisão de gerenciar totalmente este unidade Organizacional."),
+            ),
+            required=0,
+            vocabulary='voc_listGroups',
+            schemata = 'Permisões',
+            validators = ('isUserUpdate',),
+    ),
+
+#---------------------abas de permições no Objeto---------------------------------
+
+    BooleanField(
+        name='activ_personalit',
+        default=False,
+        widget=BooleanWidget(
+            label="Ativar Personalização",
+            description='Se selecionado, Ativa a opção de personalização dos itens inferiores a estrutura organizacional.',
+        ),
+        schemata = 'Layout'
+    ),                                                       
+
+    StringField(
+        name='corPortal',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor',
+            description="Cor para esta area, todo o layout desta area usara esta cor.",
+        ),
+        schemata = 'Layout'
+    ),    
+
+    ReferenceField('logoPortal',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Logo"),
+        relationship='logoPortal',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Logo "),
+            description='Será exibido no topo do portal desta area. A imagem será redimensionada para um tamanho adequado.'),
+        schemata = 'Layout'
+    ),
+                                                                   
+    ReferenceField('logoRodape',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Logo Rodape "),
+        relationship='logoRodape',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Logo Rodape"),
+            description='Será exibido no rodape desta area o imagem selecionada. A imagem será redimensionada para um tamanho adequado.'),
+        schemata = 'Layout'
+    ),                                                                   
+
+
+    #-----------BackGroup do portal------------------
+    ReferenceField('imageBackground',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"WallPapper do portal "),
+        relationship='imageBackground',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"WallPaper do portal"),
+            description='Será exibido no backgroup do portal a imagem selecionada. A imagem será mostrada em seu tamanho original, sem repetição.'),
+        schemata = 'Layout'
+    ),                                                                   
+    
+    StringField(
+        name='corBackground',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor de background',
+            description="Cor para o background do portal, caso a imagem não carregue ou não esteja selecionada.",
+        ),
+        schemata = 'Layout'
+    ),    
+
+
 ))
 
 finalizeATCTSchema(OrganizationalStructure_schema, folderish=True)
+
 
 class OrganizationalStructure(ATFolder):
     """ OrganizationalStructure """
@@ -148,6 +264,17 @@ class OrganizationalStructure(ATFolder):
         result = DisplayList(tuple(terms))
         return result
     
+    def voc_listGroups(self):
+        terms = []
+        if 'acl_users' in getSite().keys():
+            groups = getSite().get('acl_users').getGroups() 
+            
+            for group in groups:
+                member_id = group.id
+                member_name = group.getProperties().get('title','')
+                terms.append((member_id, unicode(member_name)))
+        
+        return terms
 
 registerType(OrganizationalStructure, PROJECTNAME) 
 
@@ -161,19 +288,42 @@ class OrgstructureModifiedEvent(object):
 
 def CreatGroupInPloneSite(event):
     ctx = event.context
-    id_grupo = ctx.id
+    ctxPai = ctx.aq_parent
     portalGroup = getSite().portal_groups 
-    if not id_grupo in portalGroup.listGroupIds():
-        nome_grupo = 'Estrutura Organizacional: ' + ctx.title
-        portalGroup.addGroup(id_grupo, title=nome_grupo)
-        #Adiciona o grupo a 'AuthenticatedUsers'
-        portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)  
+    tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
+             {'tipo':'edit' ,'name':'- Edição',      'permissao':['Reviewer','Reader','Contributor']           },
+             {'tipo':'admin','name':'- Administração', 'permissao':['Editor','Reviewer','Reader','Contributor']}
+            ]
+    
+    for tipo in tipos:
+        id_grupo = ctx.UID() +'-'+tipo['tipo']    
+    
+        if not id_grupo in portalGroup.listGroupIds():
+            if ctxPai.portal_type == 'OrganizationalStructure':
+                paiTitle = ctxPai.title
+            else:
+                paiTitle = ''
+            
+            nome_grupo = 'EO: '+ paiTitle +"\\"  + ctx.title + tipo['name']
+            portalGroup.addGroup(id_grupo, title=nome_grupo)
+            #Adiciona o grupo a 'AuthenticatedUsers'
+            portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)
+             
+            ctx.manage_setLocalRoles(id_grupo, tipo['permissao'])  
+        
+        for view in eval('ctx.getGroups_'+tipo['tipo']+'()'):
+            portalGroup.getGroupById(id_grupo).addMember(view)
+    
+        if ctxPai.portal_type == 'OrganizationalStructure':
+            group_pai = ctxPai.UID()+"-view"
+            portalGroup.getGroupById(group_pai).addMember(id_grupo)
+        
     
     
 class OrganizationalStructureView(grok.View):
     grok.context(IOrganizationalStructure)
     grok.require('zope2.View')
-    grok.name('view')
+    grok.name('view_organizarional')
     
     def get_UID(self):
         return IUUID(self.context)
@@ -249,23 +399,69 @@ class FolderOrganizationalStructureView(grok.View, BaseFunc):
                     D['url'] =   item.absolute_url()
                     L.append(D)
         return L
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
+class OrganizationalStructureCssView(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('personal-layout.css')
+            
+    def getOrgStrucConfiguration(self):
+        
+        ctx = self.context.restrictedTraverse('OrgStruct_view')()
+        D = {}
+        if ctx.portal_type != 'Plone Site':
+            if ctx.activ_personalit:
+                D['id'] = ctx.id 
+                D['cor'] = ctx.corPortal
+                
+                if ctx.getImageBackground():
+                    D['url'] = ctx.getImageBackground().absolute_url()
+                else:
+                    D['url']  = ''
+                
+                D['colorBG'] = ctx.corBackground
+        
+        return D
+            
+    def render(self):
+        config = self.getOrgStrucConfiguration()
+        id = config.get('id','')
+        color = config.get('cor','#F58220') or '#F58220'
+        url = config.get('url','')
+        colorBG = config.get('colorBG','')
+        
+        css =  '/* vindula_theme.css */\n'
+        css += '    .%s .titulo_info_boxTipo2 h4 a{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .gallery-cycle-controls #cycle-prev, .%s .gallery-cycle-controls #cycle-next {background-color:%s !important;}\n' %(id,id,color)
+        css += '    .%s .portletWrapper .portletHeader {background-color: %s !important;}' %(id,color)
+        css += '    .%s .portletWrapper .portletHeader-dainamic .topPortlet {background-color: %s !important;}' %(id,color)
+        css += '    .%s .portletWrapper .portletHeader-dainamic .meioPortlet {background-color: %s !important;}' %(id,color)
+        css += '    .%s .portletWrapper .portletHeader-dainamic .bottonPortlet {background-color: %s !important;}' %(id,color)
+        css += '/* cont_pagina.css */\n'
+        css += '    .%s .cont_superior{ border-bottom-color: %s !important;}\n'%(id,color) 
+        css += '    .%s .titulo h2 {color: %s !important;}\n' %(id,color) 
+        css += '    .%s .descricao_destaque h4{ color: %s !important;}\n' %(id,color) 
+        css += '    .%s .titulo_info_boxTipo2 h4{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .info_topoBoxTipo h4{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .descricao_titulo h4{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .opcoes_noticia h4{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .titulo_area h2{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .titulo_area{border-bottom-color: %s !important;}\n' %(id,color) 
+        css += '    .%s .geral_lista_comentarios .comment {border-top-color: %s !important;}\n' %(id,color) 
+        css += '    .%s .item_lista h4{color: %s !important;}\n' %(id,color) 
+        css += '    .%s .bt_comentar input{background-color: %s !important;}\n' %(id,color) 
+        css += '/* geral.css */\n'
+        css += '    .%s {background: url("%s") no-repeat scroll 50%% 0 %s;}\n' %(id,url,colorBG)
+        css += '    .%s div#content a:hover, .%s .geral_busca #LSResult .livesearchContainer div.LSIEFix a:hover {color: %s !important;}\n' %(id,id,color)
+        css += '    .%s div#content a:hover, .%s dl.portlet a:hover, .%s .geral_busca #LSResult .livesearchContainer div.LSIEFix a:hover {color: %s !important;}' %(id,id,id,color)
+        css += '    .%s #geral_breadcrumb span{color:%s;!important;}\n' %(id,color)
+        css += '    .%s #barra_superior #cont_barra_superior li a:hover {color: %s !important;}\n' %(id,color) 
+        css += '    .%s .cont_superior .documentFirstHeading{color: %s !important;}\n' %(id,color)
+        css += '    .%s #like .link{color:%s !important;}\n' %(id,color) 
+        css += '/* topo_nav.css */\n'
+        css += '    .%s #nav li a:hover {color:%s !important;}\n' %(id,color)
+        css += '    .%s .geral_busca .searchButton {background-color: %s !important;}\n' %(id,color)
+        
+        
+        self.response.setHeader('Content-Type', 'text/css; charset=UTF-8')
+        return css
