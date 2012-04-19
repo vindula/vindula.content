@@ -151,9 +151,15 @@
 				
 									</div>
 									
-					                <div class="comment-body">
-					                    <p tal:replace="item/text|nothing" />
-							  		</div>
+									<div class="row comment-body">
+										<div class="cell width-6 position-0" tal:condition="item/upload_image|nothing">
+											<img height="150" tal:attributes="src string:${context/portal_url|nothing}/howareu-image?id=${item/id|nothing}">
+										</div>
+						                <div tal:attributes="class python: item.upload_image and 'cell width-9 position-6' or ''">
+						                    <p tal:replace="item/text|nothing" />
+								  		</div>	
+										
+									</div>
 									<!-- campos input necessario para a criação de comentariso -->
 									<div id="comments" tal:condition="logado" >
 										<div tal:attributes="id item/id|nothing">
