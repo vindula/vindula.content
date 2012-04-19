@@ -1,0 +1,57 @@
+#areas-empresa p {
+	color: #000000 !important
+}
+
+#areas-empresa ul {
+	margin: 0 0 10px 20px;
+}
+
+.display-table {
+	display: table;
+}
+
+.two-columns {
+	width: 50%;
+	float: left;
+}
+
+.remove-bullet ul {
+	list-style-image: none !important;
+    list-style-type: none !important;
+}
+
+#areas-empresa li {
+	cursor: pointer;
+    border-radius: 7px 0 0 7px;
+    height: 20px;
+	margin-bottom: 2px;
+	padding: 5px 0 0 10px;
+}
+
+#listagem-areas li {
+	background: none repeat scroll 0 0 #CCCCCC;
+}
+
+div#conteudo-areas {
+	border-radius: 7px;
+	margin-left: 4px;
+    width: 49%;
+	background: none repeat scroll 0 0 #F2F2F2;
+}
+
+#listagem-areas li.select {
+	background: none repeat scroll 0 0 #F2F2F2;
+	width: 307px;
+}
+
+#conteudo-areas li {
+	background: none repeat scroll 0 0 #E2E2E2;
+	border-radius: 7px;
+	*margin-bottom: -11px;
+}
+
+#conteudo-areas ul {
+	border-radius: 7px;
+	margin: 10px 10px 10px 20px;
+	*margin: -5px 10px 10px 20px;
+}

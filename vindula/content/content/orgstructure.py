@@ -4,14 +4,15 @@ from five import grok
 from vindula.content import MessageFactory as _
 from plone.uuid.interfaces import IUUID
 from zope.app.component.hooks import getSite
-#from zope.component import getUtility
 from zope.event import notify
-from AccessControl import ClassSecurityInfo
 from zope.interface import Interface
+from AccessControl import ClassSecurityInfo
+from Products.CMFCore.utils import getToolByName
+from zope.interface import Interface
+
 
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
-#from Products.ATContentTypes.content.folder import ATFolder
 from plone.app.folder.folder import ATFolder
 from Products.SmartColorWidget.Widget import SmartColorWidget
 
@@ -369,6 +370,35 @@ class OrganizationalStructureView(grok.View):
             return objs
         else:
             return []
+
+class FolderOrganizationalStructureView(grok.View, BaseFunc):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('folder-organizational-structure')
+    
+    def getCategorias(self):
+        return OrganizationalStructure(self.context).voc_categoria();
+    
+    def getOrgStruc(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        L = []
+        
+        if 'categoria' in self.request.form.keys():
+            categoria = self.request.form.get('categoria')
+        
+        if categoria:
+            results = catalog(portal_type='OrganizationalStructure',
+                      review_state='published',
+                      categoria = categoria,
+                      )
+            if results:
+                for item in results:
+                    item = item.getObject()
+                    D = {}
+                    D['title'] = item.Title()
+                    D['url'] =   item.absolute_url()
+                    L.append(D)
+        return L
         
 class OrganizationalStructureCssView(grok.View):
     grok.context(Interface)

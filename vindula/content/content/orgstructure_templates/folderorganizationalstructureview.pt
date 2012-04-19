@@ -1,0 +1,28 @@
+<html>
+	<body metal:use-macro="here/main_template/macros/master">
+	
+	  	<div metal:fill-slot="content">
+      		<meta:macro metal:define-macro="page-view">                  
+				<div class="remove-bullet" id="content" tal:define="view_folder python: context.restrictedTraverse('@@folder-organizational-structure');
+											  					    results view_folder/getCategorias;">
+					<div id="areas-empresa">						  					    	
+						<script type="text/javascript" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/areas_empresa.js"></script>
+						<link rel="stylesheet" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/areas_empresa.css">
+						
+						<input type="hidden" tal:attributes="value context/absolute_url" id="url">
+						<div class="two-columns" id="listagem-areas">
+							<ul id="box-listagem">
+		                        <li class="trigger-sublinks" tal:repeat="categoria results">
+		                            <p tal:content="categoria"></p>
+		                        </li>
+			                </ul> 
+						</div>
+						<div class="two-columns" id="conteudo-areas">
+							
+						</div>
+					</div>           
+				</div>
+	  		</meta:macro>
+	  	</div>    
+  </body>
+</html>

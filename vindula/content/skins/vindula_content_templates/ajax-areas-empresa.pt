@@ -1,0 +1,17 @@
+<tal:define define="page_view python:context.restrictedTraverse('@@folder-organizational-structure');
+					categoria python: context.REQUEST.form.get('categoria');
+					results page_view/getOrgStruc;"> 
+						
+	<ul id="listagem_arquivos"> 
+     	<span tal:omit-tag="" tal:repeat="item results">
+     		<a class="subsub-trigger"
+               tal:attributes="href item/url"
+			   onclick="expande_item(this); return false;">
+		         <li>
+		            <p tal:content="item/title"></p>
+		         </li>
+			 </a>
+		</span>
+	</ul>
+					
+</tal:define>

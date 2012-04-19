@@ -21,11 +21,11 @@
 		</metal:js>
 	</head>
 <body>
-<metal:main fill-slot="main">
+<metal:main fill-slot="main" tal:define="is_anonymous python: context.portal_membership.isAnonymousUser() or None">
 						<!--tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
 				  					contcomments python:vindulacomments.cont_comments(context);"-->
 		<!-- Data -->
-		<div class="info_topoBoxTipo">
+		<div class="info_topoBoxTipo" tal:condition="not: is_anonymous">
 			<div class="info_data" tal:condition="context/effective_date|nothing">
 				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
 			</div>
@@ -38,7 +38,8 @@
 		<!-- start: New -->
 		<div> 
 		
-			<div class="titulo_info">
+			<div class="titulo_info" tal:condition="not: is_anonymous">
+				<h2 tal:content="context/Title"></h2>
 				<div class="descricao_titulo">
 					<!--tal:def define="pas_member context/@@pas_member|nothing;
 									 item_creator context/Creator|nothing;
