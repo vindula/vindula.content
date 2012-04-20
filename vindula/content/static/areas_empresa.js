@@ -12,7 +12,7 @@ $j(document).ready(function(){
         });
 		$j('#listagem-areas li').removeClass('select');
 		$j(this).addClass('select');
-		$j('#conteudo-areas').height($j('#listagem-areas').height() - 10);
+		$j('#conteudo-areas').css('min-height', $j('#listagem-areas').height() - 10)
 		$j('#conteudo-areas').show();
 	});
 	
