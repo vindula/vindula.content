@@ -26,4 +26,6 @@ vindula/content/content/vindulanews.py
 vindula/content/content/vindulaportlet.py
 vindula/content/portlets/__init__.py
 vindula/content/portlets/carrega_portlet.py
+vindula/content/portlets/eo_Colaboradores.py
+vindula/content/portlets/eo_Gestor.py
 vindula/content/portlets/estrutura_hierarquica.py
