@@ -157,7 +157,18 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         ),
         schemata = 'Layout'
     ),    
-
+    
+    StringField(
+        name='corMenuOrganizacional',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor do background do Menu da Unidade',
+            description="Cor do background do Menu da Unidade Organizacional.",
+        ),
+        schemata = 'Layout'
+    ),
+                                                                   
     ReferenceField('logoPortal',
         multiValued=0,
         allowed_types=('Image'),
