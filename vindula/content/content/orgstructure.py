@@ -159,7 +159,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ),    
     
     StringField(
-        name='corMenuOrganizacional',
+        name='CorMenu',
         searchable=0,
         required=0,
         widget=SmartColorWidget(
