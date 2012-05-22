@@ -34,10 +34,30 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Visualização da imagem",
-            description='Se selecionado, Ativa a opção de visualizar a imagem junto como o corpo da notícia.',
+            description='Se selecionado ativa a opção de visualizar a imagem junto como o corpo da notícia.',
         ),
         required=False,
-    ),   
+    ),
+    
+    BooleanField(
+        name='active_author',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar Visualização do Autor na Notícia",
+            description='Se selecionado ativa a opção de visualizar o autor na notícia.',
+        ),
+        required=False,
+    ), 
+    
+    BooleanField(
+        name='active_date',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar Visualização da Data de Publicação na Notícia",
+            description='Se selecionado ativa a opção de visualizar o data de criação na notícia.',
+        ),
+        required=False,
+    ), 
 
     BooleanField(
         name='activ_share',

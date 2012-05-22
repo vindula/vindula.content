@@ -22,32 +22,24 @@
 	</head>
 <body>
 <metal:main fill-slot="main">
-						<!--tal:define="vindulacomments python:context.restrictedTraverse('@@vindula-comments-view');
-				  					contcomments python:vindulacomments.cont_comments(context);"-->
 		<!-- Data -->
-		<div class="info_topoBoxTipo">
-			<div class="info_data" tal:condition="context/effective_date|nothing">
-				<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+		<tal:cond condition="context/active_date">
+			<div class="info_topoBoxTipo">
+				<div class="info_data" tal:condition="context/effective_date|nothing">
+					<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+				</div>
+				<div class="visualClear"></div>
 			</div>
-			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
-				<h4 tal:content="string:Comentários (${contcomments})"></h4>
-			</div-->
-			<div class="visualClear"></div>
-		</div>
+		</tal:cond>
 			
 		<!-- start: New -->
 		<div> 
 		
 			<div class="titulo_info">
 				<div class="descricao_titulo">
-					<!--tal:def define="pas_member context/@@pas_member|nothing;
-									 item_creator context/Creator|nothing;
-									 author python:pas_member.info(item_creator) or None;">
-												
-						<h4 tal:content="string: Autor: ${author/name_or_id|nothing}">Author</h4>
-					</tal:def-->
-					<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
-					<!--h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4-->
+					<tal:cond condition="context/active_author">
+						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
+					</tal:cond>
 					<p tal:content="context/Description"></p>
 				</div>
 			</div>
