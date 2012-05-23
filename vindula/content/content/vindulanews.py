@@ -34,7 +34,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Visualização da imagem",
-            description='Se selecionado, Ativa a opção de visualizar a imagem junto como o corpo da notícia.',
+            description='Se selecionado, ativa a opção de visualizar a imagem junto como o corpo da notícia.',
         ),
         required=False,
     ),   
@@ -44,7 +44,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Compartilhamento",
-            description='Se selecionado, Ativa a opção de compartilhamento entre redes sociais.',
+            description='Se selecionado, ativa a opção de compartilhamento entre redes sociais.',
         ),
         required=False,
     ),                                                       

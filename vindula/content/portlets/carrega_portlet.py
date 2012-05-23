@@ -92,6 +92,7 @@ class Renderer(base.Renderer):
             ctool = getSite().portal_catalog
             items = ctool(portal_type=('VindulaPortlet'),
                              path=caminho,
+                             review_state = ['published','internal','external'],
                              sort_on='getObjPositionInParent')    
             
             #items = context.objectValues('VindulaPortlet')

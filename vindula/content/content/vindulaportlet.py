@@ -44,13 +44,13 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         widget=ReferenceBrowserWidget(
             default_search_index='SearchableText',
             label=_(u"Link de detalhes"),
-            description='Caso fornecido, rodapé terão link para esta URL.')),
+            description='Caso fornecido, o rodapé terá como link esta URL.')),
 
     TextField(
             name='title_link',
             widget=StringWidget(
                 label=_(u"Título do link"),
-                description=_(u"Título para o link do rodape do portlet."),
+                description=_(u"Título para o link do rodapé do portlet."),
                 
             ),
         required=False,
@@ -62,7 +62,7 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         default=False,
         widget=BooleanWidget(
             label="Ativar Recursividade",
-            description='Se selecionado, Ativa a opção de recursividade do portlet em níveis inferiores.',
+            description='Se selecionado, ativa a opção de recursividade do portlet em níveis inferiores.',
         ),
         required=False,
     ),
@@ -71,8 +71,8 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         name='bloquea_portlet',
         default=False,
         widget=BooleanWidget(
-            label="Bloquea Portlets dos níveis superiores",
-            description='Se selecionado, Ira bloquear todos os portlets dos níveis superiores do portal.(Cautela para usar esta opção)',
+            label="Bloquear Portlets dos níveis superiores",
+            description='Se selecionado, irá bloquear todos os portlets dos níveis superiores do portal.(Cautela para usar esta opção)',
         ),
         required=False,
     ),

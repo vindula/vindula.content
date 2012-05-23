@@ -24,8 +24,9 @@
 							   							 logado python:str(member)!='Anonymous User';">
 		 	<metal:content-core define-macro="content-core">
 				<p><b>Categoria:</b> <span tal:content="context/getCategoria|nothing"></span> </p>
-				<p><b>Estrutura Organizacional:</b> <span tal:condition="context/getStructures|nothing" 
-														  tal:content="python:context.getStructures().Title()"></span></p>
+				<p tal:condition="context/getStructures|nothing" >
+					<b>Estrutura Organizacional:</b> <span tal:content="python:context.getStructures().Title()" />
+				</p>
 				
 				<div>
 					<a class="img-text" tal:condition="context/getImage|nothing" 
@@ -78,7 +79,8 @@
 						<h2>Colaboradores</h2>
 						<tal:def define="employees context/employees|nothing">  
 							<tal:rep repeat="func employees">
-									<a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}">
+									<a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}"
+										tal:condition="func">
 					                    <img src="defaultUser.png"
 						             		 alt="" border="0" height="30"
 											 tal:define="user_func python:view.get_prefs_user(func);

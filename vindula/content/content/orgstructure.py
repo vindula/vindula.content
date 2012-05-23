@@ -54,9 +54,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     StringField(
             name='employees',
             widget=InAndOutWidget(
-                label=_(u"Funcionarios desta Estrutura Organizacional"),
-                description=_(u"Selecione os funcionarios que estão nesta estrutura organizacional."),
-                
+                label=_(u"Funcionários desta Estrutura Organizacional"),
+                description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
             ),
             required=0,
             vocabulary='voc_employees',
@@ -67,7 +66,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SelectionWidget(
             label=_(u"Gestor"),
             description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-
             format = 'select',
         ),
         vocabulary='voc_employees',
@@ -94,7 +92,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=ReferenceBrowserWidget(
             default_search_index='SearchableText',
             label=_(u"Imagem "),
-            description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')
+            description='Será exibido na visualização desta estrutura. A imagem será redimensionada para um tamanho adequado.')
     ),
 
 #---------------------abas de permições no Objeto---------------------------------
@@ -103,36 +101,35 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             name='Groups_view',
             widget=InAndOutWidget(
                 label=_(u"Grupo de usuários para visualização"),
-                description=_(u"Selecione os grupos que teram permisão de visualizar este unidade Organizacional."),
-                
+                description=_(u"Selecione os grupos que terão permissão de visualizar esta unidade organizacional."),
             ),
             required=0,
             vocabulary='voc_listGroups',
-            schemata = 'Permisões',
+            schemata = 'Permissões',
             #validators = ('isUserUpdate',),
     ),
     
     StringField(
             name='Groups_edit',
             widget=InAndOutWidget(
-                label=_(u"Grupo de usuários de gerencia o conteudo"),
-                description=_(u"Selecione os grupos que teram permisão de gerenciar o conteudo  desta unidade Organizacional."),
+                label=_(u"Grupo de usuários de gerencia o conteúdo"),
+                description=_(u"Selecione os grupos que terão permissão de gerenciar o conteúdo desta unidade organizacional."),
             ),
             required=0,
             vocabulary='voc_listGroups',
-            schemata = 'Permisões',
+            schemata = 'Permissões',
             #validators = ('isUserUpdate',),
     ),
 
     StringField(
             name='Groups_admin',
             widget=InAndOutWidget(
-                label=_(u"Grupo de usuários de adiministração"),
-                description=_(u"Selecione os grupos que teram permisão de gerenciar totalmente este unidade Organizacional."),
+                label=_(u"Grupo de usuários de administração"),
+                description=_(u"Selecione os grupos que terão permissão de gerenciar totalmente esta unidade organizacional."),
             ),
             required=0,
             vocabulary='voc_listGroups',
-            schemata = 'Permisões',
+            schemata = 'Permissões',
             validators = ('isUserUpdate',),
     ),
 
@@ -154,7 +151,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         required=0,
         widget=SmartColorWidget(
             label='Cor',
-            description="Cor para esta area, todo o layout desta area usara esta cor.",
+            description="Cor para esta área, todo o layout desta área usara esta cor.",
         ),
         schemata = 'Layout'
     ),    
@@ -178,7 +175,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=ReferenceBrowserWidget(
             default_search_index='SearchableText',
             label=_(u"Logo "),
-            description='Será exibido no topo do portal desta area. A imagem será redimensionada para um tamanho adequado.'),
+            description='Será exibido no topo do portal desta área. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
     ),
                                                                    
@@ -190,7 +187,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=ReferenceBrowserWidget(
             default_search_index='SearchableText',
             label=_(u"Logo Rodape"),
-            description='Será exibido no rodape desta area o imagem selecionada. A imagem será redimensionada para um tamanho adequado.'),
+            description='Será exibido no rodapé desta área o imagem selecionada. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
     ),                                                                   
 

@@ -7,4 +7,9 @@ Changelog
 
 1.1 - 2012-04-26
 --------------------
-   - Padronização do nome dos campos de personalização do objeto OrganizationalStructure 
+   - Padronização do nome dos campos de personalização do objeto OrganizationalStructure
+   
+1.1.1 - 2012-05-23
+--------------------
+ - Correções de ortografia no porduto    
+ - Ajuste no carrega portlet para carregar portlets "Publicados", "Esboço Interno" e "Visiveis Externamente"
