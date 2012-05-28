@@ -41,7 +41,7 @@ class Assignment(base.Assignment):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return "Portlet Estrutura Hierarquica"
+        return "Portlet Estrutura Hierárquica"
     
 class Renderer(base.Renderer):
     """Portlet renderer.
