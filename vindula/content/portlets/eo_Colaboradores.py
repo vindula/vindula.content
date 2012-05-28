@@ -53,6 +53,13 @@ class Renderer(base.Renderer):
     """
     render = ViewPageTemplateFile('eo_Colaboradores.pt')            
     
+    def check_content(self):
+        ctx = self.context.restrictedTraverse('OrgStruct_view')(False)
+        if ctx.portal_type == 'OrganizationalStructure':
+            return True
+        else:
+            return False
+    
     def get_title(self):
         return self.data.title_portlet
 
@@ -85,7 +92,7 @@ class Renderer(base.Renderer):
 
 
     def get_EO_Context(self):
-        ctx = self.context.restrictedTraverse('OrgStruct_view')()
+        ctx = self.context.restrictedTraverse('OrgStruct_view')(False)
         return ctx.getEmployees()
             
         

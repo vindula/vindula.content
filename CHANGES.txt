@@ -13,3 +13,8 @@ Changelog
 --------------------
  - Correções de ortografia no porduto    
  - Ajuste no carrega portlet para carregar portlets "Publicados", "Esboço Interno" e "Visiveis Externamente"
+ 
+1.1.2 - 2012-05-28
+--------------------
+- Correções de ortografia no porduto
+- Correção dos portlets para a Estrutura Organizacional, para restrição de contesto   

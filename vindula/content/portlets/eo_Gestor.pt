@@ -3,7 +3,14 @@
 	<dt class="portletHeader">
         <span class="tile" tal:content="view/get_title">Portlet Title</span>
     </dt>
-    <dd class="portletItem" >
+    <dd class="portletItem" tal:condition="not:view/check_content|nothing"> 
+		<div id="portlet-estrutura"> 
+			<p>Este tipo de portlet só funciona dentro de estruturas organizacionais</p>
+			
+		</div>
+	</dd>
+    
+    <dd class="portletItem" tal:condition="view/check_content|nothing">
 		<div id="portlet-estrutura"
 			 tal:define="manage view/get_EO_Context|python:{};
 											 user_manage python:view.get_prefs_user(manage)">

@@ -36,7 +36,7 @@ class IVindulaContentMacro(form.Schema):
 
     macro = schema.Choice(
          title=_(u"Categoria"),
-         description=_(u"Selecione a macro para este conteudo.\
+         description=_(u"Selecione a macro para este conteúdo.\
                          Para gerenciar as macros <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
          source=ControlPanelMacro('vindula_categories', 'list_macros'),
          required=False,
