@@ -146,7 +146,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ),                                                       
 
     StringField(
-        name='corPortal',
+        name='corGeralPortal',
         searchable=0,
         required=0,
         widget=SmartColorWidget(
@@ -156,16 +156,16 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         schemata = 'Layout'
     ),    
     
-    StringField(
-        name='CorMenu',
-        searchable=0,
-        required=0,
-        widget=SmartColorWidget(
-            label='Cor do background do Menu da Unidade',
-            description="Cor do background do Menu da Unidade Organizacional.",
-        ),
-        schemata = 'Layout'
-    ),
+#    StringField(
+#        name='CorMenu',
+#        searchable=0,
+#        required=0,
+#        widget=SmartColorWidget(
+#            label='Cor do background do Menu da Unidade',
+#            description="Cor do background do Menu da Unidade Organizacional.",
+#        ),
+#        schemata = 'Layout'
+#    ),
                                                                    
     ReferenceField('logoPortal',
         multiValued=0,
@@ -216,10 +216,160 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         schemata = 'Layout'
     ),    
 
+    #-----------Menu do portal------------------#
+    
+    StringField(
+        name='corMenuFundo',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor de fundo do menu',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFundo.png'>aqui para exemplo</a>",
+            #description="Cor para o fundo do primeiro nível do menu do portal.",
+        ),
+        schemata = 'Menu'
+    ),
+                                                            
+    StringField(
+        name='corMenuFonte',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor da fonte do menu',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonte.png'>aqui para exemplo</a>",
+            #description="Cor para a fonte do primeiro nível do menu do portal.",
+        ),
+        schemata = 'Menu'
+    ),
+            
+    StringField(
+        name='corMenuHoverDropdown',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor do background do menu dropdown',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuHoverDropdown.png'>aqui para exemplo</a>",
+            #description="Cor do background do link quando estiver com o mouse selecionado no primeiro nível, e a cor do fundo do Menu Dropdown.",
+        ),
+        schemata = 'Menu'
+    ),   
+                                                        
+    ReferenceField('imageMenuBkg',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Imagem para o background do menu dropdown"),
+        relationship='imageBkgMenu',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Imagem para background do menu Dropdown"),
+            description='A imagem selecionada será exibida como plano de fundo do menu.\
+                         A imagem será mostrada em seu tamanho original, com repetição.'),
+        schemata = 'Menu'
+    ),
+    
+    StringField(
+        name='corMenuFonteDropdown',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor da fonte do menu dropdown',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteDropdown.png'>aqui para exemplo</a>",
+            #description="Cor da fonte do link quando estiver selecionado pelo mouse no Menu Dropdown.",
+        ),
+        schemata = 'Menu'
+    ), 
+    
+    StringField(
+        name='corMenuFonteHoverDropdown',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor da fonte do menu, quando ativo no menu dropdown',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteHoverDropdown.png'>aqui para exemplo</a>",
+#            description="Cor para a fonte do primeiro nível do menu do portal quando ele\
+#                         estiver quando selecionado pelo mouse e ao cor dos links dentro do Menu Dropdown.",
+        ),
+        schemata = 'Menu'
+    ),
+    
+    StringField(
+        name='corMenuDropdownHover',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor do background do link ativo dentro do menu dropdown',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuDropdownHover.png'>aqui para exemplo</a>",
+            #description="Cor do link quando estiver selecionado pelo mouse dentro do Menu Dropdown.",
+        ),
+        schemata = 'Menu'
+    ),     
+    
+    StringField(
+        name='corMenuSelected',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor do background do link selecionado no primeiro nível do menu',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuSelected.png'>aqui para exemplo</a>",
+            #description="Cor do fundo do link quando estiver selecionado no primeiro nível do Menu.",
+        ),
+        schemata = 'Menu'
+    ),   
+    
+    StringField(
+        name='corMenuFonteSelected',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor da fonte do link selecionado no primeiro nível do portal',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteSelected.png'>aqui para exemplo</a>",
+            #description="Cor da fonte link quando estiver selecionado no primeiro nível.",
+        ),
+        schemata = 'Menu'
+    ),   
+
+    StringField(
+        name='corMenuSelectedDropdown',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor do background do link selecionado no menu dropdown',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuSelectedDropdown.png'>aqui para exemplo</a>",
+            #description="Cor do background do link quando estiver selecionado no Menu Dropdown.",
+        ),
+        schemata = 'Menu'
+    ),                                                  
+
+    StringField(
+        name='corMenuFonteSelectedDropdown',
+        searchable=0,
+        required=0,
+        widget=SmartColorWidget(
+            label='Cor da fonte do link selecionado no menu ',
+            description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteSelectedDropdown.png'>aqui para exemplo</a>",
+            #description="Cor da fonte do link quando estiver selecionado no Menu.",
+        ),
+        schemata = 'Menu'
+    ),
+
+
+
 
 ))
 
 finalizeATCTSchema(OrganizationalStructure_schema, folderish=True)
+invisivel = {'view':'invisible','edit':'invisible',}
+# Dates
+L = ['effectiveDate','expirationDate','creation_date','modification_date']   
+# Categorization
+L += ['subject','relatedItems','location','language']
+# Ownership
+L += ['creators','contributors','rights']
+# Settings
+L += ['allowDiscussion','excludeFromNav', 'nextPreviousEnabled']
+
+for i in L:
+    OrganizationalStructure_schema[i].widget.visible = invisivel 
 
 
 class OrganizationalStructure(ATFolder):
