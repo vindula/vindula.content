@@ -508,16 +508,16 @@ class OrganizationalStructureView(grok.View):
         return ModelsDepartment().get_departmentByUsername(user_id)    
 
 
-    def getPhoto(self,photo):
-        if photo is not None and not ' ' in photo:
-            url_foto = BaseFunc().get_imageVindulaUser(photo)
-            if url_foto:
-                return url_foto
-                #return self.context.absolute_url()+'/'+photo # + '/image_thumb'
-            else:
-                return self.context.absolute_url()+'/defaultUser.png'
-        else:
-            return self.context.absolute_url()+'/defaultUser.png'       
+#    def getPhoto(self,photo):
+#        if photo is not None and not ' ' in photo:
+#            url_foto = BaseFunc().get_imageVindulaUser(photo)
+#            if url_foto:
+#                return url_foto
+#                #return self.context.absolute_url()+'/'+photo # + '/image_thumb'
+#            else:
+#                return self.context.absolute_url()+'/defaultUser.png'
+#        else:
+#            return self.context.absolute_url()+'/defaultUser.png'       
 
     def get_LastContent(self):
         ctool = getSite().portal_catalog

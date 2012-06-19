@@ -23,3 +23,7 @@ Changelog
 1.1.3 - 2012-06-05
 ---------------------
 - Adição dos campos para customização do menu dropdown   
+
+1.1.4 - 2012-06-19
+---------------------
+- Correção da view da estrutura Organizacional para buscar a imagem do usuario

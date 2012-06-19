@@ -46,8 +46,7 @@
 									<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
 					                    <img src="defaultUser.png"
 						             		 alt="" border="0" width="70" height="85"
-											 tal:define="photo user_manage/photograph|nothing"
-						             		 tal:attributes="src python:view.getPhoto(photo);
+						             		 tal:attributes="src string:${here/portal_url}/user-image?username=${manage};
 									 						 alt user_manage/name|nothing;
 															 title user_manage/name|nothing;" />
 									</a>
@@ -83,9 +82,8 @@
 										tal:condition="func">
 					                    <img src="defaultUser.png"
 						             		 alt="" border="0" height="30"
-											 tal:define="user_func python:view.get_prefs_user(func);
-											 			 photo user_func/photograph|nothing"
-						             		 tal:attributes="src python:view.getPhoto(photo);
+											 tal:define="user_func python:view.get_prefs_user(func);"
+						             		 tal:attributes="src string:${here/portal_url}/user-image?username=${func};
 									 						 alt user_func/name|nothing;
 															 title user_func/name|nothing;" />
 									</a>
