@@ -13,6 +13,9 @@
 			meta_type="Factory-based Type Information with dynamic views"/>  
 	
 	<object name="VindulaPortlet"	
-			meta_type="Factory-based Type Information with dynamic views"/>  			
+			meta_type="Factory-based Type Information with dynamic views"/>  
+	
+	<object name="InternalLink"	
+			meta_type="Factory-based Type Information with dynamic views"/> 		
  
 </object>

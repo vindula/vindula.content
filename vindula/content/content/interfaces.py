@@ -7,12 +7,14 @@ class IVindulaNews(Interface):
 class IOrganizationalStructure(Interface):
     """ Interface for OrganizationalStructure content type """
     
+class IInternalLink(Interface):
+    """ Interface for IInternalLink content type """  
+    
 class IUnit(Interface):
    """ Interface for Unit content type """   
 
 class IVindulaPortlet(Interface):
    """ Interface for VindulaPortlet content type """  
-   
    
 class IOrgstructureModifiedEvent(Interface):
     """An event fired when an Orgstructure object is saved.
