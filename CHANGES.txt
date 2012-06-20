@@ -27,3 +27,7 @@ Changelog
 1.1.4 - 2012-06-19
 ---------------------
 - Correção da view da estrutura Organizacional para buscar a imagem do usuario
+
+1.1.5 - 2012-06-20
+---------------------
+- Adicionado o link interno/externo para a barra de links
