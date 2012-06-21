@@ -214,7 +214,19 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description="Cor para o background do portal, caso a imagem não carregue ou não esteja selecionada.",
         ),
         schemata = 'Layout'
-    ),    
+    ),
+    
+    ReferenceField('imageFooter',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Imagem para o rodapé do portal."),
+        relationship='imageFooter',
+        widget=ReferenceBrowserWidget(
+            default_search_index='SearchableText',
+            label=_(u"Imagem para o rodapé do portal"),
+            description='A imagem selecionada será exibida no rodapé do portal. Selecione uma imagem com dimenções 980x121'),
+        schemata = 'Layout'
+    ),
 
     #-----------Menu do portal------------------#
     

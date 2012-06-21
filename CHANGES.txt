@@ -31,3 +31,7 @@ Changelog
 1.1.5 - 2012-06-20
 ---------------------
 - Adicionado o link interno/externo para a barra de links
+
+1.1.6 - 2012-06-21
+---------------------
+- Adicionado o campo de imagem do rodape
