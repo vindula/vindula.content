@@ -71,17 +71,6 @@ class Renderer(base.Renderer):
     
          return ModelsFuncDetails().get_FuncDetails(user_id)
     
-    def getPhoto(self,photo):
-        if photo is not None and not ' ' in photo:
-            url_foto = BaseFunc().get_imageVindulaUser(photo)
-            if url_foto:
-                return url_foto
-                #return self.context.absolute_url()+'/'+photo # + '/image_thumb'
-            else:
-                return self.context.absolute_url()+'/defaultUser.png'
-        else:
-            return self.context.absolute_url()+'/defaultUser.png'      
-
     def get_department(self, user):
         try:
             user_id = unicode(user, 'utf-8')    

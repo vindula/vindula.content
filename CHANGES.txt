@@ -35,3 +35,9 @@ Changelog
 1.1.6 - 2012-06-21
 ---------------------
 - Adicionado o campo de imagem do rodape
+
+
+1.1.7 - 2012-06-22
+-------------------------
+- Alteração do version para 1.1.1
+- Correção da foto do gestor e colaborador nos portlets e views
