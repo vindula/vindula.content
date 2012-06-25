@@ -3,7 +3,9 @@
 	
 		<!--script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/portlet_estrutura.js"></script-->
 	    <dt class="portletHeader">
-	        <span class="tile" tal:content="view/get_title">Portlet Title</span>
+	            <span class="portletTopLeft"></span>
+                <span class="tile" tal:content="view/get_title">Portlet Title</span>
+                <span class="portletTopRight"></span>
 	    </dt>
 	    <dd class="portletItem" >
 			<div id="portlet-estrutura">
