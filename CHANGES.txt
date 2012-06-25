@@ -41,3 +41,8 @@ Changelog
 -------------------------
 - Alteração do version para 1.1.1
 - Correção da foto do gestor e colaborador nos portlets e views
+
+
+1.1.8 - 2012-06-25
+------------------------
+- Adicionado link para edição dos portlet atraves do fancebox

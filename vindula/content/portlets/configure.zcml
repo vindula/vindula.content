@@ -29,9 +29,9 @@
 		 view_permission="zope2.View"
 		 edit_permission="cmf.ManagePortal"
 		 renderer=".carrega_portlet.Renderer"
-		 addview=".carrega_portlet.AddForm"
-		 editview=".carrega_portlet.EditForm"
-	 	/>	
+		 addview=".carrega_portlet.AddForm" 
+	 />
+
 
 	 <plone:portlet
 		 name="vindula.content.PortletEO_Gestor"

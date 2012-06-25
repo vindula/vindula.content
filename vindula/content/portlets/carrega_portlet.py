@@ -11,6 +11,8 @@ from plone.app.portlets.portlets import base
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.app.component.hooks import getSite
+from Products.CMFCore.utils import getToolByName
+from vindula.content import MessageFactory as _
 
 class IVindulaCarregaPortlet(IPortletDataProvider):
       
@@ -20,11 +22,7 @@ class IVindulaCarregaPortlet(IPortletDataProvider):
     same.
     """
 
-    title_portlet = schema.TextLine(title=unicode("Título", 'utf-8'),
-                                  description=unicode("Título para do portlet.", 'utf-8'),
-                                  required=True)
-    
-    
+
 class Assignment(base.Assignment):
     """Portlet assignment.
     This is what is actually managed through the portlets UI and associated
@@ -32,16 +30,8 @@ class Assignment(base.Assignment):
     """
 
     implements(IVindulaCarregaPortlet)
-    # TODO: Add keyword parameters for configurable parameters here
-    def __init__(self, title_portlet=u''):
-       self.title_portlet = title_portlet
-
-    @property
-    def title(self):
-        """This property is used to give the title of the portlet in the
-        "manage portlets" screen.
-        """
-        return "Vindula Carrega Portlet"
+    
+    title = _(u'Vindula Carrega Portlet')
     
 class Renderer(base.Renderer):
     """Portlet renderer.
@@ -51,10 +41,7 @@ class Renderer(base.Renderer):
     of this class. Other methods can be added and referenced in the template.
     """
     render = ViewPageTemplateFile('carrega_portlet.pt')            
-    
-    def get_title(self):
-        return self.data.title_portlet
-    
+
     def getPortlets(self):
         context = self.context
         portal  = context.portal_url.getPortalObject()
@@ -121,8 +108,12 @@ class Renderer(base.Renderer):
             return True
         else:
             return False
+    def can_manage_portlets(self, obj):
+        mtool = getToolByName(obj, 'portal_membership')
+        return mtool.checkPermission("Modify portal content", obj)        
         
-class AddForm(base.AddForm):
+        
+class AddForm(base.NullAddForm):
     """Portlet add form.
 
     This is registered in configure.zcml. The form_fields variable tells
@@ -130,15 +121,15 @@ class AddForm(base.AddForm):
     constructs the assignment that is being added.
     """
     
-    form_fields = form.Fields(IVindulaCarregaPortlet)
+    #form_fields = form.Fields(IVindulaCarregaPortlet)
     
-    def create(self, data):
-       return Assignment(**data)
+    def create(self):
+       return Assignment()
    
-class EditForm(base.EditForm):
-    """Portlet edit form.
-
-    This is registered with configure.zcml. The form_fields variable tells
-    zope.formlib which fields to display.
-    """
-    form_fields = form.Fields(IVindulaCarregaPortlet)
+#class EditForm(base.EditForm):
+#    """Portlet edit form.
+#
+#    This is registered with configure.zcml. The form_fields variable tells
+#    zope.formlib which fields to display.
+#    """
+#    form_fields = form.Fields(IVindulaCarregaPortlet)

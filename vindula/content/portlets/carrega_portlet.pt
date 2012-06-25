@@ -14,12 +14,6 @@
 					<div class="bottonPortlet"></div>
 			    </dt>
 
-				<!--dt class="portletHeader">
-			        <span class="portletTopLeft"></span>
-			        <span tal:content="obj/Title|nothing">Title Portlet</span>
-			        <span class="portletTopRight"></span>
-			    </dt-->
-			
 			    <dd class="portletItem odd">
 					<img width="80" border="0" style="float:left;margin:5px;" 
 														   tal:condition="obj/getImageRelac|nothing" 
@@ -42,6 +36,11 @@
 				</tal:cont>
 			</dl>
 		</div>
+		<a  alt="Editar o Portlet" title="Editar o Portlet"
+            class="manage-portlet portlet-ajax" style="margin-right:7px;"
+            tal:condition="python: view.can_manage_portlets(obj)"
+            tal:attributes="href string:${obj/absolute_url|nothig}/edit" > </a>
+		
 		<div class="visualClear"></div>
 	</tal:rep>
 </tal:def>
