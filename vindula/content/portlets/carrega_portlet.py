@@ -22,16 +22,30 @@ class IVindulaCarregaPortlet(IPortletDataProvider):
     same.
     """
 
+    field_portlet = schema.TextLine(title=_(u'label_field_portlet', default=u'Nome do campo'),
+                             description=_(u'description_campo', default=u'Defina o nome do campo do conteúdo que será carregado neste portlet.'),
+                             default=u'coluna',
+                             required=True)
+    
+    value_portlet = schema.TextLine(title=_(u'label_value_portlet', default=u'Valor do campo'),
+                             description=_(u'description_value', default=u'Defina o valor que será colocado no campo do conteúdo para carregar o portlet.'),
+                             required=True)
+
 
 class Assignment(base.Assignment):
     """Portlet assignment.
     This is what is actually managed through the portlets UI and associated
     with columns.
     """
-
     implements(IVindulaCarregaPortlet)
-    
     title = _(u'Vindula Carrega Portlet')
+    
+    def __init__(self, field_portlet=u'coluna',
+                       value_portlet=u''):
+        
+        self.field_portlet = field_portlet
+        self.value_portlet = value_portlet
+    
     
 class Renderer(base.Renderer):
     """Portlet renderer.
@@ -41,7 +55,14 @@ class Renderer(base.Renderer):
     of this class. Other methods can be added and referenced in the template.
     """
     render = ViewPageTemplateFile('carrega_portlet.pt')            
-
+    
+    @property
+    def available(self):
+        if self.getPortlets():
+            return True
+        else:
+            return False
+    
     def getPortlets(self):
         context = self.context
         portal  = context.portal_url.getPortalObject()
@@ -56,14 +77,19 @@ class Renderer(base.Renderer):
         recurviso = True
         
         for portlet in portlets:
-            if portlet in ctx.objectValues():  
-                L.append(portlet)
-                if portlet.bloquea_portlet:
-                    recurviso = False
-                    
-            else:
-                if portlet.getActiv_recurcividade() and recurviso:
-                    L.append(portlet)
+            field = self.data.field_portlet
+            value = self.data.value_portlet
+            
+            if hasattr(portlet,field):
+               if portlet.__getattribute__(field)() == value:
+                    if portlet in ctx.objectValues():  
+                        L.append(portlet)
+                        if portlet.bloquea_portlet:
+                            recurviso = False
+                            
+                    else:
+                        if portlet.getActiv_recurcividade() and recurviso:
+                            L.append(portlet)
         
        
         return L
@@ -113,7 +139,7 @@ class Renderer(base.Renderer):
         return mtool.checkPermission("Modify portal content", obj)        
         
         
-class AddForm(base.NullAddForm):
+class AddForm(base.AddForm):
     """Portlet add form.
 
     This is registered in configure.zcml. The form_fields variable tells
@@ -121,15 +147,15 @@ class AddForm(base.NullAddForm):
     constructs the assignment that is being added.
     """
     
-    #form_fields = form.Fields(IVindulaCarregaPortlet)
+    form_fields = form.Fields(IVindulaCarregaPortlet)
     
-    def create(self):
-       return Assignment()
+    def create(self, data):
+       return Assignment(**data)
    
-#class EditForm(base.EditForm):
-#    """Portlet edit form.
-#
-#    This is registered with configure.zcml. The form_fields variable tells
-#    zope.formlib which fields to display.
-#    """
-#    form_fields = form.Fields(IVindulaCarregaPortlet)
+class EditForm(base.EditForm):
+    """Portlet edit form.
+
+    This is registered with configure.zcml. The form_fields variable tells
+    zope.formlib which fields to display.
+    """
+    form_fields = form.Fields(IVindulaCarregaPortlet)

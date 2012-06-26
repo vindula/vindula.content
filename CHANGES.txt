@@ -46,3 +46,7 @@ Changelog
 1.1.8 - 2012-06-25
 ------------------------
 - Adicionado link para edição dos portlet atraves do fancebox
+
+1.1.9 - 2012-06-26
+----------------------
+- Adicionado campo para configuração de qual coluna o vindulaportlet sera carregado   

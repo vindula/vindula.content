@@ -4,15 +4,11 @@
 		<div class="portletWrapper" >
 			<dl class="portlet portletStaticText">
 				
-				<dt class="portletHeader-dainamic">
-			        <div class="topPortlet"></div>
-					<div class="meioPortlet">
-						<span class="portletTopLeft"></span>
-				        <span tal:content="obj/Title|nothing">Title Portlet</span>
-				        <span class="portletTopRight"></span>	
-					</div>
-					<div class="bottonPortlet"></div>
-			    </dt>
+				<dt class="portletHeader">
+					<span class="portletTopLeft"></span>
+			        <span tal:content="obj/Title|nothing" class="tile">Title Portlet</span>
+			        <span class="portletTopRight"></span>	
+    		    </dt>
 
 			    <dd class="portletItem odd">
 					<img width="80" border="0" style="float:left;margin:5px;" 

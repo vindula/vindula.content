@@ -77,11 +77,32 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         required=False,
     ),
     
+    TextField(
+        name='coluna',
+        widget=StringWidget(
+            label=_(u"Coluna do Portlet"),
+            description=_(u"Digite em qual coluna o portlet será carregado."),
+        ),
+        required=True,
+        default=u'direita'
+    ), 
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
-
 VindulaPortlet_schema['description'].widget.visible = invisivel
+# Dates
+L = ['effectiveDate','expirationDate','creation_date','modification_date']   
+# Categorization
+L += ['subject','relatedItems','location','language']
+# Ownership
+L += ['creators','contributors','rights']
+# Settings
+L += ['allowDiscussion','excludeFromNav','presentation','tableContents']
+
+for i in L:
+    VindulaPortlet_schema[i].widget.visible = invisivel 
+
+
 finalizeATCTSchema(VindulaPortlet_schema, folderish=False)
 
 class VindulaPortlet(ATDocumentBase):

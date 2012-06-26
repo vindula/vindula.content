@@ -16,14 +16,10 @@
 			<div id="view-portlet">
 				<div class="portletWrapper" >
 					<dl class="portlet portletStaticText">
-						<dt class="portletHeader-dainamic">
-					        <div class="topPortlet"></div>
-							<div class="meioPortlet">
-								<span class="portletTopLeft"></span>
-						        <span tal:content="context/Title|nothing">Title Portlet</span>
-						        <span class="portletTopRight"></span>	
-							</div>
-							<div class="bottonPortlet"></div>
+						<dt class="portletHeader">
+							<span class="portletTopLeft"></span>
+					        <span tal:content="context/Title|nothing" class="tile">Title Portlet</span>
+					        <span class="portletTopRight"></span>	
 					    </dt>
 					
 					    <dd class="portletItem odd">
@@ -35,10 +31,12 @@
 					    </dd>
 						<tal:cont tal:condition="context/getLinkRelac|nothing">
 							<dd class="portletFooter">
+							    <span class="portletBottomLeft"></span>
 						        <span class="saibamais">
 						           <a tal:content="context/title_link|string: Saíba Mais"
 								  	  tal:attributes="href python: context.getLinkRelac().absolute_url()"></a> 
 						        </span>
+						      <span class="portletBottomRight"></span>    
 						    </dd>
 						</tal:cont>
 						<tal:cont tal:condition="not: context/getLinkRelac|nothing">
