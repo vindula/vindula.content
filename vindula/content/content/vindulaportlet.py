@@ -97,11 +97,12 @@ L += ['subject','relatedItems','location','language']
 # Ownership
 L += ['creators','contributors','rights']
 # Settings
-L += ['allowDiscussion','excludeFromNav','presentation','tableContents']
+L += ['excludeFromNav','presentation','tableContents']
 
 for i in L:
     VindulaPortlet_schema[i].widget.visible = invisivel 
 
+VindulaPortlet_schema['allowDiscussion'].default = False
 
 finalizeATCTSchema(VindulaPortlet_schema, folderish=False)
 
