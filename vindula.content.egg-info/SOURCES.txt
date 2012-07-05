@@ -19,6 +19,7 @@ vindula/content/validators.py
 vindula/content/browser/__init__.py
 vindula/content/content/__init__.py
 vindula/content/content/interfaces.py
+vindula/content/content/internallink.py
 vindula/content/content/orgstructure.py
 vindula/content/content/unit.py
 vindula/content/content/vindulacontentmacro.py

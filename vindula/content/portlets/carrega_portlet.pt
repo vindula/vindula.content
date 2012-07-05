@@ -33,7 +33,7 @@
 			</dl>
 		</div>
 		<a  alt="Editar o Portlet" title="Editar o Portlet"
-            class="manage-portlet portlet-ajax" style="margin-right:7px;"
+            class="manage-portlet portlet-ajax"
             tal:condition="python: view.can_manage_portlets(obj)"
             tal:attributes="href string:${obj/absolute_url|nothig}/edit" > </a>
 		

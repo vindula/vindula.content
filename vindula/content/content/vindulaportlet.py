@@ -77,15 +77,18 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         required=False,
     ),
     
-    TextField(
+    StringField(
         name='coluna',
-        widget=StringWidget(
-            label=_(u"Coluna do Portlet"),
-            description=_(u"Digite em qual coluna o portlet será carregado."),
-        ),
-        required=True,
-        default=u'direita'
-    ), 
+        default=u'direita',
+        widget=SelectionWidget(label=_(u"Coluna do Portlet"),
+                               description=_(u"Selecione em qual coluna o portlet será carregado."),
+                               ),
+                required=True,
+                vocabulary='voc_coluna',
+                searchable=1
+    ),                                                          
+                                                          
+                                                           
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
@@ -114,6 +117,9 @@ class VindulaPortlet(ATDocumentBase):
     portal_type = 'VindulaPortlet'
     _at_rename_after_creation = True
     schema = VindulaPortlet_schema
+    
+    def voc_coluna(self):
+        return DisplayList(((u'direita', u'Coluna da Direita'), (u'esquerda', u'Coluna da Esquerda')))
 
 registerType(VindulaPortlet, PROJECTNAME) 
 

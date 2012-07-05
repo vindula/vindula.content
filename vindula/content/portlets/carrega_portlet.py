@@ -5,6 +5,7 @@
 from zope.interface import implements
 from zope.formlib import form 
 from zope import schema
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
@@ -30,6 +31,15 @@ class IVindulaCarregaPortlet(IPortletDataProvider):
     value_portlet = schema.TextLine(title=_(u'label_value_portlet', default=u'Valor do campo'),
                              description=_(u'description_value', default=u'Defina o valor que será colocado no campo do conteúdo para carregar o portlet.'),
                              required=True)
+    
+    
+    value_portlet = schema.Choice(title=_(u'label_value_portlet', default=u'Valor do campo'),
+                                  description=_(u'description_value', default=u'Defina o valor que será colocado no campo do conteúdo para carregar o portlet.'),
+                                  required=True,
+                                  vocabulary=SimpleVocabulary([SimpleTerm(u'direita', u'direita', _(u'option_category', default=u'Coluna da Direita')),
+                                                               SimpleTerm(u'esquerda', u'esquerda', _(u'option_category', default=u'Coluna da Esquerda'))])
+                                  )
+    
 
 
 class Assignment(base.Assignment):
@@ -81,7 +91,7 @@ class Renderer(base.Renderer):
             value = self.data.value_portlet
             
             if hasattr(portlet,field):
-               if portlet.__getattribute__(field)() == value:
+               if portlet.__getattribute__(field) == value:
                     if portlet in ctx.objectValues():  
                         L.append(portlet)
                         if portlet.bloquea_portlet:
