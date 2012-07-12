@@ -26,7 +26,7 @@
   
   <subscriber for=".content.interfaces.IOrgstructureModifiedEvent"
    			  handler=".content.orgstructure.CreatGroupInPloneSite" />
-
+   			  
   <!-- Register an extension profile to make the product installable
        in Plone -->
   <genericsetup:registerProfile

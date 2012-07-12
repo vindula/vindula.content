@@ -55,3 +55,11 @@ Changelog
 ----------------------
 - Adicionado um choice na campo de caluna do vindula portlet 
 
+1.1.11 - 2012-07-12
+------------------------
+- Criação de metodo para remover o grupo quando a EO for removida
+- Atribuição altomatica do gestor e dos funcionarios aos grupos de administração e visualização
+- Alteração do widget de adição de grupos e usuarios da EO  
+
+
+

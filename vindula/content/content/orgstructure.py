@@ -10,10 +10,11 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 
-
+from zope.app.container.interfaces import IObjectRemovedEvent
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
 from plone.app.folder.folder import ATFolder
+from Products.UserAndGroupSelectionWidget.at import widget
 from Products.SmartColorWidget.Widget import SmartColorWidget
 
 from zope.interface import implements
@@ -25,18 +26,18 @@ from vindula.content.config import *
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     
-    StringField(
-        name='categoria',
-        widget=SelectionWidget(
-            label=_(u"Categoria"),
-            description=_(u"Selecione a categoria desta estrutura.\
-                         Para gerenciar as categorias <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
-
-            format = 'select',
-        ),
-        vocabulary='voc_categoria',
-        required=False,
-    ),
+#    StringField(
+#        name='categoria',
+#        widget=SelectionWidget(
+#            label=_(u"Categoria"),
+#            description=_(u"Selecione a categoria desta estrutura.\
+#                         Para gerenciar as categorias <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
+#
+#            format = 'select',
+#        ),
+#        vocabulary='voc_categoria',
+#        required=False,
+#    ),
     
     ReferenceField('structures',
         multiValued=0,
@@ -51,26 +52,48 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         required=False
     ),
 
-    StringField(
-            name='employees',
-            widget=InAndOutWidget(
+    LinesField(
+            name="employees",
+            multiValued=1,
+            widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Funcionários desta Estrutura Organizacional"),
                 description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
+                usersOnly=True,
+                ),
+            required=True,
+            validators = ('isUserManageEmployees'),
             ),
-            required=0,
-            vocabulary='voc_employees',
-    ),
 
     StringField(
-        name='manager',
-        widget=SelectionWidget(
-            label=_(u"Gestor"),
-            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-            format = 'select',
-        ),
-        vocabulary='voc_employees',
-        required=False,
-    ),
+            name='manager',
+            widget = widget.UserAndGroupSelectionWidget(
+                label=_(u"Gestor"),
+                description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+                usersOnly=True
+                ),
+            required=True,
+            ),
+
+#    StringField(
+#            name='employees',
+#            widget=InAndOutWidget(
+#                label=_(u"Funcionários desta Estrutura Organizacional"),
+#                description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
+#            ),
+#            required=0,
+#            vocabulary='voc_employees',
+#    ),
+#
+#    StringField(
+#        name='manager',
+#        widget=SelectionWidget(
+#            label=_(u"Gestor"),
+#            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+#            format = 'select',
+#        ),
+#        vocabulary='voc_employees',
+#        required=False,
+#    ),
 
     TextField(
             name='text',
@@ -97,41 +120,79 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
 
 #---------------------abas de permições no Objeto---------------------------------
      
-    StringField(
-            name='Groups_view',
-            widget=InAndOutWidget(
+    
+     LinesField(
+            name="Groups_view",
+            multiValued=1,
+            widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Grupo de usuários para visualização"),
                 description=_(u"Selecione os grupos que terão permissão de visualizar esta unidade organizacional."),
-            ),
+                groupsOnly=True,
+                ),
             required=0,
-            vocabulary='voc_listGroups',
             schemata = 'Permissões',
-            #validators = ('isUserUpdate',),
-    ),
+            ),
     
-    StringField(
-            name='Groups_edit',
-            widget=InAndOutWidget(
+     LinesField(
+            name="Groups_edit",
+            multiValued=1,
+            widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Grupo de usuários de gerencia o conteúdo"),
                 description=_(u"Selecione os grupos que terão permissão de gerenciar o conteúdo desta unidade organizacional."),
-            ),
+                groupsOnly=True,
+                ),
             required=0,
-            vocabulary='voc_listGroups',
             schemata = 'Permissões',
-            #validators = ('isUserUpdate',),
-    ),
-
-    StringField(
-            name='Groups_admin',
-            widget=InAndOutWidget(
+            ),
+    
+     LinesField(
+            name="Groups_admin",
+            multiValued=1,
+            widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Grupo de usuários de administração"),
                 description=_(u"Selecione os grupos que terão permissão de gerenciar totalmente esta unidade organizacional."),
-            ),
+                groupsOnly=True,
+                ),
             required=0,
-            vocabulary='voc_listGroups',
             schemata = 'Permissões',
             validators = ('isUserUpdate',),
-    ),
+            ),
+    
+#    StringField(
+#            name='Groups_view',
+#            widget=InAndOutWidget(
+#                label=_(u"Grupo de usuários para visualização"),
+#                description=_(u"Selecione os grupos que terão permissão de visualizar esta unidade organizacional."),
+#            ),
+#            required=0,
+#            vocabulary='voc_listGroups',
+#            schemata = 'Permissões',
+#            #validators = ('isUserUpdate',),
+#    ),    
+#    
+#    StringField(
+#            name='Groups_edit',
+#            widget=InAndOutWidget(
+#                label=_(u"Grupo de usuários de gerencia o conteúdo"),
+#                description=_(u"Selecione os grupos que terão permissão de gerenciar o conteúdo desta unidade organizacional."),
+#            ),
+#            required=0,
+#            vocabulary='voc_listGroups',
+#            schemata = 'Permissões',
+#            #validators = ('isUserUpdate',),
+#    ),
+#
+#    StringField(
+#            name='Groups_admin',
+#            widget=InAndOutWidget(
+#                label=_(u"Grupo de usuários de administração"),
+#                description=_(u"Selecione os grupos que terão permissão de gerenciar totalmente esta unidade organizacional."),
+#            ),
+#            required=0,
+#            vocabulary='voc_listGroups',
+#            schemata = 'Permissões',
+#            validators = ('isUserUpdate',),
+#    ),
 
 #---------------------abas de permições no Objeto---------------------------------
 
@@ -404,35 +465,35 @@ class OrganizationalStructure(ATFolder):
         notify(OrgstructureModifiedEvent(self))
     
     
-    def voc_categoria(self):
-        terms = []
-        try:obj = getSite()['control-panel-objects']['vindula_categories']
-        except:obj = None
-        
-        if obj:
-            try:
-                field = obj.__getattribute__( 'orgstructure')
-            except:
-                field = None
-            if field is not None:
-                terms = field.splitlines()
-                      
-        return terms    
-    
-    
-    def voc_employees(self):
-        users = ModelsFuncDetails().get_allFuncDetails()
-        terms = []
-        result = ''
-        
-        if users is not None:
-            for user in users:
-                member_id = user.username
-                member_name = user.name or member_id
-                terms.append((member_id, unicode(member_name)))
-        
-        result = DisplayList(tuple(terms))
-        return result
+#    def voc_categoria(self):
+#        terms = []
+#        try:obj = getSite()['control-panel-objects']['vindula_categories']
+#        except:obj = None
+#        
+#        if obj:
+#            try:
+#                field = obj.__getattribute__( 'orgstructure')
+#            except:
+#                field = None
+#            if field is not None:
+#                terms = field.splitlines()
+#                      
+#        return terms    
+#    
+#    
+#    def voc_employees(self):
+#        users = ModelsFuncDetails().get_allFuncDetails()
+#        terms = []
+#        result = ''
+#        
+#        if users is not None:
+#            for user in users:
+#                member_id = user.username
+#                member_name = user.name or member_id
+#                terms.append((member_id, unicode(member_name)))
+#        
+#        result = DisplayList(tuple(terms))
+#        return result
     
     def voc_listGroups(self):
         terms = []
@@ -461,8 +522,8 @@ def CreatGroupInPloneSite(event):
     ctxPai = ctx.aq_parent
     portalGroup = getSite().portal_groups 
     tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
-             {'tipo':'edit' ,'name':'- Edição',      'permissao':['Reviewer','Reader','Contributor']           },
-             {'tipo':'admin','name':'- Administração', 'permissao':['Editor','Reviewer','Reader','Contributor']}
+             {'tipo':'edit' ,'name':' - Edição',      'permissao':['Reviewer','Reader','Contributor']           },
+             {'tipo':'admin','name':' - Administração', 'permissao':['Editor','Reviewer','Reader','Contributor']}
             ]
     
     for tipo in tipos:
@@ -487,7 +548,30 @@ def CreatGroupInPloneSite(event):
         if ctxPai.portal_type == 'OrganizationalStructure':
             group_pai = ctxPai.UID()+"-view"
             portalGroup.getGroupById(group_pai).addMember(id_grupo)
+
+    
+    id_grupo_employees = ctx.UID() +'-view'
+    for user in ctx.getEmployees():
+        portalGroup.getGroupById(id_grupo_employees).addMember(user)
+
         
+    id_grupo_Manage = ctx.UID() +'-admin'
+    portalGroup.getGroupById(id_grupo_Manage).addMember(ctx.getManager())
+        
+
+
+@grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)        
+def RemoveGroupInPloneSite(context, event):
+    portalGroup = getSite().portal_groups 
+    tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
+             {'tipo':'edit' ,'name':' - Edição',      'permissao':['Reviewer','Reader','Contributor']           },
+             {'tipo':'admin','name':' - Administração', 'permissao':['Editor','Reviewer','Reader','Contributor']}
+            ]
+    
+    for tipo in tipos:
+        id_grupo = context.UID() +'-'+tipo['tipo']
+        try: portalGroup.removeGroup(id_grupo)
+        except: pass
     
     
 class OrganizationalStructureView(grok.View):

@@ -54,6 +54,13 @@ class Renderer(base.Renderer):
     
     def get_title(self):
         return self.data.title_portlet
+    
+    def check_content(self):
+        ctx = self.context.restrictedTraverse('OrgStruct_view')(False)
+        if ctx.portal_type == 'OrganizationalStructure':
+            return True
+        else:
+            return False
 
     def get_OrgStructureRelationship(self, obj):
         pc = getToolByName(self.context, 'portal_catalog')

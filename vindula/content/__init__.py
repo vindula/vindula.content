@@ -25,8 +25,10 @@ from config import *
 
 # first fix the validator
 from Products.validation import validation
-from validators import SameUserValidator
+from validators import SameUserValidator, UpdateUserManageEmployeesValidator
+
 validation.register(SameUserValidator('isUserUpdate'))
+validation.register(UpdateUserManageEmployeesValidator('isUserManageEmployees'))
 
 def initialize(context):
     import content
