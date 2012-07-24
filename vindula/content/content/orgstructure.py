@@ -289,6 +289,20 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         schemata = 'Layout'
     ),
 
+
+    StringField(
+        name='itens_menu',
+        widget=InAndOutWidget(
+            label=_(u"Itens do Menu"),
+            description=_(u"Selecione os tipos de itens que serão apresentados no menu e no sub-menu."),
+            format = 'select',
+        ),
+        vocabulary='voc_itens_menu',
+        required=False,
+        schemata = 'Layout'
+    ),
+
+
     #-----------Menu do portal------------------#
     
     StringField(
@@ -506,6 +520,10 @@ class OrganizationalStructure(ATFolder):
                 terms.append((member_id, unicode(member_name)))
         
         return terms
+
+    def voc_itens_menu(self):
+        types = self.portal_types.listContentTypes()
+        return types
 
 registerType(OrganizationalStructure, PROJECTNAME) 
 
