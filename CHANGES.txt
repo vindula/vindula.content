@@ -69,5 +69,5 @@ Changelog
 1.1.12 - 2012-07-30
 ------------------------
 - Criação da nova listagens de noticias 
-
+- Adição do metodo de manter pesquisa em cookies
 

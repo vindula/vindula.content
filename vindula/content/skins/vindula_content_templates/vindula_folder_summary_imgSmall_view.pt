@@ -2,6 +2,8 @@
         
         <metal:js fill-slot="javascript_head_slot">
             <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/jquery.cookies.min.js"></script>
+            <script type="text/javascript" src="" 
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/ajax_list_news.js"></script>
         </metal:js>
         

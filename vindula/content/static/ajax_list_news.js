@@ -1,33 +1,73 @@
 $j = jQuery.noConflict();
 
-function AjaxNewsItens (b_size,b_start) {
+function AjaxNewsItens (b_size,b_start,limpa_cookie) {
        
     var url = $j('#portal_url').val() + "/vindula_news_result_view";
     var parametro = {};
     
-    parametro['size_image_height'] = $j("#size_image_height").val();
-    parametro['size_image_width'] = $j("#size_image_width").val();
-    parametro['com_image'] = $j("#com_image").val();
-         
-    parametro['sorted'] = $j("#sortfield").val();
-    parametro['keyword'] = $j("#keyword").val();
-    
-    if ($j('#reversed').attr('checked'))
-        parametro['invert:boolean'] = 'True';
+    if ((!$j.cookie("find-news",{ path: window.location.pathname })) || (limpa_cookie)){
 
-    if (b_size==null)
-        var b_size = $j('#b_size').val();
+        var cookie_parametro = ''
+        
+        parametro['size_image_height'] = $j("#size_image_height").val();
+        cookie_parametro += "size_image_height="+parametro['size_image_height']+"|";
+        
+        parametro['size_image_width'] = $j("#size_image_width").val();
+        cookie_parametro += 'size_image_width='+parametro['size_image_width']+'|';
+        
+        parametro['com_image'] = $j("#com_image").val();
+        cookie_parametro += 'com_image='+parametro['com_image']+'|';
+             
+        parametro['sorted'] = $j("#sortfield").val();
+        cookie_parametro += 'sorted='+parametro['sorted']+'|';
+        
+        parametro['keyword'] = $j("#keyword").val();
+        cookie_parametro += 'keyword='+parametro['keyword']+'|';    
+        
+        if ($j('#reversed').attr('checked')){
+            parametro['invert:boolean'] = 'True';
+            cookie_parametro += 'invert:boolean='+parametro['invert:boolean']+'|';
+        }
+        
+        if (b_size==null)
+            var b_size = $j('#b_size').val();
+        
+        if (b_start==null)
+            var b_start = $j('#b_start').val();
+        
+        parametro['b_size'] = b_size;
+        cookie_parametro += 'b_size='+parametro['b_size']+'|';
+        
+        parametro['b_start'] = b_start;
+        cookie_parametro += 'b_start='+parametro['b_start']+'|';
+        
+        parametro['submitted:boolean'] = true
+        cookie_parametro += 'submitted:boolean='+parametro['submitted:boolean']+'|';
+        
+        
+        $j.cookie("find-news", cookie_parametro, { path: window.location.pathname });
     
-    if (b_start==null)
-        var b_start = $j('#b_start').val();
-    
-    parametro['b_size'] = b_size;
-    parametro['b_start'] = b_start;
-    parametro['submitted:boolean'] = true
+    }else{
+        var cookie_parametro = $j.cookie("find-news",{expires: 7, path: window.location.pathname });
+        
+        var list_parametros = cookie_parametro.split('|');
+        for (i=0; i<list_parametros.length; i++){
+            var dados = list_parametros[i].split('='); 
+            parametro[dados[0]] = dados[1];
+        }
+        $j("#sortfield").val(parametro['sorted']);
+        $j("#keyword").val(parametro['keyword'])
+        
+        if (parametro['invert:boolean']){
+            $j('#reversed').attr('checked','checked')
+        }
+        
+    };
     
     $j('#spinner').removeClass('display-none');
     $j('#content-itens').addClass('display-none');
     
+
     $j.get(url,parametro, function(data){
         $j('#content-itens').html(data);
         $j('#content-itens').removeClass('display-none');
@@ -35,8 +75,10 @@ function AjaxNewsItens (b_size,b_start) {
     });
 }
 $j(document).ready(function(){
+    AjaxNewsItens();
+    
     $j('input#searchItems').click(function(){
-        AjaxNewsItens();
+        AjaxNewsItens(null,null,true);
     });
     
     $j('a#itenspage').live('click',function(){
