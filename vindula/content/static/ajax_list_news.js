@@ -83,21 +83,21 @@ $j(document).ready(function(){
     
     $j('a#itenspage').live('click',function(){
        var quant = parseInt($j(this).text());
-       AjaxNewsItens(quant,0);
+       AjaxNewsItens(quant,0,true);
     });    
     
     $j('select#page_selector').live('change', function(){
         var page = parseInt($j(this).val().split('=')[1]);
-        AjaxNewsItens(null,page);
+        AjaxNewsItens(null,page,true);
     });
     
     $j('div#cycle-next').live('click',function(){
         var page = parseInt($j(this).find('input').val());
-        AjaxNewsItens(null,page);
+        AjaxNewsItens(null,page,true);
     });
     
     $j('div#cycle-prev').live('click',function(){
         var page = parseInt($j(this).find('input').val());
-        AjaxNewsItens(null,page);
+        AjaxNewsItens(null,page,true);
     });
 });
