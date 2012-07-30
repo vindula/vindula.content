@@ -1,33 +1,64 @@
-
+#vindula_folder_summary_noImg_view {
+	font-size: 11.5px;
+	color: #494949;
+}
 
 #busca{
     float:left;
     width:100%; 
-    background:#E3E7EA;
+    background:#F2F1F0;
     margin-top:20px;
-      
-}
-#paginacao p{
-    margin: 1em 0;
-
-
 }
 
-.field-news{
-    float: left;
-    margin: 1em;
-}
+#paginacao p{ margin: 1em 0; }
 
-.field-news-right{
-    float: right;
-    margin-right: 10px;
-    margin-top: 7px;
+#pag-nav { *width: 120px; }
 
-}
+.field-news{ margin: 12px 7px; }
+
+.field-news-right{ margin: 3px 5px 0 0; }
 
 .image_inf img{
     border: 1px solid #FFF;
-    margin: 10px;   
+    margin: 10px;  
+	box-shadow: 0 0 5px #A8A8A8;
+	-webkit-box-shadow:  0 0 5px 1px #A8A8A8;
+}
 
+.mainSelect {
+	overflow:hidden;
+	width: 4em;
+	border: 1px solid #CCCCCC;
+	background: url("/++theme++vindula.themedefault/images/buttons/seta_select.jpg") no-repeat right #E6E7E9;
+	float:left;
+	margin-right: 4px;
+}
 
+.mainSelect > select {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    font-size: 13px;
+    height: 17px;
+    padding-top: 1px;
+    width: 150%;
+	*width: 100%;
+	*height: 21px;
+}
+
+.mainSelect option[selected] { font-weight: bold; }
+
+.mainSelect option { height: 20px; }
+
+.semi-circle { width: 18px; width: 21px\9; }
+.semi-circle img { width: 5px; margin-top: 6px; }
+
+.semi-circle-lf { 
+	border-radius: 50% 0 0 50%;
+	margin-right: 4px;
+	background-image: url("/++theme++vindula.themedefault/images/buttons/ie_semiborder_lf.png")\9;
+}
+.semi-circle-rg { 
+	border-radius: 0 50% 50% 0;
+	margin-left: 4px;
+	background-image: url("/++theme++vindula.themedefault/images/buttons/ie_semiborder_rg.png")\9;
 }

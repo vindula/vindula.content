@@ -21,11 +21,11 @@
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
 
-    <span class="previous"
+    <span class="previous float-left"
       tal:define="p batch/previous | nothing"
       
       tal:condition="p">
-        <div id="cycle-prev" class="circle float-left c-pointer">
+        <div id="cycle-prev" class="circle semi-circle-lf semi-circle float-left c-pointer">
             <input type="hidden" tal:attributes="value p/first" />
             <img class="left" src="/++theme++vindula.themedefault/images/buttons/seta_left.png" title="Anterior"/>
         </div>
@@ -34,7 +34,7 @@
     <span class="next"
       tal:define="n batch/next | nothing"
       tal:condition="n">
-        <div id="cycle-next" class="circle float-left c-pointer">
+        <div id="cycle-next" class="circle semi-circle-rg semi-circle float-left c-pointer">
             <input type="hidden" tal:attributes="value n/first" />
             
             <img class="right" src="/++theme++vindula.themedefault/images/buttons/seta_right.png" title="Próximo"/>
@@ -44,24 +44,26 @@
     <tal:comment tal:condition="nothing">
       Pagelist with quantum leap links to previous pages for quick navigation
     </tal:comment>
-    <select name="page_selector" id="page_selector"  style="width: 60px;">
-        <!--tal:rep repeat="linklist python:batch.navurls(batchlinkparams, batch.navlist.append(batch.numpages))"-->
-        <tal:rep repeat="linklist python:batch.navurls(batchlinkparams, batch.navlist)">
-             <option tal:define="page python:linklist[0];
-                                 query python:linklist[1];
-                                 page_number batch/pagenumber;"
-                     
-                     tal:content="page"
-                     tal:attributes="value query;
-                                    selected python: page==page_number and 'selected' or ''">                      
-                 
-             </option>
-            
-            
-        </tal:rep>
-        
-        
-    </select>
+	<div class="mainSelect">
+	    <select name="page_selector" id="page_selector">
+	        <!--tal:rep repeat="linklist python:batch.navurls(batchlinkparams, batch.navlist.append(batch.numpages))"-->
+	        <tal:rep repeat="linklist python:batch.navurls({}, batch.navlist)">
+	             <option tal:define="page python:linklist[0];
+	                                 query python:linklist[1];
+	                                 page_number batch/pagenumber;"
+	                     
+	                     tal:content="page"
+	                     tal:attributes="value query;
+	                                    selected python: page==page_number and 'selected' or ''">                      
+	                 
+	             </option>
+	            
+	            
+	        </tal:rep>
+	        
+	        
+	    </select>
+	</div>
 
     <tal:comment tal:replace="nothing">
       Link to last

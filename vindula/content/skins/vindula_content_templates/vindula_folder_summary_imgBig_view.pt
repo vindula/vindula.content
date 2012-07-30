@@ -14,12 +14,11 @@
         <body>
             <metal:content-core fill-slot="main">
             
-            <tal:def define="com_image python:True; 
+            <tal:def define="com_image python: True; 
                              size_image_width string:158px;
                              size_image_height string:118px;">
 
                 <meta:macro metal:define-macro="principal">
-                
                         <input type="hidden" id="com_image" tal:attributes="value com_image"/>    
                         <input type="hidden" id="size_image_width" tal:attributes="value size_image_width"/>
                         <input type="hidden" id="size_image_height" tal:attributes="value size_image_height"/>
@@ -38,8 +37,8 @@
                                  <div tal:attributes="id template/getId">
                                     <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
                                     
-                                    <div class="field-news">
-                                        <label for="field">Ordenar por </label>
+                                    <div class="field-news float-left">
+                                        <label for="field">Ordenar por: </label>
                                         <select name="field" id="sortfield"
                                                 tal:define="fields listBrowserView/listSortFields">
                     
@@ -59,21 +58,20 @@
                                                  </tal:block>
                                         </select>
                                     </div>
-                                    <div class="field-news">
+                                    <div class="field-news float-left">
                                         <label for="field">Palavra chave: </label>
                                         <input name="field" id="keyword" value="" />
                                         
                                     </div>
-                                    <div class="field-news">
-                                        <label for="reversed">Inverter</label>
+                                    <div class="field-news float-left">
                                         <input class="noborder"
                                                type="checkbox"
                                                value="on"
                                                name="reversed"
                                                id="reversed"
-                                               />
+                                               /> Inverter
                                     </div>
-                                    <div class="field-news-right">
+                                    <div class="field-news-right float-right">
                                             <input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
                                     </div>
                                 </div>
@@ -94,33 +92,31 @@
                     
                                         <input type="hidden" id="b_size" tal:attributes="value b_size" />
                                         <input type="hidden" id="b_start" tal:attributes="value b_start" />
-                                    
-                                        <div id="paginacao">
-                                            <div class="row">
-                                                <div class="cell width-8 position-0">
-                                                    <p>
-                                                        <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
-                                                        |
-                                                        <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
-                                                            <a class="c-pointer" id="itenspage"
-                                                               tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
-                                                            <a class="c-pointer" id="itenspage"
-                                                               tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
-                                                            <a class="c-pointer" id="itenspage"
-                                                               tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
-                                                            <a class="c-pointer" id="itenspage"
-                                                               tal:attributes="style python:b_size == '40' and css or '' ">40</a>,
-                                                        </span>
-                                                    </p>
-                                                                                        
-                                                </div>
-                                                <div class="cell width-8 position-8">
-                                                    <div class="float-right">
-                                                        <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    	<meta:macro metal:define-macro="navegacao-macro">
+	                                        <div id="paginacao">
+	                                            <div id="size-nav" class="float-left">
+	                                                <p>
+	                                                    <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
+	                                                    |
+	                                                    <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+	                                                        <a class="c-pointer" id="itenspage"
+	                                                           tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
+	                                                        <a class="c-pointer" id="itenspage"
+	                                                           tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
+	                                                        <a class="c-pointer" id="itenspage"
+	                                                           tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
+	                                                        <a class="c-pointer" id="itenspage"
+	                                                           tal:attributes="style python:b_size == '40' and css or '' ">40</a>
+	                                                    </span>
+	                                                </p>
+	                                                                                    
+	                                            </div>
+	                                            <div id="pag-nav" class="float-right">
+	                                                <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
+	                                            </div>
+	                                        </div>
+											<div class="visualClear"></div>
+										</meta:macro>
                                         <div class="visualClear"></div>
                                         <div id="news">
                                                   <tal:rep repeat="item batch">
@@ -133,7 +129,7 @@
                                                                  <div class="image_inf float-left" tal:define="getImage item_object/getImage|nothing;
                                                                                                                getImageRelac item_object/getImageRelac|nothing;
                                                                                                                image python:getImage or getImageRelac or None"
-                                                                                                    tal:condition="python: image and com_image">
+                                                                                                    tal:condition="python: image and str(com_image) == 'True'">
                                                                     
                                                                     <img tal:condition="getImage"
                                                                         tal:attributes="src string:${getImage/absolute_url|nothing}_thumb;
@@ -183,7 +179,10 @@
                                                           <div class="visualClear"></div>
                                                     </div>                      
                                                   </tal:rep>
-                                         </div>   
+                                         </div>
+										 
+										 <metal:block metal:use-macro="context/vindula_folder_summary_imgBig_view/macros/navegacao-macro" />
+										    
                                     </tal:def>
                                 </meta:macro>
                             </div>
