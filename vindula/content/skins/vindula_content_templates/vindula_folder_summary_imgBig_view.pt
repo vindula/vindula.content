@@ -34,46 +34,44 @@
                                          listBrowserView context/vindula_list_news_view">
                                           
                             <div id="busca">
-                                 <div tal:attributes="id template/getId">
-                                    <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
+                                <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
+                                
+                                <div class="field-news float-left">
+                                    <label for="field">Ordenar por: </label>
+                                    <select name="field" id="sortfield"
+                                            tal:define="fields listBrowserView/listSortFields">
+                
+                                            <!--option value="" >Sem Ordenação</option-->
+                
+                                             <tal:block tal:repeat="field fields"
+                                                        i18n:domain="plone">
+                                                 <option value=""
+                                                         tal:define="explanation python:field[2]"
+                                                         tal:attributes="value python:field[0];
+                                                                         title explanation;
+                                                                         selected python: field[0]=='created' and 'selected' or '';"
+                                                                         
+                                                         tal:content="python:field[1]"
+                                                         i18n:attributes="title"
+                                                         i18n:translate="">Field</option>
+                                             </tal:block>
+                                    </select>
+                                </div>
+                                <div class="field-news float-left">
+                                    <label for="field">Palavra chave: </label>
+                                    <input name="field" id="keyword" value="" />
                                     
-                                    <div class="field-news float-left">
-                                        <label for="field">Ordenar por: </label>
-                                        <select name="field" id="sortfield"
-                                                tal:define="fields listBrowserView/listSortFields">
-                    
-                                                <!--option value="" >Sem Ordenação</option-->
-                    
-                                                 <tal:block tal:repeat="field fields"
-                                                            i18n:domain="plone">
-                                                     <option value=""
-                                                             tal:define="explanation python:field[2]"
-                                                             tal:attributes="value python:field[0];
-                                                                             title explanation;
-                                                                             selected python: field[0]=='created' and 'selected' or '';"
-                                                                             
-                                                             tal:content="python:field[1]"
-                                                             i18n:attributes="title"
-                                                             i18n:translate="">Field</option>
-                                                 </tal:block>
-                                        </select>
-                                    </div>
-                                    <div class="field-news float-left">
-                                        <label for="field">Palavra chave: </label>
-                                        <input name="field" id="keyword" value="" />
-                                        
-                                    </div>
-                                    <div class="field-news float-left">
-                                        <input class="noborder"
-                                               type="checkbox"
-                                               value="on"
-                                               name="reversed"
-                                               id="reversed"
-                                               /> Inverter
-                                    </div>
-                                    <div class="field-news-right float-right">
-                                            <input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
-                                    </div>
+                                </div>
+                                <div class="field-news float-left">
+                                    <input class="noborder"
+                                           type="checkbox"
+                                           value="on"
+                                           name="reversed"
+                                           id="reversed"
+                                           /> Inverter
+                                </div>
+                                <div class="field-news-right float-right">
+                                        <input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
                                 </div>
                             </div>
                             <div class="visualClear"></div>

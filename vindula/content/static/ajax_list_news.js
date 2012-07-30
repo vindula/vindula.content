@@ -74,9 +74,19 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie) {
         $j('#spinner').addClass('display-none');
     });
 }
+
+function clearCookies () {
+	$j.cookie("find-news", '', { path: window.location.pathname });
+}
+
 $j(document).ready(function(){
-    AjaxNewsItens();
-    
+	
+	$j('#vindula_folder_summary_imgBig_view, #vindula_folder_summary_imgSmall_view, #vindula_folder_summary_noImg_view').click(function(){
+	  clearCookies();
+	});
+
+	AjaxNewsItens();
+	
     $j('input#searchItems').click(function(){
         AjaxNewsItens(null,null,true);
     });
