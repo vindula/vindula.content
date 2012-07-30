@@ -61,6 +61,10 @@ Changelog
 - Atribuição altomatica do gestor e dos funcionarios aos grupos de administração e visualização
 - Alteração do widget de adição de grupos e usuarios da EO  
 
+1.1.12 - 2012-07-16
+------------------------
+- Integração da imagem do usuário com o gravatar
+
 
 1.1.12 - 2012-07-30
 ------------------------
