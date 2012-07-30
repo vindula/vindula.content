@@ -1,0 +1,193 @@
+<html metal:use-macro="context/main_template/macros/master">
+            
+            <metal:js fill-slot="javascript_head_slot">
+                <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/ajax_list_news.js"></script>
+            </metal:js>
+            
+            <metal:styleslot fill-slot="style_slot">
+                <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/list_news.css">
+            </metal:styleslot>
+            
+        <body>
+            <metal:content-core fill-slot="main">
+            
+            <tal:def define="com_image python:True; 
+                             size_image_width string:158px;
+                             size_image_height string:118px;">
+
+                <meta:macro metal:define-macro="principal">
+                
+                        <input type="hidden" id="com_image" tal:attributes="value com_image"/>    
+                        <input type="hidden" id="size_image_width" tal:attributes="value size_image_width"/>
+                        <input type="hidden" id="size_image_height" tal:attributes="value size_image_height"/>
+                        
+                        <div class="cont_superior">
+                            <div class="titulo marginDif1">
+                                <h2 tal:content="context/Title">Title Highlighted News</h2>
+                            </div>
+                           <div class="visualClear"></div>
+                        </div>
+                    
+                        <tal:def define="itens python:context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',)});
+                                         listBrowserView context/vindula_list_news_view">
+                                          
+                            <div id="busca">
+                                 <div tal:attributes="id template/getId">
+                                    <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
+                                    
+                                    <div class="field-news">
+                                        <label for="field">Ordenar por </label>
+                                        <select name="field" id="sortfield"
+                                                tal:define="fields listBrowserView/listSortFields">
+                    
+                                                <!--option value="" >Sem Ordenação</option-->
+                    
+                                                 <tal:block tal:repeat="field fields"
+                                                            i18n:domain="plone">
+                                                     <option value=""
+                                                             tal:define="explanation python:field[2]"
+                                                             tal:attributes="value python:field[0];
+                                                                             title explanation;
+                                                                             selected python: field[0]=='created' and 'selected' or '';"
+                                                                             
+                                                             tal:content="python:field[1]"
+                                                             i18n:attributes="title"
+                                                             i18n:translate="">Field</option>
+                                                 </tal:block>
+                                        </select>
+                                    </div>
+                                    <div class="field-news">
+                                        <label for="field">Palavra chave: </label>
+                                        <input name="field" id="keyword" value="" />
+                                        
+                                    </div>
+                                    <div class="field-news">
+                                        <label for="reversed">Inverter</label>
+                                        <input class="noborder"
+                                               type="checkbox"
+                                               value="on"
+                                               name="reversed"
+                                               id="reversed"
+                                               />
+                                    </div>
+                                    <div class="field-news-right">
+                                            <input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="visualClear"></div>
+                            <!-- Spinner -->
+                            <div id="spinner" class="display-none" style="text-align:center;">
+                                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/ajaxLoader.gif" />
+                            </div>  
+                            
+                            <div id="content-itens">
+                                <meta:macro metal:define-macro="page-view">
+                                    <tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                                                         b_size request/b_size|string:10;
+                                                         b_start python:0;
+                                                         b_start request/b_start | b_start;
+                                                         batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));">
+                    
+                                        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+                                        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+                                    
+                                        <div id="paginacao">
+                                            <div class="row">
+                                                <div class="cell width-8 position-0">
+                                                    <p>
+                                                        <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
+                                                        |
+                                                        <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+                                                            <a class="c-pointer" id="itenspage"
+                                                               tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
+                                                            <a class="c-pointer" id="itenspage"
+                                                               tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
+                                                            <a class="c-pointer" id="itenspage"
+                                                               tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
+                                                            <a class="c-pointer" id="itenspage"
+                                                               tal:attributes="style python:b_size == '40' and css or '' ">40</a>,
+                                                        </span>
+                                                    </p>
+                                                                                        
+                                                </div>
+                                                <div class="cell width-8 position-8">
+                                                    <div class="float-right">
+                                                        <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="visualClear"></div>
+                                        <div id="news">
+                                                  <tal:rep repeat="item batch">
+                                                    <div class="contBoxDestaque" 
+                                                         tal:define="item_object item/getObject">
+                                                            
+                                                            <div tal:define="is_end repeat/item/end;"
+                                                                 tal:attributes="class python: is_end and 'info' or 'info borderDif'">
+                                                                 
+                                                                 <div class="image_inf float-left" tal:define="getImage item_object/getImage|nothing;
+                                                                                                               getImageRelac item_object/getImageRelac|nothing;
+                                                                                                               image python:getImage or getImageRelac or None"
+                                                                                                    tal:condition="python: image and com_image">
+                                                                    
+                                                                    <img tal:condition="getImage"
+                                                                        tal:attributes="src string:${getImage/absolute_url|nothing}_thumb;
+                                                                                         alt item_object/imageCaption|nothing;
+                                                                                         title item_object/imageCaption|nothing;
+                                                                                         
+                                                                                         width size_image_width|string:158px;
+                                                                                         height size_image_height|string:118px;" />
+                                                                    
+                                                                    <img tal:condition="getImageRelac"
+                                                                        width="158px" height="118px" 
+                                                                        tal:attributes="src string:${getImageRelac/absolute_url|nothing}/image_thumb;
+                                                                                         alt item_object/imageCaption|nothing;
+                                                                                         title item_object/imageCaption|nothing;
+                                                                                         
+                                                                                         width size_image_width|string:158px;
+                                                                                         height size_image_height|string:118px;" />
+                                                                     
+                                                                 </div>
+                                                                <div class="titulo_info">
+                                                                    <h4>
+                                                                        <a tal:content="item_object/Title" tal:attributes="href item_object/absolute_url|nothing;
+                                                                                                                           alt item_object/Title|nothing">New title</a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="img_descricao">
+                                                                    <div class="descricao_destaque">
+                                                                        <!--tal:def define="pas_member context/@@pas_member|nothing;
+                                                                                            item_creator new/Creator|nothing;
+                                                                                            author python:pas_member.info(item_creator) or None;">
+                                                                                
+                                                                                <h4 tal:content="author/name_or_id|nothing">Author</h4>
+                                                                        </tal:def-->
+                                                                        <span tal:content="python:'Data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>,
+                                                                        <tal:def define="pas_member context/@@pas_member|nothing;
+                                                                                            item_creator item_object/Creator|nothing;
+                                                                                            author python:pas_member.info(item_creator) or None;">
+                                                                                
+                                                                                <span tal:content="string:autor: ${author/name_or_id|nothing}">Author</span>
+                                                                        </tal:def>
+                                                                        
+                                                                        <p tal:content="item_object/Description|nothing">Summary</p>
+                                                                    </div>
+                                                                    <div class="visualClear"></div>
+                                                                </div>
+                                                            </div>  
+                                                          <div class="visualClear"></div>
+                                                    </div>                      
+                                                  </tal:rep>
+                                         </div>   
+                                    </tal:def>
+                                </meta:macro>
+                            </div>
+                        </tal:def>
+                </meta:macro>    
+            </tal:def>
+        </metal:content-core>
+    </body>
+</html>

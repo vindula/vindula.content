@@ -4,6 +4,25 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="vindula.content">
 
+   
+  <!-- Views -->  
+  <browser:page
+        for="*"
+        name="vindula_list_news_view"
+        class=".views.VindulaListNews"
+        permission="zope2.View"
+        allowed_attributes=""
+        />
+
+  <browser:page
+        for="*"
+        name="vindula_news_result_view"
+        class=".views.VindulaResultsNews"
+        template="vindulaResultsNews.pt"
+        permission="zope2.View"
+        allowed_attributes=""
+        />
+
 
   <!-- -*- extra stuff goes here -*- -->
   

@@ -1,0 +1,33 @@
+
+
+#busca{
+    float:left;
+    width:100%; 
+    background:#E3E7EA;
+    margin-top:20px;
+      
+}
+#paginacao p{
+    margin: 1em 0;
+
+
+}
+
+.field-news{
+    float: left;
+    margin: 1em;
+}
+
+.field-news-right{
+    float: right;
+    margin-right: 10px;
+    margin-top: 7px;
+
+}
+
+.image_inf img{
+    border: 1px solid #FFF;
+    margin: 10px;   
+
+
+}
