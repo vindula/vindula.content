@@ -72,6 +72,7 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie) {
         $j('#content-itens').html(data);
         $j('#content-itens').removeClass('display-none');
         $j('#spinner').addClass('display-none');
+		$j('#content-itens').highlight($j("#keyword").val());
     });
 }
 
@@ -110,4 +111,5 @@ $j(document).ready(function(){
         var page = parseInt($j(this).find('input').val());
         AjaxNewsItens(null,page,true);
     });
+	
 });
