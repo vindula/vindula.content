@@ -62,6 +62,12 @@ Changelog
 - Alteração do widget de adição de grupos e usuarios da EO  
 
 1.1.12 - 2012-07-24
+<<<<<<< HEAD
 -----------------------
 - Criado novo tipo de conteudo para folder: 'vindulaFolder'
+=======
+------------------------
+- Alteração do widget de referenceBrowser
+
+>>>>>>> origin/new_widget
 

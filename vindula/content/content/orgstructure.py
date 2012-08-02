@@ -23,6 +23,7 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     
@@ -43,8 +44,9 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         multiValued=0,
         allowed_types=('OrganizationalStructure',),
         relationship='structures',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
+            typeview='list',
             label=_(u"Estrutura Organizacional"),
             description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
 
@@ -112,8 +114,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Imagem "),
         relationship='Imagem',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Imagem "),
             description='Será exibido na visualização desta estrutura. A imagem será redimensionada para um tamanho adequado.')
     ),
@@ -233,8 +235,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Logo"),
         relationship='logoPortal',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Logo "),
             description='Será exibido no topo do portal desta área. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
@@ -245,8 +247,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Logo Rodape "),
         relationship='logoRodape',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Logo Rodape"),
             description='Será exibido no rodapé desta área o imagem selecionada. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
@@ -259,8 +261,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"WallPapper do portal "),
         relationship='imageBackground',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"WallPaper do portal"),
             description='Será exibido no backgroup do portal a imagem selecionada. A imagem será mostrada em seu tamanho original, sem repetição.'),
         schemata = 'Layout'
@@ -282,8 +284,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Imagem para o rodapé do portal."),
         relationship='imageFooter',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Imagem para o rodapé do portal"),
             description='A imagem selecionada será exibida no rodapé do portal. Selecione uma imagem com dimenções 980x121'),
         schemata = 'Layout'
@@ -346,8 +348,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Imagem para o background do menu dropdown"),
         relationship='imageBkgMenu',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Imagem para background do menu Dropdown"),
             description='A imagem selecionada será exibida como plano de fundo do menu.\
                          A imagem será mostrada em seu tamanho original, com repetição.'),
