@@ -15,6 +15,8 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
+
 VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
 
    ReferenceField('imageRelac',
@@ -22,8 +24,8 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Imagem "),
         relationship='Imagem',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Imagem "),
             description='Imagem para destaque no portlet. A imagem será redimensionada para um tamanho adequado.')),
 
@@ -41,8 +43,9 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
         allowed_types=(),
         label=_(u"Link de detalhes"),
         relationship='linkRelac',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
+            typeview='list',
             label=_(u"Link de detalhes"),
             description='Caso fornecido, o rodapé terá como link esta URL.')),
 

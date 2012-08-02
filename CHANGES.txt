@@ -61,6 +61,7 @@ Changelog
 - Atribuição altomatica do gestor e dos funcionarios aos grupos de administração e visualização
 - Alteração do widget de adição de grupos e usuarios da EO  
 
+<<<<<<< HEAD
 1.1.12 - 2012-07-16
 ------------------------
 - Integração da imagem do usuário com o gravatar
@@ -70,4 +71,15 @@ Changelog
 ------------------------
 - Criação da nova listagens de noticias 
 - Adição do metodo de manter pesquisa em cookies
+=======
+1.1.12 - 2012-07-24
+<<<<<<< HEAD
+-----------------------
+- Criado novo tipo de conteudo para folder: 'vindulaFolder'
+=======
+------------------------
+- Alteração do widget de referenceBrowser
+
+>>>>>>> origin/new_widget
+>>>>>>> vindulafolder
 

@@ -45,4 +45,7 @@ class UpdateUserManageEmployeesValidator:
         alterado = set(atual) - set(news)
         
         for j in alterado:
-            portalGroup.getGroupById(id_grupo_employees).removeMember(j)
+            try:
+                portalGroup.getGroupById(id_grupo_employees).removeMember(j)
+            except:
+                pass

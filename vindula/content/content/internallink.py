@@ -15,14 +15,17 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget 
+
 InternalLink_schema = ATLinkSchema.copy() + Schema((
 
    ReferenceField('internal_link',
         multiValued=0,
         label=_(u"Link Interno"),
         relationship='internal_link',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
+            typeview='list',
             label=_(u"Link Interno"),
             description=_(u'Selecione um conteudo interno para fazer referencia.'))),                                                  
 

@@ -17,6 +17,8 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget 
+
 VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
 
    ReferenceField('imageRelac',
@@ -24,8 +26,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         allowed_types=('Image'),
         label=_(u"Imagem "),
         relationship='Imagem',
-        widget=ReferenceBrowserWidget(
-            default_search_index='SearchableText',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
             label=_(u"Imagem "),
             description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')),
 

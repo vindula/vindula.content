@@ -6,6 +6,9 @@
     <object name="VindulaNews"	
 			meta_type="Factory-based Type Information with dynamic views"/> 
     
+    <object name="VindulaFolder"  
+            meta_type="Factory-based Type Information with dynamic views"/>
+    
 	<object name="OrganizationalStructure"	
 			meta_type="Factory-based Type Information with dynamic views"/>
 	
