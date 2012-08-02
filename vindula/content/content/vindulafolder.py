@@ -28,11 +28,12 @@ VindulaFolder_schema =  ATFolder.schema.copy() + Schema((
         name='itens_menu',
         widget=InAndOutWidget(
             label=_(u"Itens do Menu"),
-            description=_(u"Selecione os tipos de itens que serão apresentados no menu e no sub-menu."),
+            description=_(u"Selecione os tipos de itens que serão apresentados no menu e no sub-menu. Caso nenhum item seja selecionado, o padrão global será utilizado."),
             format = 'select',
         ),
         vocabulary='voc_itens_menu',
         required=False,
+        schemata = 'settings'
     ),
 
 ))
