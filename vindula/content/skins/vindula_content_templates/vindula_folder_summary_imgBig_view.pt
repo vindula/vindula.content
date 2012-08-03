@@ -41,7 +41,7 @@
                             <div class="field-news float-left">
                                 <label for="field">Ordenar por: </label>
                                 <select name="field" id="sortfield"
-                                        tal:define="fields listBrowserView/listSortFields">
+                                        tal:define="fields listBrowserView/getListToOrder">
             
                                         <!--option value="" >Sem Ordenação</option-->
             
@@ -51,7 +51,7 @@
                                                      tal:define="explanation python:field[2]"
                                                      tal:attributes="value python:field[0];
                                                                      title explanation;
-                                                                     selected python: field[0]=='created' and 'selected' or '';"
+                                                                     selected python: field[0]=='effective' and 'selected' or '';"
                                                                      
                                                      tal:content="python:field[1]"
                                                      i18n:attributes="title"
@@ -78,7 +78,7 @@
                         </div>
                         <div class="visualClear"></div>
                         <!-- Spinner -->
-                        <div id="spinner" class="display-none" style="text-align:center;">
+                        <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                             <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/ajaxLoader.gif" />
                         </div>  
                         
@@ -158,7 +158,7 @@
                                                         </h4>
                                                     </div>
                                                     <div class="img_descricao">
-                                                        <div class="descricao_destaque">
+                                                        <div id="geral_breadcrumb" class="descricao_destaque">
                                                             <!--tal:def define="pas_member context/@@pas_member|nothing;
                                                                                 item_creator new/Creator|nothing;
                                                                                 author python:pas_member.info(item_creator) or None;">

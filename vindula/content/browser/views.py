@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
+from zope.app.component.hooks import getSite
 
 from Products.ATContentTypes.criteria import _criterionRegistry
 
@@ -21,33 +22,17 @@ def quote_chars(s):
 
 class VindulaListNews(BrowserView):
     
-    security = ClassSecurityInfo()
-    
-    security.declareProtected(View, 'criteriaByIndexId')
-    def criteriaByIndexId(self, indexId):
-        catalog_tool = getToolByName(self, 'portal_catalog')
-        indexObj = catalog_tool.Indexes[indexId]
-        results = _criterionRegistry.criteriaByIndex(indexObj.meta_type)
-        return results
-    
-    security.declareProtected(View, 'validateAddCriterion')
-    def validateAddCriterion(self, indexId, criteriaType):
-        """Is criteriaType acceptable criteria for indexId
-        """
-        return criteriaType in self.criteriaByIndexId(indexId)
-    
-    
-    security.declareProtected(View, 'listSortFields')
-    def listSortFields(self):
-        """Return a list of available fields for sorting."""
-        tool = getToolByName(self, 'portal_atct')
-        
-        listFields = tool.getEnabledFields() 
-        fields = [ field
-                    for field in listFields
-                    if self.validateAddCriterion(field[0], 'ATSortCriterion') ]
-        return fields
-    
+    def getListToOrder(self):
+        result = None
+        if 'control-panel-objects' in getSite().keys():
+            control = getSite()['control-panel-objects']
+            if 'vindula_categories' in control.keys():
+                confg = control['vindula_categories']
+                try:
+                    result =  confg.order_list
+                except:
+                    return result
+        return result
 
 class VindulaResultsNews(BrowserView):
 

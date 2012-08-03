@@ -72,7 +72,8 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie) {
         $j('#content-itens').html(data);
         $j('#content-itens').removeClass('display-none');
         $j('#spinner').addClass('display-none');
-		$j('#content-itens').highlight($j("#keyword").val());
+		if ($j("#keyword").val())
+			$j('#content-itens').highlight($j("#keyword").val());
     });
 }
 
