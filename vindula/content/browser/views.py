@@ -59,12 +59,12 @@ class VindulaResultsNews(BrowserView):
             
             D['sort_on'] = form.get('sorted','getObjPositionInParent')
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath())}
-            D['meta_type'] =  ['ATNewsItem','VindulaNews']
+            #D['meta_type'] =  ['ATNewsItem','VindulaNews']
             
             result = catalog_tool(**D)
         
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',)})
+            result = self.context.getFolderContents()
         
         return result
 
