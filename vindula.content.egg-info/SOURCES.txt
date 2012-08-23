@@ -17,12 +17,14 @@ vindula/content/config.py
 vindula/content/tests.py
 vindula/content/validators.py
 vindula/content/browser/__init__.py
+vindula/content/browser/views.py
 vindula/content/content/__init__.py
 vindula/content/content/interfaces.py
 vindula/content/content/internallink.py
 vindula/content/content/orgstructure.py
 vindula/content/content/unit.py
 vindula/content/content/vindulacontentmacro.py
+vindula/content/content/vindulafolder.py
 vindula/content/content/vindulanews.py
 vindula/content/content/vindulaportlet.py
 vindula/content/portlets/__init__.py

@@ -5,6 +5,7 @@
 .pydevproject
 .settings/org.eclipse.core.resources.prefs
 *.egg/*
+*.egg-info/*
 *~
 
 # OS generated files #
