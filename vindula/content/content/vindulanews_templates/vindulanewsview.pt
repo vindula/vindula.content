@@ -7,85 +7,74 @@
       i18n:domain="vindula.content">
 
 <body>
-<metal:main fill-slot="main">
-		<!-- Data -->
-		<div>
-			<tal:cond condition="context/active_date">
-				<div class="info_topoBoxTipo">
-					<div class="info_data" tal:condition="context/effective_date|nothing">
-						<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
-					</div>
-					<div class="visualClear"></div>
-				</div>
-			</tal:cond>
-			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
-				<h4 tal:content="string:Comentários (${contcomments})"></h4>
-			</div-->
-			<div class="visualClear"></div>
-		</div>
-
-		<!-- start: New -->
-		<div> 
-			<div class="titulo_info">
-				<h2 tal:content="context/Title"></h2>
-				<div class="descricao_titulo">
-					<tal:cond condition="context/active_author">
-						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
-					</tal:cond>
-					<!--tal:def define="pas_member context/@@pas_member|nothing;
-									 item_creator context/Creator|nothing;
-									 author python:pas_member.info(item_creator) or None;">
-
-						<h4 tal:content="string: Autor: ${author/name_or_id|nothing}">Author</h4>
-					</tal:def-->
-					<!--h4 tal:content="python: 'Autor: %s' % context.getOwner().getUserName()"></h4-->
-					<p tal:content="context/Description"></p>
-				</div>
-			</div>
-
-			<tal:cont condition="view/check_share|nothing">
-				<tal:cont condition="context/activ_share|nothing">
-					<div metal:use-macro="context/vindula-content-share/macros/share" />
-				</tal:cont>
-			</tal:cont>
-
-			<div>
-				<tal:condition condition="context/getActiv_image">
-					<div id="newsImageContainer" tal:condition="context/getImageRelac">
-						<div id="parent-fieldname-image">
-							<div class="bk_imagem">
-								<a tal:attributes="href python: context.getImageRelac().absolute_url() +'/image_view_fullscreen'">
-									<img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
-														     alt context/imageCaption; title context/imageCaption;">
-								</a>
-								<p class="discreet img_legenda" tal:condition="context/imageCaption">
-									<span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
-								</p>
-							</div>
-						</div>
-					</div>
-					<!--div class="img_info" tal:condition="context/image/to_object">
-						<div class="bk_topo_imgDestaque"></div>
-						<div class="bk_cont_imgDestaque">
-							<img width="156" tal:attributes="src string:${context/image/to_object/absolute_url}/image_mini;
-															 alt context/imageCaption; title context/imageCaption;"/>
-						</div>
-						<div class="bk_rodape_imgDestaque"></div>
-					</div-->	
-				</tal:condition>		
-
-				<div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
-				<div class="visualClear"></div>
-			</div>
-
-		</div>
-		<!-- end: New -->
-		<tal:cont condition="view/check_share|nothing">
-			<tal:cont condition="context/activ_share|nothing">
-					<div metal:use-macro="context/vindula-content-share/macros/share" />
-			</tal:cont>
-		</tal:cont>
-
-</metal:main>
+    <metal:block fill-slot="content-description">
+        <!-- Remoção da macro description padrão do plone-->
+        <span> </span>
+    </metal:block>
+    <metal:main fill-slot="content-core">
+    		<!-- Data -->
+    		<div>
+    			<tal:cond condition="context/active_date">
+    				<div class="info_topoBoxTipo">
+    					<div class="info_data" tal:condition="context/effective_date|nothing">
+    						<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+    					</div>
+    					<div class="visualClear"></div>
+    				</div>
+    			</tal:cond>
+    			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
+    				<h4 tal:content="string:Comentários (${contcomments})"></h4>
+    			</div-->
+    			<div class="visualClear"></div>
+    		</div>
+    
+    		<!-- start: New -->
+    		<div> 
+    			<div class="titulo_info">
+    				<h2 tal:content="context/Title"></h2>
+    				<div class="descricao_titulo">
+    					<tal:cond condition="context/active_author">
+    						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
+    					</tal:cond>
+    					<p tal:content="context/Description"></p>
+    				</div>
+    			</div>
+    
+    			<tal:cont condition="view/check_share|nothing">
+    				<tal:cont condition="context/activ_share|nothing">
+    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    				</tal:cont>
+    			</tal:cont>
+    
+    			<div>
+    				<tal:condition condition="context/getActiv_image">
+    					<div id="newsImageContainer" tal:condition="context/getImageRelac">
+    						<div id="parent-fieldname-image">
+    							<div class="bk_imagem">
+    								<a tal:attributes="href python: context.getImageRelac().absolute_url() +'/image_view_fullscreen'">
+    									<img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
+    														     alt context/imageCaption; title context/imageCaption;">
+    								</a>
+    								<p class="discreet img_legenda" tal:condition="context/imageCaption">
+    									<span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
+    								</p>
+    							</div>
+    						</div>
+    					</div>
+    				</tal:condition>		
+    
+    				<div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
+    				<div class="visualClear"></div>
+    			</div>
+    
+    		</div>
+    		<!-- end: New -->
+    		<tal:cont condition="view/check_share|nothing">
+    			<tal:cont condition="context/activ_share|nothing">
+    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    			</tal:cont>
+    		</tal:cont>
+    
+    </metal:main>
 </body>
 </html>

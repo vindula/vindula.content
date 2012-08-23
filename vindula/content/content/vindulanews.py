@@ -95,7 +95,6 @@ class VindulaNews(ATNewsItem):
 
 registerType(VindulaNews, PROJECTNAME) 
 
-   
 
 # View
 class VindulaNewsView(grok.View):
@@ -103,17 +102,13 @@ class VindulaNewsView(grok.View):
     grok.require('zope2.View')
     grok.name('view')
   
-#    def check_share(self):
-#        if 'control-panel-objects' in getSite().keys():
-#            control = getSite()['control-panel-objects']
-#            if 'vindula_vindulanewsconfig' in control.keys():
-#                config = control['vindula_vindulanewsconfig']
-#                return config.ativa_conpartilhamento
-#            else:
-#                return False
-#          
-#        else:
-#            return False
+    def check_share(self):
+        panel = self.context.restrictedTraverse('@@myvindula-conf-userpanel')
+  
+        if panel.check_share():
+            return  self.context.getActiv_share()
+        else:
+            return False 
 
     def creator(self):
         return self.context.Creator()
