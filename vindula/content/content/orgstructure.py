@@ -23,6 +23,8 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.myvindula.tools.utils import UtilMyvindula
+
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
@@ -594,7 +596,7 @@ def RemoveGroupInPloneSite(context, event):
         except: pass
     
     
-class OrganizationalStructureView(grok.View):
+class OrganizationalStructureView(grok.View, UtilMyvindula):
     grok.context(IOrganizationalStructure)
     grok.require('zope2.View')
     grok.name('view_organizarional')
@@ -607,13 +609,13 @@ class OrganizationalStructureView(grok.View):
         D['visible_area'] = departament
         return ModelsMyvindulaHowareu().get_myvindula_howareu(**D)
     
-    def get_prefs_user(self, user):
-        try:
-            user_id = unicode(user, 'utf-8')    
-        except:
-            user_id = user 
-
-        return ModelsFuncDetails().get_FuncDetails(user_id)
+#    def get_prefs_user(self, user):
+#        try:
+#            user_id = unicode(user, 'utf-8')    
+#        except:
+#            user_id = user 
+#
+#        return ModelsFuncDetails().get_FuncDetails(user_id)
     
     def get_department(self, user):
         try:
