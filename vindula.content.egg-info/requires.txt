@@ -1,9 +1,0 @@
-setuptools
-plone.app.dexterity
-plone.behavior
-plone.directives.form
-zope.schema
-zope.interface
-zope.component
-rwproperty
-Products.SmartColorWidget
