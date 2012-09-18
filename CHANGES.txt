@@ -85,4 +85,8 @@ Changelog
 -------------------------
  - Correção ticket #159 - content type Unidade
 
-
+1.1.17 - 2012-09-18
+-------------------------
+ - Correção ticket #202 
+ 
+ 
