@@ -4,7 +4,6 @@ from vindula.content import MessageFactory as _
 from vindula.content.content.interfaces import IUnit
 from Products.ATContentTypes.content.folder import ATFolder
 
-from vindula.myvindula.user import ModelsFuncDetails
 from AccessControl import ClassSecurityInfo
 
 from zope.interface import implements
@@ -13,6 +12,7 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
+from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
 
 Unit_schema =  ATFolder.schema.copy() + Schema((
 
@@ -65,14 +65,15 @@ class Unit(ATFolder):
 
 
     def voc_employees(self):
-        users = ModelsFuncDetails().get_allFuncDetails()
+        #users = ModelsFuncDetails().get_allFuncDetails()
+        users = ModelsInstanceFuncdetails().get_AllFuncDetails()
         terms = []
         result = ''
         
         if users is not None:
             for user in users:
-                member_id = user.username
-                member_name = user.name or member_id
+                member_id = user.get('username')
+                member_name = user.get('name') or member_id
                 terms.append((member_id, unicode(member_name)))
         
         result = DisplayList(tuple(terms))
@@ -85,39 +86,3 @@ class UnitView(grok.View):
     grok.require('zope2.View')
     grok.name('view')
     
-
-
-
-
-
-
-
-
-
-
-
-## Interface and schema
-#class IUnit(form.Schema):
-#    """ Unit Folder """
-#    
-#    address = schema.TextLine(
-#        title=_(u"Endereço"),
-#        description=u"Localização com endereço completo, será utilizado para gerar o mapa.",
-#        required=False,
-#        )
-#
-#    structures = RelationChoice(
-#        title=_(u"Estruturas Organizacionais"),
-#        description=u"Relacionamentos com as estruturas organizacionais.",
-#        source=ObjPathSourceBinder(
-#            portal_type = 'vindula.content.content.orgstructure',  
-#            review_state='published'      
-#            ),
-#        required=False,
-#        )
-#
-#    users = schema.TextLine(
-#        title=_(u"Usuários"),
-#        description=u"Relacionamentos com os usuários.",
-#        required=False,
-#        )

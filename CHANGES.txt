@@ -81,6 +81,8 @@ Changelog
 - Correção da checagem para mostar a caixa de compartilhamento da noticia
 - Correção na view das noticias para mostra os itens relacionado
 
-  
+1.1.16 - 2012-09-18
+-------------------------
+ - Correção ticket #159 - content type Unidade
 
 
