@@ -216,7 +216,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         required=0,
         widget=SmartColorWidget(
             label='Cor',
-            description="Cor para esta área, todo o layout desta área usara esta cor.",
+            description="Cor para esta área, todo o layout desta área usará esta cor.",
         ),
         schemata = 'Layout'
     ),    
@@ -247,11 +247,11 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ReferenceField('logoRodape',
         multiValued=0,
         allowed_types=('Image'),
-        label=_(u"Logo Rodape "),
+        label=_(u"Logo Rodapé "),
         relationship='logoRodape',
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
-            label=_(u"Logo Rodape"),
+            label=_(u"Logo Rodapé"),
             description='Será exibido no rodapé desta área o imagem selecionada. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
     ),                                                                   
@@ -266,7 +266,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             label=_(u"WallPaper do portal"),
-            description='Será exibido no backgroup do portal a imagem selecionada. A imagem será mostrada em seu tamanho original, sem repetição.'),
+            description='A imagem será aplicada no background do portal. A imagem será mostrada em seu tamanho original, sem repetição.'),
         schemata = 'Layout'
     ),                                                                   
     
