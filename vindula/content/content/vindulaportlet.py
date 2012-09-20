@@ -96,8 +96,9 @@ VindulaPortlet_schema = ATDocumentSchema.copy() + Schema((
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
 VindulaPortlet_schema['description'].widget.visible = invisivel
+L = []
 # Dates
-L = ['effectiveDate','expirationDate','creation_date','modification_date']   
+#L = ['effectiveDate','expirationDate','creation_date','modification_date']   
 # Categorization
 L += ['subject','relatedItems','location','language']
 # Ownership

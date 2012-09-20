@@ -11,7 +11,10 @@ from plone.app.portlets.portlets import base
 from Products.CMFCore.utils import getToolByName
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsDepartment
+from vindula.myvindula.user import BaseFunc
+from vindula.myvindula.models.department import ModelsDepartment
+
+from vindula.myvindula.tools.utils import UtilMyvindula
 
 class IPortletEO_Gestor(IPortletDataProvider):
       
@@ -63,13 +66,13 @@ class Renderer(base.Renderer):
     def get_title(self):
         return self.data.title_portlet
 
-    def get_prefs_user(self, user):
-         try:
-             user_id = unicode(user, 'utf-8')    
-         except:
-             user_id = user 
-    
-         return ModelsFuncDetails().get_FuncDetails(user_id)
+#    def get_prefs_user(self, user):
+#         try:
+#             user_id = unicode(user, 'utf-8')    
+#         except:
+#             user_id = user 
+#    
+#         return ModelsFuncDetails().get_FuncDetails(user_id)
     
     def get_department(self, user):
         try:
