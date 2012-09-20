@@ -47,7 +47,7 @@ class Assignment(base.Assignment):
         """
         return "Portlet Estrutura Hierarquica - Gestor"
     
-class Renderer(base.Renderer):
+class Renderer(base.Renderer, UtilMyvindula):
     """Portlet renderer.
 
     This is registered in configure.zcml. The referenced page template is
