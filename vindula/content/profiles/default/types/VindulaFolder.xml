@@ -26,6 +26,9 @@
 	<element value="folder_tabular_view"/>
 	<element value="atct_album_view"/>
 	<element value="folder_listing"/>
+    <element value="vindula_folder_summary_imgBig_view"/>
+    <element value="vindula_folder_summary_imgSmall_view"/>
+    <element value="vindula_folder_summary_noImg_view"/>
  </property>
   
  <!--alias from="(Default)" to="view_organizarional"/-->

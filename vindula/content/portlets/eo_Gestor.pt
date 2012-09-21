@@ -15,18 +15,19 @@
     <dd class="portletItem" tal:condition="view/check_content|nothing">
 		<div id="portlet-estrutura"
 			 tal:define="manage view/get_EO_Context|python:{};
-											 user_manage python:view.get_prefs_user(manage)">
+						 user_manage python:view.get_prefs_user(manage)">
+											 
 				<div class="row">
 					<div class="cell width-9 position-0">	
-						<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
-		                    <img src="defaultUser.png"
-			             		 alt="" border="0" width="70"
-			             		 tal:attributes="src string:${here/portal_url}/user-image?username=${manage};
-						 						 alt user_manage/name|nothing;
-												 title user_manage/name|nothing;" />
-						</a>
+                        <!-- Dados para utilização da macro -->                                  
+                        <tal:def define="size_img string:70px;
+                                         user_profiles manage|nothing;
+                                         item user_manage;">
+                            <metal:use use-macro="context/myvindula-imageprofiles-macro/macros/userimage"/>       
+                        </tal:def>
 					</div>
-					<div class="portlet-user-info cell width-9 position-6"> 											     	      	
+					<div class="portlet-user-info cell width-9 position-6">
+					     											     	      	
 			        	<h4><a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
 							   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
 			        	<p>
@@ -49,7 +50,7 @@
 			        			tal:attributes="alt email;title email;
 			        							href string:mailto:${email}" /><br />
 			      	  	</p>
-	
+
 		 			</div>
 		 		</div>
 		 		<div class="visualClear"></div>

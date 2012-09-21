@@ -93,4 +93,10 @@ Changelog
 -------------------------
  - Correção ticket #214
  - Correção ticket #198
+ - Adição das view de lisagens de noticias ao vindulaFolder
+  
+1.1.19 - 2012-09-21
+-------------------------
+- Ajuste ticket #214
+
    

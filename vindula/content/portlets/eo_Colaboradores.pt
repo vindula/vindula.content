@@ -18,14 +18,12 @@
 				<div class="cell width-full position-0">
 					<tal:rep repeat="func employees">
 						<tal:cond condition="func">
-							<a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}">
-			                    <img src="defaultUser.png"
-				             		 alt="" border="0" height="30"
-									 tal:define="user_func python:view.get_prefs_user(func);"
-				             		 tal:attributes="src string:${here/portal_url}/user-image?username=${func};
-							 						 alt user_func/name|nothing;
-													 title user_func/name|nothing;" />
-							</a>
+							<!-- Dados para utilização da macro -->                                  
+                            <tal:def define="size_img string:30px;
+                                             user_profiles func|nothing;
+                                             item func;">
+                                <metal:use use-macro="context/myvindula-imageprofiles-macro/macros/userimage"/>       
+                            </tal:def>
 						</tal:cond>
 					</tal:rep>
 				</div>
