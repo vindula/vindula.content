@@ -27,13 +27,8 @@ class IVindulaCarregaPortlet(IPortletDataProvider):
                              description=_(u'description_campo', default=u'Defina o nome do campo do conteúdo que será carregado neste portlet.'),
                              default=u'coluna',
                              required=True)
-    
-    value_portlet = schema.TextLine(title=_(u'label_value_portlet', default=u'Valor do campo'),
-                             description=_(u'description_value', default=u'Defina o valor que será colocado no campo do conteúdo para carregar o portlet.'),
-                             required=True)
-    
-    
-    value_portlet = schema.Choice(title=_(u'label_value_portlet', default=u'Valor do campo'),
+        
+    value_portlet = schema.Choice(title=_(u'label_value_portlet', default=u'Selecione a coluna do portlet'),
                                   description=_(u'description_value', default=u'Defina o valor que será colocado no campo do conteúdo para carregar o portlet.'),
                                   required=True,
                                   vocabulary=SimpleVocabulary([SimpleTerm(u'direita', u'direita', _(u'option_category', default=u'Coluna da Direita')),
