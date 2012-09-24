@@ -79,17 +79,28 @@ class Renderer(base.Renderer):
         ctx = self.context
         L =[]
         if ctx.getStructures():
-            L.append(ctx)
+            L = self.apendar(L, ctx.getStructures())
+            
             ctx = ctx.getStructures()
             while ctx.getStructures():
-                L.append(ctx)
+                L = self.apendar(L, ctx)
                 ctx = ctx.getStructures()
             else:
-                L.append(ctx)
+                L = self.apendar(L, ctx)
         else:
-            L.append(ctx)
+            L = self.apendar(L, ctx)
+            
         L.reverse()        
         return L
+    
+    def apendar(self,L, item):
+        if not item in L:
+            L.append(item)
+        
+        return L
+        
+        
+    
 
 #    def get_NavigationContext(self):
 #        relacionado = self.get_RelationshipContext()

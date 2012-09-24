@@ -271,6 +271,18 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ),                                                                   
     
     StringField(
+        name = 'posicaoImageBackground',
+        widget=SelectionWidget(
+            label='Posição da imagem de fundo',
+            description="Selecione o coportamento da imagem de fundo.",
+            format = 'select',
+        ),
+        vocabulary = [('no-repeat', 'Centralizar'), ('repeat', 'Repetir na pagina toda'), ('repeat-x', 'Repetir horizontalmente'), ('repeat-y', 'Repetir verticamente'),],
+        default='no-repeat',
+        schemata = 'Layout'
+    ),        
+    
+    StringField(
         name='corBackground',
         searchable=0,
         required=0,
@@ -344,6 +356,18 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         ),
         schemata = 'Menu'
     ),   
+
+    ReferenceField('imageSubmenuBkg',
+        multiValued=0,
+        allowed_types=('Image'),
+        label=_(u"Imagem para o background do menu dropdown"),
+        relationship='imageBkgSubmenu',
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Imagem para background do menu Dropdown"),
+            description='A imagem selecionada será exibida como plano de fundo do menu dropdown.\
+                         A imagem será mostrada com a sua largura original, com repetição.'),
+        schemata = 'Menu'
+    ),
                                                         
     ReferenceField('imageMenuBkg',
         multiValued=0,
@@ -443,7 +467,59 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         schemata = 'Menu'
     ),
 
+    # CONFIGURACAO DO TEMA DO PORTLET
+    
+    ReferenceField('imageTopPortlet',
+        multiValued=0,
+        allowed_types=('Image'),
+        relationship='imageTopPortlet',
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Imagem para aparecer no topo do portlet"),
+            description='A imagem selecionada será exibida como plano de fundo do menu.\
+                         A imagem será mostrada com a sua altura original, com repetição.'),
+        schemata = 'Portlet'
 
+    ),
+    
+    IntegerField(
+        name='heightTopPortlet',
+        widget=IntegerWidget(
+            label='Altura do topo do portlet',
+            description='Altura, em pixels, do topo do portlet. Quando não definida manterá o padrão de 15px',
+        ),
+        schemata = 'Portlet'
+    ),
+    
+    ReferenceField('imageMiddlePortlet',
+        multiValued=0,
+        allowed_types=('Image'),
+        relationship='imageMiddlePortlet',
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Imagem para aparecer no meio do portlet"),
+            description='A imagem selecionada será exibida como plano de fundo do menu.\
+                         A imagem será mostrada com a sua altura original, com repetição.'),
+        schemata = 'Portlet'
+    ),
+
+    ReferenceField('imageBottomPortlet',
+        multiValued=0,
+        allowed_types=('Image'),
+        relationship='imageBottomPortlet',
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Imagem para aparecer em baixo do portlet"),
+            description='A imagem selecionada será exibida como plano de fundo do menu.\
+                         A imagem será mostrada com a sua altura original, com repetição.'),
+        schemata = 'Portlet'
+    ),
+    
+    IntegerField(
+        name='heightBottomPortlet',
+        widget=IntegerWidget(
+            label='Altura do rodapé do portlet',
+            description='Altura, em pixels, do topo do portlet. Quando não definida manterá o padrão de 23px',
+        ),
+        schemata = 'Portlet'
+    ),
 
 
 ))

@@ -41,11 +41,13 @@ class UpdateUserManageEmployeesValidator:
         # Procesamento Funcionario
         id_grupo_employees = instance.UID() +'-view'
         atual = instance.__getattribute__('employees')
-        news = form.get('employees')        
-        alterado = set(atual) - set(news)
+        news = form.get('employees')
         
-        for j in alterado:
-            try:
-                portalGroup.getGroupById(id_grupo_employees).removeMember(j)
-            except:
-                pass
+        if atual and news:        
+            alterado = set(atual) - set(news)
+        
+            for j in alterado:
+                try:
+                    portalGroup.getGroupById(id_grupo_employees).removeMember(j)
+                except:
+                    pass

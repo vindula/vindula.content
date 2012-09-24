@@ -14,55 +14,73 @@
     </dd>
     <dd class="portletItem" tal:condition="view/check_content|nothing">
 		<div id="portlet-estrutura">
-			<div>
-				<div tal:define="objs view/get_RelationshipContext|python:{}">
-					<tal:rep repeat="item objs">
-						<div class="nivel1">
-							<p><a tal:content="item/title|nothing"
-									  tal:attributes="href item/absolute_url|nothing;
-									  				 class python:item==context and 'destaqueObj'" />
-							</p>
-							<p tal:condition="not: repeat/item/end">▲</p>
-							<tal:cond condition="repeat/item/end">
-								<tal:def define="nivel python:view.get_OrgStructureRelationship(item)">
-									<tal:rep repeat="i nivel">
-										<tal:cond condition="python: not i in objs">
-											<div class="nivel2">
-												<p tal:condition="not: repeat/i/end">▲</p>
-												<p><a tal:content="i/title|nothing" 
-													  tal:attributes="href i/absolute_url|nothing" /></p>
-											</div>
-										</tal:cond>
-									</tal:rep>
-								</tal:def>	
-							</tal:cond>
-						</div>
-					</tal:rep>
+			<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/content_organization.css">
+			<div tal:define="objs view/get_RelationshipContext|python:{}">
+			    
+	            <ul >
+	              <tal:rep repeat="item objs">    
+	                
+                    <li tal:define="selectedClass python: item==context;
+                                    li_class python:selectedClass and ' navTreeCurrentNode destaqueObj' or '';"
+                        tal:condition="item/title|nothing"
+                        tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
+                        
+                        <div>
+                           <a tal:attributes="href item/absolute_url|nothing;
+                                              title item/title|nothing;
+                                              class string:contenttype-folder;">
+                           
+                               <span tal:replace="item/title|nothing">Root item title</span>
+                           </a>
+                        </div>
+                    </li>
+                    <ul class="navTree navTreeLevel0">
+                        <tal:def tal:condition="repeat/item/end"
+                                 define="nivel python:view.get_OrgStructureRelationship(item)">
+                            <tal:rep repeat="subnivel nivel">
+                               <li tal:define="selectedClass python:subnivel==context;
+                                               li_class python:selectedClass and ' navTreeCurrentNode destaqueObj' or '';"
+                                    
+                                    tal:condition="subnivel/title|nothing"
+                                    tal:attributes="class string:navTreeItem navTreeTopNode${li_class}" >
+                                    <div>
+                                       <a tal:attributes="href subnivel/absolute_url|nothing;
+                                                          title subnivel/title|nothing;
+                                                          class string:contenttype-folder ;">
+                                       
+                                           <span tal:replace="subnivel/title|nothing">Root item title</span>
+                                       </a>
+                                    </div>
+                                </li>     
+                            </tal:rep>
+                        </tal:def>
+                    </ul>
+                    
+                  </tal:rep>
+                </ul>
+			    <!--tal:rep repeat="item objs">    
 				
-				</div>
-				<!--div tal:define="obj view/get_NavigationContext|python:{}">
-					<tal:rep repeat="item obj">
-						<div class="nivel1" tal:define="x python:item['objeto'] or None"
-											tal:attributes="class python:item.get('nivelDown',False)==True and 'nivel2'">
-							<p tal:attributes="id x/id|nothing">
-								<a tal:content="x/title|nothing"
-								  tal:attributes="href x/absolute_url|nothing;
-								  				 class python:x==context and 'destaqueObj'" />
-							</p>
-							<!--p tal:condition="not: repeat/item/end">▲</p--
-							<tal:def define="nivel item/relacionado|nothing">
+					<div class="nivel1">
+						<p><a tal:content="item/title|nothing"
+								  tal:attributes="href item/absolute_url|nothing;
+								  				 class python:item==context and 'destaqueObj'" />
+						</p>
+						<p tal:condition="not: repeat/item/end">▲</p>
+						<tal:cond condition="repeat/item/end">
+							<tal:def define="nivel python:view.get_OrgStructureRelationship(item)">
 								<tal:rep repeat="i nivel">
+									<tal:cond condition="python: not i in objs">
 										<div class="nivel2">
-											<!--p tal:condition="not: repeat/i/end">▲</p--
-											<p tal:attributes="id string:nivel2-${i/id|nothing}"
-											><a tal:content="i/title|nothing" 
+											<p tal:condition="not: repeat/i/end">▲</p>
+											<p><a tal:content="i/title|nothing" 
 												  tal:attributes="href i/absolute_url|nothing" /></p>
 										</div>
+									</tal:cond>
 								</tal:rep>
-							</tal:def>
-						</div>
-					</tal:rep>
-				</div-->
+							</tal:def>	
+						</tal:cond>
+					</div>
+				</tal:rep-->
 			</div>
 		</div>
     </dd>
