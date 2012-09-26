@@ -56,6 +56,16 @@
 		 editview=".eo_Colaboradores.EditForm"
 	 	/>	
 	
-	
+     <plone:portlet
+         name="vindula.content.PortletVindulaNews"
+         interface=".vindulanews.IVindulaNewsPortlet"
+         assignment=".vindulanews.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".vindulanews.Renderer"
+         addview=".vindulanews.AddForm"
+         editview=".vindulanews.EditForm"
+        />  
+    	
 			
 </configure>

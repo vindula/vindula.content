@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletNews"
+    i18n:domain="plone">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#"
+           class="tile"
+           tal:attributes="href view/all_news_link"
+		   tal:content="view/data/title_portlet"
+           i18n:translate="">News</a>
+        <span class="portletTopRight"></span>
+    </dt>
+    
+	<dd class="portletItem">
+	    <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+	                                plone_view context/@@plone;
+	                                getIcon nocall:plone_view/getIcon;">
+				
+				<tal:rep tal:repeat="obj view/published_news_items">
+					
+					<div id="boxPortlet" 
+					     tal:define="oddrow repeat/obj/odd;
+						             enditem repeat/obj/end;
+	                                 item_icon python:getIcon(obj);" 
+	                     
+	                     tal:attributes="class python:enditem and 'info_boxTipo2 ' or 'info_boxTipo2 borderDif'">
+	        
+	                    <a href=""
+	                       class="tile"
+	                       tal:attributes="href obj/getURL;
+	                                       title obj/Description">
+	                        <img tal:replace="structure item_icon/html_tag" />
+	                        <span tal:replace="obj/pretty_title_or_id">
+	                        Plone 2.1 announced!
+	                        </span>
+	                     </a>
+	                     <div class="row">
+	                        <div class="cell position-0 width-1:2">
+	                            <span class="portletItemDetails" tal:condition="view/data/show_data|nothing"
+	                              tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
+	                        </div>
+	                        
+	                        <div class="cell position-1:2 width-1:2">
+	                            <span class="portletItemDetails" tal:condition="view/data/show_autor|nothing"
+	                              tal:content="obj/Creator">Andre</span>
+	                        </div>
+	                     </div>
+	                </div>    	
+					
+				</tal:rep>		
+		        
+				    
+		</tal:newsitems>	
+	   <div class="visualClear"></div>
+	</dd>
+
+    <dd class="portletFooter"
+         tal:condition="view/all_news_link">
+        <span class="portletBottomLeft"></span>
+        <a href=""
+           tal:attributes="href view/all_news_link"
+           i18n:translate="box_more_news_link">
+          More news&hellip;
+        </a>
+        <span class="portletBottomRight"></span>
+    </dd>
+    
+	<tal:block condition="not:view/all_news_link">
+	    <dd class="portletFooter">
+	        <span class="portletBottomLeft"></span>
+	        <span class="portletBottomRight"></span>
+	    </dd>
+    </tal:block>
+</dl>
+</html>

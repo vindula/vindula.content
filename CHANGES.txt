@@ -104,3 +104,6 @@ Changelog
 - Ajuste ticket #240
 - Correção do ticket #241
    
+1.1.21 - 2012-09-26
+-------------------------
+- Criação do portlet VindulaNews Ticket #137

@@ -31,7 +31,13 @@
 		description="Portlet EH - Colaboradores">
 		
 	</portlet>
-					
+    
+	<portlet
+        addview="vindula.content.PortletVindulaNews"
+        title="Portlet Vindula News"
+        description="Portlet Vindula News">
+        
+    </portlet>					
 
 
 </portlets>
