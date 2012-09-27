@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object name="portal_factory" meta_type="Plone Factory Tool">
+	<factorytypes>
+	    <type portal_type="VindulaPhotoAlbum"/>
+ 	    <type portal_type="VindulaNews"/>
+	    <type portal_type="VindulaFolder"/>
+		<type portal_type="OrganizationalStructure"/>
+		<type portal_type="Unit"/>
+		<type portal_type="VindulaPortlet"/>
+		<type portal_type="InternalLink"/>
+		<type portal_type="VindulaPhotoAlbum"/>
+	
+	</factorytypes>
+</object>

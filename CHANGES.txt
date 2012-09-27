@@ -107,3 +107,8 @@ Changelog
 1.1.21 - 2012-09-26
 -------------------------
 - Criação do portlet VindulaNews Ticket #137
+
+
+1.1.22 - 2012-09-27
+-------------------------
+- Criado objeto de Album de Foto - Ticket #184

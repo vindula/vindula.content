@@ -24,6 +24,8 @@
   <!-- -*- extra stuff goes here -*- -->
   <five:registerPackage package="." initialize=".initialize" />
   
+  <subscriber handler=".content.vindulaphotoalbum.CreatVindulaPhotoAlbum" />
+  
   <subscriber for=".content.interfaces.IOrgstructureModifiedEvent"
    			  handler=".content.orgstructure.CreatGroupInPloneSite" />
    			  
@@ -55,6 +57,9 @@
   <include package="collective.quickupload" file="minimal.zcml" />
   
   <class class="vindula.content.content.vindulafolder.VindulaFolder">
+    <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
+  </class>
+  <class class="vindula.content.content.vindulaphotoalbum.VindulaPhotoAlbum">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
   </class>
 
