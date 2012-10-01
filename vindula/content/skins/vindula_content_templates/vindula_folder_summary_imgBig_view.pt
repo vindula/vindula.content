@@ -79,7 +79,7 @@
                         <div class="visualClear"></div>
                         <!-- Spinner -->
                         <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
-                            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/ajaxLoader.gif" />
+                            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
                         </div>  
                         
                         <div id="content-itens">

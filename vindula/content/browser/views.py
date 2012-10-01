@@ -58,14 +58,55 @@ class VindulaResultsNews(BrowserView):
                 D['SearchableText'] = quote_chars(text)    
             
             D['sort_on'] = form.get('sorted','getObjPositionInParent')
-            D['path'] = {'query':'/'.join(self.context.getPhysicalPath())}
-            #D['meta_type'] =  ['ATNewsItem','VindulaNews']
-            
+            D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
-        
         else:
             result = self.context.getFolderContents()
-        
         return result
+
+            
+def sortDataPublicacao(item):
+    return item.getDataPublicacao()
+def sortNumEdital(item):
+    return item.getNumeroEdital()
+def sortOrgao(item):
+    return item.getOrgao()
+def sortModalidade(item):
+    return item.getModalidade()
+def sortTitle(item):
+    return item.Title()
+ 
+class VindulaListEditais(BrowserView):
+    
+    def getListOfEditais(self):
+        itens = VindulaResultsNews(self.context, self.request).QueryFilter()
+        objs = []
+        for item in itens:
+            objs.append(item.getObject())
+
+        reverse = int(self.request.form.get('invert', 0))
+        sort = self.request.form.get('sort-edital', None)
+        if sort:
+            if sort == 'edital':
+                return sorted(objs, key=sortNumEdital, reverse=reverse)
+            elif sort == 'orgao':
+                return sorted(objs, key=sortOrgao, reverse=reverse)
+            elif sort == 'madalidade':
+                return sorted(objs, key=sortModalidade, reverse=reverse)
+            elif sort == 'assunto':
+                return sorted(objs, key=sortTitle, reverse=reverse)
+            
+        return sorted(objs, key=sortDataPublicacao, reverse=reverse)
+            
+            
+            
+            
+            
+
+            
+            
+            
+            
+            
 
     

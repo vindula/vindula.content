@@ -1,0 +1,104 @@
+<html metal:use-macro="context/main_template/macros/master">
+        
+        <metal:js fill-slot="javascript_head_slot">
+        	<script type="text/javascript" src="" 
+	            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/edital.js"></script>
+        </metal:js>
+        
+        <metal:styleslot fill-slot="style_slot">
+            <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/list_news.css">
+        </metal:styleslot>
+        
+    <body>
+        <metal:content-core fill-slot="main">
+        	
+			
+			<input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" />
+			<form id="enviar" name="enviar" action="" method="post" tal:attributes="action context/absolute_url">
+				<div id="busca">
+					<div class="field-news float-left">
+	                    <label for="field">Ordenar por: </label>
+	                    <select name="sort-edital" id="sortfield">
+							<option value="data">Data de publicação</option>
+							<option value="edital">Número do edital</option>
+							<option value="orgao">Orgão</option>
+							<option value="madalidade">Modalidade</option>
+							<option value="assunto">Assunto</option>
+	                    </select>
+	                </div>
+					
+	                <div class="field-news float-left">
+	                    <label for="field">Palavra chave: </label>
+	                    <input type="text" name="keyword" value="" />
+	                </div>
+	                <div class="field-news float-left">
+	                    <input class="noborder"
+	                           type="checkbox"
+	                           value="1"
+	                           name="invert"
+	                           id="reversed"
+	                           /> Inverter
+	                </div>
+					<div class="field-news-right float-right">
+	                	<input name="submitted" type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
+	                </div>
+				</div>
+				<div class="visualClear"></div>
+				<div id="content-itens" tal:define="view_edital python: context.restrictedTraverse('@@vindula_list_edital_view');
+													itens view_edital/getListOfEditais;">
+					
+					<tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+	                                     b_size request/b_size|string:10;
+	                                     b_start python:0;
+	                                     b_start request/b_start | b_start;
+	                                     batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));">
+	                
+	                	<input type="hidden" id="b_size" tal:attributes="value b_size" />
+	            		<input type="hidden" id="b_start" tal:attributes="value b_start" />
+						
+						<metal:block metal:use-macro="context/vindula_folder_summary_imgBig_view/macros/navegacao-macro" />
+						
+						<div class="visualClear"></div>
+						
+						<metal:editais define-macro="page-editais">
+							<div id="news">
+			            		<tal:rep repeat="item batch">
+			                        <div class="contBoxDestaque">
+			                            <div tal:define="is_end repeat/item/end;"
+			                                 tal:attributes="class python: is_end and 'info' or 'info borderDif'">
+			                                 
+											<div class="titulo_info">
+			                                    <h4>
+			                                        <a tal:content="item/Title"
+													   tal:attributes="href string: ${item/absolute_url|nothing}/view;
+			                                                           alt item/Title|nothing">
+													New title</a>
+			                                    </h4>
+			                                </div>
+											
+			                                <div class="img_descricao">
+			                                    <div id="geral_breadcrumb" class="descricao_destaque">
+			                                    	<span><label>Modalidade: </label></span><span tal:content="string:${item/getModalidade|nothing},">Modalidade</span>
+													<span><label>Edital nº: </label></span><span tal:content="string:${item/getNumeroEdital|nothing},">Numero do edital</span>
+													<span><label>Orgão: </label></span><span tal:content="string:${item/getOrgao|nothing},">Orgao</span>
+													<span><label>Data de Publicação: </label></span><span tal:content="python: item.getDataPublicacao().strftime('%d/%m/%Y')">Data de Publicação</span>
+			                                        <p tal:content="item/Description|nothing">Summary</p>
+			                                    </div>
+			                                    <div class="visualClear"></div>
+			                                </div>
+			                            </div>  
+			                        	<div class="visualClear"></div>
+			                        </div>                      
+			                 	</tal:rep>
+		                 	</div>
+						</metal:editais>
+	                </tal:def>
+				</div>
+			</form>
+			<!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
+        </metal:content-core>
+    </body>
+</html>

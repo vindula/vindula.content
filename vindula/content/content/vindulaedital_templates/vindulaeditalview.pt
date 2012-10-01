@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+
+<head>
+	
+	<metal:js fill-slot="javascript_head_slot">
+	    <script type="text/javascript" src="" 
+	            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/edital.js"></script>
+	</metal:js>
+	
+	<metal:styleslot fill-slot="style_slot">
+		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/edital.css" />
+		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/list_news.css">
+	</metal:styleslot>
+	
+</head>
+
+<body>
+	<metal:block fill-slot="content-description">
+        <!-- Remo√ß√£o da macro description padr√£o do plone-->
+        <span> </span>
+    </metal:block>
+	
+	<metal:main fill-slot="content-core">
+		<!-- Informacoes -->
+		<div class="informacoesEditais descricao_destaque" id="geral_breadcrumb">
+			<p tal:condition="context/getNumeroEdital">
+				<span><label>Edital nº: </label></span><span tal:content="string:${context/getNumeroEdital|nothing},">Numero do edital</span>
+			</p>
+			<p tal:condition="context/getModalidade">
+				<span><label>Modalidade: </label></span><span tal:content="string:${context/getModalidade|nothing},">Modalidade</span>
+			</p>
+			<p tal:condition="context/getOrgao">
+				<span><label>Orgão: </label></span><span tal:content="string:${context/getOrgao|nothing},">Orgao</span>
+			</p>
+			<p tal:condition="context/getDataPublicacao">
+				<span><label>Data de Publicação: </label></span><span tal:content="python: context.getDataPublicacao().strftime('%d/%m/%Y')">Data de Publicação</span>
+			</p>
+		</div>
+		
+		<div class="descriptionEditais">
+			<p tal:content="context/Description|nothing"> Descricao </p>
+		</div>
+		
+		<!-- Macro de compartilhamento -->
+		<tal:cont condition="view/check_share|nothing">
+			<div metal:use-macro="context/vindula-content-share/macros/share" />
+		</tal:cont>
+		
+		<div class="text">
+			<p tal:replace="structure context/getText|nothing"> Corpo do texto </p>
+		</div>
+		
+		<div tal:define="archive context/getArchiveRelated" tal:condition="archive">
+			<a tal:attributes="href archive/absolute_url"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
+			<p tal:content="string:Nome: ${archive/Title}" class="float-left" style="margin: 10px 0 0 10px;"></p>
+			<div class="visualClear"></div>
+		</div>
+		
+		<!-- Macro de compartilhamento -->
+		<tal:cont condition="view/check_share|nothing">
+			<div metal:use-macro="context/vindula-content-share/macros/share" />
+		</tal:cont>
+		
+		
+		<div class="relatedContent" tal:define="itens view/getRelated;">
+			<div class="cont_superior">
+	            <div class="titulo marginDif1">
+	                <h2>Conteúdo Relacionado</h2>
+	            </div>
+	           <div class="visualClear"></div>
+	        </div>
+			
+			<div id="busca">
+                <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
+                <div class="field-news float-left">
+                    <label for="field">Últimos 10 editais relacionados por: </label>
+                </div>
+				<form id="enviar" name="enviar" action="" method="post" tal:attributes="action context/absolute_url">
+	                <div class="field-news float-left">
+	                    <input class="noborder"
+	                           type="checkbox"
+	                           value=""
+							   checked="checked"
+	                           name="modalidade"
+	                           id="modalidade"
+							   tal:attributes="value context/getModalidade|nothing"
+	                           /> Modalidade
+							   
+						<input class="noborder"
+	                           type="checkbox"
+							   value=""
+							   checked="checked"
+	                           name="orgao"
+	                           id="orgao"
+							   tal:attributes="value context/getOrgao|nothing"
+	                           /> Orgão
+	                </div>
+					
+	                <div class="field-news-right float-right">
+	                	<input name="submitted" type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
+	                </div>
+				</form>
+            </div>
+			<div class="visualClear"></div>
+			
+			<div id="content-itens">
+				<tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+	                                 b_size request/b_size|string:10;
+	                                 b_start python:0;
+	                                 b_start request/b_start | b_start;
+	                                 batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));">
+				
+					<input type="hidden" id="b_size" tal:attributes="value b_size" />
+	                <input type="hidden" id="b_start" tal:attributes="value b_start" />
+					
+					<metal:block metal:use-macro="context/vindula_folder_edital_view/macros/page-editais" />
+					
+	            </tal:def>
+			</div>
+			<!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
+            <div class="visualClear"></div>
+		</div>
+		
+	</metal:main>
+</body>
+
+</html>

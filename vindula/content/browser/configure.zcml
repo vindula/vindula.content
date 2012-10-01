@@ -22,6 +22,14 @@
         permission="zope2.View"
         allowed_attributes=""
         />
+		
+  <browser:page
+        for="*"
+        name="vindula_list_edital_view"
+        class=".views.VindulaListEditais"
+        permission="zope2.View"
+        allowed_attributes=""
+        />
 
 
   <!-- -*- extra stuff goes here -*- -->
