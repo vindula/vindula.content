@@ -26,7 +26,7 @@
       
       tal:condition="p">
         <div id="cycle-prev" class="circle semi-circle-lf semi-circle float-left c-pointer">
-            <input type="hidden" tal:attributes="value p/first" />
+            <input name="prev" type="hidden" tal:attributes="value p/first" />
             <img class="left" src="/++theme++vindula.themedefault/images/buttons/seta_left.png" title="Anterior"/>
         </div>
     </span>
@@ -35,8 +35,7 @@
       tal:define="n batch/next | nothing"
       tal:condition="n">
         <div id="cycle-next" class="circle semi-circle-rg semi-circle float-left c-pointer">
-            <input type="hidden" tal:attributes="value n/first" />
-            
+            <input name="next" type="hidden" tal:attributes="value n/first" />
             <img class="right" src="/++theme++vindula.themedefault/images/buttons/seta_right.png" title="Próximo"/>
         </div>
     </span>

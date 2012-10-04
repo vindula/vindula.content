@@ -108,13 +108,16 @@ Changelog
 -------------------------
 - Criação do portlet VindulaNews Ticket #137
 
-
 1.1.22 - 2012-09-27
 -------------------------
 - Criado objeto de Album de Foto - Ticket #184
 
-1.1.23 - 2012-10-04
+1.1.23 - 2012-10-01
+-------------------------
+- Adicionado o conte�do de Editais
+- Adicionada a visualizacao de tipos Folder para os editais
+
+1.1.24 - 2012-10-04
 -------------------------
 - Adcionado uma galeria js ao album de Foto
-
 

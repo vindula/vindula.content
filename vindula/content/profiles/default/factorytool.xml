@@ -9,6 +9,6 @@
 		<type portal_type="VindulaPortlet"/>
 		<type portal_type="InternalLink"/>
 		<type portal_type="VindulaPhotoAlbum"/>
-	
+		<type portal_type="VindulaEdital"/>
 	</factorytypes>
 </object>

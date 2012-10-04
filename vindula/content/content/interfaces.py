@@ -28,4 +28,5 @@ class IVindulaPhotoAlbum(Interface):
     """An event fired when an Vindula Photo Album object is saved.
     """
     
-    
+class IVindulaEdital(Interface):
+    """ Interface for VindulaEdital content type """
