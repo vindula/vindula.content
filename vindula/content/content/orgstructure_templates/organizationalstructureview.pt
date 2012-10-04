@@ -9,12 +9,12 @@
 	<head>
 		
 		<metal:styleslot fill-slot="style_slot">
-    		<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/content_organization.css">
+    		<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/content_organization.css">
 		</metal:styleslot>
 		
 		<metal:js fill-slot="javascript_head_slot">
-    		<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/ajax_comments-curtir.js"></script>
-			<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula/comments.js"></script>
+    		<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajax_comments-curtir.js"></script>
+			<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/comments.js"></script>
 		</metal:js>	
 	
 	</head>

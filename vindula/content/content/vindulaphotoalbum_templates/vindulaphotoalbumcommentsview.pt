@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <base tal:define="plone_view context/@@plone" 
+              tal:attributes="href plone_view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+        <div tal:replace="structure provider:plone.htmlhead" />
+		<link tal:attributes="href string:${context/absolute_url|nothing}/personal-layout.css" media="screen" type="text/css" rel="stylesheet">
+        
+		<style type="text/css">
+			.comments-cont{
+				margin:0px;
+			}
+			.geral_lista_comentarios .comments-cont .comments-cont{
+				display:block;
+			}
+		</style>
+		
+    </head>
+	<body  tal:define="view_org context/OrgStruct_view;" 
+	       tal:attributes="class view_org/id;"
+	       style="width:95%;margin:auto;background:none;">
+	   <br />
+		<tal:def tal:define="isAnonymous python:context.portal_membership.isAnonymousUser();
+		                     member context/@@plone_portal_state/member;
+		                     
+							 view_coments python:context.restrictedTraverse('@@myvindula-comments');
+		                     
+		                     item_id view_coments/get_UID|nothing;
+		                     item_name_class context/portal_type|nothing;
+		                     
+		                     comments python:view_coments.get_comments(item_id, item_name_class);">
+		            
+		
+				<tal:cond tal:define="isDiscussionAllowed view_coments/is_discussion_allowed;
+				                      activ_vindula context/activ_comment|context/isDiscussable|nothing;
+									  
+									  folder python: context.aq_parent;
+									  folder_activ_vindula python: folder.isDiscussable();
+				                      
+									  enable python:view_coments.discussionAllowed(isDiscussionAllowed, False, activ_vindula);
+									  enable_folder python:view_coments.discussionAllowed(isDiscussionAllowed, False, folder_activ_vindula);
+									  
+									  comments_clear python:True"
+				          
+						  condition="python: enable or enable_folder">
+						  	
+				    <div id="like" tal:condition="not: isAnonymous">
+				        <div tal:attributes="id item_id">
+				            <input type="hidden" name="isPlone:boolean" id="isPlone" value="True" />
+				            <input type="hidden" name="type" id="type" tal:attributes="value context/portal_type|nothing" />
+				        </div>
+				        <div metal:use-macro="context/myvindula-like-macro/macros/like-plone"> </div>
+				    </div>
+				    <div metal:use-macro="context/macro-comments-master/macros/comments" />
+				</tal:cond>
+					
+					
+		</tal:def>
+	</body>
+</html>			

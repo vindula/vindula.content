@@ -6,8 +6,8 @@
 				<div class="remove-bullet" id="content" tal:define="view_folder python: context.restrictedTraverse('@@folder-organizational-structure');
 											  					    results view_folder/getCategorias;">
 					<div id="areas-empresa">						  					    	
-						<script type="text/javascript" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/areas_empresa.js"></script>
-						<link rel="stylesheet" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/areas_empresa.css">
+						<script type="text/javascript" tal:attributes="src string:${context/portal_url}/++resource++vindula.content/js/areas_empresa.js"></script>
+						<link rel="stylesheet" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/areas_empresa.css">
 						
 						<input type="hidden" tal:attributes="value context/absolute_url" id="url">
 						<div class="two-columns" id="listagem-areas">

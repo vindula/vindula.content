@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="pt-br"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+    
+	<head>
+        <metal:js fill-slot="javascript_head_slot">
+            
+			<!--script id="galleria-js" tal:attributes="src string:${view/jsGalleria}/galleria-1.2.8.js" type="text/javascript" /-->
+            <script id="galleria-js" type="text/javascript" tal:content="string:Galleria.loadTheme('${view/jsGalleria}/themes/twelve/galleria.twelve.min.js');;" />
+            <script id="galleria-js" type="text/javascript" tal:content="view/jsConfigGalleria|nothing"></script>
+
+        </metal:js>
+        <metal:styleslot fill-slot="style_slot">
+        	<link id="galleria-js" rel="stylesheet" type="text/css" media="screen"
+			      tal:attributes="href string:${view/jsGalleria}/themes/twelve/galleria.twelve.css">
+			
+	        <style type="text/css">
+	               #galleria{ width: 100%;background: #000 }
+	        </style>
+        </metal:styleslot>
+		
+		<metal:block fill-slot="top_slot">
+			<tal:cond tal:condition="not: context/getActiv_portletLeft">
+			     <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>	
+            </tal:cond>				
+            
+			<tal:cond tal:condition="not: context/getActiv_portlteRight">
+			     <tal:dummy tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);" />	
+			</tal:cond>
+            
+        </metal:block>
+		
+    </head>
+    <body>
+        <metal:main fill-slot="content-core"
+		            tal:define="itensFolder python:context.getFolderContents()" >
+		    <br />
+		    <div id="galleria" tal:condition="itensFolder"
+			                   tal:attributes="style string:height:${context/getHeight_photoAlbum|nothing}px">
+		    	<tal:rep repeat="item itensFolder">
+					<tal:def define="obj item/getObject">
+						<a tal:attributes="href string:${obj/absolute_url|nothing}/image_large">
+							<img tal:attributes="src string:${obj/absolute_url|nothing}/image_thumb;
+							                     data-title obj/Title|nothing;
+												 data-description obj/Description|nothing;"
+												  />
+						</a>
+					</tal:def>	
+		    	</tal:rep>
+	        </div>
+			<div tal:condition="not: itensFolder" >
+				<h2>
+					Não há imagem neste album
+				</h2>
+				
+			</div>
+	    </metal:main>
+	</body>
+</html>

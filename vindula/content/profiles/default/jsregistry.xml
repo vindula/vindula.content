@@ -5,4 +5,7 @@
     			conditionalcomment="" cookable="True" enabled="True" expression=""
     			id="++resource++vindula.content/carrega_ckeditor.js" inline="False"/-->
 
+    <javascript authenticated="False" cacheable="False" compression="none"
+                conditionalcomment="" cookable="True" enabled="True" expression=""
+                id="++resource++vindula.content/js/galleria/galleria-1.2.8.min.js" inline="False"/>
 </object>

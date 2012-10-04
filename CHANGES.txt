@@ -112,3 +112,9 @@ Changelog
 1.1.22 - 2012-09-27
 -------------------------
 - Criado objeto de Album de Foto - Ticket #184
+
+1.1.23 - 2012-10-04
+-------------------------
+- Adcionado uma galeria js ao album de Foto
+
+
