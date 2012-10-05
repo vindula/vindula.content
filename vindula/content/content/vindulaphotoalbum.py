@@ -87,7 +87,7 @@ class VindulaPhotoAlbum(ATFolder):
     """ VindulaPhotoAlbum """
     
     security = ClassSecurityInfo()
-    implements(IVindulaPhotoAlbum,INonStructuralFolder)
+    implements(IVindulaPhotoAlbum) #,INonStructuralFolder)
     portal_type = 'VindulaPhotoAlbum'
     _at_rename_after_creation = True
     schema = VindulaPhotoAlbum_schema

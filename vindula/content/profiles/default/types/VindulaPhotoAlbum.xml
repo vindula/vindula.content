@@ -17,12 +17,14 @@
 	 <property name="allowed_content_types" >
 	   <element value="Image"/>
      </property>
+	 <property name="view_methods">view</property>
+	 
 	 <property name="default_view">view</property>
 	 <property name="default_view_fallback">False</property>
 	
 	 <alias from="(Default)" to="view"/>
 	 <alias from="index.html" to="(dynamic view)"/>
-	 <!--alias from="view" to="(selected layout)"/-->
+	 <alias from="view" to="(selected layout)"/>
 	 
 	 <alias from="edit" to="base_edit"/>
 	 
@@ -45,4 +47,5 @@
 	         	
 	       <permission value="Modify portal content"/>
 	 </action>
+	 
 </object>
