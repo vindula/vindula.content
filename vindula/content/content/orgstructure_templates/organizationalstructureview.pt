@@ -84,7 +84,7 @@
 					</div>
 					<div class="cell width-7 position-9">
 						<h2>Colaboradores</h2>
-						<tal:def define="employees context/employees|nothing">  
+						<tal:def define="employees context/getEmployees|nothing"> 
 							<tal:rep repeat="func employees">
 							    <!-- Dados para utilização da macro -->                                  
                                 <tal:def tal:condition="func" 

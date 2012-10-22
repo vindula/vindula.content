@@ -26,6 +26,7 @@ from vindula.content.config import *
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
+from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     
@@ -649,13 +650,13 @@ def CreatGroupInPloneSite(event):
 
     
     id_grupo_employees = ctx.UID() +'-view'
+    new_tupla = list(ctx.Groups_view)
     for user in ctx.getEmployees():
+        if new_tupla.count(user) == 0:
+            new_tupla.append(user)
+        
         portalGroup.getGroupById(id_grupo_employees).addMember(user)
-
-        
-    id_grupo_Manage = ctx.UID() +'-admin'
-    portalGroup.getGroupById(id_grupo_Manage).addMember(ctx.getManager())
-        
+    ctx.Groups_view = tuple(new_tupla)
 
 
 @grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)        
@@ -752,5 +753,3 @@ class FolderOrganizationalStructureView(grok.View, BaseFunc):
                     D['url'] =   item.absolute_url()
                     L.append(D)
         return L
-        
-

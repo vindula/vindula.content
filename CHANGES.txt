@@ -124,3 +124,7 @@ Changelog
 1.1.25 - 2012-10-05
 -------------------------
 - Correção do obejto album de foto para virar folderish
+
+1.1.26 - 2012-10-22
+-------------------------
+- Integracao das estruturas organizacionais com a os grupos e usu�rios do plone e do vindula
