@@ -14,8 +14,8 @@
 	</metal:js>
 	
 	<metal:styleslot fill-slot="style_slot">
-		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/edital.css" />
-		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/list_news.css">
+		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/edital.css" />
+		<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
 	</metal:styleslot>
 	
 </head>
@@ -28,7 +28,7 @@
 	
 	<metal:main fill-slot="content-core">
 		<!-- Informacoes -->
-		<div class="informacoesEditais descricao_destaque" id="geral_breadcrumb">
+		<div class="informacoesEditais descricao_destaque labelOrange" id="geral_breadcrumb">
 			<p tal:condition="context/getNumeroEdital">
 				<span><label>Edital nº: </label></span><span tal:content="string:${context/getNumeroEdital|nothing},">Numero do edital</span>
 			</p>
@@ -56,10 +56,18 @@
 			<p tal:replace="structure context/getText|nothing"> Corpo do texto </p>
 		</div>
 		
-		<div tal:define="archive context/getArchiveRelated" tal:condition="archive">
-			<a tal:attributes="href archive/absolute_url"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
-			<p tal:content="string:Nome: ${archive/Title}" class="float-left" style="margin: 10px 0 0 10px;"></p>
-			<div class="visualClear"></div>
+		<div tal:define="archives context/getArchiveRelated" tal:condition="archives">
+			<p id="geral_breadcrumb" class="labelOrange">
+				<span><label tal:content="python: len(archives) > 1 and 'Arquivos:' or 'Arquivo:'">Arquivos</label></span>
+			</p>
+			<tal:rep repeat="archive archives">
+				<div class="marginBt5px">
+					<p tal:content="string:Nome: ${archive/Title}" class="float-left" style="margin: 10px 10px 0 0;"></p>
+					<a tal:attributes="href archive/absolute_url"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
+					<a tal:attributes="href string:${archive/absolute_url}/view"><div class="bt_comments float-left bt_comments_div">VISUALIZAR</div></a>
+					<div class="visualClear"></div>
+				</div>
+			</tal:rep>
 		</div>
 		
 		<!-- Macro de compartilhamento -->
@@ -100,6 +108,15 @@
 	                           id="orgao"
 							   tal:attributes="value context/getOrgao|nothing"
 	                           /> Orgão
+							   
+						<input class="noborder"
+	                           type="checkbox"
+							   value=""
+							   checked="checked"
+	                           name="nedital"
+	                           id="nedital"
+							   tal:attributes="value context/getNumeroEdital|nothing"
+	                           /> Número do Edital
 	                </div>
 					
 	                <div class="field-news-right float-right">

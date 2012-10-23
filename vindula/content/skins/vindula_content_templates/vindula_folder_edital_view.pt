@@ -6,7 +6,8 @@
         </metal:js>
         
         <metal:styleslot fill-slot="style_slot">
-            <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/list_news.css">
+        	<link type="text/css" rel="stylesheet" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/edital.css" />
+            <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
         </metal:styleslot>
         
     <body>
@@ -77,7 +78,7 @@
 			                                </div>
 											
 			                                <div class="img_descricao">
-			                                    <div id="geral_breadcrumb" class="descricao_destaque">
+			                                    <div id="geral_breadcrumb" class="descricao_destaque labelOrange">
 			                                    	<span><label>Modalidade: </label></span><span tal:content="string:${item/getModalidade|nothing},">Modalidade</span>
 													<span><label>Edital nº: </label></span><span tal:content="string:${item/getNumeroEdital|nothing},">Numero do edital</span>
 													<span><label>Orgão: </label></span><span tal:content="string:${item/getOrgao|nothing},">Orgao</span>

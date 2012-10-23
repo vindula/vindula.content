@@ -26,7 +26,6 @@ VindulaEdital_schema = ATNewsItemSchema.copy() + Schema((
     StringField(
         name='numeroEdital',
         searchable = True,
-        required = 1,
         widget = StringWidget(
             label = 'Número',
             description='Escolha um número para este edital.',
@@ -42,7 +41,6 @@ VindulaEdital_schema = ATNewsItemSchema.copy() + Schema((
         ),
         vocabulary = 'getOrgaos',
         searchable = True,
-        required=1,
     ),
     
     StringField(
@@ -54,13 +52,12 @@ VindulaEdital_schema = ATNewsItemSchema.copy() + Schema((
         ),
         vocabulary = 'getModalidades',
         searchable = True,
-        required=1,
     ),
 
     DateTimeField(
         name='dataPublicacao',
         searchable = True,
-        required = 1,
+        required = True,
         default_method = 'getDefaultTime',
         widget = CalendarWidget(
             label = 'Data de publicação',
@@ -72,7 +69,7 @@ VindulaEdital_schema = ATNewsItemSchema.copy() + Schema((
     
     ReferenceField(
         name='archiveRelated',
-        multiValued=0,
+        multiValued=True,
         allowed_types=('File'),
         relationship='archiveRelated',
         widget=VindulaReferenceSelectionWidget(
@@ -88,7 +85,6 @@ VindulaEdital_schema = ATNewsItemSchema.copy() + Schema((
             label="Ativar Compartilhamento",
             description='Se selecionado, ativa a opção de compartilhamento entre redes sociais.',
         ),
-        required=False,
     ),                                             
 
 ))
@@ -158,9 +154,11 @@ class VindulaEditalView(grok.View):
         if form.get('submitted'):
             orgao = form.get('orgao', None)
             modalidade = form.get('modalidade', None)
+            n_edital = form.get('nedital', None)
         else:
             orgao = self.context.getOrgao()
             modalidade = self.context.getModalidade()
+            n_edital = self.context.getNumeroEdital()
         
         itens = self.context.aq_parent.getFolderContents(query)
         result = []
@@ -168,13 +166,21 @@ class VindulaEditalView(grok.View):
             item = item.getObject()
             if item.id == self.context.id:
                 continue
-            if orgao and modalidade:
+            if orgao and modalidade and n_edital:
+                if item.getModalidade() == modalidade and item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
+                    result.append(item)
+            elif orgao and modalidade: 
                 if item.getModalidade() == modalidade and item.getOrgao() == orgao:
-                    result.append(item)
+                        result.append(item)
+            elif orgao and n_edital: 
+                if item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
+                        result.append(item)
+            elif modalidade and n_edital:
+                if item.getModalidade() == modalidade and item.getNumeroEdital() == n_edital:
+                        result.append(item)
             else:
-                if item.getModalidade() == modalidade or item.getOrgao() == orgao:
+                if item.getModalidade() == modalidade or item.getOrgao() == orgao or item.getNumeroEdital() == n_edital:
                     result.append(item)
-        
         return result
         
         
