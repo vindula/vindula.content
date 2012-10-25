@@ -86,7 +86,7 @@
 				<div class="titulo_area">
 					<h2>Saiba Mais</h2>
 				</div>
-				<tal:rep repeat="new read_more">
+				<tal:rep repeat="new read_more[:5]">
 					<div class="descricao_titulo newSaibaMais">
 						<h4 tal:content="python: new.bobobase_modification_time().strftime('%d/%m/%Y ')" class="float-left">Data de Publicao</h4>
 						<label class="lineHeight16"><a tal:content="string: - ${new/Title}" tal:attributes="href new/getURL; alt new/Title; title new/Title;"></a></label>
@@ -98,7 +98,7 @@
 			
 			<div class="see_also" tal:define="see_also view/getSeeAlso" tal:condition="see_also">
 				<tal:def define="Batch python:modules['Products.CMFPlone'].Batch;
-	                             b_size request/b_size|string:2;
+	                             b_size request/b_size|string:3;
 	                             b_start python:0;
 	                             b_start request/b_start | b_start;
 	                             batch python:Batch(see_also, int(b_size), int(b_start), pagerange=len(see_also));">
