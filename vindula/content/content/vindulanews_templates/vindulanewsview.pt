@@ -150,7 +150,7 @@
                                 <div class="img_descricao">
                                     <div id="geral_breadcrumb" class="descricao_destaque labelOrange">
                                         <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-										<tal:def define="themes item_object/getThemesNews|nothing" condition="themes">
+										<tal:def define="themes item_object/ThemeNews|nothing" condition="themes">
 											<span tal:content="python: len(themes) > 1 and ', temas:' or ',tema:'">, tema:</span>
 											<span tal:repeat="theme themes" tal:content="theme">Tema</span>
 										</tal:def>
