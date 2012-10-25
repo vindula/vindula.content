@@ -377,7 +377,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         relationship='imageBkgMenu',
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
-            label=_(u"Imagem para background do menu Dropdown"),
+            label=_(u"Imagem para background do primeiro nível do menu"),
             description='A imagem selecionada será exibida como plano de fundo do menu.\
                          A imagem será mostrada em seu tamanho original, com repetição.'),
         schemata = 'Menu'
@@ -400,7 +400,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         searchable=0,
         required=0,
         widget=SmartColorWidget(
-            label='Cor da fonte do menu, quando ativo no menu dropdown',
+            label='Cor da fonte do menu quando ativo no menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteHoverDropdown.png'>aqui para exemplo</a>",
 #            description="Cor para a fonte do primeiro nível do menu do portal quando ele\
 #                         estiver quando selecionado pelo mouse e ao cor dos links dentro do Menu Dropdown.",
@@ -486,7 +486,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         name='heightTopPortlet',
         widget=IntegerWidget(
             label='Altura do topo do portlet',
-            description='Altura, em pixels, do topo do portlet. Quando não definida manterá o padrão de 15px',
+            description='Altura, em pixels, do topo do portlet. Quando não definida, manterá o padrão de 15px',
         ),
         schemata = 'Portlet'
     ),

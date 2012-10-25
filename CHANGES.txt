@@ -127,4 +127,8 @@ Changelog
 
 1.1.26 - 2012-10-22
 -------------------------
-- Integracao das estruturas organizacionais com a os grupos e usu�rios do plone e do vindula
+- Integracao das estruturas organizacionais com a os grupos e usu�rios do plone e do vindula
+
+1.1.27 - 2012-10-25
+-------------------------
+- Correção do nome do campo em Estrutura Organizacional
