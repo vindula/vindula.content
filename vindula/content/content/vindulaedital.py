@@ -182,15 +182,3 @@ class VindulaEditalView(grok.View):
                 if item.getModalidade() == modalidade or item.getOrgao() == orgao or item.getNumeroEdital() == n_edital:
                     result.append(item)
         return result
-        
-        
-        
-        
-        
-        
-
-
-#class ShareView(grok.View):
-#    grok.context(Interface)
-#    grok.require('zope2.View') 
-#    grok.name('vindula-content-share')

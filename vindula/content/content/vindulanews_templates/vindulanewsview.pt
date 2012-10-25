@@ -5,6 +5,13 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="vindula.content">
+      	
+<head>
+	<metal:js fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script>
+    </metal:js>
+</head>
 
 <body>
     <metal:block fill-slot="content-description">
@@ -74,6 +81,114 @@
     					<div metal:use-macro="context/vindula-content-share/macros/share" />
     			</tal:cont>
     		</tal:cont>
+			
+			<div class="read_more" tal:define="read_more view/getReadMore" tal:condition="read_more">
+				<div class="titulo_area">
+					<h2>Saiba Mais</h2>
+				</div>
+				<tal:rep repeat="new read_more">
+					<div class="descricao_titulo newSaibaMais">
+						<h4 tal:content="python: new.bobobase_modification_time().strftime('%d/%m/%Y ')" class="float-left">Data de Publicao</h4>
+						<label class="lineHeight16"><a tal:content="string: - ${new/Title}" tal:attributes="href new/getURL; alt new/Title; title new/Title;"></a></label>
+					</div>
+				</tal:rep>
+			</div>
+			
+			
+			
+			<div class="see_also" tal:define="see_also view/getSeeAlso" tal:condition="see_also">
+				<tal:def define="Batch python:modules['Products.CMFPlone'].Batch;
+	                             b_size request/b_size|string:2;
+	                             b_start python:0;
+	                             b_start request/b_start | b_start;
+	                             batch python:Batch(see_also, int(b_size), int(b_start), pagerange=len(see_also));">
+                    	
+                    <div id="pag-nav" class="float-right">
+                        <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+                    </div>
+					                      
+					<div class="titulo_area">
+						<h2>Veja também</h2>
+					</div>
+					
+					<input type="hidden" id="b_size" tal:attributes="value b_size" />
+                    <input type="hidden" id="b_start" tal:attributes="value b_start" />
+					<input type="hidden" tal:attributes="value context/absolute_url" id="absolute_url" >
+					
+					<div id="news" tal:repeat="item batch" class="see_also_news">
+                        <div class="contBoxDestaque" 
+                             tal:define="item_object item/getObject">
+                                
+                            <div tal:define="is_end repeat/item/end;"
+                                 tal:attributes="class python: is_end and 'info' or 'info borderDif'">
+                                 
+								<div class="image_inf float-left imgRelateNews" tal:define="getImage item_object/getImage|nothing;
+																			   meta_type item_object/meta_type;
+								                                           getImageRelac item_object/getImageRelac|nothing;
+								                                           image python:getImage or getImageRelac or None"
+								                               	  tal:condition="image">
+								
+									<img tal:condition="python: getImage and meta_type != 'ATBlob'"
+									    tal:attributes="src string:${getImage/absolute_url|nothing}_thumb;
+									                     alt item_object/imageCaption|nothing;
+									                     title item_object/imageCaption|nothing;
+									                     
+									                     width size_image_width|string:100px;
+									                     height size_image_height|string:75px;" />
+									
+									<img tal:condition="getImageRelac"
+									    width="100px" height="75px" 
+									    tal:attributes="src string:${getImageRelac/absolute_url|nothing}/image_thumb;
+									                     alt item_object/imageCaption|nothing;
+									                     title item_object/imageCaption|nothing;
+									                     
+									                     width size_image_width|string:100px;
+									                     height size_image_height|string:75px;" />
+								 
+								</div>
+								
+                                <div class="img_descricao">
+                                    <div id="geral_breadcrumb" class="descricao_destaque labelOrange">
+                                        <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+										<tal:def define="themes item_object/getThemesNews|nothing" condition="themes">
+											<span tal:content="python: len(themes) > 1 and ', temas:' or ',tema:'">, tema:</span>
+											<span tal:repeat="theme themes" tal:content="theme">Tema</span>
+										</tal:def>
+										
+                                        <tal:def define="pas_member context/@@pas_member|nothing;
+	                                                     item_creator item_object/Creator|nothing;
+	                                                     author python:pas_member.info(item_creator) or None;">
+                                                
+                                                <span tal:content="string:, autor: ${author/name_or_id|nothing}">Author</span>
+                                        </tal:def>
+                                        
+										<div class="titulo_info">
+		                                    <label>
+		                                        <a tal:content="item_object/Title"
+												   tal:attributes="href string: ${item_object/absolute_url|nothing}/view;
+		                                                           alt item_object/Title|nothing">
+												New title</a>
+		                                    </label>
+		                                </div>
+										
+                                        <p tal:content="item_object/Description|nothing">Summary</p>
+                                    </div>
+                                    <div class="visualClear"></div>
+                                </div>
+                            </div>  
+                        	<div class="visualClear"></div>
+                        </div>                      
+                     </div>
+					 
+					 <!-- Spinner -->
+	                <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+	                    <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+	                </div>
+					
+				</tal:def>
+				
+				<div class="visualClear"></div>
+			</div>
     
     </metal:main>
 </body>

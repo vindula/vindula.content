@@ -127,9 +127,15 @@ Changelog
 
 1.1.26 - 2012-10-22
 -------------------------
-- Integracao das estruturas organizacionais com a os grupos e usuÔøΩrios do plone e do vindula
 
 1.1.27 - 2012-10-25
 -------------------------
 - Corre√ß√£o do nome do campo em Estrutura Organizacional
 - Reformula√ß√£o de frase
+
+1.1.28 - 2012-10-25
+-------------------------
+- Adicionada novas funcionalidades no conteudo Noticia:
+      . Pode adicionar e/ou escolher um tema já existente para aquela noticia;
+      . De acordo com o tema selecionado quando se visualizar uma noticia vai mostrar logo abaixo, na área Veja Também, todas as outras noticias com aquele tema
+      . Quando se escolhe e/ou adiciona uma Tag para um noticia ontras noticias relacionadas com as mesmas tags vão aparecer em uma area chamada Saiba Mais

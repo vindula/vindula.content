@@ -3,4 +3,8 @@
 	<index name="categoria" meta_type="FieldIndex">
     	<indexed_attr value="categoria"/>
 	</index>
+	
+	<index name="ThemeNews" meta_type="KeywordIndex">
+		<indexed_attr value="ThemeNews"/>
+	</index>
 </object>

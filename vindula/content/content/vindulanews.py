@@ -20,8 +20,20 @@ from vindula.content.config import *
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget 
 
 VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
+                                                       
+                                                       
+    LinesField(
+        'themesNews',
+        multiValued=1,
+        accessor="ThemeNews",
+        searchable=True,
+        widget=KeywordWidget(
+            label=_(u'Temas'),
+            description=_(u'Selecione os temas da noticia.'),
+            ),
+    ),
 
-   ReferenceField('imageRelac',
+    ReferenceField('imageRelac',
         multiValued=0,
         allowed_types=('Image'),
         label=_(u"Imagem "),
@@ -120,11 +132,47 @@ class VindulaNewsView(grok.View):
     def authorname(self):
         author = self.author()
         return author and author['fullname'] or self.creator()
- 
+        
+    def catalogNews(self, context=None, withKeywords=False):
+        p_catalog = getSite().portal_catalog
+        if not context:
+            context = self.context
+
+        query = {}
+        query['portal_type'] = ['VindulaNews', 'News Item']
+        query['sort_order'] = 'descending'
+        if withKeywords:
+            query['Subject'] = context.getRawSubject()
+        query['sort_on'] = 'effective'
+        query['review_state'] = ['published']
+        
+        return p_catalog(**query)
+        
+    
+    def getReadMore(self):
+        news = list(self.catalogNews(context=self.context, withKeywords=True))
+        results = []
+        [results.append(new) for new in news if new.getObject() != self.context]
+        
+        return results
+    
+    def getSeeAlso(self):
+        news = list(self.catalogNews(context=self.context))
+        results = []
+        if self.context.ThemeNews():
+            for item in news:
+                obj = item.getObject()
+                if obj == self.context or not obj.ThemeNews():
+                   continue
+                else:
+                    for tema in obj.ThemeNews():
+                        if tema in self.context.ThemeNews():
+                            results.append(item)
+        return results
     
 class ShareView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View') 
     grok.name('vindula-content-share')
-
-
+    
+    
