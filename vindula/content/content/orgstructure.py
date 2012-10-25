@@ -266,7 +266,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         relationship='imageBackground',
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
-            label=_(u"WallPaper do portal"),
+            label=_(u"Imagem de fundo do portal"),
             description='A imagem será aplicada no background do portal. A imagem será mostrada em seu tamanho original, sem repetição.'),
         schemata = 'Layout'
     ),                                                                   
