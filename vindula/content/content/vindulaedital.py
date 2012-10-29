@@ -114,6 +114,7 @@ class VindulaEdital(ATNewsItem):
         obj_control = getSite().get('control-panel-objects')
         orgaos = obj_control.get('vindula_categories').orgaoEdital
         if orgaos:
+            orgaos = orgaos.replace('\r', '')
             orgaos = orgaos.split('\n')
             for orgao in orgaos:
                result.append((orgao, orgao)) 
@@ -124,6 +125,7 @@ class VindulaEdital(ATNewsItem):
         obj_control = getSite().get('control-panel-objects')
         modalidades = obj_control.get('vindula_categories').modalidadeEdital
         if modalidades:
+            modalidades = modalidades.replace('\r', '')
             modalidades = modalidades.split('\n')
             for modalidade in modalidades:
                result.append((modalidade, modalidade)) 
