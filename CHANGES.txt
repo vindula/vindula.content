@@ -136,6 +136,11 @@ Changelog
 1.1.28 - 2012-10-25
 -------------------------
 - Adicionada novas funcionalidades no conteudo Noticia:
-      . Pode adicionar e/ou escolher um tema j‡ existente para aquela noticia;
-      . De acordo com o tema selecionado quando se visualizar uma noticia vai mostrar logo abaixo, na ‡rea Veja TambŽm, todas as outras noticias com aquele tema
-      . Quando se escolhe e/ou adiciona uma Tag para um noticia ontras noticias relacionadas com as mesmas tags v‹o aparecer em uma area chamada Saiba Mais
+      . Pode adicionar e/ou escolher um tema jï¿½ existente para aquela noticia;
+      . De acordo com o tema selecionado quando se visualizar uma noticia vai mostrar logo abaixo, na ï¿½rea Veja Tambï¿½m, todas as outras noticias com aquele tema
+      . Quando se escolhe e/ou adiciona uma Tag para um noticia ontras noticias relacionadas com as mesmas tags vï¿½o aparecer em uma area chamada Saiba Mais
+      
+1.1.29 - 2012-10-29
+------------------------
+- Adicionado condiÃ§Ã£o na visualizaÃ§Ã£o de editais, para somente mostar os editais contidos em determinada pasta 
+      
