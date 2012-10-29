@@ -70,7 +70,7 @@
 			                                 
 											<div class="titulo_info">
 			                                    <h4>
-			                                        <a tal:content="item/Title"
+			                                        <a tal:content="item/Title|nothing"
 													   tal:attributes="href string: ${item/absolute_url|nothing}/view;
 			                                                           alt item/Title|nothing">
 													New title</a>
@@ -82,7 +82,8 @@
 			                                    	<span><label>Modalidade: </label></span><span tal:content="string:${item/getModalidade|nothing},">Modalidade</span>
 													<span><label>Edital nº: </label></span><span tal:content="string:${item/getNumeroEdital|nothing},">Numero do edital</span>
 													<span><label>Orgão: </label></span><span tal:content="string:${item/getOrgao|nothing},">Orgao</span>
-													<span><label>Data de Publicação: </label></span><span tal:content="python: item.getDataPublicacao().strftime('%d/%m/%Y')">Data de Publicação</span>
+													<span><label>Data de Publicação: </label></span><span tal:condition="item/getDataPublicacao|nothing" 
+													                                                      tal:content="python: item.getDataPublicacao().strftime('%d/%m/%Y')">Data de Publicação</span>
 			                                        <p tal:content="item/Description|nothing">Summary</p>
 			                                    </div>
 			                                    <div class="visualClear"></div>
@@ -91,6 +92,9 @@
 			                        	<div class="visualClear"></div>
 			                        </div>                      
 			                 	</tal:rep>
+								<tat:cond condition="not:batch">
+									<p>Voce não possui editais</p>
+								</tat:cond>
 		                 	</div>
 						</metal:editais>
 	                </tal:def>

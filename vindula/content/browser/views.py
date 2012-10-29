@@ -79,7 +79,8 @@ def sortTitle(item):
 class VindulaListEditais(BrowserView):
     
     def getListOfEditais(self):
-        itens = VindulaResultsNews(self.context, self.request).QueryFilter()
+        
+        itens = self.context.getFolderContents({'meta_type': ('VindulaEdital',)})
         objs = []
         for item in itens:
             objs.append(item.getObject())
