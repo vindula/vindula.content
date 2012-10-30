@@ -23,13 +23,14 @@ def quote_chars(s):
 class VindulaListNews(BrowserView):
     
     def getListToOrder(self):
-        result = None
+        result = [('created', u'Creation Date', u'The time and date an item was created'), \
+                  ('sortable_title', u'Sortable Title', u"An item's title transformed for sorting")]
         if 'control-panel-objects' in getSite().keys():
             control = getSite()['control-panel-objects']
             if 'vindula_categories' in control.keys():
                 confg = control['vindula_categories']
                 try:
-                    result =  confg.order_list
+                    result += confg.order_list
                 except:
                     return result
         return result
