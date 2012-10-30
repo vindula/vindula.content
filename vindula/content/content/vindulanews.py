@@ -144,7 +144,7 @@ class VindulaNewsView(grok.View):
         if withKeywords:
             query['Subject'] = context.getRawSubject()
         query['sort_on'] = 'effective'
-        query['review_state'] = ['published']
+        query['review_state'] = ['published', 'external']
         
         return p_catalog(**query)
         
