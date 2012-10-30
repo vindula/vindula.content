@@ -143,4 +143,10 @@ Changelog
 1.1.29 - 2012-10-29
 ------------------------
 - Adicionado condição na visualização de editais, para somente mostar os editais contidos em determinada pasta 
+
+1.1.30 - 2012-10-30
+------------------------
+- Ajustes no layout da imagem na visualização sumaria do vindula 
+
+
       

@@ -138,17 +138,14 @@
 	                                                                             alt item_object/imageCaption|nothing;
 	                                                                             title item_object/imageCaption|nothing;
 	                                                                             
-	                                                                             width size_image_width|string:158px;
-	                                                                             height size_image_height|string:118px;" />
+	                                                                             width size_image_width|string:158px;" />
 	                                                        
 	                                                        <img tal:condition="getImageRelac"
-	                                                            width="158px" height="118px" 
 	                                                            tal:attributes="src string:${getImageRelac/absolute_url|nothing}/image_thumb;
 	                                                                             alt item_object/imageCaption|nothing;
 	                                                                             title item_object/imageCaption|nothing;
 	                                                                             
-	                                                                             width size_image_width|string:158px;
-	                                                                             height size_image_height|string:118px;" />
+	                                                                             width size_image_width|string:158px;" />
 	                                                         
 	                                                     </div>
 	                                                    <div class="titulo_info">
