@@ -13,6 +13,12 @@
     <body>
         <metal:content-core fill-slot="main">
         	
+			<div class="cont_superior">
+                <div class="titulo marginDif1">
+                    <h2 tal:content="context/Title">Title Highlighted News</h2>
+                </div>
+               <div class="visualClear"></div>
+            </div>
 			
 			<input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" />
 			<form id="enviar" name="enviar" action="" method="post" tal:attributes="action context/absolute_url">
