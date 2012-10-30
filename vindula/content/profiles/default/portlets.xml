@@ -33,11 +33,10 @@
 	</portlet>
     
 	<portlet
-        addview="vindula.content.PortletVindulaNews"
+        addview="vindula.content.VindulaNewsPortlet"
         title="Portlet Vindula News"
         description="Portlet Vindula News">
         
     </portlet>					
-
 
 </portlets>
