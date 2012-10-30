@@ -162,12 +162,13 @@ class VindulaNewsView(grok.View):
         if self.context.ThemeNews():
             for item in news:
                 obj = item.getObject()
-                if obj == self.context or not obj.ThemeNews():
-                   continue
-                else:
-                    for tema in obj.ThemeNews():
-                        if tema in self.context.ThemeNews():
-                            results.append(item)
+                if obj.portal_type == 'VindulaNews':
+                    if obj == self.context or not obj.ThemeNews():
+                       continue
+                    else:
+                        for tema in obj.ThemeNews():
+                            if tema in self.context.ThemeNews():
+                                results.append(item)
         return results
     
 class ShareView(grok.View):
