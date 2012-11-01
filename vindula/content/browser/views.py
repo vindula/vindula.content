@@ -40,30 +40,47 @@ class VindulaResultsNews(BrowserView):
     def QueryFilter(self):
         form = self.request.form
         submitted = form.get('submitted', False)
+        form_cookies = {}
+        if not submitted and self.request.cookies.get('find-news', None):
+            form_cookies = self.getCookies(self.request.cookies.get('find-news', None))
         
-        if submitted:
+        if submitted or form_cookies:
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
             
-            invert = form.get('invert', False)
+            invert = form.get('invert', form_cookies.get('invert', False))
             if invert:
                 D['sort_order'] = 'descending'
             else:
                 D['sort_order'] = 'ascending'
              
-            text = form.get('keyword','')
+            text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
                 text = text.strip()
                 if '*' not in text:
                      text += '*'
                 D['SearchableText'] = quote_chars(text)    
             
-            D['sort_on'] = form.get('sorted','getObjPositionInParent')
+            D['sort_on'] = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents()
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',)})
         return result
+    
+    def getCookies(self, cookies=None):
+        form_cookies = {}
+        if not cookies:
+            cookies = self.request.cookies.get('find-news', None)
+            
+        if cookies:
+            all_cookies = self.request.cookies.get('find-news', None).split('|')
+            for cookie in all_cookies:
+                if cookie:
+                    cookie = cookie.split('=')
+                    form_cookies[cookie[0]] = cookie[1]
+                    
+        return form_cookies
 
             
 def sortDataPublicacao(item):
@@ -98,17 +115,4 @@ class VindulaListEditais(BrowserView):
             elif sort == 'assunto':
                 return sorted(objs, key=sortTitle, reverse=reverse)
             
-        return sorted(objs, key=sortDataPublicacao, reverse=reverse)
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
-            
-
-    
+        return sorted(objs, key=sortDataPublicacao, reverse=reverse) 

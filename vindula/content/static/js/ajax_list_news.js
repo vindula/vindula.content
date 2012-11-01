@@ -1,6 +1,6 @@
 $j = jQuery.noConflict();
 
-function AjaxNewsItens (b_size,b_start,limpa_cookie) {
+function AjaxNewsItens (b_size,b_start,limpa_cookie, sort) {
        
     var url = $j('#portal_url').val() + "/vindula_news_result_view";
     var parametro = {};
@@ -22,13 +22,13 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie) {
         cookie_parametro += 'sorted='+parametro['sorted']+'|';
         
         parametro['keyword'] = $j("#keyword").val();
-        cookie_parametro += 'keyword='+parametro['keyword']+'|';    
-        
-        if ($j('#reversed').attr('checked')){
-            parametro['invert:boolean'] = 'True';
+        cookie_parametro += 'keyword='+parametro['keyword']+'|';
+		
+		if (sort) {
+			parametro['invert:boolean'] = sort;
             cookie_parametro += 'invert:boolean='+parametro['invert:boolean']+'|';
-        }
-        
+		}
+
         if (b_size==null)
             var b_size = $j('#b_size').val();
         
@@ -83,14 +83,31 @@ function clearCookies () {
 
 $j(document).ready(function(){
 	
+	$j('.imgSort').click(function(){
+		if ($j(this).hasClass('imgDescend'))
+			var sort = '';
+		else
+			var sort = 'True';	
+			
+		AjaxNewsItens(null,null,true, sort);
+		$j(this).toggleClass('imgDescend');
+		$j(this).toggleClass('imgAscend');
+	});
+	
 	$j('#vindula_folder_summary_imgBig_view, #vindula_folder_summary_imgSmall_view, #vindula_folder_summary_noImg_view').click(function(){
 	  clearCookies();
 	});
+/*
 
 	AjaxNewsItens();
 	
+*/
     $j('input#searchItems').click(function(){
-        AjaxNewsItens(null,null,true);
+		if ($j('.imgSort').hasClass('imgDescend'))
+			var sort = 'True';
+		else
+			var sort = '';	
+        AjaxNewsItens(null,null,true, sort);
     });
     
     $j('a#itenspage').live('click',function(){

@@ -148,5 +148,8 @@ Changelog
 ------------------------
 - Ajustes no layout da imagem na visualização sumaria do vindula 
 
-
+1.1.31 - 2012-11-01
+------------------------
+- Mudanca do botao de ordenacao na listagem das noticias;
+- Ajustes para nao recarregar as listagem assim que acessar a p�gina
       

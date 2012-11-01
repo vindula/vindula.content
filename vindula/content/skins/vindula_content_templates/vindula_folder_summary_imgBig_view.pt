@@ -32,9 +32,10 @@
                        <div class="visualClear"></div>
                     </div>
                 
-                    <tal:def define="itens python:context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',)});
-                                     listBrowserView context/vindula_list_news_view">
-                                      
+                    <tal:def define="view_search python:context.restrictedTraverse('@@vindula_news_result_view');
+									 itens view_search/QueryFilter;
+									 cookies view_search/getCookies;
+                                     listBrowserView context/vindula_list_news_view;">
                         <div id="busca">
                             <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /> 
                             
@@ -51,7 +52,7 @@
                                                      tal:define="explanation python:field[2]"
                                                      tal:attributes="value python:field[0];
                                                                      title explanation;
-                                                                     selected python: field[0]=='effective' and 'selected' or '';"
+                                                                     selected python:(field[0] == 'created' or cookies.get('sorted', None) == field[0]) and 'selected' or '';"
                                                                      
                                                      tal:content="python:field[1]"
                                                      i18n:attributes="title"
@@ -61,17 +62,14 @@
                             </div>
                             <div class="field-news float-left">
                                 <label for="field">Palavra chave: </label>
-                                <input name="field" id="keyword" value="" />
-                                
+                                <input tal:attributes="value cookies/keyword|nothing " name="field" id="keyword" value="" />
                             </div>
-                            <div class="field-news float-left">
-                                <input class="noborder"
-                                       type="checkbox"
-                                       value="on"
-                                       name="reversed"
-                                       id="reversed"
-                                       /> Inverter
+							
+							<div class="field-news float-left">
+								<div class="imgSort imgAscend">
+								</div>
                             </div>
+							
                             <div class="field-news-right float-right">
                             	<input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
                             </div>
