@@ -98,9 +98,9 @@
 			                        	<div class="visualClear"></div>
 			                        </div>                      
 			                 	</tal:rep>
-								<tat:cond condition="not:batch">
+								<tal:cond condition="not:batch">
 									<p>Voce não possui editais</p>
-								</tat:cond>
+								</tal:cond>
 		                 	</div>
 						</metal:editais>
 	                </tal:def>
