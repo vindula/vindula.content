@@ -30,18 +30,6 @@ from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetai
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     
-#    StringField(
-#        name='categoria',
-#        widget=SelectionWidget(
-#            label=_(u"Categoria"),
-#            description=_(u"Selecione a categoria desta estrutura.\
-#                         Para gerenciar as categorias <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
-#
-#            format = 'select',
-#        ),
-#        vocabulary='voc_categoria',
-#        required=False,
-#    ),
     
     ReferenceField('structures',
         multiValued=0,
@@ -79,27 +67,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             required=True,
             ),
 
-#    StringField(
-#            name='employees',
-#            widget=InAndOutWidget(
-#                label=_(u"Funcionários desta Estrutura Organizacional"),
-#                description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
-#            ),
-#            required=0,
-#            vocabulary='voc_employees',
-#    ),
-#
-#    StringField(
-#        name='manager',
-#        widget=SelectionWidget(
-#            label=_(u"Gestor"),
-#            description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
-#            format = 'select',
-#        ),
-#        vocabulary='voc_employees',
-#        required=False,
-#    ),
-
     TextField(
             name='text',
             default_content_type = 'text/restructured',
@@ -123,9 +90,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description='Será exibido na visualização desta estrutura. A imagem será redimensionada para um tamanho adequado.')
     ),
 
-#---------------------abas de permições no Objeto---------------------------------
-     
-    
+    #---------------------abas de permições no Objeto---------------------------------
      LinesField(
             name="Groups_view",
             multiValued=1,
@@ -163,43 +128,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             validators = ('isUserUpdate',),
             ),
     
-#    StringField(
-#            name='Groups_view',
-#            widget=InAndOutWidget(
-#                label=_(u"Grupo de usuários para visualização"),
-#                description=_(u"Selecione os grupos que terão permissão de visualizar esta unidade organizacional."),
-#            ),
-#            required=0,
-#            vocabulary='voc_listGroups',
-#            schemata = 'Permissões',
-#            #validators = ('isUserUpdate',),
-#    ),    
-#    
-#    StringField(
-#            name='Groups_edit',
-#            widget=InAndOutWidget(
-#                label=_(u"Grupo de usuários de gerencia o conteúdo"),
-#                description=_(u"Selecione os grupos que terão permissão de gerenciar o conteúdo desta unidade organizacional."),
-#            ),
-#            required=0,
-#            vocabulary='voc_listGroups',
-#            schemata = 'Permissões',
-#            #validators = ('isUserUpdate',),
-#    ),
-#
-#    StringField(
-#            name='Groups_admin',
-#            widget=InAndOutWidget(
-#                label=_(u"Grupo de usuários de administração"),
-#                description=_(u"Selecione os grupos que terão permissão de gerenciar totalmente esta unidade organizacional."),
-#            ),
-#            required=0,
-#            vocabulary='voc_listGroups',
-#            schemata = 'Permissões',
-#            validators = ('isUserUpdate',),
-#    ),
-
-#---------------------abas de permições no Objeto---------------------------------
+    #---------------------abas de permições no Objeto---------------------------------
 
     BooleanField(
         name='activ_personalit',
@@ -221,17 +150,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         ),
         schemata = 'Layout'
     ),    
-    
-#    StringField(
-#        name='CorMenu',
-#        searchable=0,
-#        required=0,
-#        widget=SmartColorWidget(
-#            label='Cor do background do Menu da Unidade',
-#            description="Cor do background do Menu da Unidade Organizacional.",
-#        ),
-#        schemata = 'Layout'
-#    ),
                                                                    
     ReferenceField('logoPortal',
         multiValued=0,
@@ -305,20 +223,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description='A imagem selecionada será exibida no rodapé do portal. Selecione uma imagem com dimenções 980x121'),
         schemata = 'Layout'
     ),
-
-
-    StringField(
-        name='itens_menu',
-        widget=InAndOutWidget(
-            label=_(u"Itens do Menu"),
-            description=_(u"Selecione os tipos de itens que serão apresentados no menu e no sub-menu."),
-            format = 'select',
-        ),
-        vocabulary='voc_itens_menu',
-        required=False,
-        schemata = 'Layout'
-    ),
-
 
     #-----------Menu do portal------------------#
     
@@ -559,37 +463,6 @@ class OrganizationalStructure(ATFolder):
         """
         notify(OrgstructureModifiedEvent(self))
     
-    
-#    def voc_categoria(self):
-#        terms = []
-#        try:obj = getSite()['control-panel-objects']['vindula_categories']
-#        except:obj = None
-#        
-#        if obj:
-#            try:
-#                field = obj.__getattribute__( 'orgstructure')
-#            except:
-#                field = None
-#            if field is not None:
-#                terms = field.splitlines()
-#                      
-#        return terms    
-#    
-#    
-#    def voc_employees(self):
-#        users = ModelsFuncDetails().get_allFuncDetails()
-#        terms = []
-#        result = ''
-#        
-#        if users is not None:
-#            for user in users:
-#                member_id = user.username
-#                member_name = user.name or member_id
-#                terms.append((member_id, unicode(member_name)))
-#        
-#        result = DisplayList(tuple(terms))
-#        return result
-    
     def voc_listGroups(self):
         terms = []
         if 'acl_users' in getSite().keys():
@@ -686,14 +559,6 @@ class OrganizationalStructureView(grok.View, UtilMyvindula):
         D['visible_area'] = departament
         return ModelsMyvindulaHowareu().get_myvindula_howareu(**D)
     
-#    def get_prefs_user(self, user):
-#        try:
-#            user_id = unicode(user, 'utf-8')    
-#        except:
-#            user_id = user 
-#
-#        return ModelsFuncDetails().get_FuncDetails(user_id)
-    
     def get_department(self, user):
         try:
             user_id = unicode(user, 'utf-8')    
@@ -701,18 +566,6 @@ class OrganizationalStructureView(grok.View, UtilMyvindula):
             user_id = user
         
         return ModelsDepartment().get_departmentByUsername(user_id)    
-
-
-#    def getPhoto(self,photo):
-#        if photo is not None and not ' ' in photo:
-#            url_foto = BaseFunc().get_imageVindulaUser(photo)
-#            if url_foto:
-#                return url_foto
-#                #return self.context.absolute_url()+'/'+photo # + '/image_thumb'
-#            else:
-#                return self.context.absolute_url()+'/defaultUser.png'
-#        else:
-#            return self.context.absolute_url()+'/defaultUser.png'       
 
     def get_LastContent(self):
         ctool = getSite().portal_catalog
