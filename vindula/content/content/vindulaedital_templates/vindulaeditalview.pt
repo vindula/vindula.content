@@ -64,7 +64,7 @@
 				<div class="marginBt5px">
 					<p tal:content="string:Nome: ${archive/Title}" class="float-left" style="margin: 10px 10px 0 0;"></p>
 					<a tal:attributes="href archive/absolute_url"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
-					<a tal:attributes="href string:${archive/absolute_url}/view"><div class="bt_comments float-left bt_comments_div">VISUALIZAR</div></a>
+					<a target="_blank" tal:attributes="href string:${archive/absolute_url}/view"><div class="bt_comments float-left bt_comments_div">VISUALIZAR</div></a>
 					<div class="visualClear"></div>
 				</div>
 			</tal:rep>
