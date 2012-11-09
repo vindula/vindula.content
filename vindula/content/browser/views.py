@@ -30,7 +30,7 @@ class VindulaListNews(BrowserView):
             if 'vindula_categories' in control.keys():
                 confg = control['vindula_categories']
                 try:
-                    result += confg.order_list
+                    result += confg.getOrder_list()
                 except:
                     return result
         return result

@@ -112,7 +112,7 @@ class VindulaEdital(ATNewsItem):
     def getOrgaos(self):
         result = [('', 'Selecione um orgão')]
         obj_control = getSite().get('control-panel-objects')
-        orgaos = obj_control.get('vindula_categories').orgaoEdital
+        orgaos = obj_control.get('vindula_categories').getOrgaoEdital()
         if orgaos:
             orgaos = orgaos.replace('\r', '')
             orgaos = orgaos.split('\n')
@@ -123,7 +123,7 @@ class VindulaEdital(ATNewsItem):
     def getModalidades(self):
         result = [('', 'Selecione uma modalidade')]
         obj_control = getSite().get('control-panel-objects')
-        modalidades = obj_control.get('vindula_categories').modalidadeEdital
+        modalidades = obj_control.get('vindula_categories').getModalidadeEdital()
         if modalidades:
             modalidades = modalidades.replace('\r', '')
             modalidades = modalidades.split('\n')
