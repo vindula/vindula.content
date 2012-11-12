@@ -162,13 +162,18 @@
 	                                                                    
 	                                                                    <h4 tal:content="author/name_or_id|nothing">Author</h4>
 	                                                            </tal:def-->
-	                                                            <span tal:content="python:'Data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>,
-	                                                            <tal:def define="pas_member context/@@pas_member|nothing;
-	                                                                                item_creator item_object/Creator|nothing;
-	                                                                                author python:pas_member.info(item_creator) or None;">
-	                                                                    
-	                                                                    <span tal:content="string:autor: ${author/name_or_id|nothing}">Author</span>
-	                                                            </tal:def>
+																<tal:cond condition="item_object/getActive_date">
+																	<span tal:content="python:'Data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+																	<tal:replace define="coma python:item_object.getActive_author() and ',' or ''" replace="coma" />
+																</tal:cond>
+																<tal:cond condition="item_object/getActive_author">
+		                                                            <tal:def define="pas_member context/@@pas_member|nothing;
+		                                                                                item_creator item_object/Creator|nothing;
+		                                                                                author python:pas_member.info(item_creator) or None;">
+		                                                                    
+		                                                                    <span tal:content="string:autor: ${author/name_or_id|nothing}">Author</span>
+		                                                            </tal:def>
+																</tal:cond>
 	                                                            
 	                                                            <p tal:content="item_object/Description|nothing">Summary</p>
 	                                                        </div>
