@@ -13,7 +13,11 @@ from Products.ATContentTypes.content.link import ATLinkSchema
 from Products.ATContentTypes.content.link import ATLink
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import View
 from vindula.content.config import *
+import urlparse
+from urllib import quote
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget 
 
@@ -53,5 +57,43 @@ class InternalLink(ATLink):
     portal_type = 'InternalLink'
     _at_rename_after_creation = True
     schema = InternalLink_schema
+    
+    security.declareProtected(ModifyPortalContent, 'setRemoteUrl')
+    def setRemoteUrl(self, value, **kwargs):
+        """remute url mutator
+
+        Use urlparse to sanify the url
+        Also see http://dev.plone.org/plone/ticket/3296
+        """
+        if value:
+            value = urlparse.urlunparse(urlparse.urlparse(value))
+        self.getField('remoteUrl').set(self, value, **kwargs)
+
+    security.declareProtected(View, 'remote_url')
+    def remote_url(self):
+        """CMF compatibility method
+        """
+        return self.getRemoteUrl()
+
+    security.declarePrivate('cmf_edit')
+    def cmf_edit(self, remote_url=None, **kwargs):
+        if not remote_url:
+            remote_url = kwargs.get('remote_url', None)
+        self.update(remoteUrl = remote_url, **kwargs)
+
+    security.declareProtected(View, 'getRemoteUrl')
+    def getRemoteUrl(self):
+        """Sanitize output
+        """
+        if self.getInternal_link():
+            try:
+                value = self.getInternal_link().absolute_url()
+            except Exception as e:
+                print 'Erro retornando a URL do link interno: %s' % (e)
+                value = self.Schema()['remoteUrl'].get(self) 
+        else:
+            value = self.Schema()['remoteUrl'].get(self)
+        if not value: value = '' # ensure we have a string
+        return quote(value, safe='?$#@/:=+;$,&%')
 
 registerType(InternalLink, PROJECTNAME)

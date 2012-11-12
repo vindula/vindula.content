@@ -152,4 +152,7 @@ Changelog
 ------------------------
 - Mudanca do botao de ordenacao na listagem das noticias;
 - Ajustes para nao recarregar as listagem assim que acessar a pï¿½gina
-      
+
+1.1.32 - 2012-11-12
+------------------------
+- Altera‹o do nome LinkInterno para apenas Link, esse conteœdo substitui o Link padr‹o do Plone

@@ -4,40 +4,41 @@
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  
  <!-- Basic metadata -->
- <property name="title" i18n:translate="">Link Interno/Externo</property>
+ <property name="title" i18n:translate="">Link</property>
  <property name="i18n_domain">vindula.content</property>
  <property name="description" i18n:translate="">Adicione um link interno ou externo.</property>
- <property name="content_icon">++resource++vindula.content.images/internallink.png</property>
+ <property name="content_icon">/misc_/CMFPlone/link_icon.png</property>
  <property name="content_meta_type">InternalLink</property>
  <property name="product">vindula.content</property>
  <property name="factory">addInternalLink</property>
- <property name="immediate_view">view</property>
- <property name="allow_discussion">True</property>
+ <property name="immediate_view">link_redirect_view</property>
+ <property name="allow_discussion">False</property>
  <property name="global_allow">True</property>
- <property name="filter_content_types">False</property>
- <property name="allowed_content_types" />   	
- <property name="default_view">base_view</property>
- <property name="default_view_fallback">False</property>
- 
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"/>   	
+ <property name="default_view">link_redirect_view</property>
+ <property name="view_methods">
+  <element value="link_redirect_view"/>
+ </property>
 
- <alias from="(Default)" to="base_view"/>
- <alias from="index.html" to="(dynamic view)"/>
+ <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="edit" to="atct_edit"/>
+ <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
- <alias from="edit" to="base_edit"/>
- <action title="View" 
-         action_id="view"
-         category="object" 
-         condition_expr=""
-         url_expr="string:${object_url}" 
-         visible="True">
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${object_url}" visible="True"
+    i18n:attributes="title">
   <permission value="View"/>
  </action>
- <action title="Edit" 
-         action_id="edit"
-         category="object" 
-         condition_expr=""
-         url_expr="string:${object_url}/edit" 
-         visible="True">
+ <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+    url_expr="string:${object_url}/edit" visible="True"
+    i18n:attributes="title">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="External Edit" action_id="external_edit" category="object"
+    condition_expr="object/externalEditorEnabled"
+    url_expr="string:${object_url}/external_edit" visible="False"
+    i18n:attributes="title">
   <permission value="Modify portal content"/>
  </action>
 </object>
