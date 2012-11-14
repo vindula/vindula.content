@@ -549,7 +549,7 @@ def RemoveGroupInPloneSite(context, event):
 class OrganizationalStructureView(grok.View, UtilMyvindula):
     grok.context(IOrganizationalStructure)
     grok.require('zope2.View')
-    grok.name('view_organizarional')
+    grok.name('view_organizational')
     
     def get_UID(self):
         return IUUID(self.context)

@@ -54,7 +54,7 @@
 	        </div>
 			<div tal:condition="not: itensFolder" >
 				<h2>
-					Não há imagem neste album
+					Não existem imagens incluídas neste album.
 				</h2>
 				
 			</div>

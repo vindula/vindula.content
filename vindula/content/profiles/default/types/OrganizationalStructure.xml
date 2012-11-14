@@ -15,13 +15,13 @@
  <property name="filter_content_types">False</property>
  <property name="allowed_content_types" />
  
- <property name="immediate_view">view_organizarional</property>
- <property name="default_view">view_organizarional</property>
+ <property name="immediate_view">view_organizational</property>
+ <property name="default_view">view_organizational</property>
  
  <property name="default_view_fallback">False</property>
  
  <property name="view_methods">
-	<element value="view_organizarional"/>
+	<element value="view_organizational"/>
 	<element value="folder_summary_view"/>
 	<element value="folder_full_view"/>
 	<element value="folder_tabular_view"/>

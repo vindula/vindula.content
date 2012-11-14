@@ -28,8 +28,8 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
         name='activ_portlteRight',
         default=True,
         widget=BooleanWidget(
-            label="Portlet Direita",
-            description='Se selecionado, ativa a visualização dos portet na coluna da direita.',
+            label="Coluna Direita",
+            description='Ativa a visualização dos itens da coluna da direita. Ex: Portlets.',
         ),
         required=False,
     ),                                                       
@@ -38,8 +38,8 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
         name='activ_portletLeft',
         default=True,
         widget=BooleanWidget(
-            label="Portlet Esquerda",
-            description='Se selecionado, ativa a visualização dos portet na coluna da esquerda.',
+            label="Coluna Esquerda",
+            description='Ativa a visualização dos itens da coluna da esquerda. Ex: Portlets.',
         ),
         required=False,
     ),                                                       
@@ -47,9 +47,8 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
     IntegerField(
         name='time_transitionsnews',
         widget=IntegerWidget(
-            label=_(u"Velocidade da rotação"),
-            description=_(u"Tempo em milissegundos que a imagem leva para rotacionar, \
-                          insira apenas números inteiros."),
+            label=_(u"Velocidade de Rotação"),
+            description=_(u"Tempo em milissegundos para mudar para a próxima imagem. Atenção, utilize apenas números inteiros."),
             
             label_msgid='vindula_content_label_time_transitionsnews',
             description_msgid='vindula_content_help_time_transitionsnews',
@@ -62,9 +61,8 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
     IntegerField(
         name='height_photoAlbum',
         widget=IntegerWidget(
-            label=_(u"Altura do álbum de fotos"),
-            description=_(u"Tamanho em pixes do album de fotos, \
-                            insira apenas números inteiros."),
+            label=_(u"Altura"),
+            description=_(u"Tamanho em pixels para a exibição do album. Atenção, utilize apenas números inteiros."),
             
             label_msgid='vindula_content_label_height_photoAlbum',
             description_msgid='vindula_content_help_height_photoAlbum',
@@ -81,6 +79,8 @@ finalizeATCTSchema(VindulaPhotoAlbum_schema, folderish=True)
 invisivel = {'view':'invisible','edit':'invisible',}
 VindulaPhotoAlbum_schema.changeSchemataForField('time_transitionsnews', 'settings')
 VindulaPhotoAlbum_schema.changeSchemataForField('height_photoAlbum', 'settings')
+VindulaPhotoAlbum_schema.changeSchemataForField('activ_portlteRight', 'settings')
+VindulaPhotoAlbum_schema.changeSchemataForField('activ_portletLeft', 'settings')
 
 
 class VindulaPhotoAlbum(ATFolder):
@@ -144,12 +144,4 @@ class VindulaPhotoAlbumView(grok.View):
 class VindulaPhotoAlbumCommentsView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
-    grok.name('view_comments_imagens')
-    
-    
-    
-    
-        
-        
-        
-        
+    grok.name('view_comments_imagens')  
