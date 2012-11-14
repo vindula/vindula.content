@@ -166,7 +166,7 @@
 																	<span tal:content="python:'Data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
 																	<tal:replace define="coma python:item_object.getActive_author() and ',' or ''" replace="coma" />
 																</tal:cond>
-																<tal:cond condition="item_object/getActive_author">
+																<tal:cond condition="item_object/getActive_author|nothing">
 		                                                            <tal:def define="pas_member context/@@pas_member|nothing;
 		                                                                                item_creator item_object/Creator|nothing;
 		                                                                                author python:pas_member.info(item_creator) or None;">
