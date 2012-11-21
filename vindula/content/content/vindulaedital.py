@@ -164,9 +164,11 @@ class VindulaEditalView(grok.View):
         
         itens = self.context.aq_parent.getFolderContents(query)
         result = []
+
         for item in itens:
             item = item.getObject()
-            if item.id == self.context.id:
+            if item.id == self.context.id or \
+               (not item.getModalidade() and not item.getOrgao() and not item.getNumeroEdital()):
                 continue
             if orgao and modalidade and n_edital:
                 if item.getModalidade() == modalidade and item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
@@ -183,4 +185,5 @@ class VindulaEditalView(grok.View):
             else:
                 if item.getModalidade() == modalidade or item.getOrgao() == orgao or item.getNumeroEdital() == n_edital:
                     result.append(item)
+                    
         return result
