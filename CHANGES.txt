@@ -156,3 +156,7 @@ Changelog
 1.1.32 - 2012-11-12
 ------------------------
 - Alteração do nome LinkInterno para apenas Link, esse conteúdo substitui o Link padrão do Plone
+
+1.1.33 - 2012-11-28
+------------------------
+- Adicionado a vis„o de Blog no content type VindulaFolder
