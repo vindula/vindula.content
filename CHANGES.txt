@@ -164,3 +164,7 @@ Changelog
 1.1.34 - 2012-11-29
 ------------------------
 - Adicionando uma largura para área de comentarios nas fotos do VindulaPhoto
+
+1.1.35 - 2012-12-03
+------------------------
+- Correcao no layout do popup do album de fotos
