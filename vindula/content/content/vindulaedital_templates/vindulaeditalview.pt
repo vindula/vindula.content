@@ -62,9 +62,9 @@
 			</p>
 			<tal:rep repeat="archive archives">
 				<div class="marginBt5px">
-					<p tal:content="string:Nome: ${archive/Title | nothing}" class="float-left" style="margin: 10px 10px 0 0;"></p>
-					<a tal:attributes="href archive/absolute_url | nothing"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
-					<a target="_blank" tal:attributes="href string:${archive/absolute_url | nothing}/view"><div class="bt_comments float-left bt_comments_div">VISUALIZAR</div></a>
+					<p tal:content="string:Nome: ${archive/Title|nothing}" class="float-left" style="margin: 10px 10px 0 0;"></p>
+					<a tal:attributes="href archive/absolute_url|nothing"><div class="bt_comments float-left bt_comments_div">BAIXAR</div></a>
+					<a target="_blank" tal:attributes="href string:${archive/absolute_url|nothing}/view"><div class="bt_comments float-left bt_comments_div">VISUALIZAR</div></a>
 					<div class="visualClear"></div>
 				</div>
 			</tal:rep>
@@ -130,7 +130,7 @@
 				<tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
 	                                 b_size request/b_size|string:10;
 	                                 b_start python:0;
-	                                 b_start request/b_start | b_start;
+	                                 b_start request/b_start|b_start;
 	                                 batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));">
 				
 					<input type="hidden" id="b_size" tal:attributes="value b_size" />
