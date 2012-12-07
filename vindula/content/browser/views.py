@@ -23,20 +23,21 @@ def quote_chars(s):
 class VindulaListNews(BrowserView):
     
     def getListToOrder(self):
-        result = [('created', u'Creation Date', u'The time and date an item was created'), \
+        result = [('effective', u'Effective Date', 'The time and date an item becomes publicly available'), \
                   ('sortable_title', u'Sortable Title', u"An item's title transformed for sorting")]
+        
         if 'control-panel-objects' in getSite().keys():
             control = getSite()['control-panel-objects']
             if 'vindula_categories' in control.keys():
                 confg = control['vindula_categories']
                 try:
-                    result += confg.getOrder_list()
+                    for i in confg.getOrder_list():
+                        result.append(i.replace('(', '').replace(')','').replace('u\'', '').replace('\'', '').split(','))
                 except:
                     return result
         return result
 
 class VindulaResultsNews(BrowserView):
-
     def QueryFilter(self):
         form = self.request.form
         submitted = form.get('submitted', False)
@@ -49,8 +50,8 @@ class VindulaResultsNews(BrowserView):
             catalog_tool = getToolByName(self, 'portal_catalog')
             invert = form.get('invert', form_cookies.get('invert', False))
             sort_on = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
-            
-            if sort_on == 'created':
+            import pdb;pdb.set_trace()
+            if sort_on == 'effective':
                 invert = not invert
             
             if invert:
@@ -69,7 +70,7 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_order': 'descending',})
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_order': 'descending', 'sort_on': 'effective'})
         return result
     
     def getCookies(self, cookies=None):
