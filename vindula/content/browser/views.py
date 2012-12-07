@@ -47,8 +47,12 @@ class VindulaResultsNews(BrowserView):
         if submitted or form_cookies:
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
-            
             invert = form.get('invert', form_cookies.get('invert', False))
+            sort_on = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
+            
+            if sort_on == 'created':
+                invert = not invert
+            
             if invert:
                 D['sort_order'] = 'descending'
             else:
@@ -61,11 +65,11 @@ class VindulaResultsNews(BrowserView):
                      text += '*'
                 D['SearchableText'] = quote_chars(text)    
             
-            D['sort_on'] = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
+            D['sort_on'] = sort_on
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',)})
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_order': 'descending',})
         return result
     
     def getCookies(self, cookies=None):
@@ -95,16 +99,30 @@ def sortTitle(item):
     return item.Title()
  
 class VindulaListEditais(BrowserView):
-    
     def getListOfEditais(self):
-        
-        itens = self.context.getFolderContents({'meta_type': ('VindulaEdital',)})
+        if self.request.form.get('keyword', None):
+            keyword= self.request.form.get('keyword',None)
+            pc = getToolByName(self, 'portal_catalog')
+            query = {}
+            
+            if keyword:
+                keyword = keyword.strip()
+                if '*' not in keyword:
+                     keyword += '*'
+                query['SearchableText'] = quote_chars(keyword)    
+            query['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
+            query['meta_type'] = ('VindulaEdital',)
+            itens = pc(**query)
+        else:
+            itens = self.context.getFolderContents({'meta_type': ('VindulaEdital',)})
+
         objs = []
         for item in itens:
             objs.append(item.getObject())
 
-        reverse = int(self.request.form.get('invert', 0))
+        reverse = bool(self.request.form.get('invert', False))
         sort = self.request.form.get('sort-edital', None)
+        
         if sort:
             if sort == 'edital':
                 return sorted(objs, key=sortNumEdital, reverse=reverse)
@@ -115,4 +133,4 @@ class VindulaListEditais(BrowserView):
             elif sort == 'assunto':
                 return sorted(objs, key=sortTitle, reverse=reverse)
             
-        return sorted(objs, key=sortDataPublicacao, reverse=reverse) 
+        return sorted(objs, key=sortDataPublicacao, reverse=not reverse) 

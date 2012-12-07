@@ -168,22 +168,31 @@ class VindulaEditalView(grok.View):
         for item in itens:
             item = item.getObject()
             if item.id == self.context.id or \
-               (not item.getModalidade() and not item.getOrgao() and not item.getNumeroEdital()):
+               (not item.getModalidade() or not item.getOrgao() or not item.getNumeroEdital()):
                 continue
-            if orgao and modalidade and n_edital:
-                if item.getModalidade() == modalidade and item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
-                    result.append(item)
-            elif orgao and modalidade: 
-                if item.getModalidade() == modalidade and item.getOrgao() == orgao:
-                        result.append(item)
-            elif orgao and n_edital: 
-                if item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
-                        result.append(item)
-            elif modalidade and n_edital:
-                if item.getModalidade() == modalidade and item.getNumeroEdital() == n_edital:
-                        result.append(item)
-            else:
-                if item.getModalidade() == modalidade or item.getOrgao() == orgao or item.getNumeroEdital() == n_edital:
-                    result.append(item)
+            
+            if n_edital == item.getNumeroEdital() and \
+               orgao == item.getOrgao() and \
+               modalidade == item.getModalidade():
+                result.append(item)
+                
+#            if item.id == self.context.id or \
+#               (not item.getModalidade() and not item.getOrgao() and not item.getNumeroEdital()):
+#                continue
+#            if orgao and modalidade and n_edital:
+#                if item.getModalidade() == modalidade and item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
+#                    result.append(item)
+#            elif orgao and modalidade: 
+#                if item.getModalidade() == modalidade and item.getOrgao() == orgao:
+#                        result.append(item)
+#            elif orgao and n_edital: 
+#                if item.getOrgao() == orgao and item.getNumeroEdital() == n_edital:
+#                        result.append(item)
+#            elif modalidade and n_edital:
+#                if item.getModalidade() == modalidade and item.getNumeroEdital() == n_edital:
+#                        result.append(item)
+#            else:
+#                if item.getModalidade() == modalidade or item.getOrgao() == orgao or item.getNumeroEdital() == n_edital:
+#                    result.append(item)
                     
         return result
