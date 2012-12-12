@@ -55,9 +55,9 @@ class VindulaResultsNews(BrowserView):
                 invert = not invert
             
             if invert:
-                D['sort_order'] = 'descending'
+                D['sort_order'] = 'reverse'
             else:
-                D['sort_order'] = 'ascending'
+                D['sort_order'] = ''
              
             text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
