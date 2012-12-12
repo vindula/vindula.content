@@ -134,4 +134,4 @@ class VindulaListEditais(BrowserView):
             elif sort == 'assunto':
                 return sorted(objs, key=sortTitle, reverse=reverse)
             
-        return sorted(objs, key=sortDataPublicacao, reverse=not reverse) 
+        return sorted(objs, key=sortDataPublicacao, reverse=not reverse)
