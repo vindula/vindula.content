@@ -70,7 +70,7 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_order': 'reverse', 'sort_on': 'effective'})
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective'})
         return result
     
     def getCookies(self, cookies=None):
