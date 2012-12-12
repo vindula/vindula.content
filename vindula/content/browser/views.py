@@ -49,10 +49,7 @@ class VindulaResultsNews(BrowserView):
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
             invert = form.get('invert', form_cookies.get('invert', False))
-            sort_on = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
-
-            if sort_on == 'effective':
-                invert = not invert
+            sort_on = form.get('sorted',form_cookies.get('sorted', ''))
             
             if invert:
                 D['sort_order'] = 'reverse'
