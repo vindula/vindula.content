@@ -77,12 +77,21 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         name='activ_share',
         default=True,
         widget=BooleanWidget(
-            label="Ativar Compartilhamento",
-            description='Se selecionado, ativa a opção de compartilhamento entre redes sociais.',
+            label="Ativar Compartilhamento - Superior",
+            description='Se selecionado, ativa a opção de compartilhamento  entre redes sociais, na área superior da página.',
         ),
         required=False,
     ),                                                       
-                                                       
+
+    BooleanField(
+        name='activ_share_footer',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar Compartilhamento - Inverior",
+            description='Se selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
+        ),
+        required=False,
+    ),                                                       
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
@@ -94,6 +103,7 @@ VindulaNews_schema['image'].widget.visible = invisivel
 
 finalizeATCTSchema(VindulaNews_schema, folderish=False)
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
+VindulaNews_schema.changeSchemataForField('activ_share_footer', 'settings')
 VindulaNews_schema.moveField('imageRelac', before='imageCaption')
 
 class VindulaNews(ATNewsItem):
@@ -116,11 +126,7 @@ class VindulaNewsView(grok.View):
   
     def check_share(self):
         panel = self.context.restrictedTraverse('@@myvindula-conf-userpanel')
-  
-        if panel.check_share():
-            return  self.context.getActiv_share()
-        else:
-            return False 
+        return panel.check_share()
 
     def creator(self):
         return self.context.Creator()
