@@ -49,15 +49,15 @@ class VindulaResultsNews(BrowserView):
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
             invert = form.get('invert', form_cookies.get('invert', False))
-            sort_on = form.get('sorted',form_cookies.get('sorted', 'getObjPositionInParent'))
-
+            sort_on = form.get('sorted',form_cookies.get('sorted', ''))
+            
             if sort_on == 'effective':
                 invert = not invert
             
             if invert:
-                D['sort_order'] = 'descending'
+                D['sort_order'] = 'reverse'
             else:
-                D['sort_order'] = 'ascending'
+                D['sort_order'] = ''
              
             text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
@@ -70,7 +70,7 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_order': 'descending', 'sort_on': 'effective'})
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective', 'sort_order':'reverse'})
         return result
     
     def getCookies(self, cookies=None):
@@ -134,4 +134,4 @@ class VindulaListEditais(BrowserView):
             elif sort == 'assunto':
                 return sorted(objs, key=sortTitle, reverse=reverse)
             
-        return sorted(objs, key=sortDataPublicacao, reverse=not reverse) 
+        return sorted(objs, key=sortDataPublicacao, reverse=not reverse)
