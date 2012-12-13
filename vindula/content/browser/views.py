@@ -51,6 +51,9 @@ class VindulaResultsNews(BrowserView):
             invert = form.get('invert', form_cookies.get('invert', False))
             sort_on = form.get('sorted',form_cookies.get('sorted', ''))
             
+            if sort_on == 'effective':
+                invert = not invert
+            
             if invert:
                 D['sort_order'] = 'reverse'
             else:
@@ -67,7 +70,7 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective'})
+            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective', 'sort_order':'reverse'})
         return result
     
     def getCookies(self, cookies=None):
