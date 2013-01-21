@@ -48,7 +48,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Visualização da imagem",
-            description='Se selecionado ativa a opção de visualizar a imagem junto como o corpo da notícia.',
+            description='Caso selecionado, ativa a opção de visualizar a imagem junto com o corpo da notícia.',
         ),
         required=False,
     ),
@@ -58,7 +58,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Visualização do Autor na Notícia",
-            description='Se selecionado ativa a opção de visualizar o autor na notícia.',
+            description='Caso selecionado, ativa a opção de visualizar o autor na notícia.',
         ),
         required=False,
     ), 
@@ -68,7 +68,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Visualização da Data de Publicação na Notícia",
-            description='Se selecionado ativa a opção de visualizar o data de criação na notícia.',
+            description='Caso selecionado, ativa a opção de visualizar o data de criação na notícia.',
         ),
         required=False,
     ), 
@@ -78,7 +78,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Compartilhamento - Superior",
-            description='Se selecionado, ativa a opção de compartilhamento  entre redes sociais, na área superior da página.',
+            description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área superior da página.',
         ),
         required=False,
     ),                                                       
@@ -88,7 +88,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         default=True,
         widget=BooleanWidget(
             label="Ativar Compartilhamento - Inverior",
-            description='Se selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
+            description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
         ),
         required=False,
     ),                                                       
@@ -103,7 +103,9 @@ VindulaNews_schema['image'].widget.visible = invisivel
 
 finalizeATCTSchema(VindulaNews_schema, folderish=False)
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
-VindulaNews_schema.changeSchemataForField('activ_share_footer', 'settings')
+VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
+VindulaNews_schema.changeSchemataForField('themesNews', 'categorization')
+VindulaNews_schema.moveField('themesNews', before='subject')
 VindulaNews_schema.moveField('imageRelac', before='imageCaption')
 
 class VindulaNews(ATNewsItem):
