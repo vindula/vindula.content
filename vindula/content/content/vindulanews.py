@@ -87,7 +87,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         name='activ_share_footer',
         default=True,
         widget=BooleanWidget(
-            label="Ativar Compartilhamento - Inverior",
+            label="Ativar Compartilhamento - Inferior",
             description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
         ),
         required=False,
