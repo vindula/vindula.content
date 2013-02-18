@@ -90,7 +90,7 @@
                                 <tal:def tal:condition="func" 
                                          define="size_img string:30px;
                                                  user_profiles func|nothing;
-                                                 item nothing;">
+                                                 item python:view.get_prefs_user(func)">
                                     <metal:use use-macro="context/myvindula-imageprofiles-macro/macros/userimage"/>       
                                 </tal:def>
 							    
