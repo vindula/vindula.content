@@ -29,7 +29,7 @@
 	<element value="folder_listing"/>
  </property>
   
- <alias from="(Default)" to="view_organizational"/>
+ <!--  alias from="(Default)" to="view_organizational"/-->
  <alias from="index.html" to="(dynamic view)"/>
  <alias from="view" to="(selected layout)"/>
  <alias from="edit" to="base_edit"/>
