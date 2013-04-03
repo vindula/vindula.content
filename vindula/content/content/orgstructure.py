@@ -4,11 +4,15 @@ from five import grok
 from vindula.content import MessageFactory as _
 from plone.uuid.interfaces import IUUID
 from zope.app.component.hooks import getSite
+from zope.component import adapter
 from zope.event import notify
 from zope.interface import Interface
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
+from zope.app.container.interfaces import IObjectAddedEvent 
+from Products.CMFPlone.utils import _createObjectByType
+from zExceptions import BadRequest
 
 from zope.app.container.interfaces import IObjectRemovedEvent
 from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
@@ -442,11 +446,10 @@ L += ['allowDiscussion','excludeFromNav', 'nextPreviousEnabled']
 
 for i in L:
     OrganizationalStructure_schema[i].widget.visible = invisivel 
-
-
+    
 class OrganizationalStructure(ATFolder):
     """ OrganizationalStructure """
-    
+
     security = ClassSecurityInfo()
     implements(IOrganizationalStructure)
     portal_type = 'OrganizationalStructure'
@@ -531,7 +534,6 @@ def CreatGroupInPloneSite(event):
         portalGroup.getGroupById(id_grupo_employees).addMember(user)
     ctx.Groups_view = tuple(new_tupla)
 
-
 @grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)        
 def RemoveGroupInPloneSite(context, event):
     portalGroup = getSite().portal_groups 
@@ -544,8 +546,68 @@ def RemoveGroupInPloneSite(context, event):
         id_grupo = context.UID() +'-'+tipo['tipo']
         try: portalGroup.removeGroup(id_grupo)
         except: pass
+        
+CONTEUDOS = [{'id':'discussoes', 'titulo':u'Discussões', 'tipo':'Ploneboard'},
+             {'id':'paginas', 'titulo':u'Páginas', 'tipo':'VindulaFolder'},
+             {'id':'arquivos', 'titulo':u'Arquivos', 'tipo':'VindulaFolder'},
+             {'id':'blog', 'titulo':u'Blog', 'tipo':'VindulaFolder'},
+             {'id':'questionarios', 'titulo':u'Questionários', 'tipo':'VindulaFolder'},
+             {'id':'projetos', 'titulo':u'Projetos', 'tipo':'VindulaFolder'},
+             {'id':'video-audio', 'titulo':u'Video/Audio', 'tipo':'VindulaFolder'},
+             {'id':'album-de-fotos', 'titulo':u'Álbum de Fotos', 'tipo':'VindulaFolder'},
+             {'id':'evento', 'titulo':u'Evento', 'tipo':'Event'},
+             {'id':'links', 'titulo':u'Links', 'tipo':'VindulaFolder'},
+             {'id':'classificado', 'titulo':u'Classificados', 'tipo':'Classifieds'},
+             {'id':'reserva', 'titulo':u'Reserva', 'tipo':'ContentReserve'},
+             {'id':'formulario', 'titulo':u'Formulário', 'tipo':'VindulaFolder'}
+             ]      
+        
+def _cria_objeto(objeto, conteudos):
+    """ Metodo para a criacao de conteudo
+   """
+
+
+    for conteudo in conteudos:
+        id = conteudo['id']
+        tipo = conteudo['tipo']
+        titulo = conteudo['titulo']
+        
+        try:
+            _createObjectByType(tipo, objeto, id=id, title=titulo)
+        except BadRequest:
+            pass
+
+@grok.subscribe(IOrganizationalStructure, IObjectAddedEvent)
+def CreatElemetsOrganizationalStructure(context, event):
     
     
+#    import pdb; pdb.set_trace()
+    
+   
+    
+    _cria_objeto(context, CONTEUDOS)
+
+#    objects = {'type_name':'Ploneboard',
+#               'id': 'discussoes',
+#               'title':'discussoes',
+#               'description':'Discussões.'}
+#
+#    context.invokeFactory(**objects)
+#    
+#    objects = {'type_name':'VindulaFolder',
+#               'id': 'paginas',
+#               'title':'Páginas',
+#               'description':'Páginas.'}
+#
+#    context.invokeFactory(**objects)
+#    
+#    objects = {'type_name':'VindulaFolder',
+#               'id': 'arquivos',
+#               'title':'arquivos',
+#               'description':'Arquivos.'}
+#    
+ 
+        
 class OrganizationalStructureView(grok.View, UtilMyvindula):
     grok.context(IOrganizationalStructure)
     grok.require('zope2.View')
@@ -582,7 +644,7 @@ class FolderOrganizationalStructureView(grok.View, BaseFunc):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('folder-organizational-structure')
-    
+
     def getCategorias(self):
         return OrganizationalStructure(self.context).voc_categoria();
     

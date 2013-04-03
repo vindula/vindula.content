@@ -23,7 +23,8 @@
   <i18n:registerTranslations directory="locales" />
   <!-- -*- extra stuff goes here -*- -->
   <five:registerPackage package="." initialize=".initialize" />
-  
+  <subscriber handler=".content.orgstructure.CreatElemetsOrganizationalStructure" />
+
   <subscriber handler=".content.vindulaphotoalbum.CreatVindulaPhotoAlbum" />
   
   <subscriber for=".content.interfaces.IOrgstructureModifiedEvent"
