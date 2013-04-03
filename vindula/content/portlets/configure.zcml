@@ -66,6 +66,18 @@
          addview=".vindulanews.AddForm"
          editview=".vindulanews.EditForm"
         />  
+
+	<!-- Portlet Ações -->
+  	<plone:portlet
+		 name="vindula.content.PortletAcoes"
+		 interface=".acoes.IPortletAcoes"
+		 assignment=".acoes.Assignment"
+		 view_permission="zope2.View"
+		 edit_permission="cmf.ManagePortal"
+		 renderer=".acoes.Renderer"
+		 addview=".acoes.AddForm"
+		 editview=".acoes.EditForm"
+	 	/>
     	
 			
 </configure>

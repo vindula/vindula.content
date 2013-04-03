@@ -25,6 +25,7 @@
 		description="Portlet EH - Gestor">
 		
 	</portlet>
+
 	<portlet
 		addview="vindula.content.PortletEO_Colaboradores"
 		title="Portlet EH - Colaboradores"
@@ -37,6 +38,13 @@
         title="Portlet Vindula News"
         description="Portlet Vindula News">
         
-    </portlet>					
+    </portlet>
+    
+    <portlet	 
+		addview="vindula.content.PortletAcoes"
+		title="Portlet de Ações"
+		description="Portlet de Ações">
+				
+	</portlet>					
 
 </portlets>

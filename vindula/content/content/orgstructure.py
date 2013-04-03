@@ -19,7 +19,7 @@ from Products.SmartColorWidget.Widget import SmartColorWidget
 
 from zope.interface import implements
 from Products.Archetypes.atapi import *
-from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+from archetypes.referencebrowserwidget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
@@ -38,8 +38,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             typeview='list',
-            label=_(u"Estrutura Organizacional"),
-            description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+            label=_(u"Tipo de Estrutura Organizacional"),
+            description=_(u"Selecione o tipo de estrutura organizacional."),
 
             ),
         required=False
