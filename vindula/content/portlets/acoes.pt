@@ -14,10 +14,20 @@
     </dd>
     <dd class="portletItem" tal:condition="view/check_content|nothing">
 		<div id="portlet-acoes"> 
-			<p><a href="/comunicacao/vamos-discutir">Iniciar Discussão</a></p>
-			<p><a href="createObject?type_name=VindulaNews">Criar Página</a></p>
-			<p><a href="createObject?type_name=VindulaFolder">Subir Arquivo</a></p>
-			<p><a href="createObject?type_name=VindulaNews">Escrever Artigo no Blog</a></p>
+			<p><a href="discussoes/discussoes">Iniciar Discussão</a></p>
+			<p><a href="paginas/paginas">Criar Página</a></p>
+			<p><a href="arquivos/arquivos">Subir Arquivo</a></p>
+			<p><a href="blog/blog">Escrever Artigo no Blog</a></p>
+			<p><a href="questionarios/questionarios">Criar Questionário</a></p>
+			<p><a href="projetos/projetos">Criar Projeto</a></p>
+			<p><a href="video-audio/video-audio">Subir Vídeo</a></p>
+			<p><a href="album-de-foto/album-de-foto">Criar Álbum de Fotos</a></p>
+			<p><a href="evento/evento">Criar Evento</a></p>
+			<p><a href="links/links">Criar Link</a></p>
+			<p><a href="evento/evento">Criar Classificado</a></p>
+			<p><a href="reserva/reserva">Efetuar Reserva</a></p>
+			<p><a href="formulario/formulario">Criar Formulário</a></p>
+
 		</div>
 	</dd>
     <dd class="portletFooter"></dd>
