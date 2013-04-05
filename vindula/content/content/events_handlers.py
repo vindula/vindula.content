@@ -10,7 +10,8 @@ from vindula.content.content.interfaces import IVindulaNews, IVindulaPhotoAlbum,
 
 def addEventPlone(context):
     uid = context.UID()
-    PloneEvent().set_event(uid)
+    portal_type = context.portal_type
+    PloneEvent().set_event(uid,portal_type)
 
 #----------Vindula News
 @grok.subscribe(IVindulaNews, IObjectCreatedEvent)

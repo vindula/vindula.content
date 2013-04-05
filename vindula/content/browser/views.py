@@ -5,10 +5,20 @@ from zope.app.component.hooks import getSite
 
 from Products.ATContentTypes.criteria import _criterionRegistry
 
+from plone.app.layout.viewlets.content import ContentHistoryView
+
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 
+
+from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
+from five import grok
+from zope.interface import Interface
+from datetime import datetime
+
 MULTISPACE = u'\u3000'.encode('utf-8')
+
+import json
 
 def quote_chars(s):
     # We need to quote parentheses when searching text indices
@@ -135,3 +145,77 @@ class VindulaListEditais(BrowserView):
                 return sorted(objs, key=sortTitle, reverse=reverse)
             
         return sorted(objs, key=sortDataPublicacao, reverse=not reverse)
+    
+    
+class VindulaWebServeObjectContent(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-object-content')
+    grok.require('zope2.View')
+    
+    retorno = {}
+    
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+        
+    def update(self):
+        D = {}
+        portal_workflow = getToolByName(self.context, "portal_workflow")
+        reference_catalog = getToolByName(self.context, "reference_catalog")
+        portal_membership = getToolByName(self.context, "portal_membership")
+        
+        uid = self.request.form.get('uid','')
+        
+        user_admin = portal_membership.getMemberById('admin')  
+                
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+        
+        # create a new context, as the owner of the folder
+        newSecurityManager(self.request,user_admin)
+        
+        context = reference_catalog.lookupObject(uid)
+    
+        if context:
+            HistoryView = ContentHistoryView(context, context.REQUEST)  
+            context_owner = context.getOwner().getUserName()
+            image_content = '' 
+            if context.getImageRelac():
+                 image_content = context.getImageRelac().absolute_url()
+            
+            status = portal_workflow.getInfoFor(context, 'review_state')
+            content_history = HistoryView.fullHistory()
+            L = []
+            for history in content_history:
+                tipo = history.get('type','')
+                if tipo == 'workflow':
+                    date = history.get('time','').strftime('%Y-%m-%d %H:%M:%S')
+                else:
+                    date = datetime.fromtimestamp(history.get('time','')).strftime('%Y-%m-%d %H:%M:%S')
+                
+                #print 30*'##'
+                #print history
+                L.append({'actor': history.get('actor',{}).get('username',''),
+                          'action':  history.get('transition_title',''),
+                          'type': tipo,
+                          'date':date,})
+             
+            D['history'] = L 
+                        
+            D['details'] = {'uid': context.UID(),
+                            'type': context.portal_type,
+                            'title': context.Title(),
+                            'description':context.Description(),
+                            'owner': context_owner,
+                            'date_created':context.creation_date.strftime('%Y-%m-%d %H:%M:%S'),
+                            'date_modified':context.bobobase_modification_time().strftime('%Y-%m-%d %H:%M:%S'),
+                            'workflow': status,
+                            'image': image_content}
+    
+        # restore the original context
+        setSecurityManager(old_security_manager)
+        
+        self.retorno.update(D)
+            
+    
