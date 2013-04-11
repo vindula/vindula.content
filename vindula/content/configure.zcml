@@ -20,6 +20,9 @@
   <include package="plone.directives.form" file="meta.zcml" />
   <include package="plone.directives.form" />
   
+  <include package="archetypes.schemaextender" />
+  <adapter factory=".extender.ATFileExtender" /> 
+  
   <i18n:registerTranslations directory="locales" />
   <!-- -*- extra stuff goes here -*- -->
   <five:registerPackage package="." initialize=".initialize" />

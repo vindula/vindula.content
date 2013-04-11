@@ -1,0 +1,27 @@
+<html metal:use-macro="context/main_template/macros/master">
+        
+        <metal:js fill-slot="javascript_head_slot">
+            
+        </metal:js>
+        
+        <metal:styleslot fill-slot="style_slot">
+            
+        </metal:styleslot>
+        
+    <body>
+        <metal:content-core fill-slot="content-core">
+        
+            <p>sadasda</p> 
+            <tal:rep repeat="item view/file"> 
+                <tal:def define="obj item/getObject">
+                    <p tal:content="obj/Title"></p>
+                    <p tal:content="obj/absolute_url"></p>
+                </tal:def>
+            </tal:rep>
+            
+            
+            
+            
+        </metal:content-core>
+    </body>
+</html>

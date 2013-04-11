@@ -27,6 +27,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         multiValued=1,
         accessor="ThemeNews",
         searchable=True,
+        schemata='categorization',
         widget=KeywordWidget(
             label=_(u'Temas'),
             description=_(u'Selecione os temas da noticia.'),
