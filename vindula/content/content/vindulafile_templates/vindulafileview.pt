@@ -48,10 +48,10 @@
 			         <!--  tal:cond condition="context/structures">
 			             unidade: <span tal:content=context/structures/Title"></span><br /> 
 			         </tal:cond-->
-			         tipo: <span tal:content="context/tipo"></span><br />
-			         numero: <span tal:content="context/numero"></span><br />
-			         vigencia: <span tal:content="context/vigencia"></span><br />
-			         classificacao: <span tal:content="context/classificacao"></span><br />
+			         tipo: <span tal:content="context/tipo|nothing"></span><br />
+			         numero: <span tal:content="context/numero|nothing"></span><br />
+			         vigencia: <span tal:content="context/vigencia|nothing"></span><br />
+			         classificacao: <span tal:content="context/classificacao|nothing"></span><br />
 			     </div>
 			    
 			    

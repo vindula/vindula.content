@@ -30,3 +30,7 @@ class IVindulaPhotoAlbum(Interface):
     
 class IVindulaEdital(Interface):
     """ Interface for VindulaEdital content type """
+
+class IVindulaFile(Interface):
+    """ Interface for VindulaFile content type """
+

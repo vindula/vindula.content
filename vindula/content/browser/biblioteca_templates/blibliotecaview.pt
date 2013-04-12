@@ -2,6 +2,9 @@
         
         <metal:js fill-slot="javascript_head_slot">
             
+            <script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+            
         </metal:js>
         
         <metal:styleslot fill-slot="style_slot">
@@ -11,15 +14,16 @@
     <body>
         <metal:content-core fill-slot="content-core">
         
+        
             <p>sadasda</p> 
-            <tal:rep repeat="item view/file"> 
-                <tal:def define="obj item/getObject">
-                    <p tal:content="obj/Title"></p>
-                    <p tal:content="obj/absolute_url"></p>
-                </tal:def>
+
+            <tal:rep repeat="theme view/themes">
+                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
             </tal:rep>
-            
-            
+
+            <tal:rep repeat="structures view/structures">
+                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+            </tal:rep>
             
             
         </metal:content-core>

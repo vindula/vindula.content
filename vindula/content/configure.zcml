@@ -20,8 +20,12 @@
   <include package="plone.directives.form" file="meta.zcml" />
   <include package="plone.directives.form" />
   
+  <!--  
   <include package="archetypes.schemaextender" />
   <adapter factory=".extender.ATFileExtender" /> 
+  
+  <adapter factory="vindula.content.content.adapter.BlobbableVindulaFile" />
+  -->  
   
   <i18n:registerTranslations directory="locales" />
   <!-- -*- extra stuff goes here -*- -->
