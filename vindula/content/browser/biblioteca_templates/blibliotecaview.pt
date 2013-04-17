@@ -1,31 +1,57 @@
 <html metal:use-macro="context/main_template/macros/master">
-        
+
         <metal:js fill-slot="javascript_head_slot">
-            
-            <script type="text/javascript" src="" 
+
+            <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
-            
+
         </metal:js>
-        
+
         <metal:styleslot fill-slot="style_slot">
-            
+
         </metal:styleslot>
-        
+
     <body>
         <metal:content-core fill-slot="content-core">
-        
-        
-            <p>sadasda</p> 
 
-            <tal:rep repeat="theme view/themes">
-                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
-            </tal:rep>
 
-            <tal:rep repeat="structures view/structures">
-                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
-            </tal:rep>
-            
-            
+            <p>sadasda</p>
+
+
+            <!--
+            <div class="conteiner" id="theme">
+                <tal:def define="is_theme python:True">
+                    <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
+                </tal:def>
+
+                <tal:rep repeat="theme view/themes">
+                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                </tal:rep>
+            </div>
+
+            <div class="conteiner" id="structures">
+                <tal:def define="is_structures python:True">
+                    <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
+                </tal:def>
+
+                <tal:rep repeat="structures view/structures">
+                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                </tal:rep>
+            </div>
+            -->
+
+            <div class="conteiner" id="documento">
+                <!-- tal:def define="is_structures python:True"> </tal:def -->
+                <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+
+
+
+                <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+
+            </div>
+
+
+
         </metal:content-core>
     </body>
 </html>

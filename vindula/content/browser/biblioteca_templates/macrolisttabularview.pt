@@ -1,21 +1,18 @@
 <metal:view_macro define-macro="view">
 
+    <div class="visualClear"></div>
 
-<div class="visualClear"></div>
-<!-- Spinner -->
-<div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
-    <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
-</div>  
+    <div class="filterFile" id="list_file">
 
-<div id="content-itens">
-    <meta:macro metal:define-macro="page-view">
         <tal:def tal:define="view_macro python:context.restrictedTraverse('macro_tabular_file');
                              Batch python:modules['Products.CMFPlone'].Batch;
                              b_size request/b_size|string:10;
                              b_start python:0;
                              b_start request/b_start | b_start;
-                             list_files python: view_macro.list_files() or [];
-                             batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(list_files));">
+                             subject request/subject|python:'';
+                             list_files python: view_macro.list_files(subject) or [];
+                             batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
+
 
             <input type="hidden" id="b_size" tal:attributes="value b_size" />
             <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -23,7 +20,7 @@
                 <div id="paginacao">
                     <div id="size-nav" class="float-left">
                         <p>
-                            <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
+                            <span tal:content="python:'Total: ('+str(len(list_files))+')'">Total (XX)</span>
                             |
                             <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
                                 <a class="c-pointer" id="itenspage"
@@ -36,7 +33,7 @@
                                    tal:attributes="style python:b_size == '40' and css or '' ">40</a>
                             </span>
                         </p>
-                                                            
+
                     </div>
                     <div id="pag-nav" class="float-right">
                         <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
@@ -44,33 +41,46 @@
                 </div>
                 <div class="visualClear"></div>
             </meta:macro>
+
             <div class="visualClear"></div>
             <metal:macro define-macro="news-list">
                 <div id="news">
                     <tal:rep repeat="item batch">
-                        <div class="contBoxDestaque" 
+                        <div class="contBoxDestaque"
                              tal:define="item_object item/getObject">
-                                
+
                             <div tal:define="is_end repeat/item/end;"
                                  tal:attributes="class python: is_end and 'info' or 'info borderDif'">
-                                 
-                                 
-                                 <p tal:content="item_object/Title">
-                                 <p tal:content="item_object/Description">
-                                 
-                            </div>  
+
+                                <tal:cond condition="item_object/getStructures">
+                                      unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                </tal:cond>
+
+                                <p tal:content="item_object/Title"> </p>
+                                <p tal:content="item_object/Description"> </p>
+
+                                <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                <p tal:content="item_object/Description"> </p>
+
+
+                            </div>
                             <div class="visualClear"></div>
-                        </div>                      
+                        </div>
                     </tal:rep>
                  </div>
              </metal:macro>
-             
-             <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
-                
-        </tal:def>
-    </meta:macro>
-</div>
 
-<div class="visualClear"></div>
-	
-</metal:view_macro>	
+             <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
+
+        </tal:def>
+
+        <!-- Spinner -->
+        <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+        </div>
+
+    </div>
+
+    <div class="visualClear"></div>
+
+</metal:view_macro>

@@ -11,13 +11,13 @@
                      list_files python: view_macro.list_files(theme,structures,sort_on) or [];
                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));"
               tal:condition="batch">
-	
+
 		<div tal:attributes="class string:list_file ${theme}" id="list_file">
-		            
+
 		        <div id="pag-nav" class="float-right">
 		            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
 		        </div>
-		                              
+
 		        <div class="titulo_area">
 		            <h2 tal:condition="theme" >Tema "ex: <tal:cont content="theme">Exemplo</tal:cont>"</h2>
 		            <h2 tal:condition="structures" >Unidade "ex: <tal:cont content="structures/Title">Exemplo</tal:cont>"</h2>
@@ -31,59 +31,60 @@
 		        <input type="hidden" id="b_size" tal:attributes="value b_size" />
 		        <input type="hidden" id="b_start" tal:attributes="value b_start" />
 		        <input type="hidden" id="theme" tal:attributes="value theme" />
+                <input type="hidden" id="structures" tal:attributes="value structures" />
 		        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" >
-		        
+
 		        <div id="news" tal:repeat="item batch" class="see_also_news">
-		            <div class="contBoxDestaque" 
+		            <div class="contBoxDestaque"
 		                 tal:define="item_object item/getObject|python: item">
-		                    
+
 		                <div tal:define="is_end repeat/item/end;"
 		                     tal:attributes="class python: is_end and 'info' or 'info borderDif'">
-		                    
-			                    
+
+
 			                    <p tal:content="item_object/absolute_url"></p>
 				                <p tal:content="item_object/Description"></p>
 				                <tal:cond condition="item_object/getStructures">
-		                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br /> 
+		                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
 		                        </tal:cond>
-		
-		                     
+
+
 		                    <div class="image_inf float-left imgRelateNews" >
-		                    
+
 		                        <img width="100px" height="75px"/>
-		                     
+
 		                    </div>
-		                    
+
 		                    <div class="img_descricao">
 		                        <div id="geral_breadcrumb" class="descricao_destaque labelOrange">
-		                            
+
 		                            <div class="titulo_info">
 		                                <label>
 		                                    <p tal:content="item_object/Title"></p>
-                                            <p tal:content="item_object/UID"></p>		                                           
-		                                    
+                                            <p tal:content="item_object/UID"></p>
+
 		                                </label>
 		                            </div>
 		                            <p>Unidade</p>
 		                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-		                            
+
 		                        </div>
 		                        <div class="visualClear"></div>
 		                    </div>
-		                </div>  
+		                </div>
 		                <div class="visualClear"></div>
-		            </div>                      
+		            </div>
 		         </div>
-		         
+
 		         <!-- Spinner -->
 		        <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
 		            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
 		        </div>
-		        
-		    
-		    
+
+
+
 		    <div class="visualClear"></div>
 		</div>
     </tal:def>
-	
-</metal:view_macro>	
+
+</metal:view_macro>
