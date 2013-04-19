@@ -82,8 +82,8 @@ class MacroListtabularView(grok.View):
 
         search = Search(self.context,query,rs=False)
         list_files = search.result
-
         return list_files
+<<<<<<< HEAD
 
     def filter_fields(self, schema, display_fields=[]):
         results = []
@@ -93,6 +93,15 @@ class MacroListtabularView(grok.View):
             if not diff_values: continue
             results.append(field)
         return results
+=======
+    
+    def getValueField(self, item, attr):
+        result = getattr(item, attr)()
+        try:
+            return result.Title()
+        except AttributeError:
+            return result
+>>>>>>> 7c37a22ac02c2a6578a28361a2ca1e285038f207
 
 class MacroFilterView(grok.View):
     grok.context(Interface)
@@ -157,7 +166,6 @@ class MacroMoreAccessViews(grok.View):
         list_files = []
 
         query = {'portal_type': portal_type}
-        print query
         result = ModelsContent().search_catalog_by_access(context=self.context,
                                                      **query)
         return result

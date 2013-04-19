@@ -45,48 +45,26 @@
 
             <div class="visualClear"></div>
             <metal:macro define-macro="news-list">
-                <table tal:define=" show_fields show_fields|python:['title', 'description'];
-                                    fields python:view_macro.filter_fields(context.Schema(), show_fields);">
+                <table class="listing" width="100%" 
+                       tal:define="fields fields|nothing;">
                     <thead>
                         <tr>
                             <tal:rep repeat="field fields">
-                                 <th tal:content="field/getName"></th>
+                                 <th tal:content="field/label"></th>
                             </tal:rep>
                         </tr>
                     </thead>
                     <tbody>
                         <tr tal:repeat="item batch">
-                            <td tal:repeat="field fields"
-                                tal:define="item_object item/getObject;
-                                            context python: item_object;
-                                            field_macro field_macro | context/widgets/field/macros/view;">
-                                 <tal:base_view_macro tal:define="widget_view python:context.widget(field.getName(), mode='view', use_label=0);
-                                                                  field_macros context/widgets/field/macros;
-                                                                  label_macro view_macros/label |  label_macro |  field_macros/label;
-                                                                  data_macro view_macros/data |  data_macro |  field_macros/data;">
-                                     <tal:if_perm condition="python:'view' in widget.modes and 'r' in field.mode and field.checkPermission('r',here)">
-                                         <metal:use_data use-macro="data_macro|default" />
-                                     </tal:if_perm>
-                                 </tal:base_view_macro> 
-                            </td>
+                            <tal:rep repeat="field fields"
+                                     define="item_object item/getObject;">
+                                <td tal:define="value python: view_macro.getValueField(item_object, field['attribute'])">
+                                    <span tal:content="value"></span>
+                                </td>
+                            </tal:rep>
                         </tr>
                     </tbody>
                  </table>
-                 <!--div tal:define="is_end repeat/item/end;"
-                         tal:attributes="class python: is_end and 'info' or 'info borderDif'">
-    
-                        <tal:cond condition="item_object/getStructures|nothing">
-                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                        </tal:cond>
-    
-                        <p tal:content="item_object/Title"> </p>
-                        <p tal:content="item_object/Description"> </p>
-    
-                        <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                        <p tal:content="item_object/Description"> </p>
-    
-    
-                    </div-->
              </metal:macro>
 
              <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
