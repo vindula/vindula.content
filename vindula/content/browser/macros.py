@@ -68,6 +68,31 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
 
         return L
 
+class MacroListtabularView(grok.View):
+    grok.context(Interface)
+    grok.name('macro_tabular_file')
+    grok.require('zope2.View')
+
+    def list_files(self, keywords, portal_type):
+        list_files = []
+
+        query = {'portal_type': portal_type}
+        if keywords:
+            query['SearchableText'] = keywords
+
+        search = Search(self.context,query,rs=False)
+        list_files = search.result
+
+        return list_files
+    
+    def filter_fields(self, schema, display_fields=[]):
+        results = []
+        for field in schema.fields():
+            diff_values = [attr for attr in display_fields \
+                           if field.getName() == attr]
+            if not diff_values: continue
+            results.append(field)
+        return results
 
 class MacroFilterView(grok.View):
     grok.context(Interface)
