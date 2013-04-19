@@ -22,7 +22,7 @@
 		      tal:attributes="src string:${view/dvstatic}/assets/viewer.js"></script>
 		  <script src="/viewer/viewer.js"
 		      tal:attributes="src string:${view/dvstatic}/javascripts/viewer.js"></script>
-		
+
 		  <tal:annotate tal:condition="view/can_modify">
 		    <link rel="stylesheet" type="text/css"
 		      tal:attributes="href string:${view/dvstatic}/jquery.imgareaselect/css/imgareaselect-default.css" />
@@ -36,26 +36,26 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="group.css"
 		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/stylesheets/viewer.css" />
 		</metal:css>
-	
+
 	<body>
 		<div metal:fill-slot="content-core">
-			<tal:main-macro metal:define-macro="content-core" 
+			<tal:main-macro metal:define-macro="content-core"
 			         tal:define="size python:here.getObjSize(here);
 			                     content_type here/get_content_type|here/Format;">
-			
-			    
+
+
 			     <div class="dados">
 			         <!--  tal:cond condition="context/structures">
-			             unidade: <span tal:content=context/structures/Title"></span><br /> 
+			             unidade: <span tal:content=context/structures/Title"></span><br />
 			         </tal:cond-->
 			         tipo: <span tal:content="context/tipo|nothing"></span><br />
 			         numero: <span tal:content="context/numero|nothing"></span><br />
 			         vigencia: <span tal:content="context/vigencia|nothing"></span><br />
 			         classificacao: <span tal:content="context/classificacao|nothing"></span><br />
 			     </div>
-			    
-			    
-			    
+
+
+
 			      <div id="DV-container">
 			          <div class="DV-loadingDocument">
 			              <span>Loading</span>
@@ -66,10 +66,13 @@
 			      </div>
 			      <div id="overlay"></div>
 			      <script type="text/javascript" tal:content="structure view/javascript"></script>
-			
+
 			    <p>
 			      <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
 			    </p>
+
+            	<metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
+
 			</tal:main-macro>
 		</div>
 	</body>

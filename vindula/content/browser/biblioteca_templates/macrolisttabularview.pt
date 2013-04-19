@@ -9,8 +9,9 @@
                              b_size request/b_size|string:10;
                              b_start python:0;
                              b_start request/b_start | b_start;
+                             portal_type portal_type|request/portal_type|nothing;
                              subject request/subject|python:'';
-                             list_files python: view_macro.list_files(subject) or [];
+                             list_files python: view_macro.list_files(subject, portal_type) or [];
                              batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
 
 
@@ -52,7 +53,7 @@
                             <div tal:define="is_end repeat/item/end;"
                                  tal:attributes="class python: is_end and 'info' or 'info borderDif'">
 
-                                <tal:cond condition="item_object/getStructures">
+                                <tal:cond condition="item_object/getStructures|nothing">
                                       unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
                                 </tal:cond>
 

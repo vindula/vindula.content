@@ -5,11 +5,11 @@
 
    <!-- Ensure Plone's portlets ZCML has already been processed;
        without this, we may get a permission lookup error -->
-	
+
     <include package="plone.app.portlets"/>
 
 	<!-- -*- extra stuff goes here -*- -->
-	
+
 	<!-- Portlet Estrutura Hierarquica -->
   	<plone:portlet
 		 name="vindula.content.PortletEstruturaHierarquica"
@@ -21,7 +21,7 @@
 		 addview=".estrutura_hierarquica.AddForm"
 		 editview=".estrutura_hierarquica.EditForm"
 	 	/>
-		
+
 	 <plone:portlet
 		 name="vindula.content.VindulaCarregaPortlet"
 		 interface=".carrega_portlet.IVindulaCarregaPortlet"
@@ -30,7 +30,7 @@
 		 edit_permission="cmf.ManagePortal"
 		 renderer=".carrega_portlet.Renderer"
 		 addview=".carrega_portlet.AddForm"
-		 editview=".carrega_portlet.EditForm" 
+		 editview=".carrega_portlet.EditForm"
 	 />
 
 
@@ -43,8 +43,8 @@
 		 renderer=".eo_Gestor.Renderer"
 		 addview=".eo_Gestor.AddForm"
 		 editview=".eo_Gestor.EditForm"
-	 	/>	
-	
+	 	/>
+
 	 <plone:portlet
 		 name="vindula.content.PortletEO_Colaboradores"
 		 interface=".eo_Colaboradores.IPortletEO_Colaboradores"
@@ -54,8 +54,8 @@
 		 renderer=".eo_Colaboradores.Renderer"
 		 addview=".eo_Colaboradores.AddForm"
 		 editview=".eo_Colaboradores.EditForm"
-	 	/>	
-	
+	 	/>
+
      <plone:portlet
          name="vindula.content.VindulaNewsPortlet"
          interface=".vindulanews.IVindulaNewsPortlet"
@@ -65,7 +65,7 @@
          renderer=".vindulanews.Renderer"
          addview=".vindulanews.AddForm"
          editview=".vindulanews.EditForm"
-        />  
+        />
 
 	<!-- Portlet Ações -->
   	<plone:portlet
@@ -78,6 +78,18 @@
 		 addview=".acoes.AddForm"
 		 editview=".acoes.EditForm"
 	 	/>
-    	
-			
+
+    <!-- Portlet Veja Tambem -->
+    <plone:portlet
+         name="vindula.content.PortletSeeAlso"
+         interface=".see_also.IPortletSeeAlso"
+         assignment=".see_also.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".see_also.Renderer"
+         addview=".see_also.AddForm"
+         editview=".see_also.EditForm"
+        />
+
+
 </configure>

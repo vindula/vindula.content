@@ -1,0 +1,9 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-rating-content');">
+
+    <div class="vd_rating" tal:attributes="data_uid context/UID;
+                                           data_type context/portal_type"></div>
+
+
+
+</metal:view_macro>

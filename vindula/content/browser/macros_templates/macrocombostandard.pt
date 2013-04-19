@@ -1,0 +1,10 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-comboStandard-content');">
+
+    <div class="vd_combo_standard" tal:attributes="data_uid context/UID;
+                                                   data_type context/portal_type"></div>
+
+
+
+</metal:view_macro>
+

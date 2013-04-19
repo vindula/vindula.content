@@ -1,0 +1,19 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-busiest-content');
+                              portal_type portal_type|request/portal_type|nothing;
+                              list_itens python: view_macro.list_files(portal_type)">
+
+    <h2>Mas Acessados </h2>
+
+    <tal:rep repeat="item list_itens">
+        <p tal:define="ctx item/content/getObject"
+           tal:content= "ctx/Title"></p>
+
+
+
+    </tal:rep>
+
+
+
+
+</metal:view_macro>

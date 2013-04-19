@@ -1,0 +1,22 @@
+<dl class="portlet" tal:define="view view/data">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span class="tile" tal:content="view/get_title">Portlet Veja Tambem</span>
+        <span class="portletTopRight"></span>
+    </dt>
+    <dd class="portletItem" >
+        <div id="_portlet_seealso">
+
+        <tal:rep repeat="item view/getItens">
+            <p tal:define="ctx item/content/getObject"
+                tal:content= "ctx/Title"></p>
+        </tal:rep>
+
+
+        </div>
+    </dd>
+    <dd class="portletFooter"></dd>
+    <div class="visualClear"></div>
+</dl>
+

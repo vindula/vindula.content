@@ -45,8 +45,9 @@
                 <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
 
 
-
-                <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                <tal:def define="portal_type python: ('File',);">
+                    <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                </tal:def>
 
             </div>
 

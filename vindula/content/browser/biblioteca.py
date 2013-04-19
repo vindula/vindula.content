@@ -4,7 +4,8 @@ from zope.interface import Interface
 from Products.CMFCore.interfaces import ISiteRoot
 from AccessControl import ClassSecurityInfo
 
-from vindula.content.models.content_access import ModelsContentAccess
+from vindula.content.models.content import ModelsContent
+
 
 from Products.CMFCore.utils import getToolByName
 
@@ -110,31 +111,11 @@ class MacroListFileView(grok.View):
         result_query = search.result
 
         if sort_on == 'access':
-            result = self.orderBy_access(result_query)
+            for item in ModelsContent().orderBy_access(result_query):
+                result.append(item.get('content').getObject())
         else:
             result = result_query
 
-        return result
-
-
-    def orderBy_access(self,result_query ):
-        hashs = []
-        contentAccess = []
-        result = []
-        for item in result_query:
-            obj = item.getObject()
-            hashs.append(obj.UID())
-
-        if hashs:
-            #Acesso dirreto ao models do vindulaapp
-            contentAccess = ModelsContentAccess().getContAccess(hashs)
-
-        for content in contentAccess:
-            uid = content.get('content').uid
-            for item in result_query:
-                if item.UID == uid:
-                    result.append(item)
-                    break
         return result
 
 
@@ -144,7 +125,7 @@ class MacroListtabularView(grok.View):
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
 
-    def list_files(self, keywords):
+    def list_files(self, keywords, portal_type):
         list_files = []
 
         query = {'portal_type': ('File',)}
