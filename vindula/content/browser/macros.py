@@ -84,7 +84,7 @@ class MacroListtabularView(grok.View):
         list_files = search.result
 
         return list_files
-    
+
     def filter_fields(self, schema, display_fields=[]):
         results = []
         for field in schema.fields():
@@ -115,12 +115,17 @@ class MacroFilterView(grok.View):
             query = {'portal_type':('OrganizationalStructure',)}
 
             search = Search(self.context,query)
-            result = seacrh.result
+            result = search.result
 
         return result
 
     def tabular_filter(self, ):
-        pass
+
+        search = Search(self.context,{'portal_type':('OrganizationalStructure',)})
+
+        return {'tags': self.pc.uniqueValuesFor("Subject"),
+                'structures' :search.result}
+
 
 
 
@@ -156,7 +161,7 @@ class MacroMoreAccessViews(grok.View):
         result = ModelsContent().search_catalog_by_access(context=self.context,
                                                      **query)
         return result
-    
+
 class MacroComboStandard(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')

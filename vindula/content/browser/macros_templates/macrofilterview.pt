@@ -55,12 +55,28 @@
 
 <metal:view_macro define-macro="tabular">
 
+    <link rel="stylesheet" href="" type="text/css"
+          tal:attributes="href string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.css">
+
+    <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.min.js"></script>
+    <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.filter.min.js"></script>
+    <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/i18n/jquery.multiselect.br.js"></script>
+    <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/i18n/jquery.multiselect.filter.br.js"></script>
+    <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/select_filter.js"></script>
+
+
     <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
 
 
      <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
-                      subject request/subject|python:'';">
+                      subject request/subject|python:'';
+                      list_filter python: view_macro.tabular_filter();">
 
         <div class="filterFile" id="filter_file">
 
@@ -71,7 +87,6 @@
                 <input type='button' value='Limpar Filtro' class="clearFilter" />
                 <input type='button' value='Aplicar' class="execFilter" />
             </div>
-
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
@@ -79,6 +94,35 @@
 
 
         </div>
+
+        <br/>
+        <div class="advancedFilter">
+
+            <div class="tags">
+                <select name="subject" id="subject" class="select-filter"
+                        tal:define="tags list_filter/tags">
+
+                    <option tal:repeat="item tags"
+                            tal:attributes="value item"
+                            tal:content="item"
+                            ></option>
+                </select>
+
+            </div>
+            <br/>
+            <br/>
+            <div class="structures">
+                <select name="structures" id="structures" class="select-filter"
+                        tal:define="tags list_filter/structures">
+
+                    <option tal:repeat="item tags"
+                            tal:attributes="value item/UID"
+                            tal:content="item/Title"
+                            ></option>
+                </select>
+
+            </div>
+            <br/>
 
     </tal:def>
 

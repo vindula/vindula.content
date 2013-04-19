@@ -5,15 +5,15 @@
 
     <h2>Mas Acessados </h2>
 
-    <tal:rep repeat="item list_itens">
-        <p tal:define="ctx item/content/getObject"
-           tal:content= "ctx/Title"></p>
+    <div>
 
-
-
-    </tal:rep>
-
-
-
+        <ul>
+            <tal:rep repeat="item list_itens">
+                <li><a tal:define="ctx item/content/getObject"
+                       tal:attributes="href ctx/absolute_url"
+                       tal:content= "ctx/Title"></a></li>
+            </tal:rep>
+        </ul>
+    </div>
 
 </metal:view_macro>
