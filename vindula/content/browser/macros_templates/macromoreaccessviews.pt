@@ -1,5 +1,5 @@
 <metal:view_macro define-macro="view"
-                  tal:define="view_macro python:context.restrictedTraverse('macro-busiest-content');
+                  tal:define="view_macro python:context.restrictedTraverse('macro_more_access_content');
                               portal_type portal_type|request/portal_type|nothing;
                               list_itens python: view_macro.list_files(portal_type)">
 

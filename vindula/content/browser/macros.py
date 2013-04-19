@@ -117,21 +117,21 @@ class MacroKeywords(grok.View):
     grok.name('macro-keywords-content')
 
 
-class MacroBusiestViews(grok.View):
+class MacroMoreAccessViews(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
-    grok.name('macro-busiest-content')
+    grok.name('macro_more_access_content')
 
 
     def list_files(self, portal_type):
         list_files = []
 
         query = {'portal_type': portal_type}
-
+        print query
         result = ModelsContent().search_catalog_by_access(context=self.context,
-                                                           **query)
+                                                     **query)
         return result
-
+    
 class MacroComboStandard(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
