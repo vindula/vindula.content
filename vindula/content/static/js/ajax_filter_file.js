@@ -1,5 +1,5 @@
 function executaAjaxFilter($ctx){
-	var url = $j('base').val() + 'biblioteca-view',
+	var url = document.URL, //$j('base').val() + 'biblioteca-view',
         id = $ctx.attr('id'),
         themes = [],
         structures = [],

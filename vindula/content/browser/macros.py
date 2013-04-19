@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from five import grok
 from zope.interface import Interface
-
+from Products.CMFCore.utils import getToolByName
 
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.content.models.content import ModelsContent
@@ -9,6 +9,24 @@ from vindula.content.models.content import ModelsContent
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from datetime import datetime
+
+
+class Search(object):
+
+    def __init__(self, context, query={}, rs=True):
+        portal_catalog = getToolByName(context, 'portal_catalog')
+        path = context.portal_url.getPortalObject().getPhysicalPath()
+
+        if rs:
+            query.update({'review_state': ['published', 'internally_published', 'external']})
+
+        query.update({'path': {'query':'/'.join(path)},
+                     'sort_on':'effective',
+                     'sort_order':'descending',})
+
+        self.result = portal_catalog(**query)
+
+
 
 
 class MacroPropertiesView(grok.View, UtilMyvindula):
@@ -49,6 +67,37 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                       'date':date,})
 
         return L
+
+
+class MacroFilterView(grok.View):
+    grok.context(Interface)
+    grok.name('macro_filter_file')
+    grok.require('zope2.View')
+
+    def __init__(self, context, request):
+        super(MacroFilterView,self).__init__(context, request)
+        self.request = request
+        self.context = context
+        self.pc = getToolByName(context, 'portal_catalog')
+
+
+    def list_filter(self, is_theme,is_structures):
+        result = []
+        if is_theme:
+            result = self.pc.uniqueValuesFor("ThemeNews")
+
+        elif is_structures:
+            query = {'portal_type':('OrganizationalStructure',)}
+
+            search = Search(self.context,query)
+            result = seacrh.result
+
+        return result
+
+    def tabular_filter(self, ):
+        pass
+
+
 
 class MacroCommentsView(grok.View):
     grok.context(Interface)

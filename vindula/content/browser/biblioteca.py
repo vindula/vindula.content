@@ -5,26 +5,9 @@ from Products.CMFCore.interfaces import ISiteRoot
 from AccessControl import ClassSecurityInfo
 
 from vindula.content.models.content import ModelsContent
-
+from vindula.content.browser.macros import Search
 
 from Products.CMFCore.utils import getToolByName
-
-class Search(object):
-
-    def __init__(self, context, query={}, rs=True):
-        portal_catalog = getToolByName(context, 'portal_catalog')
-        path = context.portal_url.getPortalObject().getPhysicalPath()
-
-        if rs:
-            query.update({'review_state': ['published', 'internally_published', 'external']})
-
-        query.update({'path': {'query':'/'.join(path)},
-                     'sort_on':'effective',
-                     'sort_order':'descending',})
-
-        self.result = portal_catalog(**query)
-
-
 
 
 class BlibliotecaView(grok.View):
@@ -128,7 +111,7 @@ class MacroListtabularView(grok.View):
     def list_files(self, keywords, portal_type):
         list_files = []
 
-        query = {'portal_type': ('File',)}
+        query = {'portal_type': portal_type}
         if keywords:
             query['SearchableText'] = keywords
 
@@ -138,30 +121,3 @@ class MacroListtabularView(grok.View):
         return list_files
 
 
-class MacroFilterView(grok.View):
-    grok.context(Interface)
-    grok.name('macro_filter_file')
-    grok.require('zope2.View')
-
-    def __init__(self, context, request):
-        super(MacroFilterView,self).__init__(context, request)
-        self.request = request
-        self.context = context
-        self.pc = getToolByName(context, 'portal_catalog')
-
-
-    def list_filter(self, is_theme,is_structures):
-        result = []
-        if is_theme:
-            result = self.pc.uniqueValuesFor("ThemeNews")
-
-        elif is_structures:
-            query = {'portal_type':('OrganizationalStructure',)}
-
-            search = Search(self.context,query)
-            result = seacrh.result
-
-        return result
-
-    def tabular_filter(self, ):
-        pass

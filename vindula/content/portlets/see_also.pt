@@ -7,12 +7,14 @@
     </dt>
     <dd class="portletItem" >
         <div id="_portlet_seealso">
-
-        <tal:rep repeat="item view/getItens">
-            <p tal:define="ctx item/content/getObject"
-                tal:content= "ctx/Title"></p>
-        </tal:rep>
-
+            <ul>
+                <tal:rep repeat="item view/getItens">
+                    <li><a  tal:define="ctx item/content/getObject"
+                        tal:attributes="href ctx/absolute_url"
+                        tal:content= "ctx/Title">
+                    </a></li>
+                </tal:rep>
+            </ul>
 
         </div>
     </dd>

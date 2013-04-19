@@ -59,6 +59,14 @@ class Renderer(base.Renderer):
     def get_title(self):
         return self.data.title_portlet
 
+    @property
+    def available(self):
+        itens = self.getItens()
+        if itens:
+            return True
+        else:
+            return False
+
 
     def getItens(self):
         context = self.context
@@ -69,12 +77,6 @@ class Renderer(base.Renderer):
                                                            **query)
 
         return result
-
-
-
-
-
-
 
 
 
