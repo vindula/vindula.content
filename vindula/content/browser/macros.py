@@ -76,7 +76,8 @@ class MacroListtabularView(grok.View):
     def list_files(self, subject, keywords, structures, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
-
+        if isinstance(portal_type, str):
+            portal_type = eval(portal_type)
         query = {'portal_type': portal_type}
 
         if subject:
@@ -106,14 +107,16 @@ class MacroListtabularView(grok.View):
             list_files = result
 
         return list_files
-
     def getValueField(self, item, attr):
         result = getattr(item, attr)()
         try:
-            return result.Title()
+            return {'value': result.Title(),
+                    'name': result.Title(),
+                    'url': result.absolute_url(),}
         except AttributeError:
-            return result
-
+            return {'value': result,
+                    'name': item.Title(),
+                    'url': item.absolute_url(),}
 
 class MacroFilterView(grok.View):
     grok.context(Interface)

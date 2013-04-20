@@ -1,8 +1,13 @@
 <metal:view_macro define-macro="view">
+    
+    <script type="text/javascript" src=""
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+    <script type="text/javascript" src=""
+                tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
 
     <div class="visualClear"></div>
 
-    <div class="filterFile" id="list_file">
+    <div class="filterFile list_file" id="list_file">
 
         <tal:def tal:define="view_macro python:context.restrictedTraverse('macro_tabular_file');
                              Batch python:modules['Products.CMFPlone'].Batch;
@@ -10,18 +15,18 @@
                              b_start python:0;
                              b_start request/b_start | b_start;
                              portal_type portal_type|request/portal_type|nothing;
-
+                             fields fields|python:eval(request.fields) or None;
                              subject request/subject|python:'';
-
                              keywords request/keywords|request/keywords[]|python:'';
                              structures request/structures|request/structures[]|python:'';
-
                              list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
                              batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
 
-
             <input type="hidden" id="b_size" tal:attributes="value b_size" />
             <input type="hidden" id="b_start" tal:attributes="value b_start" />
+            <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
+            <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
+            <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
             <meta:macro metal:define-macro="navegacao-macro">
                 <div id="paginacao">
                     <div id="size-nav" class="float-left">
@@ -47,39 +52,33 @@
                 </div>
                 <div class="visualClear"></div>
             </meta:macro>
-
             <div class="visualClear"></div>
-            <metal:macro define-macro="news-list">
-                <table class="listing" width="100%"
-                       tal:define="fields fields|nothing;">
-                    <thead>
-                        <tr>
-                            <tal:rep repeat="field fields">
-                                 <th tal:content="field/label"></th>
-                            </tal:rep>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr tal:repeat="item batch">
-                            <tal:rep repeat="field fields"
-                                     define="item_object item/getObject|python: item;">
-                                <td tal:define="value python: view_macro.getValueField(item_object, field['attribute'])">
-                                    <span tal:content="value"></span>
-                                </td>
-                            </tal:rep>
-                        </tr>
-                    </tbody>
-                 </table>
-             </metal:macro>
-
+            <table class="listing" width="100%" 
+                   tal:define="fields fields|nothing;">
+                <thead>
+                    <tr>
+                        <tal:rep repeat="field fields">
+                             <th tal:content="field/label"></th>
+                        </tal:rep>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr tal:repeat="item batch">
+                        <tal:rep repeat="field fields"
+                                 define="item_object item/getObject;">
+                            <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])">
+                                <a target="_blank"
+                                   tal:attributes="href value_field/url; 
+                                                   title value_field/name">
+                                    <span tal:content="value_field/value"></span>
+                                </a>
+                            </td>
+                        </tal:rep>
+                    </tr>
+                </tbody>
+             </table>
              <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
-
         </tal:def>
-
-
-
     </div>
-
     <div class="visualClear"></div>
-
 </metal:view_macro>
