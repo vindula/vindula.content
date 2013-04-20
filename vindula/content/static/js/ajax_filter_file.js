@@ -1,3 +1,7 @@
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+};
+
 function executaAjaxFilter($ctx){
 	var url = document.URL, //$j('base').val() + 'biblioteca-view',
         id = $ctx.attr('id'),
@@ -12,7 +16,7 @@ function executaAjaxFilter($ctx){
 
    });
 
-    $ctx.find('input.filter[name="structures"]').each(function(){
+    $ctx.find('.filter[name="structures"]').each(function(){
         if($j(this).is(':checked')){
           structures.push(this.value);
         };
@@ -21,8 +25,13 @@ function executaAjaxFilter($ctx){
 
     params['subject'] = $ctx.find('input.filter[name="subject"]').val()
 
+    params['keywords'] = $ctx.find('.filter[name="keywords"]').val()
 
 	params['themes'] = themes;
+
+    if (isEmpty(structures))
+        structures = $ctx.find('.filter[name="structures"]').val()
+
     params['structures'] = structures;
 
 	$ctx.find('.filterFile #spinner').removeClass('display-none');
@@ -33,15 +42,21 @@ function executaAjaxFilter($ctx){
     	  data: params,
     	  dataType: 'GET',
     	  success: function(data){
-    			var dom = $j(data);
-    			var content = dom.find('div#'+id);
+    			var dom = $j(data),
+        	   	    content = dom.find('div#list_file'),
+                    url = $j('base').val() + 'table_sorter.js';
 
-    	        $ctx.html(content);
+                    $j.get(url, function(data){
+                        $j.globalEval(data);
+                    });
+
+                $ctx.find('div#list_file').html(content);
+
+                $ctx.find('.filterFile #spinner').addClass('display-none');
+                $ctx.find('div#list_file').removeClass('display-none');
     	    },
     	});
 }
-
-
 
 
 $j(document).ready(function(){
@@ -60,6 +75,10 @@ $j(document).ready(function(){
 
         $j('input.filter[type="text"]').each(function(){
             $j(this).attr('value', '');
+        });
+
+        $j('.ui-multiselect-none').each(function(){
+            $j(this).trigger('click');
         });
 
     });

@@ -73,35 +73,47 @@ class MacroListtabularView(grok.View):
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
 
-    def list_files(self, keywords, portal_type):
+    def list_files(self, subject, keywords, structures, portal_type):
+        rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
 
         query = {'portal_type': portal_type}
-        if keywords:
-            query['SearchableText'] = keywords
+
+        if subject:
+            query['SearchableText'] = subject
+
+        if keywords and keywords != 'null':
+            query['Subject'] = keywords
 
         search = Search(self.context,query,rs=False)
         list_files = search.result
-        return list_files
-<<<<<<< HEAD
 
-    def filter_fields(self, schema, display_fields=[]):
-        results = []
-        for field in schema.fields():
-            diff_values = [attr for attr in display_fields \
-                           if field.getName() == attr]
-            if not diff_values: continue
-            results.append(field)
-        return results
-=======
-    
+        if structures and structures != 'null':
+
+            if not isinstance(structures,list):
+                structures = [structures]
+
+            result = []
+            for structure in structures:
+                object = rtool.lookupObject(structure)
+
+                refs = rtool.getBackReferences(object, 'structures', targetObject=None)
+                for ref in refs:
+                    obj = ref.getSourceObject()
+                    if obj.portal_type in portal_type:
+                        result.append(obj)
+
+            list_files = result
+
+        return list_files
+
     def getValueField(self, item, attr):
         result = getattr(item, attr)()
         try:
             return result.Title()
         except AttributeError:
             return result
->>>>>>> 7c37a22ac02c2a6578a28361a2ca1e285038f207
+
 
 class MacroFilterView(grok.View):
     grok.context(Interface)

@@ -4,17 +4,11 @@
 $j(document).ready(function(){
     $j(".select-filter").multiselect({
         selectedList:10,
-        minWidth:150,
-        height:100,
+        minWidth:200,
+        height:150,
 
-        // checkAll: function(){
-        //     ajaxBusca();
-        // },
-        // uncheckAll: function(){
-        //     ajaxBusca();
-        // }
     }).multiselectfilter({
-        width:120
+        width:180
     },'refresh');
 
 

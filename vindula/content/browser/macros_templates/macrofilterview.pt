@@ -76,6 +76,10 @@
 
      <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
                       subject request/subject|python:'';
+
+                      req_keywords request/keywords|request/keywords[]|python:'';
+                      req_structures request/structures|request/structures[]|python:'';
+
                       list_filter python: view_macro.tabular_filter();">
 
         <div class="filterFile" id="filter_file">
@@ -83,50 +87,53 @@
             <input type="text" class="filter" name="subject" tal:attributes="value subject" />
 
 
-            <div class="actionsFilter">
+
+            <br/>
+            <div class="advancedFilter">
+
+                <div class="tags">
+                    <select name="keywords" id="keywords" class="filter select-filter" multiple="multiple"
+                            tal:define="tags list_filter/tags">
+
+                        <option tal:repeat="item tags"
+                                tal:attributes="value item;
+                                                selected python:item in req_keywords and 'selected' or '';"
+                                tal:content="item"
+
+                                ></option>
+                    </select>
+
+                </div>
+                <br/>
+
+                <div class="structures">
+                    <select name="structures" id="structures" class="filter select-filter" multiple="multiple"
+                            tal:define="structures list_filter/structures">
+
+                        <option tal:repeat="item structures"
+                                tal:attributes="value item/UID;
+                                                selected python:item.UID in req_structures and 'selected' or '';""
+                                tal:content="item/Title"
+                                ></option>
+                    </select>
+
+                </div>
+                <br/>
+            </div>
+
+
+             <div class="actionsFilter">
                 <input type='button' value='Limpar Filtro' class="clearFilter" />
                 <input type='button' value='Aplicar' class="execFilter" />
             </div>
+
+
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
             </div>
 
-
-        </div>
-
-        <br/>
-        <div class="advancedFilter">
-
-            <div class="tags">
-                <select name="subject" id="subject" class="select-filter"
-                        tal:define="tags list_filter/tags">
-
-                    <option tal:repeat="item tags"
-                            tal:attributes="value item"
-                            tal:content="item"
-                            ></option>
-                </select>
-
-            </div>
-            <br/>
-            <br/>
-            <div class="structures">
-                <select name="structures" id="structures" class="select-filter"
-                        tal:define="tags list_filter/structures">
-
-                    <option tal:repeat="item tags"
-                            tal:attributes="value item/UID"
-                            tal:content="item/Title"
-                            ></option>
-                </select>
-
-            </div>
-            <br/>
-
     </tal:def>
-
-
 </metal:view_macro>
 
 

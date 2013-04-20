@@ -10,8 +10,13 @@
                              b_start python:0;
                              b_start request/b_start | b_start;
                              portal_type portal_type|request/portal_type|nothing;
+
                              subject request/subject|python:'';
-                             list_files python: view_macro.list_files(subject, portal_type) or [];
+
+                             keywords request/keywords|request/keywords[]|python:'';
+                             structures request/structures|request/structures[]|python:'';
+
+                             list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
                              batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
 
 
@@ -45,7 +50,7 @@
 
             <div class="visualClear"></div>
             <metal:macro define-macro="news-list">
-                <table class="listing" width="100%" 
+                <table class="listing" width="100%"
                        tal:define="fields fields|nothing;">
                     <thead>
                         <tr>
@@ -57,7 +62,7 @@
                     <tbody>
                         <tr tal:repeat="item batch">
                             <tal:rep repeat="field fields"
-                                     define="item_object item/getObject;">
+                                     define="item_object item/getObject|python: item;">
                                 <td tal:define="value python: view_macro.getValueField(item_object, field['attribute'])">
                                     <span tal:content="value"></span>
                                 </td>
