@@ -65,7 +65,7 @@
                 <tbody>
                     <tr tal:repeat="item batch">
                         <tal:rep repeat="field fields"
-                                 define="item_object item/getObject;">
+                                 define="item_object item/getObject|python: item;">
                             <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])">
                                 <a target="_blank"
                                    tal:attributes="href value_field/url; 
