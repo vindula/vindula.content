@@ -76,12 +76,23 @@ class MacroListFileView(grok.View):
 
         return list_files
 
+    def getStructures_byUID(self,UID):
+        if UID:
+            object = self.rtool.lookupObject(UID)
+            return object.Title()
+        else:
+            return None
+
 
     def searchFile_byStructures(self, structures=None, sort_on='access'):
         result = []
 
         if structures:
-            object = structures.getObject()
+            if isinstance(structures, str):
+                object = self.rtool.lookupObject(structures)
+            else:
+                object = structures.getObject()
+
             refs = self.rtool.getBackReferences(object, 'structures', targetObject=None)
             for ref in refs:
                 obj = ref.getSourceObject()

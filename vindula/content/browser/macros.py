@@ -50,7 +50,7 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
         context = self.context
         HistoryView = ContentHistoryView(context, context.REQUEST)
 
-        content_history = HistoryView.fullHistory()
+        content_history = HistoryView.fullHistory() or []
         L = []
         for history in content_history:
             tipo = history.get('type','')

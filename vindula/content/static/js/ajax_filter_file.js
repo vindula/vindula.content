@@ -43,14 +43,15 @@ function executaAjaxFilter($ctx){
     	  dataType: 'GET',
     	  success: function(data){
     			var dom = $j(data),
-        	   	    content = dom.find('div#list_file'),
+                    ctx_id = $ctx.attr('id'),
+        	   	    content = dom.find('div#'+ctx_id+' div#itens'),
                     url = $j('base').val() + 'table_sorter.js';
 
                     $j.get(url, function(data){
                         $j.globalEval(data);
                     });
 
-                $ctx.find('div#list_file').html(content);
+                $ctx.find('div#itens').html(content);
 
                 $ctx.find('.filterFile #spinner').addClass('display-none');
                 $ctx.find('div#list_file').removeClass('display-none');
