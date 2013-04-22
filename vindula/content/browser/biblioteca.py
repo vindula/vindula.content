@@ -40,6 +40,15 @@ class BlibliotecaView(grok.View):
         search = Search(self.context,query)
         self.structures = search.result
 
+    def getStructures(self):
+        self.update()
+        return self.structures
+
+    def getThemes(self):
+        self.update()
+        return self.themes
+
+
 
 
 
