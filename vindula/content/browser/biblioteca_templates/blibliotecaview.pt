@@ -44,10 +44,14 @@
                     <!-- tal:def define="is_structures python:True"> </tal:def -->
                     <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
 
-
-                    <tal:def define="portal_type python: ('File',);">
-                        <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                    <tal:def define="portal_type python: ('File',);
+                                     fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                    {'label': 'Número', 'attribute': 'getNumero'},
+                                                    {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                    {'label': 'Título', 'attribute': 'Title'},];">
+                               <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                     </tal:def>
+
 
                 </div>
             </meta:macro>
