@@ -1,0 +1,21 @@
+<dl class="portlet" tal:define="view view/data">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span class="tile" tal:content="view/get_title">Portlet Social vindula</span>
+        <span class="portletTopRight"></span>
+    </dt>
+    <dd class="portletItem" >
+        <div id="_portlet_social">
+
+
+            <div class="action" tal:attributes="data_uid context/UID|nothing;
+                                                    data_type context/portal_type|nothing;
+                                                    class string:vd_${view/get_action};"></div>
+
+        </div>
+    </dd>
+    <dd class="portletFooter"></dd>
+    <div class="visualClear"></div>
+</dl>
+

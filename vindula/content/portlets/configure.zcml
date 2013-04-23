@@ -91,5 +91,17 @@
          editview=".see_also.EditForm"
         />
 
+    <!-- Portlet Vindula Social -->
+    <plone:portlet
+         name="vindula.content.PortletVindulaSocial"
+         interface=".vindulasocial.IVindulaSocialPortlet"
+         assignment=".vindulasocial.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".vindulasocial.Renderer"
+         addview=".vindulasocial.AddForm"
+         editview=".vindulasocial.EditForm"
+        />
+
 
 </configure>

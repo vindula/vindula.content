@@ -54,5 +54,12 @@
 
 	</portlet>
 
+    <portlet
+        addview="vindula.content.PortletVindulaSocial"
+        title="Portlet de Ações do Vindula Api"
+        description="Portlet de Ações do Vindula Api">
+
+    </portlet>
+
 
 </portlets>
