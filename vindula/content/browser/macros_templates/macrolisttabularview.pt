@@ -1,5 +1,5 @@
 <metal:view_macro define-macro="view">
-    
+
     <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
     <script type="text/javascript" src=""
@@ -53,7 +53,7 @@
                 <div class="visualClear"></div>
             </meta:macro>
             <div class="visualClear"></div>
-            <table class="listing" width="100%" 
+            <table class="listing" width="100%"
                    tal:define="fields fields|nothing;">
                 <thead>
                     <tr>
@@ -68,7 +68,7 @@
                                  define="item_object item/getObject|python: item;">
                             <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])">
                                 <a target="_blank"
-                                   tal:attributes="href value_field/url; 
+                                   tal:attributes="href value_field/url;
                                                    title value_field/name">
                                     <span tal:content="value_field/value"></span>
                                 </a>

@@ -57,6 +57,12 @@
 			         <tal:cond condition="context/getStructures">
 			             unidade: <span tal:content="python: context.getStructures().Title()"></span><br />
 			         </tal:cond>
+ 					 <tal:def define="themes context/getRawThemesNews">
+			        	Temas: <span tal:repeat="item themes"
+			        				  tal:content="string: ${item}," />
+						<br/>
+					 </tal:def>
+
 			         tipo: <span tal:content="context/tipo|nothing"></span><br />
 			         numero: <span tal:content="context/numero|nothing"></span><br />
 					 <tal:cond condition="context/vigencia">

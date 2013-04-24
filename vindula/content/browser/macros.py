@@ -179,10 +179,15 @@ class MacroMoreAccessViews(grok.View):
 
     def list_files(self, portal_type):
         list_files = []
+        rs = True
 
         query = {'portal_type': portal_type}
+        if 'File' in portal_type:
+            rs=False
+
         result = ModelsContent().search_catalog_by_access(context=self.context,
-                                                     **query)
+                                                          rs=rs,
+                                                          **query)
         return result
 
 class MacroComboStandard(grok.View):

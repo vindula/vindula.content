@@ -39,8 +39,8 @@ import json
 
 
 VindulaFile_schema =  ATFile.schema.copy() + Schema((
-    
-    
+
+
     ReferenceField('structures',
         multiValued=0,
         allowed_types=('OrganizationalStructure',),
@@ -61,7 +61,7 @@ VindulaFile_schema =  ATFile.schema.copy() + Schema((
             label=u"Tipo",
             description=u"Selecione o tipo do documento.",
         ),
-        vocabulary='get_tipo',                
+        vocabulary='get_tipo',
     ),
 
     StringField(
@@ -72,7 +72,7 @@ VindulaFile_schema =  ATFile.schema.copy() + Schema((
              description=u"Digite o numero do documento.",
         ),
     ),
-                                                     
+
     DateTimeField(
         name='vigencia',
         searchable = True,
@@ -83,7 +83,7 @@ VindulaFile_schema =  ATFile.schema.copy() + Schema((
               show_hm = False
         ),
     ),
-            
+
     StringField(
         "classificacao",
         widget = SelectionWidget(
@@ -93,7 +93,7 @@ VindulaFile_schema =  ATFile.schema.copy() + Schema((
         vocabulary='get_classificacao',
         required=False,
     ),
-          
+
     LinesField(
         'themesNews',
         multiValued=1,
@@ -104,7 +104,7 @@ VindulaFile_schema =  ATFile.schema.copy() + Schema((
             label=_(u'Temas'),
             description=_(u'Selecione os temas do documento.'),
             ),
-    ),              
+    ),
 
 
 ))
@@ -117,8 +117,8 @@ class VindulaFile(ATFile,ATBlob):
     portal_type = 'VindulaFile'
     _at_rename_after_creation = True
     schema = VindulaFile_schema
-    
-    
+
+
     def getDefaultTime(self):
         return DateTime()
 
@@ -127,7 +127,7 @@ class VindulaFile(ATFile,ATBlob):
         L = []
         for item in content_fields:
             L.append((item,item))
-            
+
         return DisplayList(L)
 
 
@@ -140,7 +140,7 @@ class VindulaFile(ATFile,ATBlob):
         return DisplayList(tuple(L))
 
 
-registerType(VindulaFile, PROJECTNAME) 
+registerType(VindulaFile, PROJECTNAME)
 
 
 def either(one, two):
@@ -156,7 +156,7 @@ class VindulaFileView(grok.View):
 
     installed = docsplit is not None
     enabled = docsplit is not None
-    
+
     def update(self):
         self.site = getPortal(self.context)
         self.settings = Settings(self.context)
@@ -280,7 +280,7 @@ class VindulaFileView(grok.View):
                 'search': '%s/dv-search.json?q={query}' % (
                         self.context.absolute_url())
             }
-        } 
+        }
 
     def javascript(self):
         fullscreen = self.settings.fullscreen

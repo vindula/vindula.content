@@ -17,6 +17,12 @@
                                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
                 <hr/>
+                <br/>
+                    <tal:def define="portal_type python: ('File',);">
+                        <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
+                    </tal:def>
+                <br/>
+
 
                 <!-- ABA Tema -->
                 <div class="conteiner" id="theme">
@@ -54,13 +60,15 @@
                     <!-- tal:def define="is_structures python:True"> </tal:def -->
                     <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
 
-                    <tal:def define="portal_type python: ('File',);
-                                     fields python:[{'label': 'UO', 'attribute': 'getStructures'},
-                                                    {'label': 'Número', 'attribute': 'getNumero'},
-                                                    {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                    {'label': 'Título', 'attribute': 'Title'},];">
-                               <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
-                    </tal:def>
+                    <div id="itens">
+                        <tal:def define="portal_type python: ('File',);
+                                         fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                        {'label': 'Número', 'attribute': 'getNumero'},
+                                                        {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                        {'label': 'Título', 'attribute': 'Title'},];">
+                                   <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                        </tal:def>
+                    </div>
 
 
                 </div>
