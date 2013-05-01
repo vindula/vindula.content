@@ -49,6 +49,17 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         required=False
     ),
 
+    StringField(
+        name = 'tipounidade',
+        widget=SelectionWidget(
+            label= 'Tipo de Unidade',
+            description= 'Selecione o tipo de Unidade Organizacional.',
+            format = 'select',
+        ),
+        vocabulary = 'getTipoUnidades',
+        searchable = True,
+    ),
+
     LinesField(
             name="employees",
             multiValued=1,
@@ -466,6 +477,17 @@ class OrganizationalStructure(ATFolder):
         types = self.portal_types.listContentTypes()
         return types
 
+    def getTipoUnidades(self):
+        result = [('', 'Selecione um tipo de Unidade')]
+        obj_control = getSite().get('control-panel-objects')
+        tipounidade = obj_control.get('vindula_categories').getTipoUnidade()
+        if tipounidade:
+            tipounidade = tipounidade.replace('\r', '')
+            tipounidade = tipounidade.split('\n')
+            for modalidade in tipounidade:
+               result.append((modalidade, modalidade))
+        return result
+
 registerType(OrganizationalStructure, PROJECTNAME) 
 
 class OrgstructureModifiedEvent(object):
@@ -475,6 +497,11 @@ class OrgstructureModifiedEvent(object):
 
     def __init__(self, context):
         self.context = context
+
+
+
+
+
 
 def CreatGroupInPloneSite(event):
     ctx = event.context
