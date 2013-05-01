@@ -42,8 +42,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             typeview='list',
-            label=_(u"Tipo de Estrutura Organizacional"),
-            description=_(u"Selecione o tipo de estrutura organizacional."),
+            label=_(u"Tipo de Unidade Organizacional"),
+            description=_(u"Selecione o tipo de Unidade Organizacional."),
 
             ),
         required=False
@@ -53,8 +53,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             name="employees",
             multiValued=1,
             widget = widget.UserAndGroupSelectionWidget(
-                label=_(u"Funcionários desta Estrutura Organizacional"),
-                description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
+                label=_(u"Funcionários desta Unidade Organizacional"),
+                description=_(u"Selecione os participantes da Unidade Organizacional."),
                 usersOnly=True,
                 ),
             required=True,
@@ -65,7 +65,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             name='manager',
             widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Gestor"),
-                description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+                description=_(u"Indique quem é o gestor dessa Unidade Organizacional."),
                 usersOnly=True
                 ),
             required=True,
@@ -139,7 +139,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         default=False,
         widget=BooleanWidget(
             label="Ativar Personalização",
-            description='Se selecionado, Ativa a opção de personalização dos itens inferiores a estrutura organizacional.',
+            description='Se selecionado, Ativa a opção de personalização dos itens inferiores a Unidade Organizacional.',
         ),
         schemata = 'Layout'
     ),                                                       

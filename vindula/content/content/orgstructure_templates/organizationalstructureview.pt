@@ -25,7 +25,7 @@
 		 	<metal:content-core define-macro="content-core">
 				<!--p><b>Categoria:</b> <span tal:content="context/getCategoria|nothing"></span> </p-->
 				<p tal:condition="context/getStructures|nothing" >
-					<b>Estrutura Organizacional:</b> <span tal:content="python:context.getStructures().Title()" />
+					<b>Unidade Organizacional:</b> <span tal:content="python:context.getStructures().Title()" />
 				</p>
 				
 				<div>

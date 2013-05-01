@@ -31,8 +31,8 @@ Unit_schema =  ATFolder.schema.copy() + Schema((
         relationship='structures',
         widget=ReferenceBrowserWidget(
             default_search_index='SearchableText',
-            label=_(u"Estrutura Organizacional"),
-            description=_(u"Selecione uma estrutura organizacional pai. Opcional."),
+            label=_(u"Unidade Organizacional"),
+            description=_(u"Selecione uma Unidade Organizacional pai. Opcional."),
 
             ),
         required=False
