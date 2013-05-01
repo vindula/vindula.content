@@ -51,8 +51,8 @@ ATBlobSchema += Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             typeview='list',
-            label=_(u"Estrutura Organizacional"),
-            description=_(u"Selecione uma estrutura organizacional."),
+            label=_(u"Unidade Organizacional"),
+            description=_(u"Selecione uma Unidade Organizacional."),
             ),
         required=False
     ),

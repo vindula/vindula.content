@@ -4,8 +4,8 @@
 		xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  
  <!-- Basic metadata -->
- <property name="title" i18n:translate="">Estrutura Organizacional</property>
- <property name="description" i18n:translate="">Pasta hierárquica do tipo Estrutura Organizacional.</property>
+ <property name="title" i18n:translate="">Unidade Organizacional</property>
+ <property name="description" i18n:translate="">Pasta hierárquica do tipo Unidade Organizacional.</property>
  <property name="content_icon">++resource++vindula.content.images/folder.gif</property>
  <property name="content_meta_type">OrganizationalStructure</property>
  <property name="product">vindula.content</property>

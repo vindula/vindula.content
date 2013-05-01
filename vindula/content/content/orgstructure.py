@@ -33,28 +33,53 @@ from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidg
 from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
-    
+
+
+
+
+    TextField(
+            name='siglaunidade',
+            default_content_type = 'text/restructured',
+            default_output_type = 'text/x-html-safe',
+            widget=StringWidget(
+                label=_(u"Sigla da Unidade"),
+                description=_(u"Informe a sigla da Unidade."),
+                rows="10",
+            ),
+            required=True,
+    ),
     
     ReferenceField('structures',
         multiValued=0,
         allowed_types=('OrganizationalStructure',),
         relationship='structures',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             typeview='list',
-            label=_(u"Tipo de Estrutura Organizacional"),
-            description=_(u"Selecione o tipo de estrutura organizacional."),
+            label=_(u"Escolha uma Unidade Organizacional Pai"),
+            description=_(u"Selecione uma Unidade Organizacional para ser Pai. "
+                          u"Esta escolha fará com que esta Unidade Organizacional apareça como filho da escolhida"),
 
             ),
         required=False
+    ),
+
+    StringField(
+        name = 'tipounidade',
+        widget=SelectionWidget(
+            label= 'Tipo de Unidade',
+            description= 'Selecione o tipo de Unidade Organizacional.',
+            format = 'select',
+        ),
+        vocabulary = 'getTipoUnidades',
+        searchable = True,
     ),
 
     LinesField(
             name="employees",
             multiValued=1,
             widget = widget.UserAndGroupSelectionWidget(
-                label=_(u"Funcionários desta Estrutura Organizacional"),
-                description=_(u"Selecione os funcionários que estão nesta estrutura organizacional."),
+                label=_(u"Funcionários desta Unidade Organizacional"),
+                description=_(u"Selecione os participantes da Unidade Organizacional."),
                 usersOnly=True,
                 ),
             required=True,
@@ -65,7 +90,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             name='manager',
             widget = widget.UserAndGroupSelectionWidget(
                 label=_(u"Gestor"),
-                description=_(u"Indique quem é o gestor dessa estrutura organizacional."),
+                description=_(u"Indique quem é o gestor dessa Unidade Organizacional."),
                 usersOnly=True
                 ),
             required=True,
@@ -89,12 +114,11 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         label=_(u"Imagem "),
         relationship='Imagem',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             label=_(u"Imagem "),
             description='Será exibido na visualização desta estrutura. A imagem será redimensionada para um tamanho adequado.')
     ),
 
-    #---------------------abas de permições no Objeto---------------------------------
+    #---------------------abas de permissão no Objeto---------------------------------
      LinesField(
             name="Groups_view",
             multiValued=1,
@@ -132,14 +156,14 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             validators = ('isUserUpdate',),
             ),
     
-    #---------------------abas de permições no Objeto---------------------------------
+    #---------------------abas de permissões no Objeto---------------------------------
 
     BooleanField(
         name='activ_personalit',
         default=False,
         widget=BooleanWidget(
             label="Ativar Personalização",
-            description='Se selecionado, Ativa a opção de personalização dos itens inferiores a estrutura organizacional.',
+            description='Se selecionado, Ativa a opção de personalização dos itens inferiores a Unidade Organizacional.',
         ),
         schemata = 'Layout'
     ),                                                       
@@ -161,7 +185,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         label=_(u"Logo"),
         relationship='logoPortal',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             label=_(u"Logo "),
             description='Será exibido no topo do portal desta área. A imagem será redimensionada para um tamanho adequado.'),
         schemata = 'Layout'
@@ -187,7 +210,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         label=_(u"WallPapper do portal "),
         relationship='imageBackground',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             label=_(u"Imagem de fundo do portal"),
             description='A imagem será aplicada no background do portal. A imagem será mostrada em seu tamanho original, sem repetição.'),
         schemata = 'Layout'
@@ -222,7 +244,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         label=_(u"Imagem para o rodapé do portal."),
         relationship='imageFooter',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             label=_(u"Imagem para o rodapé do portal"),
             description='A imagem selecionada será exibida no rodapé do portal. Selecione uma imagem com dimenções 980x121'),
         schemata = 'Layout'
@@ -237,7 +258,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor de fundo do menu',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFundo.png'>aqui para exemplo</a>",
-            #description="Cor para o fundo do primeiro nível do menu do portal.",
         ),
         schemata = 'Menu'
     ),
@@ -249,7 +269,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor da fonte do menu',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonte.png'>aqui para exemplo</a>",
-            #description="Cor para a fonte do primeiro nível do menu do portal.",
         ),
         schemata = 'Menu'
     ),
@@ -261,7 +280,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor do background do menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuHoverDropdown.png'>aqui para exemplo</a>",
-            #description="Cor do background do link quando estiver com o mouse selecionado no primeiro nível, e a cor do fundo do Menu Dropdown.",
         ),
         schemata = 'Menu'
     ),   
@@ -284,7 +302,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         label=_(u"Imagem para o background do menu dropdown"),
         relationship='imageBkgMenu',
         widget=VindulaReferenceSelectionWidget(
-            #default_search_index='SearchableText',
             label=_(u"Imagem para background do primeiro nível do menu"),
             description='A imagem selecionada será exibida como plano de fundo do menu.\
                          A imagem será mostrada em seu tamanho original, com repetição.'),
@@ -298,7 +315,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor da fonte do menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteDropdown.png'>aqui para exemplo</a>",
-            #description="Cor da fonte do link quando estiver selecionado pelo mouse no Menu Dropdown.",
         ),
         schemata = 'Menu'
     ), 
@@ -310,8 +326,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor da fonte do menu quando ativo no menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteHoverDropdown.png'>aqui para exemplo</a>",
-#            description="Cor para a fonte do primeiro nível do menu do portal quando ele\
-#                         estiver quando selecionado pelo mouse e ao cor dos links dentro do Menu Dropdown.",
         ),
         schemata = 'Menu'
     ),
@@ -323,7 +337,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor do background do link ativo dentro do menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuDropdownHover.png'>aqui para exemplo</a>",
-            #description="Cor do link quando estiver selecionado pelo mouse dentro do Menu Dropdown.",
         ),
         schemata = 'Menu'
     ),     
@@ -335,7 +348,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor do background do link selecionado no primeiro nível do menu',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuSelected.png'>aqui para exemplo</a>",
-            #description="Cor do fundo do link quando estiver selecionado no primeiro nível do Menu.",
         ),
         schemata = 'Menu'
     ),   
@@ -347,7 +359,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor da fonte do link selecionado no primeiro nível do portal',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteSelected.png'>aqui para exemplo</a>",
-            #description="Cor da fonte link quando estiver selecionado no primeiro nível.",
         ),
         schemata = 'Menu'
     ),   
@@ -359,7 +370,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor do background do link selecionado no menu dropdown',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuSelectedDropdown.png'>aqui para exemplo</a>",
-            #description="Cor do background do link quando estiver selecionado no Menu Dropdown.",
         ),
         schemata = 'Menu'
     ),                                                  
@@ -371,7 +381,6 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
         widget=SmartColorWidget(
             label='Cor da fonte do link selecionado no menu ',
             description="Clique <a class='visualizacao' href='/++resource++vindula.controlpanel/menu/corMenuFonteSelectedDropdown.png'>aqui para exemplo</a>",
-            #description="Cor da fonte do link quando estiver selecionado no Menu.",
         ),
         schemata = 'Menu'
     ),
@@ -482,6 +491,17 @@ class OrganizationalStructure(ATFolder):
         types = self.portal_types.listContentTypes()
         return types
 
+    def getTipoUnidades(self):
+        result = [('', 'Selecione um tipo de Unidade')]
+        obj_control = getSite().get('control-panel-objects')
+        tipounidade = obj_control.get('vindula_categories').getTipoUnidade()
+        if tipounidade:
+            tipounidade = tipounidade.replace('\r', '')
+            tipounidade = tipounidade.split('\n')
+            for modalidade in tipounidade:
+               result.append((modalidade, modalidade))
+        return result
+
 registerType(OrganizationalStructure, PROJECTNAME) 
 
 class OrgstructureModifiedEvent(object):
@@ -491,6 +511,11 @@ class OrgstructureModifiedEvent(object):
 
     def __init__(self, context):
         self.context = context
+
+
+
+
+
 
 def CreatGroupInPloneSite(event):
     ctx = event.context
@@ -587,26 +612,7 @@ def CreatElemetsOrganizationalStructure(context, event):
     
     _cria_objeto(context, CONTEUDOS)
 
-#    objects = {'type_name':'Ploneboard',
-#               'id': 'discussoes',
-#               'title':'discussoes',
-#               'description':'Discussões.'}
-#
-#    context.invokeFactory(**objects)
-#    
-#    objects = {'type_name':'VindulaFolder',
-#               'id': 'paginas',
-#               'title':'Páginas',
-#               'description':'Páginas.'}
-#
-#    context.invokeFactory(**objects)
-#    
-#    objects = {'type_name':'VindulaFolder',
-#               'id': 'arquivos',
-#               'title':'arquivos',
-#               'description':'Arquivos.'}
-#    
- 
+
         
 class OrganizationalStructureView(grok.View, UtilMyvindula):
     grok.context(IOrganizationalStructure)

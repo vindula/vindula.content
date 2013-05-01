@@ -10,30 +10,13 @@ from z3c.relationfield.schema import RelationChoice
 from plone.app.layout.viewlets.interfaces import IBelowContent
 from zope.app.component.hooks import getSite 
 
-from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
 from vindula.controlpanel.vocabularies import ControlPanelMacro
 
-#from Products.CMFCore.interfaces import ISiteRoot
-from zope.interface import Interface
-
-# Interface and schema
 
 class IVindulaContentMacro(form.Schema):
     """ Vindula Contente Macro """
     
-#    page = schema.TextLine(
-#        title=_(u"Página"),
-#        description=_(u"Utilizado para inserir o nome da pagina para visualização do conteudo"),
-#        required=True,
-#        )
-#    
-#    macro = schema.TextLine(
-#        title=_(u"Macro"),
-#        description=_(u"Utilizado para inserir a macro de visualização do conteudo"),
-#        required=True,
-#        )
-
     macro = schema.Choice(
          title=_(u"Categoria"),
          description=_(u"Selecione a macro para este conteúdo.\

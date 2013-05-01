@@ -155,15 +155,15 @@ Changelog
 
 1.1.32 - 2012-11-12
 ------------------------
-- Altera‹o do nome LinkInterno para apenas Link, esse conteœdo substitui o Link padr‹o do Plone
+- Alteraï¿½ï¿½o do nome LinkInterno para apenas Link, esse conteï¿½do substitui o Link padrï¿½o do Plone
 
 1.1.33 - 2012-11-28
 ------------------------
-- Adicionado a visão de Blog no content type VindulaFolder
+- Adicionado a visï¿½o de Blog no content type VindulaFolder
 
 1.1.34 - 2012-11-29
 ------------------------
-- Adicionando uma largura para área de comentarios nas fotos do VindulaPhoto
+- Adicionando uma largura para ï¿½rea de comentarios nas fotos do VindulaPhoto
 
 1.1.35 - 2012-12-03
 ------------------------
@@ -173,3 +173,8 @@ Changelog
 ------------------------
 - Correcao na listagem de noticias
 - Antes na listagem de noticias pegava uma data e ordenava por por outra
+
+
+3.0 - 2013-05-01
+----------------
+- Refactor do Nome de Estrutura Organizacional para Unidade Organizacional
