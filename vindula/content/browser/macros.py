@@ -200,3 +200,8 @@ class MacroRating(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro-rating-content')
+
+class MacroShare(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro-share-content')
