@@ -33,7 +33,21 @@ from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidg
 from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
-    
+
+
+
+
+    TextField(
+            name='siglaunidade',
+            default_content_type = 'text/restructured',
+            default_output_type = 'text/x-html-safe',
+            widget=StringWidget(
+                label=_(u"Sigla da Unidade"),
+                description=_(u"Informe a sigla da Unidade."),
+                rows="10",
+            ),
+            required=True,
+    ),
     
     ReferenceField('structures',
         multiValued=0,
