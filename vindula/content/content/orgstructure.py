@@ -35,8 +35,6 @@ from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetai
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
 
 
-
-
     TextField(
             name='siglaunidade',
             default_content_type = 'text/restructured',
@@ -61,6 +59,16 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
 
             ),
         required=False
+    ),
+
+    BooleanField(
+        name='unidadeEspecial',
+        default=False,
+        widget=BooleanWidget(
+            label="Unidade Especial",
+            description='Caso ativado, Unidade Organizacional será exibida entre '
+                        'pontilhados no Organograma, indicando que ela não tem Unidades Irmãs.',
+        ),
     ),
 
     StringField(
