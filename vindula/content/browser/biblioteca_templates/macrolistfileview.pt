@@ -1,6 +1,6 @@
 <metal:view_macro define-macro="view">
 
-    <tal:def define="view_macro python:context.restrictedTraverse('macro_list_file');
+    <tal:block define="view_macro python:context.restrictedTraverse('macro_list_file');
                      Batch python:modules['Products.CMFPlone'].Batch;
                      b_size request/b_size|string:3;
                      b_start python:0;
@@ -10,83 +10,127 @@
                      sort_on request/sort_on|string:access;
                      list_files python: view_macro.list_files(theme,structures,sort_on) or [];
                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));"
-              tal:condition="batch">
+               condition="batch">
 
-		<div tal:attributes="class string:list_file ${theme|structures/Title|nothing}" id="list_file">
-
-		        <div id="pag-nav" class="float-right">
-		            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
-		        </div>
-
-		        <div class="titulo_area">
-		            <h2 tal:condition="theme" >Tema "ex: <tal:cont content="theme">Exemplo</tal:cont>"</h2>
-		            <h2 tal:condition="structures" >Unidade "ex: <tal:cont content="structures/Title| python: view_macro.getStructures_byUID(structures) ">Exemplo</tal:cont>"</h2>
-		        </div>
-
-                <select id="order_by" name="order_by" class="order_by">
-                    <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais Acessados</option>
-                    <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
-                </select>
-
-		        <input type="hidden" id="b_size" tal:attributes="value b_size" />
-		        <input type="hidden" id="b_start" tal:attributes="value b_start" />
-		        <input type="hidden" id="theme" tal:attributes="value theme" />
-                <input type="hidden" id="structures" tal:attributes="value structures/UID|structures" />
-		        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" >
-
-		        <div id="news" tal:repeat="item batch" class="see_also_news">
-		            <div class="contBoxDestaque"
-		                 tal:define="item_object item/getObject|python: item">
-
-		                <div tal:define="is_end repeat/item/end;"
-		                     tal:attributes="class python: is_end and 'info' or 'info borderDif'">
-
-                                <a tal:attributes="href item_object/absolute_url"
-                                   tal:content="item_object/Title" >
-                                    Titulo</a>
-
-				                <p tal:content="item_object/Description"></p>
-				                <tal:cond condition="item_object/getStructures">
-		                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-		                        </tal:cond>
-
-
-		                    <div class="image_inf float-left imgRelateNews" >
-
-		                        <img width="100px" height="75px"/>
-
-		                    </div>
-
-		                    <div class="img_descricao">
-		                        <div id="geral_breadcrumb" class="descricao_destaque labelOrange">
-
-		                            <div class="titulo_info">
-		                                <label>
-		                                    <p tal:content="item_object/Title"></p>
-                                            <p tal:content="item_object/UID"></p>
-
-		                                </label>
-		                            </div>
-		                            <p>Unidade</p>
-		                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-
-		                        </div>
-		                        <div class="visualClear"></div>
-		                    </div>
-		                </div>
-		                <div class="visualClear"></div>
-		            </div>
-		         </div>
-
-		         <!-- Spinner -->
-		        <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
-		            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
-		        </div>
-
-
-
-		    <div class="visualClear"></div>
+        <div tal:attributes="class string:row list_file ${theme|structures/Title|nothing}" id="list_file">
+	        <div id="pag-nav" class="columns large-12">
+	            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+	        </div>
+	        <div class="titulo_area columns large-12">
+	            <h5 class="left" tal:condition="theme">
+	                <a href="#" tal:content="theme"></a>
+                </h5>
+	            <h5 class="left" tal:condition="structures">
+	                <a href="#" tal:content="structures/Title| python: view_macro.getStructures_byUID(structures)"></a>
+                </h5>
+                <form class="custom">
+                    <select name="order_by"  id="customDropdown" class="right order_by medium">
+                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais Acessados</option>
+                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
+                    </select>
+                </form>
+                
+                <hr/>
+	        </div>
+            
+	        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+	        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+	        <input type="hidden" id="theme" tal:attributes="value theme" />
+            <input type="hidden" id="structures" tal:attributes="value structures/UID|structures" />
+	        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" >
+            
+            <div class="columns large-12">
+                <div class="row">
+                    <tal:rep repeat="item batch">
+                        <div class="columns large-6">
+                            <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                <img src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"/>
+                                <div class="caption-of-type">
+                                    <a tal:attributes="href item_object/absolute_url"
+                                       tal:content="item_object/Title" ></a>
+                                    <p>ASCOM</p>
+                                    <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                </div>
+                                <tal:cond condition="item_object/getStructures">
+                                      unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                </tal:cond>
+                            </div>
+                        </div>
+                        
+                        <div class="columns large-3">
+                            <div class="row">
+                                <div class="columns large-12">
+                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                        <img src="++theme++vindula.themedefault/images/demos/demo-Banner_Destaque.jpg"/>
+                                        <div class="caption-of-type">
+                                            <a tal:attributes="href item_object/absolute_url"
+                                               tal:content="item_object/Title" ></a>
+                                            <p>ASCOM</p>
+                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                        </div>
+                                        <tal:cond condition="item_object/getStructures">
+                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                        </tal:cond>
+                                    </div>
+                                </div>
+                                
+                                <div class="columns large-12">
+                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                        <img src="++theme++vindula.themedefault/images/demos/demo3-Banner_Destaque.jpg"/>
+                                        <div class="caption-of-type">
+                                            <a tal:attributes="href item_object/absolute_url"
+                                               tal:content="item_object/Title" ></a>
+                                            <p>ASCOM</p>
+                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                        </div>
+                                        <tal:cond condition="item_object/getStructures">
+                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                        </tal:cond>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="columns large-3">
+                            <div class="row">
+                                <div class="columns large-12">
+                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                        <img src="++theme++vindula.themedefault/images/demos/demo4-Banner_Destaque.jpg"/>
+                                        <div class="caption-of-type">
+                                            <a tal:attributes="href item_object/absolute_url"
+                                               tal:content="item_object/Title" ></a>
+                                            <p>ASCOM</p>
+                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                        </div>
+                                        <tal:cond condition="item_object/getStructures">
+                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                        </tal:cond>
+                                    </div>
+                                </div>
+                                
+                                <div class="columns large-12">
+                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                        <img src="++theme++vindula.themedefault/images/demos/demo3-Banner_Destaque.jpg"/>
+                                        <div class="caption-of-type">
+                                            <a tal:attributes="href item_object/absolute_url"
+                                               tal:content="item_object/Title" ></a>
+                                            <p>ASCOM</p>
+                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
+                                        </div>
+                                        <tal:cond condition="item_object/getStructures">
+                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
+                                        </tal:cond>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tal:rep>
+                </div>
+            </div>
+            <!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
 		</div>
-    </tal:def>
-
+    </tal:block>
 </metal:view_macro>

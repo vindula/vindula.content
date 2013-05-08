@@ -12,43 +12,60 @@
                      structures request/structures[]|python:[];
 
                      list_filter python: view_macro.list_filter(is_theme,is_structures) or [];">
-
-
-        <div class="filterFile" id="filter_file">
-            <span class="sizeFilter" tal:content="python: 'Total: ('+ str(len(list_filter)) +')'"> </span>
-
-            <tal:rep repeat="item list_filter">
-
-                <tal:def define="item_obj item/getObject|item;
-                                 item_id  item_obj/UID|item_obj"  >
-
-                    <input tal:attributes="value item_id;
-                                           checked python:item_id in themes and 'checked' or '';"
-                           tal:condition="is_theme"
-                           type="checkbox" class="filter" name="theme" />
-
-                    <input tal:attributes="value item_id;
-                                           checked python:item_id in structures and 'checked' or '';"
-                           tal:condition="is_structures"
-                           type="checkbox" class="filter" name="structures" />
-
-                    <tal:cont content="item_obj/title">title</tal:cont><br />
-
-                </tal:def>
-
-            </tal:rep>
-
-            <div class="actionsFilter">
-                <input type='button' value='Limpar Filtro' class="clearFilter" />
-                <input type='button' value='Aplicar' class="execFilter" />
-
-            </div>
-
+        
+        <div class="section-biblioteca-accordion filterFile" id="filter_file" 
+             data-section="accordion" data-options="one_up: false;">
+            <section>
+                <p class="title" data-section-title>
+                    <a href="#">
+                        <i class="more-itens vindula-icon-plus-sign"></i>
+                        <span class="more-itens" 
+                              tal:content="python:'Refinar %s' % (is_theme and 'Tema' or 'Estrutura')"></span>
+                        <span class="right" 
+                              tal:content="python:'Total de %s: (%s)' % (is_theme and 'Temas' or 'Estruturas', len(list_filter))"></span>
+                    </a>
+                </p>
+                <div class="content" data-section-content>
+                    <div class="columns-tag">
+                        <tal:rep repeat="item list_filter">
+                            <tal:def define="item_obj item/getObject|item;
+                                             item_id  item_obj/UID|item_obj">
+                                <div tal:condition="is_theme">
+                                  <label tal:attributes="for item_id;">
+                                      <input tal:attributes="value item_id;
+                                                             id item_id;
+                                                             CHECKED python:item_id in themes and 'checked' or '';"
+                                             type="checkbox" class="filter" name="theme" />
+                                      <span class="checkbox">
+                                          <tal:cont content="item_obj/title">title</tal:cont>
+                                      </span>
+                                      
+                                  </label>
+                                </div>
+                                
+                                <div tal:condition="is_structures">
+                                  <label tal:attributes="for item_id;">
+                                      <input tal:attributes="value item_id;
+                                                             id item_id;
+                                                             CHECKED python:item_id in structures and 'checked' or '';"
+                                             type="checkbox" class="filter" name="structures" />
+                                      <span class="checkbox"></span>
+                                      <tal:cont content="item_obj/title">title</tal:cont>
+                                  </label>
+                                </div>
+                            </tal:def>
+                        </tal:rep>
+                    </div>
+                    <ul class="button-group">
+                        <li><a class='execFilter tiny button'>Aplicar</a></li>
+                        <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
+                    </ul>
+                </div>
+            </section>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
             </div>
-
         </div>
     </tal:def>
 </metal:view_macro>
@@ -57,7 +74,6 @@
 
     <link rel="stylesheet" href="" type="text/css"
           tal:attributes="href string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.css">
-
     <script type="text/javascript"
             tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.min.js"></script>
     <script type="text/javascript"
