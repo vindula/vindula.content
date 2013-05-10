@@ -13,10 +13,9 @@
 
                      list_filter python: view_macro.list_filter(is_theme,is_structures) or [];">
         
-        <div class="section-biblioteca-accordion filterFile" id="filter_file" 
-             data-section="accordion" data-options="one_up: false;">
-            <section>
-                <p class="title" data-section-title>
+        <div class="section-biblioteca-accordion filterFile" id="filter_file">
+            <div class="head-filter">
+                <p class="title-filter">
                     <a href="#">
                         <i class="more-itens vindula-icon-plus-sign"></i>
                         <span class="more-itens" 
@@ -25,7 +24,7 @@
                               tal:content="python:'Total de %s: (%s)' % (is_theme and 'Temas' or 'Estruturas', len(list_filter))"></span>
                     </a>
                 </p>
-                <div class="content" data-section-content>
+                <div class="content-filter">
                     <div class="columns-tag">
                         <tal:rep repeat="item list_filter">
                             <tal:def define="item_obj item/getObject|item;
@@ -56,12 +55,13 @@
                             </tal:def>
                         </tal:rep>
                     </div>
+                    
                     <ul class="button-group">
                         <li><a class='execFilter tiny button'>Aplicar</a></li>
                         <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
                     </ul>
                 </div>
-            </section>
+            </div>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />

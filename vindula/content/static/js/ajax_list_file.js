@@ -41,10 +41,8 @@ function executaAjax(ctx, b_start, sort_on){
                             $j.eval(data);
                         })
                 });
-    			var content = dom.filter('div#list_file');
+    			var content = dom.filter('div#list_file').contents();
     	        ctx.html(content);
-
-
     	    },
     	});
 }

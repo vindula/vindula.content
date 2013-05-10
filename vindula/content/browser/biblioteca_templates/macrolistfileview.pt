@@ -2,7 +2,7 @@
 
     <tal:block define="view_macro python:context.restrictedTraverse('macro_list_file');
                      Batch python:modules['Products.CMFPlone'].Batch;
-                     b_size request/b_size|string:3;
+                     b_size request/b_size|string:5;
                      b_start python:0;
                      b_start request/b_start | b_start;
                      theme theme|request/theme|nothing;
@@ -13,9 +13,6 @@
                condition="batch">
 
         <div tal:attributes="class string:row list_file ${theme|structures/Title|nothing}" id="list_file">
-	        <div id="pag-nav" class="columns large-12">
-	            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
-	        </div>
 	        <div class="titulo_area columns large-12">
 	            <h5 class="left" tal:condition="theme">
 	                <a href="#" tal:content="theme"></a>
@@ -23,14 +20,19 @@
 	            <h5 class="left" tal:condition="structures">
 	                <a href="#" tal:content="structures/Title| python: view_macro.getStructures_byUID(structures)"></a>
                 </h5>
-                <form class="custom">
-                    <select name="order_by"  id="customDropdown" class="right order_by medium">
-                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais Acessados</option>
-                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
-                    </select>
-                </form>
-                
+                <div class="right">
+                    <form class="left custom">
+                        <select name="order_by"  id="customDropdown" class="right order_by medium">
+                            <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais Acessados</option>
+                            <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
+                        </select>
+                    </form>
+                    <div class="right" id="pag-nav">
+                        <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+                    </div>
+                </div>
                 <hr/>
+                
 	        </div>
             
 	        <input type="hidden" id="b_size" tal:attributes="value b_size" />
@@ -39,91 +41,41 @@
             <input type="hidden" id="structures" tal:attributes="value structures/UID|structures" />
 	        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" >
             
-            <div class="columns large-12">
+            <div class="list-container columns large-12">
                 <div class="row">
                     <tal:rep repeat="item batch">
-                        <div class="columns large-6">
-                            <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                <img src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"/>
-                                <div class="caption-of-type">
-                                    <a tal:attributes="href item_object/absolute_url"
-                                       tal:content="item_object/Title" ></a>
-                                    <p>ASCOM</p>
-                                    <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                                </div>
-                                <tal:cond condition="item_object/getStructures">
-                                      unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                                </tal:cond>
+                        <tal:cond condition="repeat/item/start">
+                            <div class="columns large-6">
+                                <metal:define define-macro="contenttype">
+                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+                                        <img src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"/>
+                                        <div class="number-of-type">
+                                            <h6 tal:content="repeat/item/number"></h6>
+                                        </div>
+                                        <div class="caption-of-type">
+                                            <a tal:attributes="href item_object/absolute_url"><strong tal:content="item_object/Title"></strong></a>
+                                            <p tal:content="python:'%s%s' % 
+                                                            (item_object.getStructures() and item_object.getStructures().Title()+' / ',
+                                                            item_object.bobobase_modification_time().strftime('%d/%m/%Y'))"></p>
+                                        </div>
+                                    </div>
+                                </metal:define>
                             </div>
-                        </div>
+                        </tal:cond>
                         
-                        <div class="columns large-3">
-                            <div class="row">
-                                <div class="columns large-12">
-                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                        <img src="++theme++vindula.themedefault/images/demos/demo-Banner_Destaque.jpg"/>
-                                        <div class="caption-of-type">
-                                            <a tal:attributes="href item_object/absolute_url"
-                                               tal:content="item_object/Title" ></a>
-                                            <p>ASCOM</p>
-                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                                        </div>
-                                        <tal:cond condition="item_object/getStructures">
-                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                                        </tal:cond>
-                                    </div>
-                                </div>
-                                
-                                <div class="columns large-12">
-                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                        <img src="++theme++vindula.themedefault/images/demos/demo3-Banner_Destaque.jpg"/>
-                                        <div class="caption-of-type">
-                                            <a tal:attributes="href item_object/absolute_url"
-                                               tal:content="item_object/Title" ></a>
-                                            <p>ASCOM</p>
-                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                                        </div>
-                                        <tal:cond condition="item_object/getStructures">
-                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                                        </tal:cond>
-                                    </div>
-                                </div>
+                        <tal:cond condition="not: repeat/item/start">
+                            <tal:cond condition="python:repeat['item'].number() == 2 or repeat['item'].number() == 4">
+                                <tal:structure content="structure python: view_macro.getRowCssClass()"></tal:structure>
+                                <!-- Esta renderizando a string a baixo -->
+                                <!--div class="columns large-3"><div class="row">-->
+                            </tal:cond>
+                            <div class="columns large-12">
+                                <metal:use use-macro="context/macro_list_file/macros/contenttype" />
                             </div>
-                        </div>
-                        
-                        <div class="columns large-3">
-                            <div class="row">
-                                <div class="columns large-12">
-                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                        <img src="++theme++vindula.themedefault/images/demos/demo4-Banner_Destaque.jpg"/>
-                                        <div class="caption-of-type">
-                                            <a tal:attributes="href item_object/absolute_url"
-                                               tal:content="item_object/Title" ></a>
-                                            <p>ASCOM</p>
-                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                                        </div>
-                                        <tal:cond condition="item_object/getStructures">
-                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                                        </tal:cond>
-                                    </div>
-                                </div>
-                                
-                                <div class="columns large-12">
-                                    <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                        <img src="++theme++vindula.themedefault/images/demos/demo3-Banner_Destaque.jpg"/>
-                                        <div class="caption-of-type">
-                                            <a tal:attributes="href item_object/absolute_url"
-                                               tal:content="item_object/Title" ></a>
-                                            <p>ASCOM</p>
-                                            <span tal:content="python:'data: '+ item_object.bobobase_modification_time().strftime('%d/%m/%Y')">Date</span>
-                                        </div>
-                                        <tal:cond condition="item_object/getStructures">
-                                              unidade: <span tal:content="python: item_object.getStructures().Title()"></span><br />
-                                        </tal:cond>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5">
+                                <tal:structure content="structure python:'</div>\n</div>'"></tal:structure>
+                            </tal:cond>
+                         </tal:cond>
                     </tal:rep>
                 </div>
             </div>

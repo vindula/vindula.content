@@ -67,7 +67,23 @@ $j(document).ready(function(){
         executaAjaxFilter($conteiner);
 
     });
-
+    
+    $j('.title-filter a').click(function(){
+        $j(this).parents('.head-filter').find('.content-filter').toggle();
+        
+        var $icon = $j(this).find('i');
+        if($icon.hasClass('vindula-icon-plus-sign')){
+            $icon.removeClass('vindula-icon-plus-sign')
+            $icon.addClass('vindula-icon-minus');
+        }
+        else{
+            $icon.removeClass('vindula-icon-minus')
+            $icon.addClass('vindula-icon-plus-sign');
+        }
+        
+        return false; 
+    });
+    
 
     $j('.clearFilter').live('click',function(){
         $j('input.filter[type="checkbox"]').each(function(){
