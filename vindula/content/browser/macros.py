@@ -107,6 +107,7 @@ class MacroListtabularView(grok.View):
             list_files = result
 
         return list_files
+
     def getValueField(self, item, attr):
         result = getattr(item, attr)()
         try:
@@ -171,24 +172,24 @@ class MacroKeywords(grok.View):
     grok.name('macro-keywords-content')
 
 
-# class MacroMoreAccessViews(grok.View):
-#     grok.context(Interface)
-#     grok.require('zope2.View')
-#     grok.name('macro_more_access_content')
+class MacroMoreAccessViews(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro_more_access_content')
 
 
-#     def list_files(self, portal_type):
-#         list_files = []
-#         rs = True
+    def list_files(self, portal_type):
+        list_files = []
+        rs = True
 
-#         query = {'portal_type': portal_type}
-#         if 'File' in portal_type:
-#             rs=False
+        query = {'portal_type': portal_type}
+        if 'File' in portal_type:
+            rs=False
 
-#         result = ModelsContent().search_catalog_by_access(context=self.context,
-#                                                           rs=rs,
-#                                                           **query)
-#         return result
+        result = ModelsContent().search_catalog_by_access(context=self.context,
+                                                          rs=rs,
+                                                          **query)
+        return result
 
 class MacroComboStandard(grok.View):
     grok.context(Interface)

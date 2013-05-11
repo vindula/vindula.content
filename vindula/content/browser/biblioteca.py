@@ -73,15 +73,15 @@ class MacroListFileView(grok.View):
             list_files = self.searchFile_byTheme([theme],sort_on)
         elif structures:
             list_files = self.searchFile_byStructures(structures,sort_on)
-        
+
         return list_files
 
     def getStructures_byUID(self,UID):
         if UID:
             object = self.rtool.lookupObject(UID)
-            return object.Title()
+            return object #.Title()
         else:
-            return None
+            return self.context
 
 
     def searchFile_byStructures(self, structures=None, sort_on='access'):
@@ -120,3 +120,27 @@ class MacroListFileView(grok.View):
             result = result_query
 
         return result
+
+    def get_url_typeIcone(self, obj):
+        base = self.context.portal_url() + "/++resource++vindula.content/images/"
+
+        if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
+            url = base + "icon-pdf.png"
+        elif obj.content_type == 'application/msword':
+            url = base + "icon-word.png"
+        elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']:
+            url = base + "icon-ppoint.png"
+        elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
+            url = base + "icon-excel.png"
+        else:
+            url = base + "icon-default.png"
+
+        return url
+
+
+class FilterItensView(grok.View):
+    grok.context(Interface)
+    grok.name('list-filter')
+    grok.require('zope2.View')
+
+
