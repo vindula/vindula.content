@@ -3,7 +3,7 @@
                               portal_type portal_type|request/portal_type|string:File;
                               list_itens python: view_macro.list_files(portal_type);
                               Batch python:modules['Products.CMFPlone'].Batch;
-                              b_size request/b_size|string:1;
+                              b_size request/b_size|string:4;
                               b_start python:0;
                               b_start request/b_start | b_start;
                               batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
