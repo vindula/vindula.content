@@ -69,7 +69,7 @@ $j(document).ready(function(){
     });
     
     $j('.title-filter a').click(function(){
-        $j(this).parents('.head-filter').find('.content-filter').toggle();
+        $j(this).parents('.section-biblioteca-accordion').find('.content-filter').toggle();
         
         var $icon = $j(this).find('i');
         if($icon.hasClass('vindula-icon-plus-sign')){

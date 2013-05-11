@@ -14,14 +14,13 @@
                      list_filter python: view_macro.list_filter(is_theme,is_structures) or [];">
         
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
-            <div class="head-filter">
                 <p class="title-filter">
                     <a href="#">
                         <i class="more-itens vindula-icon-plus-sign"></i>
                         <span class="more-itens" 
-                              tal:content="python:'Refinar %s' % (is_theme and 'Tema' or 'Estrutura')"></span>
+                              tal:content="python:'Refinar %s' % (is_theme and 'Tema' or 'Unidade')"></span>
                         <span class="right" 
-                              tal:content="python:'Total de %s: (%s)' % (is_theme and 'Temas' or 'Estruturas', len(list_filter))"></span>
+                              tal:content="python:'Total de %s: (%s)' % (is_theme and 'Temas' or 'Unidades', len(list_filter))"></span>
                     </a>
                 </p>
                 <div class="content-filter">
@@ -57,11 +56,10 @@
                     </div>
                     
                     <ul class="button-group">
-                        <li><a class='execFilter tiny button'>Aplicar</a></li>
                         <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
+                        <li><a class='execFilter tiny button'>Aplicar</a></li>
                     </ul>
                 </div>
-            </div>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
@@ -97,58 +95,49 @@
                       req_structures request/structures|request/structures[]|python:'';
 
                       list_filter python: view_macro.tabular_filter();">
-
-        <div class="filterFile" id="filter_file">
-
-            <input type="text" class="filter" name="subject" tal:attributes="value subject" />
-
-
-
-            <br/>
-            <div class="advancedFilter">
-
-                <div class="tags">
-                    <select name="keywords" id="keywords" class="filter select-filter" multiple="multiple"
-                            tal:define="tags list_filter/tags">
-
-                        <option tal:repeat="item tags"
-                                tal:attributes="value item;
-                                                selected python:item in req_keywords and 'selected' or '';"
-                                tal:content="item"
-
-                                ></option>
-                    </select>
-
-                </div>
-                <br/>
-
-                <div class="structures">
-                    <select name="structures" id="structures" class="filter select-filter" multiple="multiple"
-                            tal:define="structures list_filter/structures">
-
-                        <option tal:repeat="item structures"
-                                tal:attributes="value item/UID;
-                                                selected python:item.UID in req_structures and 'selected' or '';""
-                                tal:content="item/Title"
-                                ></option>
-                    </select>
-
-                </div>
-                <br/>
+                          
+        <div class="section-biblioteca-accordion filterFile" id="filter_file">
+            <p class="title-filter hasInput">
+                <a href="#">
+                    <i class="more-itens vindula-icon-plus-sign"></i>
+                    <span class="more-itens">Refinar Pesquisa</span>
+                </a>
+                <input type="text" class="filter right" name="subject" tal:attributes="value subject" />
+            </p>
+            <div class="content-filter">
+                <form class="form-columns-tag">
+                    <div class="tags left">
+                        <label>
+                            Tipo
+                        </label>
+                        <select name="keywords" id="keywords" class="filter select-filter" 
+                                multiple="multiple" tal:define="tags list_filter/tags">
+                            <option tal:repeat="item tags" tal:attributes="value item;
+                                    selected python:item in req_keywords and 'selected' or '';"
+                                    tal:content="item"></option>
+                        </select>
+                    </div>
+                    <div class="structures left">
+                        <label>
+                            Unidade
+                        </label>
+                        <select name="structures" id="structures" class="filter select-filter" multiple="multiple" tal:define="structures list_filter/structures">
+                            <option tal:repeat="item structures" tal:attributes="value item/UID;
+                                    selected python:item.UID in req_structures and 'selected' or '';""
+                                    tal:content="item/Title"></option>
+                        </select>
+                    </div>
+                </form>
             </div>
-
-
-             <div class="actionsFilter">
-                <input type='button' value='Limpar Filtro' class="clearFilter" />
-                <input type='button' value='Aplicar' class="execFilter" />
-            </div>
-
-
+            <ul class="button-group external">
+                <li><a class='execFilter tiny button'>Aplicar</a></li>
+                <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
+            </ul>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
             </div>
-
+        </div>
     </tal:def>
 </metal:view_macro>
 
