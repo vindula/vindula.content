@@ -27,7 +27,7 @@
             <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
             <meta:macro metal:define-macro="navegacao-macro">
                 <div id="paginacao">
-                    <div id="size-nav" class="float-left">
+                    <div id="size-nav" class="left">
                         <p>
                             <span tal:content="python:'Total: ('+str(len(list_files))+')'">Total (XX)</span>
                             |
@@ -42,9 +42,8 @@
                                    tal:attributes="style python:b_size == '40' and css or '' ">40</a>
                             </span>
                         </p>
-
                     </div>
-                    <div id="pag-nav" class="float-right">
+                    <div id="pag-nav" class="right">
                         <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
                     </div>
                 </div>

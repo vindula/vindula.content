@@ -17,11 +17,9 @@
                 <script type="text/javascript" src=""
                                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
                 
-                <!--br/>
-                    <tal:def define="portal_type python: ('File',);">
-                        <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
-                    </tal:def>
-                <br/-->
+                <tal:def define="portal_type python: ('File',);">
+                    <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
+                </tal:def>
                 
                 <div class="section-biblioteca-tabs section-container tabs" data-section>
                     <section>

@@ -55,10 +55,12 @@
                         </tal:rep>
                     </div>
                     
-                    <ul class="button-group">
-                        <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
-                        <li><a class='execFilter tiny button'>Aplicar</a></li>
-                    </ul>
+                    <div class="container-button-group">
+                        <ul class="button-group">
+                            <li><a class='execFilter tiny button'>Aplicar</a></li>
+                            <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
+                        </ul>
+                    </div>
                 </div>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
@@ -129,10 +131,12 @@
                     </div>
                 </form>
             </div>
-            <ul class="button-group external">
-                <li><a class='execFilter tiny button'>Aplicar</a></li>
-                <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
-            </ul>
+            <div class="container-button-group">
+                <ul class="button-group external">
+                    <li><a class='execFilter tiny button'>Aplicar</a></li>
+                    <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
+                </ul>
+            </div>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
                 <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />

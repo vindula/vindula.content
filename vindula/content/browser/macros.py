@@ -176,19 +176,15 @@ class MacroMoreAccessViews(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro_more_access_content')
-
-
     def list_files(self, portal_type):
         list_files = []
         rs = True
-
+    
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
             rs=False
-
-        result = ModelsContent().search_catalog_by_access(context=self.context,
-                                                          rs=rs,
-                                                          **query)
+    
+        result = ModelsContent().search_catalog_by_access(context=self.context, rs=rs, **query)
         return result
 
 class MacroComboStandard(grok.View):
