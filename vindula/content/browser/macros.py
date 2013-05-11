@@ -176,16 +176,33 @@ class MacroMoreAccessViews(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro_more_access_content')
+
     def list_files(self, portal_type):
         list_files = []
         rs = True
-    
+
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
             rs=False
-    
+
         result = ModelsContent().search_catalog_by_access(context=self.context, rs=rs, **query)
         return result
+
+    def get_url_typeIcone(self, obj):
+        base = self.context.portal_url() + "/++resource++vindula.content/images/"
+
+        if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
+            url = base + "icon-pdf.png"
+        elif obj.content_type == 'application/msword':
+            url = base + "icon-word.png"
+        elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']:
+            url = base + "icon-ppoint.png"
+        elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
+            url = base + "icon-excel.png"
+        else:
+            url = base + "icon-default.png"
+
+        return url
 
 class MacroComboStandard(grok.View):
     grok.context(Interface)
