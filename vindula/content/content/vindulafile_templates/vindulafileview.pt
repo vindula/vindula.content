@@ -38,11 +38,10 @@
 		</metal:css>
 
 	<body>
-		<div metal:fill-slot="content-core">
-			<tal:main-macro metal:define-macro="content-core"
-			         tal:define="size python:here.getObjSize(here);
-			                     content_type here/get_content_type|here/Format;">
-
+		<metal:main fill-slot="content-core">
+			<metal:main-macro define-macro="content-core"
+			                  tal:define="size python:here.getObjSize(here);
+			                  content_type here/get_content_type|here/Format;">
 
 				<!-- Social Macros -->
 	            <div>
@@ -50,8 +49,6 @@
 	                <div metal:use-macro="context/macro-rating-content/macros/view" />
 
 	            </div>
-	            <br/>
-
 
 			    <div class="dados">
 			         <tal:cond condition="context/getStructures">
@@ -90,18 +87,14 @@
 			    </p>
 
 				<metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
-	            <br>
 
 	            <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
-	            <br>
 
             	<metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
-				<br/>
 
  	            <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
-	            <br>
 
-			</tal:main-macro>
-		</div>
+			</metal:main-macro>
+		</metal:main>
 	</body>
 </html>
