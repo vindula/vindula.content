@@ -31,11 +31,11 @@ def quote_chars(s):
     return s
 
 class VindulaListNews(BrowserView):
-    
+
     def getListToOrder(self):
         result = [('effective', u'Effective Date', 'The time and date an item becomes publicly available'), \
                   ('sortable_title', u'Sortable Title', u"An item's title transformed for sorting")]
-        
+
         if 'control-panel-objects' in getSite().keys():
             control = getSite()['control-panel-objects']
             if 'vindula_categories' in control.keys():
@@ -54,50 +54,50 @@ class VindulaResultsNews(BrowserView):
         form_cookies = {}
         if not submitted and self.request.cookies.get('find-news', None):
             form_cookies = self.getCookies(self.request.cookies.get('find-news', None))
-        
+
         if submitted or form_cookies:
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
             invert = form.get('invert', form_cookies.get('invert', False))
             sort_on = form.get('sorted',form_cookies.get('sorted', ''))
-            
+
             if sort_on == 'effective':
                 invert = not invert
-            
+
             if invert:
                 D['sort_order'] = 'reverse'
             else:
                 D['sort_order'] = ''
-             
+
             text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
                 text = text.strip()
                 if '*' not in text:
                      text += '*'
-                D['SearchableText'] = quote_chars(text)    
-            
+                D['SearchableText'] = quote_chars(text)
+
             D['sort_on'] = sort_on
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
             result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective', 'sort_order':'reverse'})
         return result
-    
+
     def getCookies(self, cookies=None):
         form_cookies = {}
         if not cookies:
             cookies = self.request.cookies.get('find-news', None)
-            
+
         if cookies:
             all_cookies = self.request.cookies.get('find-news', None).split('|')
             for cookie in all_cookies:
                 if cookie:
                     cookie = cookie.split('=')
                     form_cookies[cookie[0]] = cookie[1]
-                    
+
         return form_cookies
 
-            
+
 def sortDataPublicacao(item):
     return item.getDataPublicacao()
 def sortNumEdital(item):
@@ -108,19 +108,19 @@ def sortModalidade(item):
     return item.getModalidade()
 def sortTitle(item):
     return item.Title()
- 
+
 class VindulaListEditais(BrowserView):
     def getListOfEditais(self):
         if self.request.form.get('keyword', None):
             keyword= self.request.form.get('keyword',None)
             pc = getToolByName(self, 'portal_catalog')
             query = {}
-            
+
             if keyword:
                 keyword = keyword.strip()
                 if '*' not in keyword:
                      keyword += '*'
-                query['SearchableText'] = quote_chars(keyword)    
+                query['SearchableText'] = quote_chars(keyword)
             query['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             query['meta_type'] = ('VindulaEdital',)
             itens = pc(**query)
@@ -133,7 +133,7 @@ class VindulaListEditais(BrowserView):
 
         reverse = bool(self.request.form.get('invert', False))
         sort = self.request.form.get('sort-edital', None)
-        
+
         if sort:
             if sort == 'edital':
                 return sorted(objs, key=sortNumEdital, reverse=reverse)
@@ -143,47 +143,47 @@ class VindulaListEditais(BrowserView):
                 return sorted(objs, key=sortModalidade, reverse=reverse)
             elif sort == 'assunto':
                 return sorted(objs, key=sortTitle, reverse=reverse)
-            
+
         return sorted(objs, key=sortDataPublicacao, reverse=not reverse)
-    
-    
+
+
 class VindulaWebServeObjectContent(grok.View):
     grok.context(Interface)
     grok.name('vindula-object-content')
     grok.require('zope2.View')
-    
+
     retorno = {}
-    
+
     def render(self):
         self.request.response.setHeader("Content-type","application/json")
         self.request.response.setHeader("charset", "UTF-8")
         return json.dumps(self.retorno,ensure_ascii=False)
-        
+
     def update(self):
         D = {}
         portal_workflow = getToolByName(self.context, "portal_workflow")
         reference_catalog = getToolByName(self.context, "reference_catalog")
         portal_membership = getToolByName(self.context, "portal_membership")
-        
+
         uid = self.request.form.get('uid','')
-        
-        user_admin = portal_membership.getMemberById('admin')  
-                
+
+        user_admin = portal_membership.getMemberById('admin')
+
         # stash the existing security manager so we can restore it
         old_security_manager = getSecurityManager()
-        
+
         # create a new context, as the owner of the folder
         newSecurityManager(self.request,user_admin)
-        
+
         context = reference_catalog.lookupObject(uid)
-    
+
         if context:
-            HistoryView = ContentHistoryView(context, context.REQUEST)  
+            HistoryView = ContentHistoryView(context, context.REQUEST)
             context_owner = context.getOwner().getUserName()
-            image_content = '' 
+            image_content = ''
             if context.getImageRelac():
-                 image_content = context.getImageRelac().absolute_url()
-            
+                 image_content = '/'+context.getImageRelac().virtual_url_path()
+
             status = portal_workflow.getInfoFor(context, 'review_state')
             content_history = HistoryView.fullHistory()
             L = []
@@ -193,16 +193,16 @@ class VindulaWebServeObjectContent(grok.View):
                     date = history.get('time','').strftime('%Y-%m-%d %H:%M:%S')
                 else:
                     date = datetime.fromtimestamp(history.get('time','')).strftime('%Y-%m-%d %H:%M:%S')
-                
+
                 #print 30*'##'
                 #print history
                 L.append({'actor': history.get('actor',{}).get('username',''),
                           'action':  history.get('transition_title',''),
                           'type': tipo,
                           'date':date,})
-             
-            D['history'] = L 
-                        
+
+            D['history'] = L
+
             D['details'] = {'uid': context.UID(),
                             'type': context.portal_type,
                             'title': context.Title(),
@@ -211,11 +211,11 @@ class VindulaWebServeObjectContent(grok.View):
                             'date_created':context.creation_date.strftime('%Y-%m-%d %H:%M:%S'),
                             'date_modified':context.bobobase_modification_time().strftime('%Y-%m-%d %H:%M:%S'),
                             'workflow': status,
+                            'url': '/'+context.virtual_url_path(),
                             'image': image_content}
-    
+
         # restore the original context
         setSecurityManager(old_security_manager)
-        
+
         self.retorno.update(D)
-            
-    
+
