@@ -41,7 +41,7 @@
 	        <input type="hidden" id="b_start" tal:attributes="value b_start" />
 	        <input type="hidden" id="theme" tal:attributes="value theme" />
             <input type="hidden" id="structures" tal:attributes="value structures/UID|structures" />
-	        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" >
+	        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" />
 
             <div class="list-container columns large-12">
                 <div class="row">
@@ -50,9 +50,9 @@
                             <div class="columns large-6">
                                 <metal:define define-macro="contenttype">
                                     <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-                                        
+
                                         <div class="image-content">
-                                            <img class="type-file" 
+                                            <img class="type-file"
                                                  src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"
                                                  tal:attributes="src python: view_macro.get_url_typeIcone(item_object)"/>
                                         </div>
@@ -73,18 +73,22 @@
                         </tal:cond>
 
                         <tal:cond condition="not: repeat/item/start">
+
                             <tal:cond condition="python:repeat['item'].number() == 2 or repeat['item'].number() == 4">
                                 <tal:structure content="structure python: view_macro.getRowCssClass()"></tal:structure>
                                 <!-- Esta renderizando a string a baixo -->
                                 <!--div class="columns large-3"><div class="row">-->
                             </tal:cond>
+
                             <div class="columns large-12">
                                 <metal:use use-macro="context/macro_list_file/macros/contenttype" />
                             </div>
-                            <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5">
+
+                            <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or len(batch) == 2 or len(batch) == 4">
                                 <tal:structure content="structure python:'</div>\n</div>'"></tal:structure>
                             </tal:cond>
-                         </tal:cond>
+
+                        </tal:cond>
                     </tal:rep>
                 </div>
             </div>

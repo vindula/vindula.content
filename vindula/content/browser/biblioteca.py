@@ -63,8 +63,8 @@ class MacroListFileView(grok.View):
         self.rtool = getToolByName(context, 'reference_catalog')
         super(MacroListFileView,self).__init__(context, request)
 
-    def getRowCssClass(self,):
-        return '<div class=XXcolumns large-3XX><div class=XXrowXX>'.replace('XX','"')
+    def getRowCssClass(self):
+        return '<div class=XXcolumns large-3XX>\n<div class=XXrowXX>'.replace('XX','"')
 
     def list_files(self, theme, structures, sort_on):
         list_files = []

@@ -21,8 +21,9 @@ class Search(object):
             query.update({'review_state': ['published', 'internally_published', 'external']})
 
         query.update({'path': {'query':'/'.join(path)},
-                     'sort_on':'effective',
-                     'sort_order':'descending',})
+                     'sort_on':'created',
+                     'sort_order':'descending',
+                     })
 
         self.result = portal_catalog(**query)
 
@@ -203,6 +204,21 @@ class MacroMoreAccessViews(grok.View):
             url = base + "icon-default.png"
 
         return url
+
+
+class MacroRecentViews(MacroMoreAccessViews):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro_recent_content')
+
+    def list_files(self, portal_type):
+        list_files = []
+
+        query = {'portal_type': portal_type}
+        search = Search(self.context, query, rs=False)
+        list_files = search.result
+
+        return list_files
 
 class MacroComboStandard(grok.View):
     grok.context(Interface)

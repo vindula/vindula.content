@@ -1,5 +1,5 @@
 <metal:view_macro define-macro="view"
-                  tal:define="view_macro python:context.restrictedTraverse('macro_more_access_content');
+                  tal:define="view_macro python:context.restrictedTraverse('macro_recent_content');
                               portal_type portal_type|request/portal_type|string:File;
                               list_itens python: view_macro.list_files(portal_type);
                               Batch python:modules['Products.CMFPlone'].Batch;
@@ -11,7 +11,7 @@
     <div class="list_file row" id="list_file">
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
-        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
+        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_recent_content" >
 
         <div class="columns large-12">
             <div class="right" id="pag-nav">
@@ -36,10 +36,11 @@
                                tal:content= "ctx/Title"></a>
                         </div>
                         <div class="columns small-12">
+
                             <small tal:condition="ctx/getStructures|nothing"
                                    tal:content="python:'%s%s' %
-                                                (ctx.getStructures() and ctx.getStructures().Title() +' / ',
-                                                 ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
+                                                (ctx.getStructures() and ctx.getStructures().Title()+' / ',
+                                                ctx.bobobase_modification_time().strftime('%d/%m/%Y'))">ASCOM / 27/03/2013 </small>
                         </div>
                         <div class="columns small-12">
                             <p class="discrete">Formulario / 12000 acessos</p>

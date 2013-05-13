@@ -13,15 +13,20 @@
             <div class="columns large-12"
                  metal:define-macro="page-view"
                  tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
-            
+
                 <script type="text/javascript" src=""
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
-                
+
                 <tal:def define="portal_type python: ('File',);
                                  title string:MAIS ACESSADOS">
                     <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
                 </tal:def>
-                
+
+                <tal:def define="portal_type python: ('File',);
+                                 title string:ITENS RECENTES">
+                    <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
+                </tal:def>
+
                 <div class="section-biblioteca-tabs section-container tabs" data-section>
                     <section>
                         <h5 class="title" data-section-title>
@@ -33,7 +38,7 @@
                                 <tal:def tal:define="is_theme python:True">
                                     <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                                 </tal:def>
-            
+
                                 <div id="itens">
                                     <tal:rep repeat="theme view_macro/getThemes">
                                         <metal:block metal:use-macro="context/macro_list_file/macros/view" />
@@ -52,7 +57,7 @@
                                 <tal:def define="is_structures python:True">
                                     <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                                 </tal:def>
-            
+
                                 <div id="itens">
                                     <tal:rep repeat="structures view_macro/getStructures">
                                         <metal:block metal:use-macro="context/macro_list_file/macros/view" />
@@ -68,9 +73,8 @@
                         <div class="content">
                             <!-- ABA Documento -->
                             <div class="conteiner" id="documento">
-                                <!-- tal:def define="is_structures python:True"> </tal:def -->
                                 <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
-            
+
                                 <div id="itens">
                                     <tal:def define="portal_type python: ('File',);
                                                      fields python:[{'label': 'UO', 'attribute': 'getStructures'},
