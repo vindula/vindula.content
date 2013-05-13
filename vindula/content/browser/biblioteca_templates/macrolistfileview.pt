@@ -50,9 +50,12 @@
                             <div class="columns large-6">
                                 <metal:define define-macro="contenttype">
                                     <div class="container-of-type" tal:define="item_object item/getObject|python:item">
-
-                                        <img src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"
-                                             tal:attributes="src python: view_macro.get_url_typeIcone(item_object)"/>
+                                        
+                                        <div class="image-content">
+                                            <img class="type-file" 
+                                                 src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"
+                                                 tal:attributes="src python: view_macro.get_url_typeIcone(item_object)"/>
+                                        </div>
 
                                         <div class="number-of-type">
                                             <h6 tal:content="repeat/item/number"></h6>

@@ -15,17 +15,16 @@
                 <script type="text/javascript" src=""
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
-                <!--br/>
-                    <tal:def define="portal_type python: ('File',);">
-                        <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
-                    </tal:def>
-                <br/-->
-
-                <!-- ABA Documento -->
-                <div class="conteiner" id="documento">
-                    <!-- tal:def define="is_structures python:True"> </tal:def -->
+                <div class="container" id="documento">
+                    
+                    <h5>
+                        <tal:replace tal:content="request/theme|theme|nothing" />
+                        <hr/>
+                    </h5>
+                    <br/>
+                    
                     <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
-
+                    
                     <div id="itens">
                         <tal:def define="portal_type python: ('File',);
                                          fields python:[{'label': 'UO', 'attribute': 'getStructures'},

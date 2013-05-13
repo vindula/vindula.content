@@ -15,9 +15,10 @@
                  tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
             
                 <script type="text/javascript" src=""
-                                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
                 
-                <tal:def define="portal_type python: ('File',);">
+                <tal:def define="portal_type python: ('File',);
+                                 title string:MAIS ACESSADOS">
                     <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
                 </tal:def>
                 

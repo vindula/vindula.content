@@ -18,7 +18,7 @@
                 <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
             </div>
             <h5>
-                MAIS ACESSADOS
+                <tal:replace tal:content="title|nothing" />
                 <hr/>
             </h5>
         </div>
@@ -27,11 +27,21 @@
             <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
                 <div class="box-more-acess columns small-12"
                      tal:define="ctx item/content/getObject">
-                    <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
-                    <a tal:attributes="href ctx/absolute_url"
-                       tal:content= "ctx/Title"></a>
-                    <small>ASCOM / 27/03/2013</small>
-                    <p class="discrete">Formulario / 12000 acessos</p>
+                    <div class="row">
+                        <div class="container-image columns small-12">
+                            <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                        </div>
+                        <div class="columns small-12">
+                            <a tal:attributes="href ctx/absolute_url"
+                               tal:content= "ctx/Title"></a>
+                        </div>
+                        <div class="columns small-12">
+                            <small>ASCOM / 27/03/2013</small>
+                        </div>
+                        <div class="columns small-12">
+                            <p class="discrete">Formulario / 12000 acessos</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </tal:rep>
