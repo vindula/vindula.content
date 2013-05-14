@@ -1,9 +1,19 @@
 <div metal:define-macro="view"
     class="relatedItems"
     tal:define="tools context/@@plone_tools;
-                getInfoFor python:tools.workflow().getInfoFor;">
-
-    <tal:relatedItems tal:define="related python:context.computeRelatedItems();">
+                getInfoFor python:tools.workflow().getInfoFor;
+                related python:context.computeRelatedItems();
+                Batch python:modules['Products.CMFPlone'].Batch;
+                b_size request/b_size|string:4;
+                b_start python:0;
+                b_start request/b_start | b_start;
+                batch python:Batch(related, int(b_size), int(b_start), pagerange=len(related));">
+    
+    <div class="list_file row" id="list_file">
+        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
+        
         <tal:block tal:condition="python:related">
             <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
             <fieldset id="relatedItemBox"
@@ -38,6 +48,57 @@
                 </ul>
             </fieldset>
         </tal:block>
-    </tal:relatedItems>
+    </div>
 
 </div>
+
+
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro_more_access_content');
+                              portal_type portal_type|request/portal_type|string:File;
+                              list_itens python: view_macro.list_files(portal_type);
+                              Batch python:modules['Products.CMFPlone'].Batch;
+                              b_size request/b_size|string:4;
+                              b_start python:0;
+                              b_start request/b_start | b_start;
+                              batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
+
+    <div class="list_file row" id="list_file">
+        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
+
+        <div class="columns large-12">
+            <div class="right" id="pag-nav">
+                <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+            </div>
+            <h5>
+                <tal:replace tal:content="title|nothing" />
+                <hr/>
+            </h5>
+        </div>
+
+        <tal:rep repeat="item batch">
+            <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
+                <div class="box-more-acess columns small-12"
+                     tal:define="ctx item/content/getObject">
+                    <div class="row">
+                        <div class="container-image columns small-12">
+                            <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                        </div>
+                        <div class="columns small-12">
+                            <a tal:attributes="href ctx/absolute_url"
+                               tal:content= "ctx/Title"></a>
+                        </div>
+                        <div class="columns small-12">
+                            <small>ASCOM / 27/03/2013</small>
+                        </div>
+                        <div class="columns small-12">
+                            <p class="discrete">Formulario / 12000 acessos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tal:rep>
+    </div>
+</metal:view_macro>
