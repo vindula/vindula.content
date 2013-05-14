@@ -9,91 +9,137 @@
 	  <metal:js fill-slot="javascript_head_slot">
 		  <!--[if (!IE)|(gte IE 8)]>
 		  <!-->
-		  <link href="/viewer/viewer-datauri.css" media="screen" rel="stylesheet" type="text/css"
-		      tal:attributes="href string:${view/dvstatic}/assets/viewer-datauri.css" />
+		  <link id="new-theme"  href="/viewer/viewer-datauri.css" media="screen" rel="stylesheet" type="text/css"
+		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/assets/viewer-datauri.css" />
 		  <!--<![endif]-->
 		  <!--[if lte IE 7]>
 		  <link href="/viewer/viewer.css" media="screen" rel="stylesheet" type="text/css"
-		        tal:attributes="href string:${view/dvstatic}/assets/viewer.css" />
+		        tal:attributes="href string:${context/portal_url}/++resource++dv.resources/assets/viewer.css" />
 		  <![endif]-->
-		  <link href="/viewer/printviewer.css" media="print" rel="stylesheet" type="text/css"
-		      tal:attributes="href string:${view/dvstatic}/assets/printviewer.css" />
+		  <link id="new-theme"  href="/viewer/printviewer.css" media="print" rel="stylesheet" type="text/css"
+		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/assets/printviewer.css" />
 		  <script src="/viewer/viewer.js"
-		      tal:attributes="src string:${view/dvstatic}/assets/viewer.js"></script>
+		      tal:attributes="src string:${context/portal_url}/++resource++dv.resources/assets/viewer.js"></script>
 		  <script src="/viewer/viewer.js"
-		      tal:attributes="src string:${view/dvstatic}/javascripts/viewer.js"></script>
+		      tal:attributes="src string:${context/portal_url}/++resource++dv.resources/javascripts/viewer.js"></script>
+          
+          <script tal:attributes="src string:${context/portal_url}/++resource++vindula.content/js/vindula_accordion.js"></script>
 
-		  <tal:annotate tal:condition="view/can_modify">
+		  <!--tal:annotate tal:condition="view/can_modify">
 		    <link rel="stylesheet" type="text/css"
-		      tal:attributes="href string:${view/dvstatic}/jquery.imgareaselect/css/imgareaselect-default.css" />
+		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/jquery.imgareaselect/css/imgareaselect-default.css" />
 		    <link rel="stylesheet" type="text/css"
-		      tal:attributes="href string:${view/dvstatic}/stylesheets/annotate.css" />
-		    <script tal:attributes="src string:${view/dvstatic}/jquery.imgareaselect/scripts/jquery.imgareaselect.min.js"></script>
-		    <script tal:attributes="src string:${view/dvstatic}/javascripts/annotate.js"></script>
-		  </tal:annotate>
+		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/stylesheets/annotate.css" />
+		    <script tal:attributes="src string:${context/portal_url}/++resource++dv.resources/jquery.imgareaselect/scripts/jquery.imgareaselect.min.js"></script>
+		    <script tal:attributes="src string:${context/portal_url}/++resource++dv.resources/javascripts/annotate.js"></script>
+          </tal:annotate-->
 		</metal:js>
 		<metal:css fill-slot="style_slot">
-		<link rel="stylesheet" type="text/css" media="screen" href="group.css"
-		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/stylesheets/viewer.css" />
+    		<link id="new-theme" rel="stylesheet" type="text/css" media="screen" href="group.css"
+    		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/stylesheets/viewer.css" />
 		</metal:css>
-
 	<body>
-		<metal:main fill-slot="content-core">
-			<metal:main-macro define-macro="content-core"
-			                  tal:define="size python:here.getObjSize(here);
-			                  content_type here/get_content_type|here/Format;">
-
-				<!-- Social Macros -->
-	            <div>
-	                <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
-	                <div metal:use-macro="context/macro-rating-content/macros/view" />
-
-	            </div>
-
-			    <div class="dados">
-			         <tal:cond condition="context/getStructures">
-			             unidade: <span tal:content="python: context.getStructures().Title()"></span><br />
-			         </tal:cond>
- 					 <tal:def define="themes context/getRawThemesNews">
-			        	Temas: <span tal:repeat="item themes"
-			        				  tal:content="string: ${item}," />
-						<br/>
-					 </tal:def>
-
-			         tipo: <span tal:content="context/tipo|nothing"></span><br />
-			         numero: <span tal:content="context/numero|nothing"></span><br />
-					 <tal:cond condition="context/vigencia">
-			         	vigencia: <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y / %H:%m')"></span><br />
-					 </tal:cond>
-
-			         classificacao: <span tal:content="context/classificacao|nothing"></span><br />
-			    </div>
-
- 				<br/> <br/>
-
-				<div id="DV-container">
-				  <div class="DV-loadingDocument">
-				      <span>Loading</span>
-				  </div>
-				  <noscript>
-				      <div id="DV-noJS" style="height:500px">The Document Viewer requires that you enable Javascript.</div>
-				  </noscript>
-				</div>
-				<div id="overlay"></div>
-				<script type="text/javascript" tal:content="structure view/javascript"></script>
-
-			    <p>
-			      <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
-			    </p>
-
-				<metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
-
-	            <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
-
-            	<metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
-
- 	            <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
-
+	    <metal:main fill-slot="main">
+	        <metal:main-macro define-macro="main"
+                              tal:define="size python:here.getObjSize(here);
+                              content_type here/get_content_type|here/Format;">
+                                  
+                <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+                <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+                <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
+                                               data_type context/portal_type|nothing" />
+                
+                <div id="file" class="content-core file">
+                    
+                    <!-- Social Macros -->
+                    <!--div>
+                        <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
+                        <div metal:use-macro="context/macro-rating-content/macros/view" />
+                    </div-->
+                    
+                    <h5>
+                        <tal:rep content="context/Title" />
+                        <hr/>
+                    </h5>
+                    
+    			    <ul class="container-data">
+    			        <li>
+                            <tal:creator define="creator_short_form view/creator;" 
+                                         condition="creator_short_form">
+                                <tal:name define="creator_long_form string:?author=${creator_short_form};
+                                                  creator_is_openid python:'/' in creator_short_form;
+                                                  creator_id python:(creator_short_form,  creator_long_form)[creator_is_openid];">
+                                                      
+                                    <label class="left">Por:</label>
+                                    <span class="documentAuthor">
+                                        <a href="#" tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}" tal:content="view/authorname" tal:omit-tag="python:view.author() is None">Roland Barthes</a>
+                                    </span>
+                                </tal:name>
+                             </tal:creator>
+                             <span class="documentModified">
+                                 <span tal:replace="python:view.toLocalizedTime(context.CreationDate(),long_format=1)">
+                                     August 16, 2001 at 23:35:59
+                                 </span>
+                             </span>
+                         </li>
+                         <li>
+        			         <tal:cond condition="context/getStructures">
+        			             <label class="left">Unidade:</label>
+                                 <span tal:content="python: context.getStructures().Title()"></span>
+        			         </tal:cond>
+                         </li>
+                         <li>
+         					 <tal:def define="themes context/getRawThemesNews">
+         					    <label class="left">Temas:</label>
+        			        	<span tal:repeat="item themes" tal:content="item" />
+        					 </tal:def>
+                         </li>
+                         <li>
+        			         <label class="left">Tipo:</label>
+                             <span tal:content="context/tipo|nothing"></span>
+                         </li>
+                         <li>
+        			         <label class="left">Número:</label>
+                             <span tal:content="context/numero|nothing"></span>
+                         </li>
+                         
+    					 <tal:cond condition="context/vigencia">
+    					     <li>
+        			         	<label class="left">Vigencia:</label>
+                                <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y / %H:%m')"></span>
+                            </li>
+    					 </tal:cond>
+                         <li>
+    			             <label class="left">Classificação:</label>
+                             <span tal:content="context/classificacao|nothing"></span>
+                         </li>
+    			    </ul>
+    
+    				<div id="DV-container">
+    				    <div class="DV-loadingDocument">
+    				        <span>Loading</span>
+    				    </div>
+    				    <noscript>
+    				        <div id="DV-noJS" style="height:500px">The Document Viewer requires that you enable Javascript.</div>
+    				    </noscript>
+    				</div>
+    				<div id="overlay"></div>
+    				<script type="text/javascript" tal:content="structure view/javascript"></script>
+    
+    			    <p>
+    			      <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
+    			    </p>
+    
+    				<metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
+    
+    	            <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
+    
+                	<metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
+    
+     	            <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
+                </div>
+                
+                <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
 			</metal:main-macro>
 		</metal:main>
 	</body>

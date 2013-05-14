@@ -1,20 +1,40 @@
 <metal:view_macro define-macro="view"
                   tal:define="view_macro python:context.restrictedTraverse('macro-propertis-content');">
-    <h2>Propriedades</h2>
-
-    Nome:<p tal:content="context/Title">Documento</p>
-    Descrição:<p tal:content="context/Description"> </p>
-    Tipo: <p tal:content="context/portal_type"></p>
-    Criador: <p tal:content="view_macro/creator"></p>
-    Data Criação: <p tal:content="view_macro/creation_date"></p>
-
-    <h3>Modificações</h3>
-    <tal:rep repeat="mod view_macro/gethistory">
-        Modificação: <p tal:content="mod/actor"></p>
-        Data Modificação: <p tal:content="mod/date"></p>
-
-    </tal:rep>
-    Responsável: <p tal:content="view_macro/responsible"></p>
+    
+    <div class="accordion">
+        <div class="title">
+            <h5>
+                <a class="" href="#">Propriedades</a>
+                <hr/>
+            </h5>
+        </div>
+        
+        <div class="container">
+            <label class="left">Nome:</label><p tal:content="context/Title">Documento</p>
+            <label class="left">Descrição:</label><p tal:content="context/Description"> </p>
+            <label class="left">Tipo:</label><p tal:content="context/portal_type"></p>
+            <label class="left">Criador:</label><p tal:content="view_macro/creator"></p>
+            <label class="left">Data Criação:</label><p tal:content="view_macro/creation_date"></p>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="title">
+            <h5>
+                <a href="#">
+                    Modificações
+                </a>
+                <hr/>
+            </h5>
+        </div>
+        <div class="container">
+            <tal:rep repeat="mod view_macro/gethistory">
+                <label class="left">Modificação:</label><p tal:content="mod/actor"></p>
+                <label class="left">Data Modificação:</label><p tal:content="mod/date"></p>
+            </tal:rep>
+            <label class="left">Responsável:</label><p tal:content="view_macro/responsible"></p>
+        </div>
+    </div>
 
 
 
