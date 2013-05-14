@@ -510,6 +510,19 @@ class OrganizationalStructure(ATFolder):
                result.append((modalidade, modalidade))
         return result
 
+
+
+    def getImageIcone(self):
+        image = self.getImage()
+
+        if image:
+            return image.absolute_url() +'/image_tile'
+        else:
+            return ''
+
+
+
+
 registerType(OrganizationalStructure, PROJECTNAME)
 
 class OrgstructureModifiedEvent(object):
@@ -519,11 +532,6 @@ class OrgstructureModifiedEvent(object):
 
     def __init__(self, context):
         self.context = context
-
-
-
-
-
 
 def CreatGroupInPloneSite(event):
     ctx = event.context

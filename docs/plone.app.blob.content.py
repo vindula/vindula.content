@@ -344,4 +344,22 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
 
 
+    def getImageIcone(self):
+        obj = self
+        base = self.portal_url() + "/++resource++vindula.content/images/"
+
+        if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
+            url = base + "icon-pdf.png"
+        elif obj.content_type == 'application/msword':
+            url = base + "icon-word.png"
+        elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']:
+            url = base + "icon-ppoint.png"
+        elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
+            url = base + "icon-excel.png"
+        else:
+            url = base + "icon-default.png"
+
+        return url
+
+
 registerType(ATBlob, packageName)

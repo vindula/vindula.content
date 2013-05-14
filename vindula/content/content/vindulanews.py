@@ -2,7 +2,7 @@
 from five import grok
 from vindula.content import MessageFactory as _
 
-from zope.app.component.hooks import getSite 
+from zope.app.component.hooks import getSite
 from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
@@ -17,11 +17,11 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 
-from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget 
+from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 
 VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
-                                                       
-                                                       
+
+
     LinesField(
         'themesNews',
         multiValued=1,
@@ -53,7 +53,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         ),
         required=False,
     ),
-    
+
     BooleanField(
         name='active_author',
         default=True,
@@ -62,8 +62,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
             description='Caso selecionado, ativa a opção de visualizar o autor na notícia.',
         ),
         required=False,
-    ), 
-    
+    ),
+
     BooleanField(
         name='active_date',
         default=True,
@@ -72,7 +72,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
             description='Caso selecionado, ativa a opção de visualizar o data de criação na notícia.',
         ),
         required=False,
-    ), 
+    ),
 
     BooleanField(
         name='activ_share',
@@ -82,7 +82,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
             description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área superior da página.',
         ),
         required=False,
-    ),                                                       
+    ),
 
     BooleanField(
         name='activ_share_footer',
@@ -92,7 +92,7 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
             description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
         ),
         required=False,
-    ),                                                       
+    ),
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
@@ -111,14 +111,26 @@ VindulaNews_schema.moveField('imageRelac', before='imageCaption')
 
 class VindulaNews(ATNewsItem):
     """ Reserve Content for VindulaNews"""
-    security = ClassSecurityInfo()    
-    
-    implements(IVindulaNews)    
+    security = ClassSecurityInfo()
+
+    implements(IVindulaNews)
     portal_type = 'VindulaNews'
     _at_rename_after_creation = True
     schema = VindulaNews_schema
 
-registerType(VindulaNews, PROJECTNAME) 
+
+
+    def getImageIcone(self):
+        image = self.getImageRelac()
+
+        if image:
+            return image.absolute_url() +'/image_tile'
+        else:
+            return ''
+
+
+
+registerType(VindulaNews, PROJECTNAME)
 
 
 # View
@@ -126,7 +138,7 @@ class VindulaNewsView(grok.View):
     grok.context(IVindulaNews)
     grok.require('zope2.View')
     grok.name('view')
-  
+
     def check_share(self):
         panel = self.context.restrictedTraverse('@@myvindula-conf-userpanel')
         return panel.check_share()
@@ -141,10 +153,10 @@ class VindulaNewsView(grok.View):
     def authorname(self):
         author = self.author()
         return author and author['fullname'] or self.creator()
-        
+
 class ShareView(grok.View):
     grok.context(Interface)
-    grok.require('zope2.View') 
+    grok.require('zope2.View')
     grok.name('vindula-content-share')
-    
-    
+
+
