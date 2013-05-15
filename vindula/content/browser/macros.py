@@ -235,3 +235,37 @@ class MacroShare(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro-share-content')
+
+
+class MacroShare(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro-share-content')
+
+class MacroLastAccess(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro-last_access-content')
+
+
+class MacroSeeAlso(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('macro-see_also-content')
+
+
+    def getItens(self):
+        context = self.context
+        query = {'portal_type':(context.portal_type)}
+        query['Subject'] = context.getRawSubject()
+
+        result = ModelsContent().search_catalog_by_access(context=self.context,
+                                                           **query)
+
+        return result
+
+    def getImagem(self,obj):
+        if hasattr(obj, 'getImageIcone'):
+            return obj.getImageIcone()
+        else:
+            return ''

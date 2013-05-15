@@ -1,0 +1,35 @@
+<metal:view_macro define-macro="view">
+
+    <div class="row">
+        <div class="columns small-12">
+            <h5 class="subheader">
+                <strong>Veja Também</strong>
+                <hr/>
+            </h5>
+        </div>
+
+        <metal:view_macro define-macro="portlet"
+                          tal:define="view_macro python:context.restrictedTraverse('macro-see_also-content');">
+
+            <div id="_portlet_seealso">
+                <tal:rep repeat="item view_macro/getItens">
+                    <div class="columns large-12" tal:define="obj item/content/getObject">
+                        <div class="row">
+                            <div class="columns small-4 " id="image_tile">
+                                <img src="++theme++vindula.themedefault/images/demos/demo1-th.png"
+                                     tal:attributes="src python: view_macro.getImagem(obj)" />
+                            </div>
+                            <div class="columns small-8">
+                                <a href="#" tal:attributes="href obj/absolute_url"
+                                                    tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
+                            </div>
+                        </div>
+                    </div>
+                </tal:rep>
+            </div>
+
+        </metal:view_macro>
+
+    </div>
+
+</metal:view_macro>

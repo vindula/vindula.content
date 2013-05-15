@@ -181,8 +181,9 @@ class VindulaWebServeObjectContent(grok.View):
             HistoryView = ContentHistoryView(context, context.REQUEST)
             context_owner = context.getOwner().getUserName()
             image_content = ''
-            if hasattr(context, 'getImageRelac') and context.getImageRelac():
-                 image_content = '/'+context.getImageRelac().virtual_url_path()
+            if hasattr(context, 'getImageIcone'):
+                img = context.getImageIcone()
+                image_content = img.replace(self.context.absolute_url(),'')
 
             status = portal_workflow.getInfoFor(context, 'review_state')
             content_history = HistoryView.fullHistory()

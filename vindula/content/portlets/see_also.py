@@ -68,24 +68,6 @@ class Renderer(base.Renderer):
             return False
 
 
-    def getItens(self):
-        context = self.context
-        query = {'portal_type':(context.portal_type)}
-        query['Subject'] = context.getRawSubject()
-
-        result = ModelsContent().search_catalog_by_access(context=self.context,
-                                                           **query)
-
-        return result
-    
-    def getImagem(self,obj):
-        # nome dos campos de imagens dos tipos de conteudo
-        fields = ['getImage', 'getImageRelac']
-        for field in fields:
-            if hasattr(obj, field):
-                item = getattr(obj,field)
-                if item():
-                    return item().absolute_url() + '/image_mini'
 
 
 

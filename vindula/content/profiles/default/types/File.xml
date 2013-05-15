@@ -13,10 +13,10 @@
  </property>
 
 <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/file_view" visible="True"
-    i18n:attributes="title">
+        url_expr="string:${object_url}/file_view" visible="True"
+        i18n:attributes="title">
   <permission value="View"/>
- </action>
+</action>
 
 
 </object>

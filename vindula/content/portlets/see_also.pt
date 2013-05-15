@@ -6,22 +6,7 @@
         <span class="portletTopRight"></span>
     </dt>
     <dd class="portletItem row" >
-        <div id="_portlet_seealso">
-            <tal:rep repeat="item view/getItens">
-                <div class="columns large-12" tal:define="obj item/content/getObject">
-                    <div class="row">
-                        <div class="columns small-4 " id="image_tile">
-                            <img src="++theme++vindula.themedefault/images/demos/demo1-th.png"
-                                 tal:attributes="src python: view.getImagem(obj)" />
-                        </div>
-                        <div class="columns small-8">
-                            <a href="#" tal:attributes="href obj/absolute_url"
-                                                tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
-                        </div>
-                    </div>
-                </div>
-            </tal:rep>
-        </div>
+        <metal:block metal:use-macro="context/macro-see_also-content/macros/portlet" />
     </dd>
     <dd class="portletFooter"></dd>
     <div class="visualClear"></div>
