@@ -123,7 +123,6 @@ class MacroListFileView(grok.View):
 
     def get_url_typeIcone(self, obj):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
-
         if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
             url = base + "icon-pdf.png"
         elif obj.content_type == 'application/msword':

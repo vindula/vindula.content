@@ -77,6 +77,15 @@ class Renderer(base.Renderer):
                                                            **query)
 
         return result
+    
+    def getImagem(self,obj):
+        # nome dos campos de imagens dos tipos de conteudo
+        fields = ['getImage', 'getImageRelac']
+        for field in fields:
+            if hasattr(obj, field):
+                item = getattr(obj,field)
+                if item():
+                    return item().absolute_url() + '/image_mini'
 
 
 

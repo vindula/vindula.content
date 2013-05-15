@@ -6,6 +6,7 @@ function executaAjax(ctx, b_start, sort_on){
         structures = ctx.find('input#structures').val()
         portal_type = ctx.find('input#portal_type').val(),
         fields = ctx.find('input#fields').val(),
+        title_box = ctx.find('input#title_box').val(),
 		params = {};
 
 
@@ -20,6 +21,7 @@ function executaAjax(ctx, b_start, sort_on){
 	params['theme'] = theme;
     params['structures'] = structures;
 	params['sort_on'] = sort_on
+    params['title_box'] = title_box;
     params['portal_type'] = portal_type
     params['fields'] = fields
 

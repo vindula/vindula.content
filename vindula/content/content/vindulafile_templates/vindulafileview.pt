@@ -49,7 +49,7 @@
                 <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
                                                data_type context/portal_type|nothing" />
                 
-                <div id="file" class="content-core file">
+                <div id="file" class="columns large-9 content-core file">
                     
                     <!-- Social Macros -->
                     <!--div>
@@ -137,6 +137,14 @@
                 	<metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
     
      	            <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
+                </div>
+                
+                <div class="columns large-3">
+                    
+                    <div class="vd_last_access row" tal:attributes=" data_type context/portal_type;
+                                                                 data_uid context/UID;">
+                    </div>
+                    
                 </div>
                 
                 <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
