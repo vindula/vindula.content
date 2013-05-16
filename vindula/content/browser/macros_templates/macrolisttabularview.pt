@@ -55,7 +55,7 @@
                 <thead>
                     <tr>
                         <tal:rep repeat="field fields">
-                             <th tal:content="field/label"></th>
+                             <th tal:attributes="width field/width|nothing" tal:content="field/label"></th>
                         </tal:rep>
                     </tr>
                 </thead>
@@ -63,13 +63,22 @@
                     <tr tal:repeat="item batch">
                         <tal:rep repeat="field fields"
                                  define="item_object item/getObject|python: item;">
-                            <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])">
-                                <a target="_blank"
-                                   tal:attributes="href string:${value_field/url}/view;
-                                                   title value_field/name">
-                                    <span tal:content="value_field/value"></span>
-                                </a>
+                                     
+                            <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
+                                tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
+                                    
+                                <tal:cond condition="not:field/is_image|nothing">
+                                    <a target="_blank"
+                                       tal:attributes="href string:${value_field/url}/view;
+                                                       title value_field/name">
+                                        <span tal:content="value_field/value"></span>
+                                    </a>
+                                </tal:cond>
+                                <tal:cond condition="field/is_image|nothing">
+                                    <img tal:attributes="src value_field/value" />
+                                </tal:cond>
                             </td>
+                            
                         </tal:rep>
                     </tr>
                 </tbody>
