@@ -61,7 +61,8 @@
                                             <h6 tal:content="repeat/item/number"></h6>
                                         </div>
                                         <div class="caption-of-type">
-                                            <a tal:attributes="href item_object/absolute_url"><strong tal:content="item_object/Title"></strong></a>
+                                            <a tal:attributes="href string:${item_object/absolute_url}/view">
+                                                <strong tal:content="item_object/Title"></strong></a>
                                             <p tal:condition="item_object/getStructures|nothing"
                                                 tal:content="python:'%s%s' %
                                                             (item_object.getStructures() and item_object.getStructures().Title()+' / ',

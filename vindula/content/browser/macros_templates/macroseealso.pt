@@ -20,7 +20,7 @@
                                      tal:attributes="src python: view_macro.getImagem(obj)" />
                             </div>
                             <div class="columns small-8">
-                                <a href="#" tal:attributes="href obj/absolute_url"
+                                <a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                                                     tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
                             </div>
                         </div>

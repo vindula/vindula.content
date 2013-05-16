@@ -15,10 +15,10 @@
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
         <input type="hidden" id="title_box" tal:attributes="value title_box" />
         <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
-        
+
         <div tal:attributes="class python: accordion and 'accordion' or ''">
-            
-            <!-- TODO: ARRUMAR A PAGINACAO QUANDO ACCORDION 
+
+            <!-- TODO: ARRUMAR A PAGINACAO QUANDO ACCORDION
                        ARRUMAR UM PADARO PARA A ALTURA DOS BOXES -->
             <div class="title columns large-12">
                 <div class="right" id="pag-nav">
@@ -34,7 +34,7 @@
                     <hr/>
                 </h5>
             </div>
-            
+
             <div class="container">
                 <tal:rep repeat="item batch">
                     <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
@@ -45,7 +45,7 @@
                                     <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
                                 </div>
                                 <div class="columns small-12">
-                                    <a tal:attributes="href ctx/absolute_url"
+                                    <a tal:attributes="href string:${ctx/absolute_url}/view"
                                        tal:content= "ctx/Title"></a>
                                 </div>
                                 <div class="columns small-12">
