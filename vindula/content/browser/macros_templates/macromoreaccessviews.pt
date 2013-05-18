@@ -4,12 +4,13 @@
                               list_itens list_itens|python:view_macro.list_files(portal_type);
                               title_box title_box|request/title_box|nothing;
                               accordion accordion|nothing;
+                              services  services|nothing;
                               Batch python:modules['Products.CMFPlone'].Batch;
-                              b_size request/b_size|string:4;
+                              b_size b_size|request/b_size|string:4;
                               b_start python:0;
                               b_start request/b_start | b_start;
                               batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
-
+    
     <div class="list_file row" id="list_file">
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -34,10 +35,11 @@
                     <hr/>
                 </h5>
             </div>
-
+            
             <div class="container">
                 <tal:rep repeat="item batch">
-                    <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
+                    <tal:cond condition="not:services">
+                        <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
                         <div class="box-more-acess columns small-12"
                              tal:define="ctx item/content/getObject|nocall:item">
                             <div class="row">
@@ -59,7 +61,18 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </tal:cond>
+                    <tal:cond condition="services">
+                        <div class="large-3 columns item-service">
+                            <div tal:define="ctx item/content/getObject|nocall:item">
+                                <img class="left" tal:attributes="src ctx/getImageIcone;
+                                                     title ctx/Title;
+                                                     alt ctx/Title;">
+                                <a class="left" tal:attributes="href ctx/absolute_url" tal:content="ctx/Title"></a>
+                            </div>
+                        </div>
+                    </tal:cond>
                 </tal:rep>
             </div>
         </div>

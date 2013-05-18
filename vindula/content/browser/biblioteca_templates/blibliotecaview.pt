@@ -9,7 +9,7 @@
         </metal:styleslot>
 
     <body>
-        <metal:content-core fill-slot="content-core">
+        <div metal:fill-slot="content-core" class="row">
             <div class="columns large-12"
                  metal:define-macro="page-view"
                  tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
@@ -89,6 +89,6 @@
                     </section>
                 </div>
             </div>
-        </metal:content-core>
+        </div>
     </body>
 </html>

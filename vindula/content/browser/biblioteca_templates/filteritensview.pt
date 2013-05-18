@@ -9,9 +9,8 @@
         </metal:styleslot>
 
     <body>
-        <metal:content-core fill-slot="content-core">
+        <div metal:fill-slot="content-core" class="row">
             <div class="columns large-12">
-
                 <script type="text/javascript" src=""
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
@@ -35,8 +34,7 @@
                         </tal:def>
                     </div>
                 </div>
-
             </div>
-        </metal:content-core>
+        </div>
     </body>
 </html>
