@@ -215,6 +215,21 @@ class VindulaWebServeObjectContent(grok.View):
                             'url': '/'+context.virtual_url_path(),
                             'image': image_content}
 
+            excludeField = ['title','description']
+            typesField = ['string','text']
+            extra_details = {}
+            for field in context.Schema().fields():
+
+                if not field.getName() in excludeField and\
+                   field.type in typesField and field.accessor:
+                   accessor = getattr(context, field.accessor)
+
+                   extra_details[field.getName()] = accessor()
+
+
+            D['extra_details'] = extra_details
+
+
         # restore the original context
         setSecurityManager(old_security_manager)
 
