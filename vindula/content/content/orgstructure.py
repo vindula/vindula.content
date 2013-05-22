@@ -690,3 +690,8 @@ class FolderOrganizationalStructureView(grok.View, BaseFunc):
                     D['url'] =   item.absolute_url()
                     L.append(D)
         return L
+    
+class NewTemplateOrgStrucView(grok.View, BaseFunc):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('new-org-struc')
