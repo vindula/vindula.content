@@ -25,7 +25,7 @@
                         
                 <div class="content-core row">
                     <div class="columns large-12">
-                        <div id="tile-banner" class="row">
+                        <div id="tile-listagem-horizontal-orbit" class="row">
                             <div class="columns large-12">
                                 <h5>
                                     PREMIAÇÕES
@@ -67,7 +67,7 @@
                     </div>
                     
                     <div class="columns large-12">
-                        <div id="tile-listagem-horizontal" class="row">
+                        <div id="tile-listagem-horizontal-two-columns" class="row">
                             <div class="columns large-12">
                                 <h5>
                                     NOTÍCIAS INSTITUCIONAIS

@@ -695,3 +695,8 @@ class NewTemplateOrgStrucView(grok.View, BaseFunc):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('new-org-struc')
+    
+class NewTemplateUnidadeOrgView(grok.View, BaseFunc):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('new-unidade-org')
