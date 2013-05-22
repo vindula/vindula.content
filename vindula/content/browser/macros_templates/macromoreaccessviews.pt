@@ -40,27 +40,27 @@
                 <tal:rep repeat="item batch">
                     <tal:cond condition="not:services">
                         <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
-                        <div class="box-more-acess columns small-12"
-                             tal:define="ctx item/content/getObject|nocall:item">
-                            <div class="row">
-                                <div class="container-image columns small-12">
-                                    <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
-                                </div>
-                                <div class="columns small-12">
-                                    <a tal:attributes="href string:${ctx/absolute_url}/view"
-                                       tal:content= "ctx/Title"></a>
-                                </div>
-                                <div class="columns small-12">
-                                    <small tal:condition="ctx/getStructures|nothing"
-                                           tal:content="python:'%s%s' %
-                                                        (ctx.getStructures() and ctx.getStructures().Title() +' / ',
-                                                         ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
-                                </div>
-                                <div class="columns small-12">
-                                    <p class="discrete">Formulario / 12000 acessos</p>
+                            <div class="box-more-acess columns small-12"
+                                 tal:define="ctx item/content/getObject|nocall:item">
+                                <div class="row">
+                                    <div class="container-image columns small-12">
+                                        <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                                    </div>
+                                    <div class="columns small-12">
+                                        <a tal:attributes="href string:${ctx/absolute_url}/view"
+                                           tal:content= "ctx/Title"></a>
+                                    </div>
+                                    <div class="columns small-12">
+                                        <small tal:condition="ctx/getStructures|nothing"
+                                               tal:content="python:'%s%s' %
+                                                            (ctx.getStructures() and ctx.getStructures().Title() +' / ',
+                                                             ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
+                                    </div>
+                                    <div class="columns small-12">
+                                        <p class="discrete">Formulario / 12000 acessos</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </tal:cond>
                     <tal:cond condition="services">

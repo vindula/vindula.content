@@ -1,0 +1,273 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="pt-br" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal" 
+      xmlns:metal="http://xml.zope.org/namespaces/metal" 
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n" 
+      lang="pt-br" 
+      metal:use-macro="context/main_template/macros/master" 
+      i18n:domain="vindula.themedefault">
+
+<head>
+    <metal:js fill-slot="javascript_head_slot">
+    </metal:js>
+</head>
+
+<body>
+    <metal:main fill-slot="main">
+            <metal:main define-macro="main">
+                <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load"></div>
+                <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
+                <div class="vd_access" tal:attributes="data_uid context/UID|nothing;data_type context/portal_type|nothing"></div>
+                
+                
+                <script type="text/javascript" src=""
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.tile/js/org-tree.js"></script>
+                        
+                <div class="content-core row">
+                    <div class="columns large-12">
+                        <div id="tile-banner" class="row">
+                            <div class="columns large-12">
+                                <h5>
+                                    PREMIAÇÕES
+                                    <hr/>
+                                </h5>
+                            </div>
+                            <div class="columns large-12">
+                                <ul data-orbit id="tile-news"
+                                    data-options="bullets:true;">
+                                    <li>
+                                        <div class="row">
+                                        <div class="columns small-4">
+                                            <img src="++theme++vindula.themedefault/images/demos/demo2-th.gif" />
+                                        </div>
+                                        <div class="columns small-8">
+                                            <small>ASCOM / 27/03/2013 14:30</small>
+                                            <h5><a href="#">Nova diretoria da Opas visita Bio</a></h5>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ornare placerat leo, 
+                                            non scelerisque sem mollis ut.</p>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                        <div class="columns small-4">
+                                            <img src="++theme++vindula.themedefault/images/demos/demo1-th.png" />
+                                        </div>
+                                        <div class="columns small-8">
+                                            <small>LORORO / 27/03/2013 14:30</small>
+                                            <h5><a href="#">Nova diretoria da Opas visita Bio</a></h5>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ornare placerat leo, 
+                                            non scelerisque sem mollis ut.</p>
+                                        </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="columns large-12">
+                        <div id="tile-listagem-horizontal" class="row">
+                            <div class="columns large-12">
+                                <h5>
+                                    NOTÍCIAS INSTITUCIONAIS
+                                    <hr/>
+                                </h5>
+                            </div>
+                            <div class="columns large-6">
+                                <div class="row">
+                                    <div class="columns small-4 " id="image_tile">
+                                        <img class="border-shadow" width="80" src="++theme++vindula.themedefault/images/demos/demo1-th.png"/>
+                                    </div>
+                                    <div class="columns small-8">
+                                        <small>LORORO /
+                                              27/03/2013 14:30</small>
+                                        <strong><a href="#">Nova diretoria da Opas visita Bio</a></strong>
+                                    </div>
+                                    <div class="columns small-12">
+                                        <!--metal:use use-macro="context/macro-share-content/macros/view" /-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns large-6">
+                                <div class="row">
+                                    <div class="columns small-4 " id="image_tile">
+                                        <img class="border-shadow" width="80" src="++theme++vindula.themedefault/images/demos/demo1-th.png"/>
+                                    </div>
+                                    <div class="columns small-8">
+                                        <small>LORORO /
+                                              27/03/2013 14:30</small>
+                                        <strong><a href="#">Nova diretoria da Opas visita Bio</a></strong>
+                                    </div>
+                                    <div class="columns small-12">
+                                        <!--metal:use use-macro="context/macro-share-content/macros/view" /-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="columns large-12">
+                        <div id="tile-organograma" class="row">
+                            <div class="columns large-12">
+                                <h5>
+                                    ORGANOGRAMA
+                                    <hr/>
+                                </h5>
+                            </div>
+                            <div class="columns large-12">
+                                <div class="container-tree">
+                                    <ul class="main-tree lightness">
+                                        <li class="tree-item">
+                                            <div class="content dashed"><a href="#">Assembleia Geral</a></div>
+                                        </li>
+                                        <li class="tree-item arrow">
+                                            <div class="content">Conselho Deliberativo</div>
+                                            <ul class="tree-2">
+                                                <li class="tree-item"><div class="content dashed">Concelho de Assesoria Poilico Estratégico</div></li>
+                                                <li class="tree-item arrow ">
+                                                    <div class="content">Colegiado interno de gestao</div>
+                                                    <ul class="tree-3">
+                                                        <li class="tree-item arrow dashed ">
+                                                            <div class="content">Concelho de Assesoria Poilico Estratégico</div>
+                                                            <ul class="tree-4">
+                                                                <li class="tree-item">
+                                                                    <div class="content"><a href="#">Concelho de Assesoria Poilico Estratégico</a></div>
+                                                                </li>
+                                                                <li class="tree-item">
+                                                                    <div class="content"><a href="#">Assembleia Geral</a></div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="tree-item arrow"><div class="content">Colegiado interno de gestao</div></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="columns large-12">
+                        <div id="tile-more-acess-unity" class="row">
+                            <div class="title columns large-12">
+                                <h5>
+                                    UNIDADES MAIS ACESSADAS
+                                    <hr/>
+                                </h5>
+                            </div>
+                            <div class="container">
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                                <div class="large-6 columns item">
+                                    <div style="width: 16%; height: 40px;" class="left">
+                                        <img />
+                                    </div>
+                                    <div style="width: 84%;" class="left">
+                                        <a class="block" href="#">DIBOP</a>
+                                        <span class="block">Divisao de Boas Praticas</span>
+                                        <a class="block" href="#">Pedro Miranda Prado</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="columns large-12">
+                        <div class="row">
+                            <div class="columns large-12">
+                                <h5>
+                                    UNIDADES ORGANIZACIONAIS
+                                    <hr/>
+                                </h5>
+                            </div>
+                            <div class="columns large-12">
+                                <div class="conteiner" id="documento">
+                                    <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+    
+                                    <div id="itens">
+                                        <tal:def define="portal_type python: ('OrganizationalStructure',);
+                                                         fields python:[{'label': 'Título', 'attribute': 'Title'},];">
+                                                   <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                                        </tal:def>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </metal:main>
+    </metal:main>
+</body>
+</html>
