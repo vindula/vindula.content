@@ -169,6 +169,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ReferenceField('layout_content',
         multiValued=0,
         allowed_types=('Layout'),
+        relationship='layout_content',
         label=_(u"Conteúdo principal da unidade"),
         widget=VindulaReferenceSelectionWidget(
             label=_(u"Conteúdo principal da unidade"),
@@ -179,6 +180,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
     ReferenceField('layout_accessory',
         multiValued=0,
         allowed_types=('Layout'),
+        relationship='layout_accessory',
         label=_(u"Conteúdo do portlet acessório da unidade"),
         widget=VindulaReferenceSelectionWidget(
             label=_(u"Conteúdo do portlet acessório da unidade"),
