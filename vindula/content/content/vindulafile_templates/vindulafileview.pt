@@ -55,16 +55,16 @@
                 <div class="row">
                     <div id="file" class="columns large-9 content-core file">
                     
-                        <!-- Social Macros -->
-                        <!--div>
-                            <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
-                            <div metal:use-macro="context/macro-rating-content/macros/view" />
-                        </div-->
-                        
                         <h5>
                             <tal:rep content="context/Title" />
                             <hr/>
                         </h5>
+                        
+                        <!-- Social Macros -->
+                        <div class="right">
+                            <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
+                            <div metal:use-macro="context/macro-rating-content/macros/view" />
+                        </div>
                         
                         <ul class="container-data">
                             <li>

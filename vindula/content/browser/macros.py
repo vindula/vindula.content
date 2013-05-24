@@ -110,7 +110,10 @@ class MacroListtabularView(grok.View):
         return list_files
 
     def getValueField(self, item, attr):
-        result = getattr(item, attr)()
+        try:
+            result = getattr(item, attr)()
+        except AttributeError:
+            return False;
         try:
             return {'value': result.Title(),
                     'name': result.Title(),

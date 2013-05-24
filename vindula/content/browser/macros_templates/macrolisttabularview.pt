@@ -65,6 +65,7 @@
                                  define="item_object item/getObject|python: item;">
                                      
                             <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
+                                tal:condition="value_field"
                                 tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
                                     
                                 <tal:cond condition="not:field/is_image|nothing">
