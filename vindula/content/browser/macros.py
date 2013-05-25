@@ -240,11 +240,6 @@ class MacroShare(grok.View):
     grok.name('macro-share-content')
 
 
-class MacroShare(grok.View):
-    grok.context(Interface)
-    grok.require('zope2.View')
-    grok.name('macro-share-content')
-
 class MacroLastAccess(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
