@@ -7,193 +7,32 @@
       i18n:domain="vindula.content">
 
 	<head>
+ 		<metal:block fill-slot="top_slot">
+            <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>
 
-		<metal:styleslot fill-slot="style_slot">
-    		<link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/content_organization.css">
-		</metal:styleslot>
-
-		<metal:js fill-slot="javascript_head_slot">
-    		<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/js/ajax_comments-curtir.js"></script>
-			<script type="text/javascript" src="" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/js/comments.js"></script>
-		</metal:js>
-
+        </metal:block>
 	</head>
 	<body>
-		<metal:main fill-slot="content-core" tal:define="item_id view/get_UID|nothing;
-														 member python:context.portal_membership.getAuthenticatedMember();
-							   							 logado python:str(member)!='Anonymous User';">
-		 	<metal:content-core define-macro="content-core">
-				<!--p><b>Categoria:</b> <span tal:content="context/getCategoria|nothing"></span> </p-->
-				<p tal:condition="context/getStructures|nothing" >
-					<b>Unidade Organizacional:</b> <span tal:content="python:context.getStructures().Title()" />
-				</p>
+		<metal:main fill-slot="content-core" >
 
-				<div>
-					<a class="img-text" tal:condition="context/getImage|nothing"
-									    tal:attributes="href python: context.getImage().absolute_url()+'/image_view_fullscreen'">
-						<img tal:attributes="src python: context.getImage().absolute_url()+'/image_mini';">
-					</a>
-					<p tal:content="structure context/getText|nothing"></p>
+			<div class="row">
+				<div class="columns large-12"
+					 tal:condition="context/getLayout_content|nothing">
+
+					<tal:def define="context python:context.getLayout_content()">
+     					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
+     				</tal:def>
+
 				</div>
-				<br />
-				<div class="row">
-					<div class="cell width-9 position-0">
-						<h2>Gestor</h2>
-						<div id="boxPortlet" tal:define="manage context/manager|nothing;
-														 user_manage python:view.get_prefs_user(manage)">
-							<div class="row">
-								<div class="cell width-5 position-0">
-								    <!-- Dados para utilização da macro -->
-                                    <tal:def define="size_img string:70px;
-                                                     user_profiles manage|nothing;
-                                                     item user_manage;">
-                                        <metal:use use-macro="context/myvindula-imageprofiles-macro/macros/userimage"/>
-                                    </tal:def>
+				<div class="columns large-6"
+					 tal:condition="context/getLayout_accessory|nothing">
 
-
-									<!--a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}">
-					                    <img src="defaultUser.png"
-						             		 alt="" border="0" width="70"
-						             		 tal:attributes="src string:${here/portal_url}/user-image?username=${manage};
-									 						 alt user_manage/name|nothing;
-															 title user_manage/name|nothing;" />
-									</a-->
-				                </div>
-								<div class="portlet-user-info cell width-9 position-6">
-						        	<h4><a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
-										   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
-						        	<p>
-						        		<span tal:replace="user_manage/position|nothing" /><br />
-										<tal:def define="departamentos python: view.get_department(manage)">
-							        		<tal:rep repeat="departamento departamentos">
-							        			<span tal:content="departamento/Title|nothing">Departamento</span>
-												<span tal:define="cont repeat/departamento/length;
-															      last repeat/departamento/end"
-										  			  tal:condition="python: cont > 1 and not last"> | </span>
-							        		</tal:rep>
-											<br />
-							        	</tal:def>
-						        		<!--span tal:replace="obj/departamento/name|nothing" /><br /-->
-
-										<span tal:replace="user_manage/phone_number|nothing" /><br />
-						        		<span tal:replace="user_manage/email|nothing" /><br />
-						      	  	</p>
-								</div>
-							</div>
-					 	</div>
-					</div>
-					<div class="cell width-7 position-9">
-						<h2>Colaboradores</h2>
-						<tal:def define="employees context/getEmployees|nothing">
-							<tal:rep repeat="func employees">
-							    <!-- Dados para utilização da macro -->
-                                <tal:def tal:condition="func"
-                                         define="size_img string:30px;
-                                                 user_profiles func|nothing;
-                                                 item python:view.get_prefs_user(func)">
-                                    <metal:use use-macro="context/myvindula-imageprofiles-macro/macros/userimage"/>
-                                </tal:def>
-
-
-								<!-- a class="func-colaborador" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${func}"
-									tal:condition="func">
-				                    <img src="defaultUser.png"
-					             		 alt="" border="0" height="30"
-										 tal:define="user_func python:view.get_prefs_user(func);"
-					             		 tal:attributes="src string:${here/portal_url}/user-image?username=${func};
-								 						 alt user_func/name|nothing;
-														 title user_func/name|nothing;" />
-								</a-->
-							</tal:rep>
-						</tal:def>
-					</div>
-				</div>
-				<br />
-
-				<br />
-				<!--div id="interna">
-					<h2>Ultimas atualizações</h2>
-					<table width="100%">
-						<tr>
-							<th width="40%">Titulo</th>
-							<th width="30%">Descrição</th>
-							<th width="30%" >Tipo</th>
-						</tr>
-						<tal:rep repeat="obj view/get_LastContent|nothing">
-							<tr>
-								<tal:def define="item obj/getObject|nothing">
-									<td><a target="_blank" tal:attributes="href item/absolute_url|nothing" tal:content="item/Title|nothing"></a></td>
-									<td><span tal:content="item/description|nothing"></span></td>
-									<td><span tal:content="item/portal_type|nothing"></span> </td>
-					            </tal:def>
-							</tr>
-						</tal:rep>
-					</table>
-				</div-->
-				<br />
-				<div>
-					<!-- Pensamentos para a unidade Organizacional  -->
-					<tal:def define="items python:view.get_howareu_departament(item_id);">
-						<input type="hidden" id="portal_url" tal:attributes="value context/portal_url|nothing">
-						<input type="hidden" id="context_url" tal:attributes="value context/absolute_url|nothing">
-						<input type="hidden" id="username" name="username" value="" tal:attributes="value context/@@plone_portal_state/member|nothing">
-
-						<div id="howareu" class="userpage geral_lista_comentarios" tal:condition="items">
-							<h2 class="h2title">Em que estão pensando agora sobre o Departamento!</h2>
-							<tal:rep tal:repeat="item items">
-								<div class="comment item_lista" tal:define="user item/username|nothing;
-																			form_data python:view.get_prefs_user(user) or {};">
-									<div class="commentImage">
-					                    <img src="defaultUser.png"
-						             		 alt="" border="0"
-						             		 height="30"
-						             		 tal:attributes="src python:view.getPhoto(user);
-									 						 alt form_data/name|nothing;
-															 title form_data/name|nothing;" />
-					                </div>
-									<div class="documentByLine name-user">
-										<h4>
-											<a tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${user}">
-												<span tal:replace="form_data/name|nothing" /> |
-						                    	<span tal:replace="python:item.date_creation.strftime('%d/%m/%Y')" />
-											</a>
-										</h4>
-					                </div>
-									<div id="like" tal:condition="logado">
-										<div tal:attributes="id item/id|nothing">
-											<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
-											<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
-										</div>
-										<div metal:use-macro="context/myvindula-like-macro/macros/like" />
-
-									</div>
-
-									<div class="row comment-body">
-										<div class="cell width-6 position-0" tal:condition="item/upload_image|nothing">
-											<img height="150" tal:attributes="src string:${context/portal_url|nothing}/howareu-image?id=${item/id|nothing}">
-										</div>
-						                <div tal:attributes="class python: item.upload_image and 'cell width-9 position-6' or ''">
-						                    <p tal:replace="item/text|nothing" />
-								  		</div>
-
-									</div>
-									<!-- campos input necessario para a criação de comentariso -->
-									<div id="comments" tal:condition="logado" >
-										<div tal:attributes="id item/id|nothing">
-
-											<input type="hidden" name="isPlone:boolean" id="isPlone" value="False" />
-											<input type="hidden" name="type" id="type" value="ModelsMyvindulaHowareu" />
-										</div>
-										<input type="button" value="Comentar" class="comments bt_comments" tal:attributes="id item/id|nothing" />
-										<div id="new-comments"></div>
-									</div>
-								</div>
-								<div metal:use-macro="context/myvindula-comments-macro/macros/comments" />
-							</tal:rep>
-						</div>
+					<tal:def define="context python:context.getLayout_accessory()">
+      					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
 					</tal:def>
+
 				</div>
-			</metal:content-core>
+			</div>
 		</metal:main>
 	</body>
 </html>

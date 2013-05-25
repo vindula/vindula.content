@@ -1,10 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="pt-br" 
-      xmlns:tal="http://xml.zope.org/namespaces/tal" 
-      xmlns:metal="http://xml.zope.org/namespaces/metal" 
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n" 
-      lang="pt-br" 
-      metal:use-macro="context/main_template/macros/master" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="pt-br"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="pt-br"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="vindula.themedefault">
 
 <head>
@@ -19,16 +19,16 @@
                 <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load"></div>
                 <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
                 <div class="vd_access" tal:attributes="data_uid context/UID|nothing;data_type context/portal_type|nothing"></div>
-                
+
                 <div class="content-core row">
-                    
+
                     <div class="columns large-12">
                         <h5 class="title">
                             ASCOM - Assessoria de Comunicação
                             <hr/>
                         </h5>
                     </div>
-                    
+
                     <div class="columns large-9">
                         <div class="row">
                             <div class="columns large-12">
@@ -55,7 +55,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="columns large-12">
                                 <div id="tile-org-info">
                                     <div class="row">
@@ -64,12 +64,12 @@
                                         </div>
                                         <div class="columns large-8">
                                             <div>
-                                                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                                Nam ut imperdiet urna. Nullam a lacus velit, id sollicitudin nisi. 
-                                                Curabitur at justo eget nulla pellentesque vestibulum. 
+                                                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                Nam ut imperdiet urna. Nullam a lacus velit, id sollicitudin nisi.
+                                                Curabitur at justo eget nulla pellentesque vestibulum.
                                                 </span>
                                             </div>
-                                            
+
                                             <div class="container-manager">
                                                 <div>
                                                     <strong>Gestor</strong>
@@ -91,11 +91,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="columns large-12 label-team">
                                             <strong><a href="">Equipe</a></strong><span>(132)</span>
                                         </div>
-                                        
+
                                         <div class="columns large-12">
                                             <div class="pagination pag-left"><a href="#"></a></div>
                                             <div class="pagination pag-right"><a href="#"></a></div>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="columns large-6">
                                 <h5>
                                     INFORMAÇÕES
@@ -144,47 +144,47 @@
                                     </li>
                                     <li>
                                         <strong>email:</strong><a>contato@empresa.com</a>
-                                    </li> 
+                                    </li>
                                     <li>
                                         <strong>Tel.:</strong><span>(00) 3332-3334</span>
-                                    </li> 
+                                    </li>
                                     <li>
                                         <strong>Localização:</strong><span>Lorem Ipsum, Ed. Sodeles, Amete daram 232</span>
-                                    </li> 
+                                    </li>
                                     <li>
                                         <strong>Projetos:</strong><span>12</span>
-                                    </li> 
+                                    </li>
                                     <li>
                                         <strong>Equipe:</strong><span>200</span>
-                                    </li> 
-                                                                           
+                                    </li>
+
                                 </ul>
                             </div>
-                            
+
                             <div class="columns large-6">
                                 <h5>
                                     INFORMES
                                     <hr/>
                                 </h5>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                    Suspendisse feugiat, leo vitae consequat congue, orci dui mollis dui, ut lacinia felis lorem id augue. 
-                                    Morbi sit amet erat turpis, eu rutrum arcu. Suspendisse vel leo purus, non lobortis lorem. 
-                                    Sed commodo varius urna, ut dapibus felis venenatis eget. In eget metus dolor. Donec odio nunc, 
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Suspendisse feugiat, leo vitae consequat congue, orci dui mollis dui, ut lacinia felis lorem id augue.
+                                    Morbi sit amet erat turpis, eu rutrum arcu. Suspendisse vel leo purus, non lobortis lorem.
+                                    Sed commodo varius urna, ut dapibus felis venenatis eget. In eget metus dolor. Donec odio nunc,
                                     tempus sed semper et, sodales ut urna.
                                 </p>
-                                
+
                                 <a class="button small radius">Continuar Lendo</a>
                             </div>
-                            
+
                             <div class="columns large-6">
                                 <div class="row">
                                     <div class="columns large-12">
                                         <h5>SERVIÇOS</h5>
                                         <hr/>
-        
+
                                         <div class="content_itens">
-                                          <p tal:repeat="item view/getItens">
+                                          <p tal:repeat="item view/getItens|python:[]">
                                             <tal:def tal:define="obj item/getObject">
                                              <img width="16" height="16" alt=""
                                                   tal:condition="obj/getIcon"
@@ -198,18 +198,18 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="columns large-6">
 
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="columns large-3">
-                        
+
                     </div>
-                    
-                    
+
+
                 </div>
             </metal:main>
     </metal:main>

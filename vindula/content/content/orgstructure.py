@@ -165,7 +165,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             ),
 
     #---------------------abas de permissões no Objeto---------------------------------
-    
+
+
     ReferenceField('layout_content',
         multiValued=0,
         allowed_types=('Layout'),
@@ -176,7 +177,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description='Conteúdo do layout que irá aaparacer no portlet lateral da unidade'),
         schemata = 'Layout'
     ),
-    
+
     ReferenceField('layout_accessory',
         multiValued=0,
         allowed_types=('Layout'),
@@ -187,6 +188,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             description='Conteúdo do layout que irá aaparacer no portlet acessorio lateral da unidade'),
         schemata = 'Layout'
     ),
+
 
     BooleanField(
         name='activ_personalit',
@@ -650,32 +652,33 @@ class OrganizationalStructureView(grok.View, UtilMyvindula):
     grok.require('zope2.View')
     grok.name('view_organizational')
 
-    def get_UID(self):
-        return IUUID(self.context)
 
-    def get_howareu_departament(self, departament):
-        D={}
-        D['visible_area'] = departament
-        return ModelsMyvindulaHowareu().get_myvindula_howareu(**D)
+    # def get_UID(self):
+    #     return IUUID(self.context)
 
-    def get_department(self, user):
-        try:
-            user_id = unicode(user, 'utf-8')
-        except:
-            user_id = user
+    # def get_howareu_departament(self, departament):
+    #     D={}
+    #     D['visible_area'] = departament
+    #     return ModelsMyvindulaHowareu().get_myvindula_howareu(**D)
 
-        # return ModelsDepartment().get_departmentByUsername(user_id)
-        return 'TODO MUDAR DEPOIS'
+    # def get_department(self, user):
+    #     try:
+    #         user_id = unicode(user, 'utf-8')
+    #     except:
+    #         user_id = user
 
-    def get_LastContent(self):
-        ctool = getSite().portal_catalog
-        objs = ctool(path = {'query': '/'.join(self.context.getPhysicalPath()), 'depth': 1},
-                      sort_on='modified', sort_order='decrescent')
+    #     # return ModelsDepartment().get_departmentByUsername(user_id)
+    #     return 'TODO MUDAR DEPOIS'
 
-        if objs:
-            return objs
-        else:
-            return []
+    # def get_LastContent(self):
+    #     ctool = getSite().portal_catalog
+    #     objs = ctool(path = {'query': '/'.join(self.context.getPhysicalPath()), 'depth': 1},
+    #                   sort_on='modified', sort_order='decrescent')
+
+    #     if objs:
+    #         return objs
+    #     else:
+    #         return []
 
 
 class FolderOrganizationalStructureView(grok.View, BaseFunc):
