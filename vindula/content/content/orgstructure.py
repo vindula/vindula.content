@@ -15,7 +15,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from zExceptions import BadRequest
 
 from zope.app.container.interfaces import IObjectRemovedEvent
-from vindula.myvindula.user import BaseFunc, ModelsFuncDetails, ModelsMyvindulaHowareu, ModelsDepartment
+from vindula.myvindula.user import BaseFunc, ModelsMyvindulaHowareu # ,ModelsDepartment,ModelsFuncDetails
 from vindula.content.content.interfaces import IOrganizationalStructure, IOrgstructureModifiedEvent
 from plone.app.folder.folder import ATFolder
 from Products.UserAndGroupSelectionWidget.at import widget
@@ -30,7 +30,7 @@ from vindula.content.config import *
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
-from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
+# from vindula.myvindula.models.instance_funcdetail import ModelsInstanceFuncdetails
 
 OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
 
@@ -510,8 +510,6 @@ class OrganizationalStructure(ATFolder):
                result.append((modalidade, modalidade))
         return result
 
-
-
     def getImageIcone(self):
         image = self.getImage()
 
@@ -621,11 +619,6 @@ def _cria_objeto(objeto, conteudos):
 @grok.subscribe(IOrganizationalStructure, IObjectAddedEvent)
 def CreatElemetsOrganizationalStructure(context, event):
 
-
-#    import pdb; pdb.set_trace()
-
-
-
     _cria_objeto(context, CONTEUDOS)
 
 
@@ -649,7 +642,8 @@ class OrganizationalStructureView(grok.View, UtilMyvindula):
         except:
             user_id = user
 
-        return ModelsDepartment().get_departmentByUsername(user_id)
+        # return ModelsDepartment().get_departmentByUsername(user_id)
+        return 'TODO MUDAR DEPOIS'
 
     def get_LastContent(self):
         ctool = getSite().portal_catalog
@@ -690,12 +684,12 @@ class FolderOrganizationalStructureView(grok.View, BaseFunc):
                     D['url'] =   item.absolute_url()
                     L.append(D)
         return L
-    
+
 class NewTemplateOrgStrucView(grok.View, BaseFunc):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('new-org-struc')
-    
+
 class NewTemplateUnidadeOrgView(grok.View, BaseFunc):
     grok.context(Interface)
     grok.require('zope2.View')
