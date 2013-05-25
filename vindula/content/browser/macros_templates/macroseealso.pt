@@ -1,6 +1,6 @@
 <metal:view_macro define-macro="view">
 
-    <div class="row">
+    <div class="row" id="tile-see-also">
         <div class="columns small-12">
             <h5 class="subheader">
                 <strong>Veja Também</strong>
@@ -14,12 +14,12 @@
             <div id="_portlet_seealso">
                 <tal:rep repeat="item view_macro/getItens">
                     <div class="columns large-12" tal:define="obj item/content/getObject">
-                        <div class="row">
-                            <div class="columns small-4 " id="image_tile">
-                                <img src="++theme++vindula.themedefault/images/demos/demo1-th.png"
+                        <div class="tile-item row">
+                            <div class="columns small-3 image-box " id="image_tile">
+                                <img width="40" height="40" src="++theme++vindula.themedefault/images/demos/demo1-th.png"
                                      tal:attributes="src python: view_macro.getImagem(obj)" />
                             </div>
-                            <div class="columns small-8">
+                            <div class="columns small-9">
                                 <a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                                                     tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
                             </div>

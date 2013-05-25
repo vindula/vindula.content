@@ -60,51 +60,72 @@
                                 <div id="tile-org-info">
                                     <div class="row">
                                         <div class="columns large-4">
-                                            
+                                            <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/imagem-org-demo.png" />
                                         </div>
                                         <div class="columns large-8">
+                                            <div>
+                                                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                                Nam ut imperdiet urna. Nullam a lacus velit, id sollicitudin nisi. 
+                                                Curabitur at justo eget nulla pellentesque vestibulum. 
+                                                </span>
+                                            </div>
                                             
+                                            <div class="container-manager">
+                                                <div>
+                                                    <strong>Gestor</strong>
+                                                </div>
+                                                <div>
+                                                    <div class="left manager-pic">
+                                                        <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/gestor-org-demo.png" />
+                                                    </div>
+                                                    <div class="left manager-info">
+                                                        <a href="#">Alfredo Macedo</a>
+                                                        <p>Diretor</p>
+                                                    </div>
+                                                    <div class="left manager-contact">
+                                                        <a href="#">alfredo.m@bio.fiocruz.br</a>
+                                                        <a href="#">Enviar Mensagem</a>
+                                                        <p>(00) 3333-3333</p>
+                                                        <p>(00) 3333-3333</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="columns large-12">
-                                <div id="tile-organograma" class="row">
-                                    <div class="columns large-12">
-                                        <h5>
-                                            ORGANOGRAMA
-                                            <hr/>
-                                        </h5>
-                                    </div>
-                                    <div class="columns large-12">
-                                        <div class="container-tree">
-                                            <ul class="main-tree lightness">
-                                                <li class="tree-item">
-                                                    <div class="content dashed"><a href="#">Assembleia Geral</a></div>
+                                        
+                                        <div class="columns large-12 label-team">
+                                            <strong><a href="">Equipe</a></strong><span>(132)</span>
+                                        </div>
+                                        
+                                        <div class="columns large-12">
+                                            <div class="pagination pag-left"><a href="#"></a></div>
+                                            <div class="pagination pag-right"><a href="#"></a></div>
+                                            <ul class="small-block-grid-9 large-block-grid-9 members-team">
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
                                                 </li>
-                                                <li class="tree-item arrow">
-                                                    <div class="content">Conselho Deliberativo</div>
-                                                    <ul class="tree-2">
-                                                        <li class="tree-item"><div class="content dashed">Concelho de Assesoria Poilico Estrat�gico</div></li>
-                                                        <li class="tree-item arrow ">
-                                                            <div class="content">Colegiado interno de gestao</div>
-                                                            <ul class="tree-3">
-                                                                <li class="tree-item arrow dashed ">
-                                                                    <div class="content">Concelho de Assesoria Poilico Estratégico</div>
-                                                                    <ul class="tree-4">
-                                                                        <li class="tree-item">
-                                                                            <div class="content"><a href="#">Concelho de Assesoria Poilico Estrat�gico</a></div>
-                                                                        </li>
-                                                                        <li class="tree-item">
-                                                                            <div class="content"><a href="#">Assembleia Geral</a></div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </li>
-                                                                <li class="tree-item arrow"><div class="content">Colegiado interno de gestao</div></li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
+                                                </li>
+                                                <li>
+                                                    <img tal:attributes="src string:${context/portal_url}/++resource++vindula.content/images/demo/equipe-org-demo.png" />
                                                 </li>
                                             </ul>
                                         </div>
@@ -112,120 +133,74 @@
                                 </div>
                             </div>
                             
-                            <div class="columns large-12">
-                                <div id="tile-more-acess-unity" class="row">
-                                    <div class="title columns large-12">
-                                        <h5>
-                                            UNIDADES MAIS ACESSADAS
-                                            <hr/>
-                                        </h5>
-                                    </div>
-                                    <div class="container">
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
-                                        </div>
-                                        <div class="large-6 columns item">
-                                            <div style="width: 16%; height: 40px;" class="left">
-                                                <img />
-                                            </div>
-                                            <div style="width: 84%;" class="left">
-                                                <a class="block" href="#">DIBOP</a>
-                                                <span class="block">Divisao de Boas Praticas</span>
-                                                <a class="block" href="#">Pedro Miranda Prado</a>
-                                            </div>
+                            <div class="columns large-6">
+                                <h5>
+                                    INFORMAÇÕES
+                                    <hr/>
+                                </h5>
+                                <ul>
+                                    <li>
+                                        <strong>Grupo:</strong><span>Aberto</span>
+                                    </li>
+                                    <li>
+                                        <strong>email:</strong><a>contato@empresa.com</a>
+                                    </li> 
+                                    <li>
+                                        <strong>Tel.:</strong><span>(00) 3332-3334</span>
+                                    </li> 
+                                    <li>
+                                        <strong>Localização:</strong><span>Lorem Ipsum, Ed. Sodeles, Amete daram 232</span>
+                                    </li> 
+                                    <li>
+                                        <strong>Projetos:</strong><span>12</span>
+                                    </li> 
+                                    <li>
+                                        <strong>Equipe:</strong><span>200</span>
+                                    </li> 
+                                                                           
+                                </ul>
+                            </div>
+                            
+                            <div class="columns large-6">
+                                <h5>
+                                    INFORMES
+                                    <hr/>
+                                </h5>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                    Suspendisse feugiat, leo vitae consequat congue, orci dui mollis dui, ut lacinia felis lorem id augue. 
+                                    Morbi sit amet erat turpis, eu rutrum arcu. Suspendisse vel leo purus, non lobortis lorem. 
+                                    Sed commodo varius urna, ut dapibus felis venenatis eget. In eget metus dolor. Donec odio nunc, 
+                                    tempus sed semper et, sodales ut urna.
+                                </p>
+                                
+                                <a class="button small radius">Continuar Lendo</a>
+                            </div>
+                            
+                            <div class="columns large-6">
+                                <div class="row">
+                                    <div class="columns large-12">
+                                        <h5>SERVIÇOS</h5>
+                                        <hr/>
+        
+                                        <div class="content_itens">
+                                          <p tal:repeat="item view/getItens">
+                                            <tal:def tal:define="obj item/getObject">
+                                             <img width="16" height="16" alt=""
+                                                  tal:condition="obj/getIcon"
+                                                  tal:attributes="src obj/getIcon;"  />
+                                             <a
+                                              tal:attributes="href obj/absolute_url"
+                                                tal:content="obj/Title">Lorem ipsum dolor sit amet </a>
+                                            </tal:def>
+                                          </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="columns large-12">
-                                <div class="row">
-                                    <div class="columns large-12">
-                                        <h5>
-                                            UNIDADES ORGANIZACIONAIS
-                                            <hr/>
-                                        </h5>
-                                    </div>
-                                    <div class="columns large-12">
-                                        <div class="conteiner" id="documento">
-                                            <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
-            
-                                            <div id="itens">
-                                                <tal:def define="portal_type python: ('OrganizationalStructure',);
-                                                                 fields python:[{'label': 'Título', 'attribute': 'Title'},];">
-                                                           <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
-                                                </tal:def>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="columns large-6">
+
                             </div>
                         </div>
                     </div>

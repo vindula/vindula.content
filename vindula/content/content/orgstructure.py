@@ -165,6 +165,28 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + Schema((
             ),
 
     #---------------------abas de permissões no Objeto---------------------------------
+    
+    ReferenceField('layout_content',
+        multiValued=0,
+        allowed_types=('Layout'),
+        relationship='layout_content',
+        label=_(u"Conteúdo principal da unidade"),
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Conteúdo principal da unidade"),
+            description='Conteúdo do layout que irá aaparacer no portlet lateral da unidade'),
+        schemata = 'Layout'
+    ),
+    
+    ReferenceField('layout_accessory',
+        multiValued=0,
+        allowed_types=('Layout'),
+        relationship='layout_accessory',
+        label=_(u"Conteúdo do portlet acessório da unidade"),
+        widget=VindulaReferenceSelectionWidget(
+            label=_(u"Conteúdo do portlet acessório da unidade"),
+            description='Conteúdo do layout que irá aaparacer no portlet acessorio lateral da unidade'),
+        schemata = 'Layout'
+    ),
 
     BooleanField(
         name='activ_personalit',
