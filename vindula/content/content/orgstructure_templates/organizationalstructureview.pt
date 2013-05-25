@@ -16,7 +16,7 @@
 		<metal:main fill-slot="content-core" >
 
 			<div class="row">
-				<div class="columns large-12"
+				<div class="columns large-9"
 					 tal:condition="context/getLayout_content|nothing">
 
 					<tal:def define="context python:context.getLayout_content()">
@@ -24,10 +24,11 @@
      				</tal:def>
 
 				</div>
-				<div class="columns large-6"
+				<div class="columns large-3"
 					 tal:condition="context/getLayout_accessory|nothing">
 
-					<tal:def define="context python:context.getLayout_accessory()">
+					<tal:def define="context python:context.getLayout_accessory();
+									 columns_accessory python:True" >
       					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
 					</tal:def>
 
