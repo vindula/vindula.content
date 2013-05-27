@@ -52,7 +52,7 @@ function executaAjax(ctx, b_start, sort_on){
 
 //TODO: Criar um arquivo javacript para uma navegacao por ajax GENERICA, atualmente eh preciso criar um arquivo js para cada navegacao por ajax (news, biblioteca e servicos)
 $j(document).ready(function(){
-    $j('div#cycle-next, div#cycle-prev').live('click',function(){
+    $j('.list_file div#cycle-next, .list_file div#cycle-prev').live('click',function(){
     	var $conteiner = $j(this).parents('.list_file'),
     		b_start = parseInt($j(this).find('input').val());
         executaAjax($conteiner,b_start,null);

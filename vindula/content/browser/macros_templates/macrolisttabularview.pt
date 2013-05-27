@@ -63,11 +63,11 @@
                     <tr tal:repeat="item batch">
                         <tal:rep repeat="field fields"
                                  define="item_object item/getObject|python: item;">
-                                     
+
                             <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
                                 tal:condition="value_field"
                                 tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
-                                    
+
                                 <tal:cond condition="not:field/is_image|nothing">
                                     <a target="_blank"
                                        tal:attributes="href string:${value_field/url}/view;
@@ -79,7 +79,7 @@
                                     <img tal:attributes="src value_field/value" />
                                 </tal:cond>
                             </td>
-                            
+
                         </tal:rep>
                     </tr>
                 </tbody>
