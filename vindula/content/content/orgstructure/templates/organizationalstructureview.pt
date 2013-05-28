@@ -17,17 +17,19 @@
 
 			<div class="row">
 				<div class="columns large-9"
-					 tal:condition="context/getLayout_content|nothing">
+                     tal:define="defaulValue python: view.getDefaultValue('home_principal')"
+					 tal:condition="python: context.getLayout_content() or defaulValue">
 
-					<tal:def define="context python:context.getLayout_content()">
+					<tal:def define="context python:context.getLayout_content() or defaulValue">
      					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
      				</tal:def>
 
 				</div>
 				<div class="columns large-3"
-					 tal:condition="context/getLayout_accessory|nothing">
+                     tal:define="defaulValue python: view.getDefaultValue('portlet_esquerdo')"
+					 tal:condition="python: context.getLayout_accessory() or defaulValue">
 
-					<tal:def define="context python:context.getLayout_accessory();
+					<tal:def define="context python:context.getLayout_accessory() or defaulValue;
 									 columns_accessory python:True" >
       					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
 					</tal:def>
