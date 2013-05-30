@@ -16,9 +16,11 @@ from zope.app.component.hooks import getSite
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
-from vindula.content.content.orgstructure.theme import OSTheme_schema
 
-OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + Schema((
+from vindula.content.content.orgstructure.theme import OSTheme_schema
+from vindula.content.content.orgstructure.information import OSInf_schema
+
+OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSInf_schema + Schema((
 
     TextField(
             name='siglaunidade',
@@ -159,7 +161,7 @@ invisivel = {'view':'invisible','edit':'invisible',}
 # Dates
 L = ['effectiveDate','expirationDate','creation_date','modification_date']
 # Categorization
-L += ['subject','relatedItems','location','language']
+L += ['subject','relatedItems','language']
 # Ownership
 L += ['creators','contributors','rights']
 # Settings
@@ -167,6 +169,8 @@ L += ['allowDiscussion','excludeFromNav', 'nextPreviousEnabled']
 
 for i in L:
     OrganizationalStructure_schema[i].widget.visible = invisivel
+
+OrganizationalStructure_schema.changeSchemataForField('location', 'Informações')
 
 class OrganizationalStructure(ATFolder):
     """ OrganizationalStructure """

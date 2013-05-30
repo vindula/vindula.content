@@ -13,9 +13,22 @@
         </metal:block>
 	</head>
 	<body>
-		<metal:main fill-slot="content-core" >
+		<metal:main fill-slot="main" >
 
-			<div class="row">
+            <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+            <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+            <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
+                                                    data_type context/portal_type|nothing" />
+
+			<div class="content-core row">
+
+                <div class="columns large-12">
+                    <h5 class="title">
+                        <span tal:replace="string:${context/getSiglaunidade|nothing} - ${context/Title|nothing}"> ASCOM - Assessoria de Comunicação </span>
+                        <hr/>
+                    </h5>
+                </div>
+
 				<div class="columns large-9"
                      tal:define="defaulValue python: view.getDefaultValue('home_principal')"
 					 tal:condition="python: context.getLayout_content() or defaulValue">
