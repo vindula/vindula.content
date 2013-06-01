@@ -17,7 +17,7 @@
         <input type="hidden" id="title_box" tal:attributes="value title_box" />
         <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
 
-        <div tal:attributes="class python: accordion and 'accordion' or ''">
+        <div class="row" tal:attributes="class python: accordion and 'accordion' or ''">
 
             <!-- TODO: ARRUMAR A PAGINACAO QUANDO ACCORDION
                        ARRUMAR UM PADARO PARA A ALTURA DOS BOXES -->

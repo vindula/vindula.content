@@ -27,7 +27,7 @@
                     <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
                 </tal:def>
 
-                <div class="section-biblioteca-tabs section-container tabs" data-section>
+                <div class=" row section-biblioteca-tabs section-container tabs" data-section>
                     <section>
                         <h5 class="title" data-section-title>
                             <a href="#section1">Tema</a>
