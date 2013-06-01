@@ -10,7 +10,7 @@
 
     <body>
         <div metal:fill-slot="content-core" class="row">
-            <div>
+            <div
                  metal:define-macro="page-view"
                  tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
 
