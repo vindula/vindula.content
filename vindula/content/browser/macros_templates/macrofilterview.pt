@@ -12,14 +12,14 @@
                      structures request/structures[]|python:[];
 
                      list_filter python: view_macro.list_filter(is_theme,is_structures) or [];">
-        
+
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
                 <p class="title-filter">
                     <a href="#">
                         <i class="more-itens vindula-icon-plus-sign"></i>
-                        <span class="more-itens" 
+                        <span class="more-itens"
                               tal:content="python:'Refinar %s' % (is_theme and 'Tema' or 'Unidade')"></span>
-                        <span class="right" 
+                        <span class="right"
                               tal:content="python:'Total de %s: (%s)' % (is_theme and 'Temas' or 'Unidades', len(list_filter))"></span>
                     </a>
                 </p>
@@ -37,10 +37,10 @@
                                       <span class="checkbox">
                                           <tal:cont content="item_obj/title">title</tal:cont>
                                       </span>
-                                      
+
                                   </label>
                                 </div>
-                                
+
                                 <div tal:condition="is_structures">
                                   <label tal:attributes="for item_id;">
                                       <input tal:attributes="value item_id;
@@ -54,7 +54,7 @@
                             </tal:def>
                         </tal:rep>
                     </div>
-                    
+
                     <div class="container-button-group">
                         <ul class="button-group">
                             <li><a class='execFilter tiny button'>Aplicar</a></li>
@@ -97,22 +97,23 @@
                       req_structures request/structures|request/structures[]|python:'';
 
                       list_filter python: view_macro.tabular_filter();">
-                          
+
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
-                <a href="#">
+              <!-- tal:condition="not_filter|python:True" -->
+                <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
                     <span class="more-itens">Refinar Pesquisa</span>
                 </a>
                 <input type="text" class="filter right" name="subject" tal:attributes="value subject" />
             </p>
             <div class="content-filter">
-                <form class="form-columns-tag">
+                <form class="form-columns-tag" tal:condition="not_filter|python:True">
                     <div class="tags left">
                         <label>
                             Tipo
                         </label>
-                        <select name="keywords" id="keywords" class="filter select-filter" 
+                        <select name="keywords" id="keywords" class="filter select-filter"
                                 multiple="multiple" tal:define="tags list_filter/tags">
                             <option tal:repeat="item tags" tal:attributes="value item;
                                     selected python:item in req_keywords and 'selected' or '';"

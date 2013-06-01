@@ -6,10 +6,10 @@ from Products.CMFCore.utils import getToolByName
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.content.models.content import ModelsContent
 
+from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from datetime import datetime
-
 
 class Search(object):
 
@@ -69,12 +69,22 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
 
         return L
 
-class MacroListtabularView(grok.View):
+class MacroListtabularView(grok.View, UtilMyvindula):
     grok.context(Interface)
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
 
     def list_files(self, subject, keywords, structures, portal_type):
+
+        if 'Pessoas' in portal_type:
+            itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+
+        else:
+            itens = self.busca_catalog(subject, keywords, structures, portal_type)
+
+        return itens
+
+    def busca_catalog(self, subject, keywords, structures, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
         if isinstance(portal_type, str):
@@ -109,19 +119,34 @@ class MacroListtabularView(grok.View):
 
         return list_files
 
+
     def getValueField(self, item, attr):
         try:
             result = getattr(item, attr)()
         except AttributeError:
-            return False;
+            return {'value': '',
+                    'name': ''}
+
+        except TypeError:
+            result = getattr(item, attr)
+
         try:
             return {'value': result.Title(),
                     'name': result.Title(),
                     'url': result.absolute_url(),}
         except AttributeError:
+            try:
+                return {'value': result,
+                        'name': item.Title(),
+                        'url': item.absolute_url(),}
+            except AttributeError:
+                return {'value': result,
+                        'name': result}
+
+        except TypeError:
             return {'value': result,
-                    'name': item.Title(),
-                    'url': item.absolute_url(),}
+                    'name': result}
+
 
 class MacroFilterView(grok.View):
     grok.context(Interface)

@@ -12,11 +12,14 @@
                              b_size request/b_size|string:10;
                              b_start python:0;
                              b_start request/b_start | b_start;
+
                              portal_type portal_type|request/portal_type|nothing;
                              fields fields|python:eval(request.fields) or None;
+
                              subject request/subject|python:'';
                              keywords request/keywords|request/keywords[]|python:'';
                              structures request/structures|request/structures[]|python:'';
+
                              list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
                              batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
 
@@ -65,15 +68,16 @@
                                  define="item_object item/getObject|python: item;">
 
                             <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
-                                tal:condition="value_field"
                                 tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
-
                                 <tal:cond condition="not:field/is_image|nothing">
-                                    <a target="_blank"
+                                    <a target="_blank" tal:condition="value_field/url|nothing"
                                        tal:attributes="href string:${value_field/url}/view;
-                                                       title value_field/name">
-                                        <span tal:content="value_field/value"></span>
+                                                       title value_field/name|nothing">
+                                        <span tal:content="structure value_field/value|nothing"></span>
                                     </a>
+                                    <span tal:condition="not: value_field/url|nothing"
+                                            tal:content="structure value_field/value|nothing"></span>
+
                                 </tal:cond>
                                 <tal:cond condition="field/is_image|nothing">
                                     <img tal:attributes="src value_field/value" />
