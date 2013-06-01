@@ -1,7 +1,5 @@
-
-function executaAjax(ctx, b_start, sort_on){
+function executaAjax(ctx, b_start, b_size, sort_on){
 	var url = ctx.find('input#absolute_url').val(),
-		b_size = parseInt(ctx.find('input#b_size').val()),
 		theme = ctx.find('input#theme').val(),
         structures = ctx.find('input#structures').val()
         portal_type = ctx.find('input#portal_type').val(),
@@ -15,7 +13,10 @@ function executaAjax(ctx, b_start, sort_on){
 
     if (sort_on==null)
     	sort_on = 'access'
-
+    
+    if (b_size==null)
+        b_size = parseInt(ctx.find('input#b_size').val())
+    
 	params['b_size'] = b_size;
 	params['b_start'] = b_start;
 	params['theme'] = theme;
@@ -55,13 +56,19 @@ $j(document).ready(function(){
     $j('.list_file div#cycle-next, .list_file div#cycle-prev').live('click',function(){
     	var $conteiner = $j(this).parents('.list_file'),
     		b_start = parseInt($j(this).find('input').val());
-        executaAjax($conteiner,b_start,null);
+        executaAjax($conteiner,b_start,null,null);
     });
     $j('select.order_by').live('change',function(){
     	var $conteiner = $j(this).parents('.list_file'),
     		sort_on = $j(this).val();
 
-    	executaAjax($conteiner,null,sort_on);
-
+    	executaAjax($conteiner,null,null,sort_on);
+    });
+    $j('.list_file div#size-nav a').live('click',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        var $conteiner = $j(this).parents('.list_file'),
+            b_size = parseInt($j(this).text());
+        executaAjax($conteiner,null,b_size,null);
     });
 });

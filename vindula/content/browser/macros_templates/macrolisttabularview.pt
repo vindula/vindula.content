@@ -35,13 +35,13 @@
                             <span tal:content="python:'Total: ('+str(len(list_files))+')'">Total (XX)</span>
                             |
                             <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
-                                <a class="c-pointer" id="itenspage"
+                                <a class="c-pointer" id="itenspage" href="#"
                                    tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
-                                <a class="c-pointer" id="itenspage"
+                                <a class="c-pointer" id="itenspage" href="#"
                                    tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
-                                <a class="c-pointer" id="itenspage"
+                                <a class="c-pointer" id="itenspage" href="#"
                                    tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
-                                <a class="c-pointer" id="itenspage"
+                                <a class="c-pointer" id="itenspage" href="#"
                                    tal:attributes="style python:b_size == '40' and css or '' ">40</a>
                             </span>
                         </p>
