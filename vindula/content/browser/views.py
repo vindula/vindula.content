@@ -176,7 +176,6 @@ class VindulaWebServeObjectContent(grok.View):
         newSecurityManager(self.request,user_admin)
 
         context = reference_catalog.lookupObject(uid)
-
         if context:
             HistoryView = ContentHistoryView(context, context.REQUEST)
             context_owner = context.getOwner().getUserName()
@@ -233,5 +232,5 @@ class VindulaWebServeObjectContent(grok.View):
         # restore the original context
         setSecurityManager(old_security_manager)
 
-        self.retorno.update(D)
+        self.retorno = D
 
