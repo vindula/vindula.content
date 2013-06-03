@@ -12,8 +12,8 @@
                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));"
                condition="batch">
 
-        <div tal:attributes="class string:row list_file ${theme|structures/Title|nothing}" id="list_file">
-	        <div class="titulo_area columns large-12">
+        <div tal:attributes="class string:list_file ${theme|structures/Title|nothing}" id="list_file">
+	        <div class="titulo_area">
 	            <h5 class="left" tal:condition="theme">
 	                <a href="#" tal:content="theme" tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?theme=${theme}"></a>
                 </h5>
@@ -43,7 +43,7 @@
             <input type="hidden" id="structures" tal:attributes="value structures/UID|structures" />
 	        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" />
 
-            <div class="list-container columns large-12">
+            <div class="list-container">
                 <div class="row">
                     <tal:rep repeat="item batch">
                         <tal:cond condition="repeat/item/start">
