@@ -1,14 +1,12 @@
 <metal:view_macro define-macro="view"
                   tal:define="view_macro python:context.restrictedTraverse('macro-comments-content');">
-    <h2>Comentarios</h2>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis laborum numquam minus ipsum possimus voluptate reprehenderit et eum blanditiis</p>
-
-
+    <h4 class="title">
+       Comentários
+       <hr />
+    </h4>
+    
+    <p>Comente aqui o conteúdo</p>
     <div class="vd_comment" tal:attributes="data_uid context/UID;
                                             data_type context/portal_type"></div>
-
-
-
 </metal:view_macro>
 
