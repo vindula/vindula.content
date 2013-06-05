@@ -121,28 +121,31 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
 
     def getValueField(self, item, attr):
+        
         try:
+            #Retorna o valor do metodo passado
             result = getattr(item, attr)()
         except AttributeError:
             return {'value': '',
                     'name': ''}
-
         except TypeError:
+            #Retorna o valor do atributo passado
             result = getattr(item, attr)
-
+        
         try:
             return {'value': result.Title(),
                     'name': result.Title(),
+                    'type': result.portal_type,
                     'url': result.absolute_url(),}
         except AttributeError:
             try:
                 return {'value': result,
                         'name': item.Title(),
+                        'type': item.portal_type,
                         'url': item.absolute_url(),}
             except AttributeError:
                 return {'value': result,
                         'name': result}
-
         except TypeError:
             return {'value': result,
                     'name': result}
