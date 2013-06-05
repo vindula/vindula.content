@@ -29,7 +29,7 @@
                             <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
                         </select>
                     </form>
-                    <div class="right" id="pag-nav">
+                    <div class="right ajax_pagination" id="pag-nav">
                         <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
                     </div>
                 </div>

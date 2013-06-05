@@ -208,18 +208,23 @@ class MacroMoreAccessViews(grok.View):
 
     def list_files(self, portal_type):
         list_files = []
-        rs = True
-
+        review_state = True
+        try:
+            portal_type = eval(portal_type)
+        except NameError:
+            pass
+        except TypeError:
+            pass
+        
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
-            rs=False
+            review_state = False
 
-        result = ModelsContent().search_catalog_by_access(context=self.context, rs=rs, **query)
+        result = ModelsContent().search_catalog_by_access(context=self.context, rs=review_state, **query)
         return result
 
     def get_url_typeIcone(self, obj):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
-
         if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
             url = base + "icon-pdf.png"
         elif obj.content_type == 'application/msword':
@@ -234,7 +239,7 @@ class MacroMoreAccessViews(grok.View):
         return url
 
 
-class MacroRecentViews(MacroMoreAccessViews):
+class MacroRecentView(MacroMoreAccessViews):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro_recent_content')
