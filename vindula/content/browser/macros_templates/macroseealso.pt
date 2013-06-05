@@ -1,4 +1,5 @@
-<metal:view_macro define-macro="view">
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-see_also-content');">
 
     <div class="row" id="tile-see-also">
         <div class="columns small-12">
@@ -8,8 +9,7 @@
         </div>
 
         <metal:view_macro define-macro="portlet"
-                          tal:define="view_macro python:context.restrictedTraverse('macro-see_also-content');">
-
+                          tal:define="view_macro nocall:view_macro|python:context.restrictedTraverse('macro-see_also-content');">
             <div id="_portlet_seealso">
                 <tal:rep repeat="item view_macro/getItens">
                     <div class="columns large-12" tal:define="obj item/content/getObject">
@@ -26,9 +26,7 @@
                     </div>
                 </tal:rep>
             </div>
-
         </metal:view_macro>
-
     </div>
 
 </metal:view_macro>
