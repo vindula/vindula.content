@@ -1,11 +1,13 @@
 function executaAjax(ctx, b_start, b_size, sort_on){
 	var url = ctx.find('input#absolute_url').val(),
 		theme = ctx.find('input#theme').val(),
-        structures = ctx.find('input#structures').val()
+        structures = ctx.find('input#structures').val(),
         portal_type = ctx.find('input#portal_type').val(),
         fields = ctx.find('input#fields').val(),
         title_box = ctx.find('input#title_box').val(),
-		params = {};
+        services = ctx.find('input#services').val(),
+		params = {},
+        ctx_id = "#"+ctx.attr('id');
 
 
 	if (b_start==null)
@@ -20,34 +22,50 @@ function executaAjax(ctx, b_start, b_size, sort_on){
 	params['b_size'] = b_size;
 	params['b_start'] = b_start;
 	params['theme'] = theme;
+    params['services'] = services;
     params['structures'] = structures;
 	params['sort_on'] = sort_on
     params['title_box'] = title_box;
     params['portal_type'] = portal_type
     params['fields'] = fields
+    params['absolute_url'] = url
 
 	ctx.find('#spinner').removeClass('display-none');
 	ctx.find('div.see_also_news').addClass('display-none');
 
     $j.ajax({
-    	  url: url,
-    	  data: params,
-    	  dataType: 'GET',
-    	  success: function(data){
-    			var dom = $j(data);
-                dom.filter('script').each(function(){
-                    var content_script = this.text || this.textContent || this.innerHTML || ''
-                    if (content_script)
-                        $j.eval(content_script);
-                    else
-                        $j.get(this.src, function(data){
-                            $j.eval(data);
-                        })
-                });
-    			var content = dom.filter('div#list_file').contents();
-    	        ctx.html(content);
-    	    },
-    	});
+        url: url,
+        data: params,
+        dataType: 'GET',
+        success: function(data){
+            var dom = $j(data);
+            
+            /*
+            dom.filter('script').each(function(){
+                var content_script = this.text || this.textContent || this.innerHTML || ''
+                if (content_script)
+                    $j.eval(content_script);
+                else
+                    $j.get(this.src, function(data){
+                        $j.eval(data);
+                    })
+            });
+            */
+            
+            // Feito assim pois tem fez que o dom retorna com o FIND e tem vez que retorna com o FILTER
+            var content = dom.find(ctx_id+' .container').contents();
+            if (content.length)
+                var paginator = dom.find(ctx_id+' .ajax_pagination').contents();
+            else
+            {
+                content = dom.filter(ctx_id).find('.container').contents();
+                var paginator = dom.filter(ctx_id).find('.ajax_pagination').contents();
+            } 
+            
+            ctx.find('.container').html(content);
+            ctx.find('.ajax_pagination').html(paginator);
+    	}
+    });
 }
 
 

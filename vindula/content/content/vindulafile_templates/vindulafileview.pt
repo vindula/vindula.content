@@ -26,6 +26,8 @@
 		      tal:attributes="src string:${context/portal_url}/++resource++dv.resources/assets/viewer.js"></script>
 		  <script src="/viewer/viewer.js"
 		      tal:attributes="src string:${context/portal_url}/++resource++dv.resources/javascripts/viewer.js"></script>
+          <script type="text/javascript" src=""
+                  tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
           <script tal:attributes="src string:${context/portal_url}/++resource++vindula.content/js/vindula_accordion.js"></script>
 

@@ -6,7 +6,8 @@
         <tal:block tal:condition="python:related">
             <tal:def define="list_itens related;
                              title_box string:Relacionados;
-                             accordion python:True;">
+                             accordion python:True;
+                             absolute_url string:${context/absolute_url}/macro-relateditens-content">
                 <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
             </tal:def>
         </tal:block>
