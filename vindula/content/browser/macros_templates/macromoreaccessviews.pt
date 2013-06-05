@@ -59,7 +59,8 @@
                                                              ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
                                     </div>
                                     <div class="columns small-12">
-                                        <p class="discrete">Formulario / 12000 acessos</p>
+                                        <p class="discrete" 
+                                           tal:content="python:'%s acessos' % view_macro.ger_mount_access(ctx)">12000 acessos</p>
                                     </div>
                                 </div>
                             </div>
