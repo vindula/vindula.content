@@ -5,6 +5,7 @@ from Products.CMFCore.utils import getToolByName
 
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.content.models.content import ModelsContent
+from vindula.content.models.content_access import ModelsContentAccess
 
 from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.myvindula.tools.utils import UtilMyvindula
@@ -241,7 +242,12 @@ class MacroMoreAccessViews(grok.View):
             url = base + "icon-default.png"
 
         return url
-
+    
+    def ger_mount_access(self, obj):
+        result = ModelsContentAccess().getContAccess([obj.UID()])
+        if result:
+            result = result[0].get('count')
+        return result
 
 class MacroRecentView(MacroMoreAccessViews):
     grok.context(Interface)
