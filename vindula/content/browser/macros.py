@@ -209,11 +209,12 @@ class MacroMoreAccessViews(grok.View):
     def list_files(self, portal_type):
         list_files = []
         review_state = True
+        
         try:
             portal_type = eval(portal_type)
-        except NameError:
-            pass
         except TypeError:
+            pass
+        except NameError:
             pass
         
         query = {'portal_type': portal_type}
