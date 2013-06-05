@@ -105,7 +105,7 @@
                     <i class="more-itens vindula-icon-plus-sign"></i>
                     <span class="more-itens">Refinar Pesquisa</span>
                 </a>
-                <input type="text" class="filter right" name="subject" tal:attributes="value subject" />
+                <input type="text" class="filter right" name="subject" placeholder="Palavra-chave" tal:attributes="value subject" />
             </p>
             <div class="content-filter">
                 <form class="form-columns-tag" tal:condition="not_filter|python:True">
