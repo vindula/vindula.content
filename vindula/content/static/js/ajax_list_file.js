@@ -1,7 +1,7 @@
 function executaAjax(ctx, b_start, b_size, sort_on){
 	var url = ctx.find('input#absolute_url').val(),
 		theme = ctx.find('input#theme').val(),
-        structures = ctx.find('input#structures').val()
+        structures = ctx.find('input#structures').val(),
         portal_type = ctx.find('input#portal_type').val(),
         fields = ctx.find('input#fields').val(),
         title_box = ctx.find('input#title_box').val(),
