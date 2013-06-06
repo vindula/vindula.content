@@ -127,6 +127,9 @@ class VindulaNews(ATNewsItem):
             return image.absolute_url() +'/image_tile'
         else:
             return ''
+        
+    def getFormattedStringTags(self):
+        return (' / ').join(self.Subject())
 
 
 
