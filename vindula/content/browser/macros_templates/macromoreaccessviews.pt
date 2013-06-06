@@ -49,7 +49,7 @@
                                         <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
                                     </div>
                                     <div class="columns small-12">
-                                        <a tal:attributes="href string:${ctx/absolute_url}/view"
+                                        <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
                                            tal:content= "ctx/Title"></a>
                                     </div>
                                     <div class="columns small-12">
