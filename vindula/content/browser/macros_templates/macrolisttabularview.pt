@@ -70,12 +70,12 @@
                                 <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
                                     tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
                                     <tal:cond condition="not:field/is_image|nothing">
-                                        <a target="_blank" tal:condition="value_field/url|nothing"
+                                        <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
                                            tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
                                                            title value_field/name|nothing">
                                             <span tal:content="structure value_field/value|nothing"></span>
                                         </a>
-                                        <span tal:condition="not: value_field/url|nothing"
+                                        <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
                                                 tal:content="structure value_field/value|nothing"></span>
     
                                     </tal:cond>
