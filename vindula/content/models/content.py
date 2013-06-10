@@ -38,6 +38,10 @@ class ModelsContent(Storm, BaseStore):
         else:
             return None
 
+    def getContent_by_uid(self,uid):
+        data = self.store.find(ModelsContent, ModelsContent.uid==uid).one()
+        return data
+
 
     def orderBy_access(self,result_query ):
         UIDs = []

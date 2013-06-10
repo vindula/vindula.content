@@ -1,0 +1,7 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-follow-content');">
+
+    <div class="vd_follow" tal:attributes="data_uid UID|context/UID;
+                                           data_type TYPES|context/portal_type"></div>
+
+</metal:view_macro>
