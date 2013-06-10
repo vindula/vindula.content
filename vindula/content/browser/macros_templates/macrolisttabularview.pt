@@ -5,90 +5,91 @@
     <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
 
-    <div class="filterFile list_file" id="list_file">
-
-        <tal:def tal:define="view_macro python:context.restrictedTraverse('macro_tabular_file');
-                             Batch python:modules['Products.CMFPlone'].Batch;
-                             b_size request/b_size|string:10;
-                             b_start python:0;
-                             b_start request/b_start | b_start;
-
-                             portal_type portal_type|request/portal_type|nothing;
-                             fields fields|python:eval(request.fields) or None;
-
-                             subject request/subject|python:'';
-                             keywords request/keywords|request/keywords[]|python:'';
-                             structures request/structures|request/structures[]|python:'';
-
-                             list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
-                             batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
-
-            <input type="hidden" id="b_size" tal:attributes="value b_size" />
-            <input type="hidden" id="b_start" tal:attributes="value b_start" />
-            <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
-            <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
-            <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
-            <meta:macro metal:define-macro="navegacao-macro">
-                <div id="paginacao">
-                    <div id="size-nav" class="left">
-                        <p>
-                            <span tal:content="python:'Total: ('+str(len(list_files))+')'">Total (XX)</span>
-                            |
-                            <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
-                                <a class="c-pointer" id="itenspage" href="#"
-                                   tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
-                                <a class="c-pointer" id="itenspage" href="#"
-                                   tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
-                                <a class="c-pointer" id="itenspage" href="#"
-                                   tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
-                                <a class="c-pointer" id="itenspage" href="#"
-                                   tal:attributes="style python:b_size == '40' and css or '' ">40</a>
-                            </span>
-                        </p>
+    <div class="filterFile list_file" id="tabular_view">
+        <div class="container">
+            <tal:def tal:define="view_macro python:context.restrictedTraverse('macro_tabular_file');
+                                 Batch python:modules['Products.CMFPlone'].Batch;
+                                 b_size request/b_size|string:10;
+                                 b_start python:0;
+                                 b_start request/b_start | b_start;
+    
+                                 portal_type portal_type|request/portal_type|nothing;
+                                 fields fields|python:eval(request.fields) or None;
+    
+                                 subject request/subject|python:'';
+                                 keywords request/keywords|request/keywords[]|python:'';
+                                 structures request/structures|request/structures[]|python:'';
+    
+                                 list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
+                                 batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
+    
+                <input type="hidden" id="b_size" tal:attributes="value b_size" />
+                <input type="hidden" id="b_start" tal:attributes="value b_start" />
+                <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
+                <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
+                <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
+                <meta:macro metal:define-macro="navegacao-macro">
+                    <div id="paginacao">
+                        <div id="size-nav" class="left">
+                            <p>
+                                <span tal:content="python:'Total: ('+str(len(list_files))+')'">Total (XX)</span>
+                                |
+                                <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+                                    <a class="c-pointer" id="itenspage" href="#"
+                                       tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
+                                    <a class="c-pointer" id="itenspage" href="#"
+                                       tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
+                                    <a class="c-pointer" id="itenspage" href="#"
+                                       tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
+                                    <a class="c-pointer" id="itenspage" href="#"
+                                       tal:attributes="style python:b_size == '40' and css or '' ">40</a>
+                                </span>
+                            </p>
+                        </div>
+                        <div id="pag-nav" class="right">
+                            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+                        </div>
                     </div>
-                    <div id="pag-nav" class="right">
-                        <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
-                    </div>
-                </div>
-                <div class="visualClear"></div>
-            </meta:macro>
-            <div class="visualClear"></div>
-            <table class="listing blue-head" width="100%"
-                   tal:define="fields fields|nothing;">
-                <thead>
-                    <tr>
-                        <tal:rep repeat="field fields">
-                             <th tal:attributes="width field/width|nothing" tal:content="field/label"></th>
-                        </tal:rep>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr tal:repeat="item batch">
-                        <tal:rep repeat="field fields"
-                                 define="item_object item/getObject|python: item;">
-
-                            <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
-                                tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
-                                <tal:cond condition="not:field/is_image|nothing">
-                                    <a target="_blank" tal:condition="value_field/url|nothing"
-                                       tal:attributes="href string:${value_field/url}/view;
-                                                       title value_field/name|nothing">
-                                        <span tal:content="structure value_field/value|nothing"></span>
-                                    </a>
-                                    <span tal:condition="not: value_field/url|nothing"
-                                            tal:content="structure value_field/value|nothing"></span>
-
-                                </tal:cond>
-                                <tal:cond condition="field/is_image|nothing">
-                                    <img tal:attributes="src value_field/value" />
-                                </tal:cond>
-                            </td>
-
-                        </tal:rep>
-                    </tr>
-                </tbody>
-             </table>
-             <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
-        </tal:def>
+                    <div class="clear"></div>
+                </meta:macro>
+                <div class="clear"></div>
+                <table class="listing blue-head" width="100%"
+                       tal:define="fields fields|nothing;">
+                    <thead>
+                        <tr>
+                            <tal:rep repeat="field fields">
+                                 <th tal:attributes="width field/width|nothing" tal:content="field/label"></th>
+                            </tal:rep>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr tal:repeat="item batch">
+                            <tal:rep repeat="field fields"
+                                     define="item_object item/getObject|python: item;">
+    
+                                <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
+                                    tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
+                                    <tal:cond condition="not:field/is_image|nothing">
+                                        <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
+                                           tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
+                                                           title value_field/name|nothing">
+                                            <span tal:content="structure value_field/value|nothing"></span>
+                                        </a>
+                                        <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
+                                                tal:content="structure value_field/value|nothing"></span>
+    
+                                    </tal:cond>
+                                    <tal:cond condition="field/is_image|nothing">
+                                        <img tal:attributes="src value_field/value" />
+                                    </tal:cond>
+                                </td>
+    
+                            </tal:rep>
+                        </tr>
+                    </tbody>
+                 </table>
+                 <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />
+            </tal:def>
+        </div>
     </div>
 </metal:view_macro>

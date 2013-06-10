@@ -5,6 +5,7 @@ from Products.CMFCore.utils import getToolByName
 
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.content.models.content import ModelsContent
+from vindula.content.models.content_access import ModelsContentAccess
 
 from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.myvindula.tools.utils import UtilMyvindula
@@ -121,28 +122,31 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
 
     def getValueField(self, item, attr):
+        
         try:
+            #Retorna o valor do metodo passado
             result = getattr(item, attr)()
         except AttributeError:
             return {'value': '',
                     'name': ''}
-
         except TypeError:
+            #Retorna o valor do atributo passado
             result = getattr(item, attr)
-
+        
         try:
             return {'value': result.Title(),
                     'name': result.Title(),
+                    'type': result.portal_type,
                     'url': result.absolute_url(),}
         except AttributeError:
             try:
                 return {'value': result,
                         'name': item.Title(),
+                        'type': item.portal_type,
                         'url': item.absolute_url(),}
             except AttributeError:
                 return {'value': result,
                         'name': result}
-
         except TypeError:
             return {'value': result,
                     'name': result}
@@ -208,18 +212,24 @@ class MacroMoreAccessViews(grok.View):
 
     def list_files(self, portal_type):
         list_files = []
-        rs = True
-
+        review_state = True
+        
+        try:
+            portal_type = eval(portal_type)
+        except TypeError:
+            pass
+        except NameError:
+            pass
+        
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
-            rs=False
+            review_state = False
 
-        result = ModelsContent().search_catalog_by_access(context=self.context, rs=rs, **query)
+        result = ModelsContent().search_catalog_by_access(context=self.context, rs=review_state, **query)
         return result
 
     def get_url_typeIcone(self, obj):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
-
         if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
             url = base + "icon-pdf.png"
         elif obj.content_type == 'application/msword':
@@ -232,9 +242,14 @@ class MacroMoreAccessViews(grok.View):
             url = base + "icon-default.png"
 
         return url
+    
+    def ger_mount_access(self, obj):
+        result = ModelsContentAccess().getContAccess([obj.UID()])
+        if result:
+            result = result[0].get('count')
+        return result
 
-
-class MacroRecentViews(MacroMoreAccessViews):
+class MacroRecentView(MacroMoreAccessViews):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro_recent_content')

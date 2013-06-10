@@ -30,7 +30,7 @@
     
     <div class="right">
         <span class="previous left"
-              tal:define="p batch/previous | nothing"
+              tal:define="p batch/previous|nothing"
               tal:condition="p">
             <div class="pagination" id="cycle-prev" class="left">
                 <input name="prev" type="hidden" tal:attributes="value p/first" />

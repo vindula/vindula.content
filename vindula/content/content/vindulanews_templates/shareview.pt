@@ -3,17 +3,13 @@
 			<div class="opcao1">
 				<h4>Compartilhar</h4>
 				<!-- AddThis Button BEGIN -->
-				<div class="addthis_toolbox addthis_default_style ">
-					<a class="addthis_button_preferred_1"></a>
-					<a class="addthis_button_preferred_2"></a>
-					<a class="addthis_button_preferred_3"></a>
-					<a class="addthis_button_preferred_4"></a>
-					<a class="addthis_button_compact"></a>
-					<a class="addthis_counter addthis_bubble_style"></a>
-				</div>
+				  <div class="vd-social-left">
+                  	 <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
+                  </div>
 				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4ea6f1236e1e6dd4"></script>
 				<!-- AddThis Button END -->
 			</div>
 			<div class="visualClear"></div>
 		</div>
 </metal:macro>
+

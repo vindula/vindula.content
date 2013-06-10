@@ -4,17 +4,19 @@
                               list_itens list_itens|python:view_macro.list_files(portal_type);
                               title_box title_box|request/title_box|nothing;
                               accordion accordion|nothing;
-                              services  services|nothing;
+                              services  services|request/services|nothing;
                               Batch python:modules['Products.CMFPlone'].Batch;
                               b_size b_size|request/b_size|string:4;
                               b_start python:0;
                               b_start request/b_start | b_start;
                               batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
     
-    <div class="list_file row" id="list_file">
+    <div class="list_file row" id="more_access_view">
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
         <input type="hidden" id="title_box" tal:attributes="value title_box" />
+        <input type="hidden" id="portal_type" tal:attributes="value portal_type" />
+        <input type="hidden" id="services" tal:attributes="value services" />
         <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
 
         <div class="row" tal:attributes="class python: accordion and 'accordion' or ''">
@@ -22,10 +24,10 @@
             <!-- TODO: ARRUMAR A PAGINACAO QUANDO ACCORDION
                        ARRUMAR UM PADARO PARA A ALTURA DOS BOXES -->
             <div class="title columns large-12">
-                <div class="right" id="pag-nav">
+                <div class="right ajax_pagination" id="pag-nav">
                     <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
                 </div>
-                <h5>
+                <h4>
                     <tal:cond condition="accordion">
                         <a href="#" tal:content="title_box" />
                     </tal:cond>
@@ -33,10 +35,10 @@
                         <tal:replace tal:content="title_box" />
                     </tal:cond>
                     <hr/>
-                </h5>
+                </h4>
             </div>
             
-            <div class="container">
+            <div class="container clear">
                 <tal:rep repeat="item batch">
                     <tal:cond condition="not:services">
                         <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
@@ -47,7 +49,7 @@
                                         <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
                                     </div>
                                     <div class="columns small-12">
-                                        <a tal:attributes="href string:${ctx/absolute_url}/view"
+                                        <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
                                            tal:content= "ctx/Title"></a>
                                     </div>
                                     <div class="columns small-12">
@@ -57,7 +59,8 @@
                                                              ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
                                     </div>
                                     <div class="columns small-12">
-                                        <p class="discrete">Formulario / 12000 acessos</p>
+                                        <p class="discrete" 
+                                           tal:content="python:'%s acessos' % view_macro.ger_mount_access(ctx)">12000 acessos</p>
                                     </div>
                                 </div>
                             </div>
