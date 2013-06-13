@@ -18,9 +18,9 @@
     
                                  subject request/subject|python:'';
                                  keywords request/keywords|request/keywords[]|python:'';
-                                 structures request/structures|request/structures[]|python:'';
+                                 structures structures|request/structures|request/structures[]|python:'';
     
-                                 list_files python: view_macro.list_files(subject,keywords,structures, portal_type) or [];
+                                 list_files list_files|python:view_macro.list_files(subject,keywords,structures, portal_type) or [];
                                  batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
     
                 <input type="hidden" id="b_size" tal:attributes="value b_size" />

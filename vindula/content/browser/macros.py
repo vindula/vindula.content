@@ -100,9 +100,8 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
         search = Search(self.context,query,rs=False)
         list_files = search.result
-
+        
         if structures and structures != 'null':
-
             if not isinstance(structures,list):
                 structures = [structures]
 
