@@ -10,7 +10,7 @@
                               b_start python:0;
                               b_start request/b_start | b_start;
                               batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
-    
+
     <div class="list_file row" id="more_access_view">
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -37,17 +37,26 @@
                     <hr/>
                 </h4>
             </div>
-            
-            <div class="container clear">
+
+            <div class="clear list-container">
                 <tal:rep repeat="item batch">
                     <tal:cond condition="not:services">
                         <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
-                            <div class="box-more-acess columns small-12"
+                            <div class="box-more-acess"
                                  tal:define="ctx item/content/getObject|nocall:item">
-                                <div class="row">
-                                    <div class="container-image columns small-12">
-                                        <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
-                                    </div>
+
+                                  <div class="container-of-type">
+
+                                      <div class="container-image columns small-12">
+                                          <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                                      </div>
+
+                                      <div class="number-of-type">
+                                        <h6 tal:content="repeat/item/number"></h6>
+                                      </div>
+                                  </div>
+
+
                                     <div class="columns small-12">
                                         <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
                                            tal:content= "ctx/Title"></a>
@@ -59,10 +68,10 @@
                                                              ctx.bobobase_modification_time().strftime('%d/%m/%Y'))" >ASCOM / 27/03/2013 </small>
                                     </div>
                                     <div class="columns small-12">
-                                        <p class="discrete" 
+                                        <p class="discrete"
                                            tal:content="python:'%s acessos' % view_macro.ger_mount_access(ctx)">12000 acessos</p>
                                     </div>
-                                </div>
+
                             </div>
                         </div>
                     </tal:cond>
