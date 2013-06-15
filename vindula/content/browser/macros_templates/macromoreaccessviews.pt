@@ -38,7 +38,7 @@
                 </h4>
             </div>
 
-            <div class="clear list-container">
+            <div class="container clear list-container">
                 <tal:rep repeat="item batch">
                     <tal:cond condition="not:services">
                         <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
@@ -52,7 +52,7 @@
                                       </div>
 
                                       <div class="number-of-type">
-                                        <h6 tal:content="repeat/item/number"></h6>
+                                        <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>
                                       </div>
                                   </div>
 
