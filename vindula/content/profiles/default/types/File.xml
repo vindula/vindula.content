@@ -5,6 +5,8 @@
 
     <!-- Basic metadata -->
 
+    <alias from="view" to="file_view"/>
+
     <property name="immediate_view">file_view</property>
     <property name="default_view">file_view</property>
 
