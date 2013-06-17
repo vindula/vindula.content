@@ -110,6 +110,37 @@ ATBlobSchema += Schema((
             ),
     ),
 
+    BooleanField(
+        name='activ_portletRight',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Portlet Direita'),
+            description=_(u'Se selecionado, ativa a visualização dos portet na coluna da direita.'),
+        ),
+        required=False,
+    ),
+
+    BooleanField(
+        name='activ_portletLeft',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Portlet Esquerda'),
+            description=_(u'Se selecionado, ativa a visualização dos portet na coluna da esquerda.'),
+        ),
+        required=False,
+    ),
+
+    BooleanField(
+        name='activ_portletAccessory',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Portlet Acessório'),
+            description=_(u'Se selecionado, ativa a visualização dos portet na coluna  acessória.'),
+        ),
+        required=False,
+    ),
+
+
 
 ))
 
