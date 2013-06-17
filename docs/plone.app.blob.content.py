@@ -122,7 +122,7 @@ ATBlobSchema += Schema((
 
     BooleanField(
         name='activ_portletLeft',
-        default=True,
+        default=False,
         widget=BooleanWidget(
             label=_(u'Portlet Esquerda'),
             description=_(u'Se selecionado, ativa a visualização dos portet na coluna da esquerda.'),
