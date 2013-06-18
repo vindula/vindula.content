@@ -125,7 +125,7 @@ class MacroListFileView(grok.View):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
         if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
             url = base + "icon-pdf.png"
-        elif obj.content_type == 'application/msword':
+        elif obj.content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']:
             url = base + "icon-word.png"
         elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']:
             url = base + "icon-ppoint.png"
