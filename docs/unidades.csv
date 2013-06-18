@@ -1,0 +1,8 @@
+siglaunidade;titulo;descricao;unidade_pai;unidade_especial;gestor
+ABDC;TESTE;TESTANDO CRIACAO;;0;administrador
+ABDC2;TESTE;TESTANDO CRIACAO;ABDC;0;administrador
+ABDC3;TESTE;TESTANDO CRIACAO;;0;administrador
+ABDC4;TESTE;TESTANDO CRIACAO;ABDC2;0;administrador
+ABDC5;TESTE;TESTANDO CRIACAO;;0;administrador
+ABDC6;TESTE;TESTANDO CRIACAO;;0;administrador
+ABDC7;TESTE;TESTANDO CRIACAO;ABDC3;0;administrador
