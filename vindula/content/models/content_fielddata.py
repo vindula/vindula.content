@@ -6,20 +6,16 @@ from storm.locals import *
 from storm.expr import Desc, Select
 
 
-from vindula.myvindula.models.base import BaseStore
+from vindula.myvindula.models.base import BaseStoreMyvindula
 
 
-class ContentFieldData(Storm, BaseStore):
+class ContentFieldData(Storm, BaseStoreMyvindula):
     __storm_table__ = 'vinapp_content_contentfielddata'
-    
-    
+
+
     id = Int(primary=True)
     value = Unicode()
     field_id = Int()
-    
-    date_created = DateTime()
-    date_modified = DateTime()
-    date_excluded = DateTime()
-    
-    field = ReferenceSet(field_id, "ContentField.id")        
+
+    field = ReferenceSet(field_id, "ContentField.id")
 

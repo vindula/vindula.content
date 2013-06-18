@@ -7,7 +7,12 @@
       i18n:domain="plone">
 
       <metal:block fill-slot="top_slot">
+        <tal:cond tal:condition="not: context/getActiv_portletLeft">
             <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>
+        </tal:cond>
+        <tal:cond tal:condition="not: context/getActiv_portletRight">
+            <tal:dummy tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+        </tal:cond>
       </metal:block>
 
 	  <metal:js fill-slot="javascript_head_slot">
@@ -48,34 +53,36 @@
 	    <metal:main fill-slot="main">
 	        <metal:main-macro define-macro="main"
                               tal:define="size python:here.getObjSize(here);
-                              content_type here/get_content_type|here/Format;">
+                                          active_accessory context/getActiv_portletAccessory;
+                                          content_type here/get_content_type|here/Format;">
 
                 <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
                 <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
                 <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
                                                data_type context/portal_type|nothing" />
                 <div class="row">
-                    <div id="file" class="columns large-9 content-core file">
-                    
+                    <div id="file" class="columns large-9 content-core file"
+                         tal:attributes="class python: not active_accessory and 'columns content-core file large-12' or 'columns large-9 content-core file' ">
+
                         <h5>
                             <tal:rep content="context/Title" />
                             <hr/>
                         </h5>
-                        
+
                         <!-- Social Macros -->
                         <div class="right">
                             <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
                             <div metal:use-macro="context/macro-rating-content/macros/view" />
                         </div>
-                        
+
                         <ul class="container-data">
                             <li>
-                                <tal:creator define="creator_short_form view/creator;" 
+                                <tal:creator define="creator_short_form view/creator;"
                                              condition="creator_short_form">
                                     <tal:name define="creator_long_form string:?author=${creator_short_form};
                                                       creator_is_openid python:'/' in creator_short_form;
                                                       creator_id python:(creator_short_form,  creator_long_form)[creator_is_openid];">
-                                                          
+
                                         <label class="left">Por:</label>
                                         <span class="documentAuthor">
                                             <a href="#" tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}" tal:content="view/authorname" tal:omit-tag="python:view.author() is None">Roland Barthes</a>
@@ -108,7 +115,7 @@
                                  <label class="left">Número:</label>
                                  <span tal:content="context/numero|nothing"></span>
                              </li>
-                             
+
                              <tal:cond condition="context/vigencia">
                                  <li>
                                     <label class="left">Vigencia:</label>
@@ -120,7 +127,7 @@
                                  <span tal:content="context/classificacao|nothing"></span>
                              </li>
                         </ul>
-        
+
                         <div id="DV-container">
                             <div class="DV-loadingDocument">
                                 <span>Loading</span>
@@ -131,21 +138,51 @@
                         </div>
                         <div id="overlay"></div>
                         <script type="text/javascript" tal:content="structure view/javascript"></script>
-        
+
                         <p>
                           <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
                         </p>
-        
+
                         <metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
-        
+
                         <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
-        
+
                         <metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
-        
+
+                        <tal:cond condition="not: active_accessory">
+
+                            <div class="accordion">
+                                <div class="title">
+                                    <h5>
+                                        <a class="" href="#">Últimos Acessos</a>
+                                        <hr/>
+                                    </h5>
+                                </div>
+
+                                <div class="container">
+                                    <metal:block metal:use-macro="context/macro-last_access-content/macros/view" />
+                                </div>
+                            </div>
+
+                            <div class="accordion">
+                                <div class="title">
+                                    <h5>
+                                        <a class="" href="#">Veja Também</a>
+                                        <hr/>
+                                    </h5>
+                                </div>
+
+                                <div class="container">
+                                    <metal:block metal:use-macro="context/macro-see_also-content/macros/view" />
+                                </div>
+                            </div>
+
+                        </tal:cond>
+
                         <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
                     </div>
-                    
-                    <div class="columns large-3">
+
+                    <div class="columns large-3" tal:condition="active_accessory">
                         <metal:block metal:use-macro="context/macro-last_access-content/macros/view" />
                         <metal:block metal:use-macro="context/macro-see_also-content/macros/view" />
                     </div>
