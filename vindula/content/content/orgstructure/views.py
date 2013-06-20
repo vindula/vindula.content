@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import transaction
 from five import grok
 from zope.interface import Interface
 from vindula.content.content.interfaces import IOrganizationalStructure
@@ -88,3 +89,64 @@ class NewTemplateUnidadeOrgView(grok.View, UtilMyvindula):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('new-unidade-org')
+
+class ImportUnidadeOrgView(grok.View, UtilMyvindula):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('import-unidade-org')
+
+    def importCSV(self):
+        #TODO: Testar com arquivos gerados no windows
+        #TODO: Consertar upload de arquivo e escolha do contexto da importação
+        rows = open('/tmp/unidades.csv','ro').readlines()
+        folder = self.context
+
+        #PARTE GENERICA QUE RETORNA LISTA DE DICTS
+        columns = rows[:1]
+        rows = rows[1:]
+        data = []
+        
+        if columns:
+            columns = columns[0].replace('\n','').split(';')
+
+        for row in rows:
+            row_dict = {}
+            for column in enumerate(columns):
+                row_fields = row.replace('\n','').split(';')
+                row_dict[columns[column[0]]] = row_fields[0]
+
+            data.append(row_dict)
+        #######################################################
+
+        retorno = []
+        for row in data:
+            obj_pai = self.context.portal_catalog({'id':row['unidade_pai'].lower(),
+                                                   'portal_type':'OrganizationalStructure'})
+            if obj_pai:
+                obj_pai = obj_pai[0].getObject().UID()
+                obj_pai = self.context.portal_catalog({'UID':obj_pai})[0].getObject()
+            else:
+                obj_pai = ''
+
+            objeto = {'type_name':'OrganizationalStructure',
+                      'siglaunidade':row['siglaunidade'],
+                      'id':row['siglaunidade'].lower(),
+                      'title': row['titulo'],
+                      'unidadeEspecial': True,
+                      'tipounidade': u'',
+                      'employees':[],
+                      'manager':'administrador'}
+            try:
+                obj = folder.invokeFactory(**objeto)
+                obj = self.context[obj]
+                obj.setStructures(obj_pai)
+                obj.at_post_create_script()
+                transaction.commit()
+                result = '%s: Conteúdo criado com sucesso.<br>' % row['siglaunidade']
+            except:
+                result = '%s: Objeto já existe.<br>' % row['siglaunidade']
+
+            retorno.append(result)
+
+        return ''.join(retorno)
+    
