@@ -9,7 +9,7 @@ from plone.app.layout.viewlets.content import ContentHistoryView
 
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
 from five import grok
@@ -157,6 +157,7 @@ class VindulaWebServeObjectContent(grok.View):
     def render(self):
         self.request.response.setHeader("Content-type","application/json")
         self.request.response.setHeader("charset", "UTF-8")
+        print self.retorno
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
@@ -184,8 +185,12 @@ class VindulaWebServeObjectContent(grok.View):
                 img = context.getImageIcone()
                 image_content = img.replace(self.context.absolute_url(),'')
 
-            status = portal_workflow.getInfoFor(context, 'review_state')
-            content_history = HistoryView.fullHistory()
+            try:
+                status = portal_workflow.getInfoFor(context, 'review_state')
+            except WorkflowException:
+                status = 'no workflow'
+
+            content_history = HistoryView.fullHistory() or []
             L = []
             for history in content_history:
                 tipo = history.get('type','')
@@ -217,14 +222,14 @@ class VindulaWebServeObjectContent(grok.View):
             excludeField = ['title','description']
             typesField = ['string','text']
             extra_details = {}
-            for field in context.Schema().fields():
 
+            for field in context.Schema().fields():
                 if not field.getName() in excludeField and\
                    field.type in typesField and field.accessor:
                    accessor = getattr(context, field.accessor)
 
-                   extra_details[field.getName()] = accessor()
-
+                   if isinstance(accessor(), str) or isinstance(accessor(), unicode):
+                        extra_details[field.getName()] = accessor()
 
             D['extra_details'] = extra_details
 
