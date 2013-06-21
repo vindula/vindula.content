@@ -70,5 +70,22 @@
   <class class="vindula.content.content.vindulaphotoalbum.VindulaPhotoAlbum">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
   </class>
+  
+  
+  <!-- Register the import step -->
+  <genericsetup:importStep
+      name="vindula.content"
+      title="vindula.content special import handlers"
+      description=""
+      handler="vindula.content.setuphandlers.import_various" />
+
+  <!-- Register the upgrade step -->
+  <genericsetup:upgradeStep
+      title="Add catalog indexes"
+      description=""
+      source="0001"
+      destination="2.0a3"
+      handler="vindula.content.setuphandlers.add_catalog_indexes"
+      profile="vindula.content:default" />
 
 </configure>

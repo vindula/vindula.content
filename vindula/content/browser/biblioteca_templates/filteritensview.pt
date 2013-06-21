@@ -11,10 +11,8 @@
     <body>
         <div metal:fill-slot="content-core" class="row">
             <div class="columns large-12">
-                <script type="text/javascript" src=""
-                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
-
-                <div class="container" id="documento">
+                <div class="container" id="documento"
+                     tal:define="view_macro nocall:context/@@list-filter;">
                     
                     <h5>
                         <tal:replace tal:content="request/theme|theme|nothing" />
@@ -22,15 +20,16 @@
                     </h5>
                     <br/>
                     
-                    <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+                    <metal:block metal:use-macro="context/macro_filter_file/macros/filter-selected" />
                     
                     <div id="itens">
                         <tal:def define="portal_type python: ('File',);
+                                         list_files view_macro/getItems;
                                          fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                         {'label': 'Número', 'attribute': 'getNumero'},
                                                         {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
                                                         {'label': 'Título', 'attribute': 'Title'},];">
-                                   <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                            <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                         </tal:def>
                     </div>
                 </div>

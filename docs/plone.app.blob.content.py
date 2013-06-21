@@ -51,8 +51,21 @@ ATBlobSchema += Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             typeview='list',
-            label=_(u"Unidade Organizacional"),
-            description=_(u"Selecione uma Unidade Organizacional."),
+            label=_(u"Unidade Organizacional Elaboradora"),
+            description=_(u"Selecione a Unidade Organizacional Elaboradora do documento."),
+            ),
+        required=False
+    ),
+    
+    ReferenceField('structuresClient',
+        multiValued=1,
+        allowed_types=('OrganizationalStructure',),
+        relationship='structuresClient',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
+            typeview='list',
+            label=_(u"Unidades Organizacionas Cliente"),
+            description=_(u"Selecione as Unidades Organizacionais Cliente do documento ."),
             ),
         required=False
     ),
@@ -83,13 +96,13 @@ ATBlobSchema += Schema((
         widget = CalendarWidget(
             label=u"Vigencia",
             description=u"Vigencia do documento",
-              show_hm = False
+            show_hm = False
         ),
     ),
 
     StringField(
         "classificacao",
-    searchable = True,
+        searchable = True,
         widget = SelectionWidget(
             label=u"Classificação",
             description=u"Selecione a Classificação do documento.",
