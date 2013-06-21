@@ -208,7 +208,6 @@ class MacroFilterView(grok.View):
 
             search = Search(self.context,query)
             result = search.result
-
         return result
         
     #Funcao que retorna o total de itens de cada vador de um determaninado indice
