@@ -2,69 +2,76 @@ function isEmpty(str) {
     return (!str || 0 === str.length);
 };
 
-function executaAjaxFilter($ctx){
-	var url = document.URL, //$j('base').val() + 'biblioteca-view',
-        id = $ctx.attr('id'),
-        themes = [],
-        structures = [],
-		params = {};
-
-   $ctx.find('input.filter[name="theme"]').each(function(){
-        if($j(this).is(':checked')){
-          themes.push(this.value);
-        };
-
-   });
-
-    $ctx.find('.filter[name="structures"]').each(function(){
-        if($j(this).is(':checked')){
-          structures.push(this.value);
-        };
-
-   });
-
-    params['subject'] = $ctx.find('input.filter[name="subject"]').val()
-
-    params['keywords'] = $ctx.find('.filter[name="keywords"]').val()
-
-	params['themes'] = themes;
-
-    if (isEmpty(structures))
-        structures = $ctx.find('.filter[name="structures"]').val()
-
-    params['structures'] = structures;
-
-	$ctx.find('.filterFile #spinner').removeClass('display-none');
-	$ctx.find('div#list_file').addClass('display-none');
-
-    $j.ajax({
-    	  url: url,
-    	  data: params,
-    	  dataType: 'GET',
-    	  success: function(data){
-    			var dom = $j(data),
-                    ctx_id = $ctx.attr('id'),
-        	   	    content = dom.find('div#'+ctx_id+' div#itens'),
-                    url = $j('base').val() + 'table_sorter.js';
-
-                    $j.get(url, function(data){
-                        $j.globalEval(data);
-                    });
-
-                $ctx.find('div#itens').html(content);
-
-                $ctx.find('.filterFile #spinner').addClass('display-none');
-                $ctx.find('div#list_file').removeClass('display-none');
-    	    },
-    	});
-}
-
-
 $j(document).ready(function(){
-
+    var url = document.URL
+    
     $j('.execFilter').live('click',function(){
-        var $conteiner = $j(this).parents('.conteiner');
-        executaAjaxFilter($conteiner);
+        var $data_box = $j(this).parents('.filterFile').nextAll('div'),
+            $container = $data_box.find('.container'),
+            $filter = $j(this).parents('.container-button-group').prev('.content-filter'),
+            url_base = $j('base').attr('href'),
+            url_filter = url_base  + '/searchfilter-view',
+            url_display = $data_box.find('#absolute_url').val(),
+            searchableText = $filter.prev('.title-filter').find('input[name="SearchableTextFilter"]').val(),
+            fields = $data_box.find('input[name="fields"]').val(),
+            form = $filter.find('form'),
+            params = {};
+        
+        // FONTE: http://be.twixt.us/jquery/formSubmission.php
+        $j(form)
+        .find("input:checked, input[type='text'], input[type='hidden'], input[type='password'], option:selected, textarea")
+        .each(function() {
+            var name = this.name || this.parentNode.name || this.id || this.parentNode.id;
+            if ((this.type == 'checkbox' || this.type == 'text' || name.split(':').length == 2) && params[this.name]) {
+                if (params[name] instanceof Array){
+                    params[name].push(this.value);
+                }
+                else{
+                    var old_value =  params[name]
+                    params[name] = new Array();
+                    params[name].push(old_value);
+                    params[name].push(this.value);
+                }
+            }
+            else{
+                params[name] = this.value;
+            }
+        });
+        
+        if (searchableText)
+            params['SearchableText'] = searchableText;
+            
+        
+        $j.ajax({
+            url: url_filter,
+            data: params,
+            type: 'POST',
+            success: function(data){
+                var params_container = {};
+                params_container['list_files'] = data;
+                params_container['fields'] = fields;
+                params_container['type'] = $data_box.find('#type').val();
+                params_container['document-theme'] = params['document-theme'];
+                
+                $j.get(
+                    url_display,
+                    params_container,
+                    function(data){
+                        var $dom = $j(data);
+                        var $contents = $dom.find('.container');
+                        if (!$dom.find('.container').length)
+                            $contents = $dom.filter('.container');
+                        
+                        url_table = $j('base').attr('href') + '/table_sorter.js';
+                        $j.get(url_table, function(data){
+                            $j.globalEval(data);
+                        });
+                        
+                        $container.html($contents.contents());
+                    }
+                );
+            },
+        });
 
     });
     
@@ -72,6 +79,7 @@ $j(document).ready(function(){
         $j(this).parents('.section-biblioteca-accordion').toggleClass('active')
         
         var $icon = $j(this).find('i');
+        
         if($icon.hasClass('vindula-icon-plus-sign')){
             $icon.removeClass('vindula-icon-plus-sign')
             $icon.addClass('vindula-icon-minus');
@@ -83,21 +91,21 @@ $j(document).ready(function(){
         
         return false; 
     });
-    
 
     $j('.clearFilter').live('click',function(){
-        $j('input.filter[type="checkbox"]').each(function(){
-            $j(this).attr('checked', false);
-        });
-
-        $j('input.filter[type="text"]').each(function(){
-            $j(this).attr('value', '');
-        });
-
-        $j('.ui-multiselect-none').each(function(){
-            $j(this).trigger('click');
-        });
-
+        //Limpando todos campos do form
+        $j(':input','.form-columns-tag')
+          .not(':button, :submit, :reset, :hidden')
+          .val('')
+          .removeAttr('checked')
+          .removeAttr('selected');
+          
     });
+    
+     $j('.datepicker').datepicker({
+        showOn: "button",
+        buttonImage: url+"/++resource++vindula.content/images/icon-datepicker.png",
+        buttonImageOnly: true
+     });
 
 });

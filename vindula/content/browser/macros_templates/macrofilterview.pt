@@ -1,17 +1,13 @@
 <metal:view_macro define-macro="view">
-
     <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
 
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
-
                      is_theme is_theme|nothing;
                      is_structures is_structures|nothing;
-
                      themes request/themes[]|python:[];
                      structures request/structures[]|python:[];
-
-                     list_filter python: view_macro.list_filter(is_theme,is_structures) or [];">
+                     list_filter python:view_macro.list_filter(is_theme,is_structures) or [];">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
                 <p class="title-filter">
@@ -24,42 +20,46 @@
                     </a>
                 </p>
                 <div class="content-filter">
-                    <div class="columns-tag">
-                        <tal:rep repeat="item list_filter">
-                            <tal:def define="item_obj item/getObject|item;
-                                             item_id  item_obj/UID|item_obj">
-                                <div tal:condition="is_theme">
-                                  <label tal:attributes="for item_id;">
-                                      <input tal:attributes="value item_id;
-                                                             id item_id;
-                                                             CHECKED python:item_id in themes and 'checked' or '';"
-                                             type="checkbox" class="filter" name="theme" />
-                                      <span class="checkbox">
-                                          <tal:cont content="item_obj/title">title</tal:cont>
-                                      </span>
-
-                                  </label>
-                                </div>
-
-                                <div tal:condition="is_structures">
-                                  <label tal:attributes="for item_id;">
-                                      <input tal:attributes="value item_id;
-                                                             id item_id;
-                                                             CHECKED python:item_id in structures and 'checked' or '';"
-                                             type="checkbox" class="filter" name="structures" />
-                                      <span class="checkbox"></span>
-                                      <tal:cont content="item_obj/title">title</tal:cont>
-                                  </label>
-                                </div>
-                            </tal:def>
-                        </tal:rep>
+                    <div class="content-filter">
+                        <form>
+                            <ul class="small-block-grid-2 large-block-grid-4">
+                                <tal:rep repeat="item list_filter">
+                                    <tal:def define="item_obj item/getObject|item;
+                                                     item_id  item_obj/UID|item_obj">
+                                        <li tal:condition="is_theme">
+                                          <label tal:attributes="for item_id;">
+                                              <input tal:attributes="value item_id;
+                                                                     id item_id;
+                                                                     CHECKED python:item_id in themes and 'checked' or '';"
+                                                     type="checkbox" class="filter" name="document-theme" />
+                                              <span class="checkbox">
+                                                  <tal:cont content="item_obj/title">title</tal:cont>
+                                              </span>
+        
+                                          </label>
+                                        </li>
+        
+                                        <li tal:condition="is_structures">
+                                          <label tal:attributes="for item_id;">
+                                              <input tal:attributes="value item_id;
+                                                                     id item_id;
+                                                                     CHECKED python:item_id in structures and 'checked' or '';"
+                                                     type="checkbox" class="filter" name="structure-owner" />
+                                              <span class="checkbox"></span>
+                                              <tal:cont content="item_obj/title">title</tal:cont>
+                                          </label>
+                                        </li>
+                                    </tal:def>
+                                </tal:rep>
+                            </ul>
+                        </form>
                     </div>
 
                     <div class="container-button-group">
-                        <ul class="button-group">
-                            <li><a class='execFilter tiny button'>Aplicar</a></li>
-                            <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
-                        </ul>
+                        <div class="right">
+                            <a class='clearFilter'>Limpar Filtro</a>
+                            <a class='execFilter tiny button radius'>Aplicar</a>
+                        </div>
                     </div>
                 </div>
             <!-- Spinner -->
@@ -71,32 +71,14 @@
 </metal:view_macro>
 
 <metal:view_macro define-macro="tabular">
-
-    <link rel="stylesheet" href="" type="text/css"
-          tal:attributes="href string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.css">
-    <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.min.js"></script>
-    <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/jquery.multiselect.filter.min.js"></script>
-    <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/i18n/jquery.multiselect.br.js"></script>
-    <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/i18n/jquery.multiselect.filter.br.js"></script>
-    <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/select/select_filter.js"></script>
-
-
     <script type="text/javascript" src=""
-                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
 
-
-     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
-                      subject request/subject|python:'';
-
-                      req_keywords request/keywords|request/keywords[]|python:'';
-                      req_structures request/structures|request/structures[]|python:'';
-
-                      list_filter python: view_macro.tabular_filter();">
+    <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
+                     SearchableTextFilter request/SearchableTextFilter|python:'';
+                     structure_selected view_macro/getStructureSelected|nothing;
+                     portal_types view_macro/getPortalTypes|nothing;
+                     subjects view_macro/getAllSubjects;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -105,38 +87,37 @@
                     <i class="more-itens vindula-icon-plus-sign"></i>
                     <span class="more-itens">Refinar Pesquisa</span>
                 </a>
-                <input type="text" class="filter right" name="subject" placeholder="Palavra-chave" tal:attributes="value subject" />
+                <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
             <div class="content-filter">
-                <form class="form-columns-tag" tal:condition="not_filter|python:True">
-                    <div class="tags left">
-                        <label>
-                            Tipo
-                        </label>
-                        <select name="keywords" id="keywords" class="filter select-filter"
-                                multiple="multiple" tal:define="tags list_filter/tags">
-                            <option tal:repeat="item tags" tal:attributes="value item;
-                                    selected python:item in req_keywords and 'selected' or '';"
-                                    tal:content="item"></option>
-                        </select>
-                    </div>
-                    <div class="structures left">
-                        <label>
-                            Unidade
-                        </label>
-                        <select name="structures" id="structures" class="filter select-filter" multiple="multiple" tal:define="structures list_filter/structures">
-                            <option tal:repeat="item structures" tal:attributes="value item/UID;
-                                    selected python:item.UID in req_structures and 'selected' or '';""
-                                    tal:content="item/Title"></option>
-                        </select>
-                    </div>
+                <form>
+                    <input type="hidden" name="structure-selected" id="structure-selected"
+                           tal:attributes="value structure_selected">
+                           
+                    <input type="hidden" name="portal-types" id="portal-types"
+                           tal:attributes="value portal_types">
+                           
+                    <ul class="small-block-grid-2 large-block-grid-4">
+                        <tal:rep repeat="item subjects">
+                            <li>
+                              <label tal:attributes="for item;">
+                                  <input tal:attributes="value item;
+                                                         id item;"
+                                         type="checkbox" class="filter" name="document-subject" />
+                                  <span class="checkbox">
+                                      <tal:cont content="item">title</tal:cont>
+                                  </span>
+                              </label>
+                            </li>
+                        </tal:rep>
+                    </ul>
                 </form>
             </div>
             <div class="container-button-group">
-                <ul class="button-group external">
-                    <li><a class='execFilter tiny button'>Aplicar</a></li>
-                    <li><a class='clearFilter tiny button'>Limpar Filtro</a></li>
-                </ul>
+                <div class="right">
+                    <a class='clearFilter'>Limpar Filtro</a>
+                    <a class='execFilter tiny button radius'>Aplicar</a>
+                </div>
             </div>
             <!-- Spinner -->
             <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
@@ -146,5 +127,339 @@
     </tal:def>
 </metal:view_macro>
 
+<metal:view_macro define-macro="tabular-library">
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
 
+    <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
+                     SearchableTextFilter request/SearchableTextFilter|python:'';">
 
+        <div class="section-biblioteca-accordion filterFile" id="filter_file">
+            <p class="title-filter hasInput">
+              <!-- tal:condition="not_filter|python:True" -->
+                <a href="#" >
+                    <i class="more-itens vindula-icon-plus-sign"></i>
+                    <span class="more-itens">Refinar Pesquisa</span>
+                </a>
+                <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Título, Resumo, Número ou Revisão" tal:attributes="value SearchableTextFilter" />
+            </p>
+            <div class="content-filter">
+                <form class="form-columns-tag" tal:condition="not_filter|python:True">
+                    <div class="tags left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Tipo
+                                </strong>
+                                <label class="right"
+                                       for="all-document-type">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-document-type"
+                                           name="document-type" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite o tipo" type="text" name="document-type" id="document-type" class="document-type">
+                            
+                            <div tal:define="items python:view_macro.getTopIndex('tipo')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox"
+                                               name="document-type"
+                                               tal:attributes="id item;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                        
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Aprovado entre
+                                </strong>
+                            </div>
+                            
+                            <input name="date-start" type="text" class="datepicker date-start" />
+                            <input name="date-end" type="text" class="datepicker date-end" />
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="middle structures left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    UO elaboradora
+                                </strong>
+                                <label class="right" 
+                                       for="all-structure-owner">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-structure-owner"
+                                           name="structure-owner" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
+                            
+                            <div tal:define="items python:view_macro.getCountFilesByStructure('structures')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item/UID">
+                                        <input type="checkbox"
+                                               name="structure-owner"
+                                               tal:attributes="id item/UID; 
+                                                               value item/UID;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        
+                        </div>
+                        
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    UO cliente
+                                </strong>
+                                <label class="right" 
+                                       for="all-structure-client">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-structure-client"
+                                           name="structure-client" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite a letra inicial" type="text" name="structure-client" id="structure-client" class="structure-client">
+                            
+                            <div tal:define="items python:view_macro.getCountFilesByStructure('structuresClient')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item/UID">
+                                        <input type="checkbox" 
+                                               tal:attributes="id item/UID; 
+                                                               name string:structure-client;
+                                                               value item/UID;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="structures right large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Classificação
+                                </strong>
+                                <label class="right"
+                                       for="all-document-classification">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-document-classification"
+                                           name="document-classification" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <div tal:define="items python:view_macro.getTopIndex('classificacao')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox" 
+                                               tal:attributes="id item; 
+                                                               name string:document-classification;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="container-button-group">
+                <div class="right">
+                    <a class='clearFilter'>Limpar Filtro</a>
+                    <a class='execFilter tiny button radius'>Aplicar</a>
+                </div>
+            </div>
+            <!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
+        </div>
+    </tal:def>
+</metal:view_macro>
+
+<metal:view_macro define-macro="filter-selected">
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
+
+    <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
+                     SearchableTextFilter request/SearchableTextFilter|python:'';">
+
+        <div class="section-biblioteca-accordion filterFile" id="filter_file">
+            <p class="title-filter hasInput">
+              <!-- tal:condition="not_filter|python:True" -->
+                <a href="#" >
+                    <i class="more-itens vindula-icon-plus-sign"></i>
+                    <span class="more-itens">Refinar Pesquisa</span>
+                </a>
+                <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
+            </p>
+            <div class="content-filter">
+                <form class="form-columns-tag" 
+                      tal:condition="not_filter|python:True"
+                      tal:define="theme request/theme|nothing;
+                                  structure request/structures|nothing;">
+                    
+                   
+                    <input type="hidden" tal:attributes="name python:theme and 'document-theme' or 'structure-owner';
+                                                         value python:theme or structure or '';">
+                    
+                    <div class="tags left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Formato
+                                </strong>
+                                <label class="right"
+                                       for="all-document-format">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-document-format"
+                                           name="document-format" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite o formato" type="text" name="document-format" id="document-format" class="document-format">
+                            
+                            <div tal:define="items view_macro/getFormatTypes">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox"
+                                               name="document-format"
+                                               tal:attributes="id item;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="middle structures left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Tipo
+                                </strong>
+                                <label class="right" 
+                                       for="all-document-type">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-document-type"
+                                           name="document-type" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite o tipo" type="text" name="document-type" id="document-type" class="document-type">
+                            
+                            <div tal:define="items python:view_macro.getTopIndex('tipo')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox"
+                                               name="document-type"
+                                               tal:attributes="id item;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="structures right large-4 small-4">
+                        <div class="block-filter"
+                             tal:define="class_filter python:theme and 'structure-owner' or 'document-theme';">
+                                 
+                            <div class="clear label-filter">
+                                <strong class="left"
+                                        tal:content="python:theme and 'Unidade' or 'Tema'">
+                                    Unidade ou Tema
+                                </strong>
+                                <label class="right"
+                                       tal:attributes="for string:all-${class_filter}">
+                                    <input type="checkbox"
+                                           value="all"
+                                           tal:attributes="id string:all-${class_filter};
+                                                          name class_filter;" />
+                                    <span class="custom checkbox"></span>Todos
+                                </label>
+                            </div>
+                            
+                            <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
+                            
+                            <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndex('ThemeNews')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for python:theme and item/UID or item">
+                                        <input type="checkbox"
+                                               tal:attributes="id python:theme and item/UID or item; 
+                                                               value python:theme and item/UID or item;
+                                                               name class_filter;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s (%s)' % (theme and item.Title() or item, items.get(item))"> </tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="container-button-group">
+                <div class="right">
+                    <a class='clearFilter'>Limpar Filtro</a>
+                    <a class='execFilter tiny button radius'>Aplicar</a>
+                </div>
+            </div>
+            <!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
+        </div>
+    </tal:def>
+</metal:view_macro>

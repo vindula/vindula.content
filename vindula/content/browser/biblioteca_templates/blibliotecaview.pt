@@ -9,9 +9,8 @@
         </metal:styleslot>
 
     <body>
-        <div metal:fill-slot="content-core" class="row">
-            <div
-                 metal:define-macro="page-view"
+        <div metal:fill-slot="content-core">
+            <div metal:define-macro="page-view"
                  tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
 
                 <script type="text/javascript" src=""
@@ -34,16 +33,14 @@
                         </h5>
                         <div class="content" data-section-content>
                             <!-- ABA Tema -->
-                            <div class="conteiner" id="theme">
+                            <div id="theme">
                                 <tal:def tal:define="is_theme python:True">
                                     <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                                 </tal:def>
 
-                                <div id="itens">
-                                    <tal:rep repeat="theme view_macro/getThemes">
-                                        <metal:block metal:use-macro="context/macro_list_file/macros/view" />
-                                    </tal:rep>
-                                </div>
+                                <tal:def define="theme view_macro/getThemes">
+                                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                                </tal:def>
                             </div>
                         </div>
                     </section>
@@ -53,16 +50,14 @@
                         </h5>
                         <div class="content" data-section-content>
                             <!-- ABA Unidade -->
-                            <div class="conteiner" id="structures">
+                            <div id="structures">
                                 <tal:def define="is_structures python:True">
                                     <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                                 </tal:def>
 
-                                <div id="itens">
-                                    <tal:rep repeat="structures view_macro/getStructures">
-                                        <metal:block metal:use-macro="context/macro_list_file/macros/view" />
-                                    </tal:rep>
-                                </div>
+                                <tal:def define="structures view_macro/getStructures">
+                                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                                </tal:def>
                             </div>
                         </div>
                     </section>
@@ -73,7 +68,7 @@
                         <div class="content">
                             <!-- ABA Documento -->
                             <div class="conteiner" id="documento">
-                                <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+                                <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
 
                                 <div id="itens">
                                     <tal:def define="portal_type python: ('File',);
@@ -81,7 +76,7 @@
                                                                     {'label': 'Número', 'attribute': 'getNumero'},
                                                                     {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
                                                                     {'label': 'Título', 'attribute': 'Title'},];">
-                                               <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                                        <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                                     </tal:def>
                                 </div>
                             </div>

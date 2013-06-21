@@ -6,6 +6,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         fields = ctx.find('input#fields').val(),
         title_box = ctx.find('input#title_box').val(),
         services = ctx.find('input#services').val(),
+        list_files = ctx.find('input#list_files').val(),
 		params = {},
         ctx_id = "#"+ctx.attr('id');
 
@@ -29,6 +30,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     params['portal_type'] = portal_type
     params['fields'] = fields
     params['absolute_url'] = url
+    params['list_files'] = list_files
 
 	ctx.find('#spinner').removeClass('display-none');
 	ctx.find('div.see_also_news').addClass('display-none');
@@ -36,7 +38,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     $j.ajax({
         url: url,
         data: params,
-        dataType: 'GET',
+        dataType: 'POST',
         success: function(data){
             var dom = $j(data);
             

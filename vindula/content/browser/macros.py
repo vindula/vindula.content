@@ -9,8 +9,16 @@ from vindula.content.models.content_access import ModelsContentAccess
 
 from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.myvindula.tools.utils import UtilMyvindula
+from plone.app.uuid.utils import uuidToObject
 
 from datetime import datetime
+
+from collections import OrderedDict
+
+PDF = ['application/pdf', 'application/x-pdf', 'image/pdf']
+DOC = ['application/msword']
+PPT = ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']
+EXCEL = ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']
 
 class Search(object):
 
@@ -22,13 +30,11 @@ class Search(object):
             query.update({'review_state': ['published', 'internally_published', 'external']})
 
         query.update({'path': {'query':'/'.join(path)},
-                     'sort_on':'created',
-                     'sort_order':'descending',
+                      'sort_on':'created',
+                      'sort_order':'descending',
                      })
 
         self.result = portal_catalog(**query)
-
-
 
 
 class MacroPropertiesView(grok.View, UtilMyvindula):
@@ -76,7 +82,18 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     grok.require('zope2.View')
 
     def list_files(self, subject, keywords, structures, portal_type):
-
+        if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
+            uids = self.request.get('list_files[]', self.request.get('list_files'))
+            if uids:
+                try:
+                    if isinstance(uids, str):
+                        uids = eval(uids)
+                    return [uuidToObject(uuid) for uuid in uids]
+                except SyntaxError:
+                    return [uuidToObject(uids)]
+            else:
+                return []
+        
         if 'Pessoas' in portal_type:
             itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
 
@@ -88,6 +105,8 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     def busca_catalog(self, subject, keywords, structures, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
+        review_state = True
+
         if isinstance(portal_type, str):
             portal_type = eval(portal_type)
         query = {'portal_type': portal_type}
@@ -97,8 +116,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
         if keywords and keywords != 'null':
             query['Subject'] = keywords
-
-        search = Search(self.context,query,rs=False)
+            
+        if 'File' in portal_type:
+            review_state = False
+            
+        search = Search(self.context,query,rs=review_state)
         list_files = search.result
         
         if structures and structures != 'null':
@@ -121,7 +143,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
 
     def getValueField(self, item, attr):
-        
         try:
             #Retorna o valor do metodo passado
             result = getattr(item, attr)()
@@ -149,8 +170,21 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         except TypeError:
             return {'value': result,
                     'name': result}
+    
+    def getUIDS(self, obj_list):
+        try:
+            obj_list.count
+            if not isinstance(obj_list, list): obj_list = [obj_list]
+        except AttributeError:
+             pass
 
-
+        try:
+            return [i.UID() for i in obj_list]
+        except TypeError:
+            return [i.UID for i in obj_list]
+        except AttributeError:
+            return obj_list
+        
 class MacroFilterView(grok.View):
     grok.context(Interface)
     grok.name('macro_filter_file')
@@ -158,11 +192,12 @@ class MacroFilterView(grok.View):
 
     def __init__(self, context, request):
         super(MacroFilterView,self).__init__(context, request)
+        self.catalog_tool = getToolByName(self.context, 'portal_catalog')
+        self.reference_tool = getToolByName(self.context, 'reference_catalog')
         self.request = request
         self.context = context
         self.pc = getToolByName(context, 'portal_catalog')
-
-
+    
     def list_filter(self, is_theme,is_structures):
         result = []
         if is_theme:
@@ -175,16 +210,99 @@ class MacroFilterView(grok.View):
             result = search.result
 
         return result
+        
+    #Funcao que retorna o total de itens de cada vador de um determaninado indice
+    def getTopIndex(self, index, qtd=5, only=[]):
+        stats = {}
+        index = self.catalog_tool._catalog.indexes[index]
 
-    def tabular_filter(self, ):
-
-        search = Search(self.context,{'portal_type':('OrganizationalStructure',)})
-
-        return {'tags': self.pc.uniqueValuesFor("Subject"),
-                'structures' :search.result}
-
-
-
+        for key in index.uniqueValues():
+            if key and (not only or str(key) in only):
+                t = index._index.get(key)
+                if type(t) is not int:
+                    stats[str(key)] = len(t)
+                else:
+                    stats[str(key)] = 1
+        
+        od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
+        items = od.items()
+        items.reverse()
+        return OrderedDict(items[:qtd])
+    
+    #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
+    def getCountFilesByStructure(self, relationship, qtd=5):
+        query = {}
+        query['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 99}
+        query['portal_type'] = ('OrganizationalStructure',)
+        query['review_state'] = ['published', 'internally_published', 'external']
+        structures = self.catalog_tool(**query)
+        result_structures = {}
+        for structure in structures:
+            structure = structure.getObject()
+            count_file = 0
+            refs = self.reference_tool.getBackReferences(structure, relationship)
+            for ref in refs:
+                ref = ref.getSourceObject()
+                if ref.portal_type == 'File':
+                    count_file += 1
+            if count_file:
+                result_structures[structure] = count_file
+        
+        od = OrderedDict(sorted(result_structures.items(), key=lambda t: t[1]))
+        items = od.items()
+        items.reverse()
+        return OrderedDict(items[:qtd])
+    
+    def getFormatTypes(self):
+        content_types = self.getTopIndex('content_type', only=PDF+DOC+PPT+EXCEL)
+        checkbox = {}
+        for index in content_types.keys():
+            if index in PDF:
+                checkbox['PDF'] = content_types.get(index)
+            elif index in DOC:
+                checkbox['DOC'] = content_types.get(index)
+            elif index in PPT:
+                checkbox['PPT'] = content_types.get(index)
+            elif index in EXCEL:
+                checkbox['EXCEL'] = content_types.get(index)
+        return checkbox
+    
+    def getStructureSelected(self):
+        context = self.context
+        try:
+            structure = context.getStructure()
+            if structure:
+                return structure.UID()
+            else:
+                return self.getSuperStructure(context)
+        except AttributeError:
+            return None
+            
+    def getSuperStructure(self, context):
+        if context.portal_type == 'OrganizationalStructure':
+            return context
+        if context.portal_type == 'Plone Site':
+            return None
+        else:
+            return self.getSuperStructure(context.aq_parent)
+        
+    def getPortalTypes(self):
+        context = self.context
+        types = ['File',]
+        if context.portal_type == 'ServicosFolder':
+            types = ['Servico']
+        try:
+            types = context.getObject_type()
+            if isinstance(types, str):
+                types = [types]
+        except AttributeError:
+            return types
+        
+        return types
+    
+    def getAllSubjects(self):
+        return self.pc.uniqueValuesFor("Subject")
+        
 
 class MacroCommentsView(grok.View):
     grok.context(Interface)
