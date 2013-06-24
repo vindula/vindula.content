@@ -89,7 +89,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     if isinstance(uids, str):
                         uids = eval(uids)
                     return [uuidToObject(uuid) for uuid in uids]
-                except SyntaxError:
+                except (SyntaxError, NameError):
                     return [uuidToObject(uids)]
             else:
                 return []
