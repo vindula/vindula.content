@@ -3,7 +3,7 @@
     <!-- Adiciona o javascript de filtro -->
     <tal:cond condition="not:request/filter-file-js|nothing">
         <script type="text/javascript" src=""
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+            tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     
@@ -79,7 +79,7 @@
     <!-- Adiciona o javascript de filtro -->
     <tal:cond condition="not:request/filter-file-js|nothing">
         <script type="text/javascript" src=""
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+            tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
@@ -137,20 +137,20 @@
 
 <metal:view_macro define-macro="tabular-library">
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
     <link rel="stylesheet" href="" type="text/css"
-        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
     <link rel="stylesheet" href="" type="text/css"
-        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
 
     <!-- Adiciona o javascript de filtro -->
     <tal:cond condition="not:request/filter-file-js|nothing">
         <script type="text/javascript" src=""
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+            tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
@@ -325,20 +325,20 @@
 
 <metal:view_macro define-macro="filter-selected">
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
     <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
+        tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
     <link rel="stylesheet" href="" type="text/css"
-        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
     <link rel="stylesheet" href="" type="text/css"
-        tal:attributes="href string:${context/absolute_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
     
     <!-- Adiciona o javascript de filtro -->
     <tal:cond condition="not:request/filter-file-js">
         <script type="text/javascript" src=""
-            tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+            tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     
