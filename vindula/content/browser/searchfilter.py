@@ -29,7 +29,7 @@ class SearchFileterView(grok.View):
     def update(self):
         context = self.context
         form = self.request.form
-        
+        self.portal = context.portal_url.getPortalObject()
         self.catalog_tool = getToolByName(context, 'portal_catalog')
         self.reference_tool = getToolByName(context, 'reference_catalog')
         self.all_structures = []
@@ -38,7 +38,7 @@ class SearchFileterView(grok.View):
         references = {}
         self.result = []
         
-        query['path'] = {'query':'/'.join(context.getPhysicalPath()), 'depth': 99}
+        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
         query['portal_type'] = ['File',]
         start = False
         end = False
@@ -111,7 +111,8 @@ class SearchFileterView(grok.View):
         
         if not 'File' in query.get('portal_type'):
             query['review_state'] = ['published', 'internally_published', 'external']
-            
+        
+        
         files = self.catalog_tool(**query)
         files = [i.UID for i in files]
         if query.get('tipo') or \
@@ -148,8 +149,7 @@ class SearchFileterView(grok.View):
         return
     
     def getAllStructures(self):
-        portal = self.context.portal_url.getPortalObject()
-        structures = self.catalog_tool({'path': {'query':'/'.join(portal.getPhysicalPath()), 'depth': 99},
+        structures = self.catalog_tool({'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99},
                                         'portal_type': ('OrganizationalStructure',),
                                         })
         if structures:
