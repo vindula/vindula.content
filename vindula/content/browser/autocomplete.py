@@ -28,6 +28,7 @@ class AutocompleteView(grok.View):
         form = self.request.form
         self.catalog_tool = getToolByName(self.context, 'portal_catalog')
         self.reference_tool = getToolByName(self.context, 'reference_catalog')
+        self.portal = self.context.portal_url.getPortalObject()
         action = form.get('action', None)
         term = form.get('term', None)
         self.result = [] # zero a variavel com os resultados
@@ -40,9 +41,9 @@ class AutocompleteView(grok.View):
                         self.result.append({'id':tipo,
                                              'name': '%s (%s)' % (tipo,tipos.get(tipo)) })
             elif action == 'structure-owner':
-                self.result = self.getStructuresAndCountFile(self.context, 'structures')
+                self.result = self.getStructuresAndCountFile(self.portal, 'structures')
             elif action =='structure-client':
-                self.result = self.getStructuresAndCountFile(self.context, 'structuresClient')
+                self.result = self.getStructuresAndCountFile(self.portal, 'structuresClient')
             elif action == 'document-format':
                 tipos = self.getFormatTypes()
                 for tipo in tipos.keys():
