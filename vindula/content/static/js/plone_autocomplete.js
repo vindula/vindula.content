@@ -1,5 +1,5 @@
 $j(document).ready(function() {
-    var url = $j('base').attr('href')+'autocomplete-view'
+    var url = $j('base').attr('href')+'/autocomplete-view'
     
     createInputToken(url,$j(".document-type"),'Digite o tipo');
     createInputToken(url,$j(".structure-owner"),'Digite a letra inicial');
