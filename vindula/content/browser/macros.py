@@ -73,7 +73,6 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                       # 'action':  history.get('transition_title',''),
                       # 'type': tipo,
                       'date':date,})
-
         return L
 
 class MacroListtabularView(grok.View, UtilMyvindula):
@@ -194,6 +193,7 @@ class MacroFilterView(grok.View):
         super(MacroFilterView,self).__init__(context, request)
         self.catalog_tool = getToolByName(self.context, 'portal_catalog')
         self.reference_tool = getToolByName(self.context, 'reference_catalog')
+        self.portal = self.context.portal_url.getPortalObject()
         self.request = request
         self.context = context
         self.pc = getToolByName(context, 'portal_catalog')
@@ -231,7 +231,7 @@ class MacroFilterView(grok.View):
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
         query = {}
-        query['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 99}
+        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
         query['portal_type'] = ('OrganizationalStructure',)
         query['review_state'] = ['published', 'internally_published', 'external']
         structures = self.catalog_tool(**query)
