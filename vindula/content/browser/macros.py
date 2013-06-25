@@ -370,6 +370,11 @@ class MacroRecentView(MacroMoreAccessViews):
     grok.require('zope2.View')
     grok.name('macro_recent_content')
 
+
+    def contaTitulo(self, titulo):
+	return len(titulo())
+
+
     def list_files(self, portal_type):
         list_files = []
 
