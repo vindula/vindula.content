@@ -40,7 +40,7 @@ class ModelsContentAccess(Storm, BaseStore):
         sql ='SELECT vc.hash,count(vc.hash) as contagem\
               FROM vinapp_social_access va, vinapp_social_content vc\
               where va.content_id = vc.id\
-              and vc.uid in %s group by hash order by contagem' %(itens)
+              and vc.uid in %s group by vc.hash order by contagem' %(itens)
 
         data = self.store.execute(sql)
         if data.rowcount != 0:
