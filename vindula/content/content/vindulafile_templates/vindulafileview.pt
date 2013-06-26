@@ -83,7 +83,7 @@
                                                       creator_is_openid python:'/' in creator_short_form;
                                                       creator_id python:(creator_short_form,  creator_long_form)[creator_is_openid];">
 
-                                        <label class="left">Por:</label>
+                                        <label class="alinhamento">Por:</label>
                                         <span class="documentAuthor">
                                             <a href="#" tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}" tal:content="view/authorname" tal:omit-tag="python:view.author() is None">Roland Barthes</a>
                                         </span>
@@ -97,33 +97,33 @@
                              </li>
                              <li>
                                  <tal:cond condition="context/getStructures">
-                                     <label class="left">Unidade:</label>
+                                     <label class="alinhamento">Unidade:</label>
                                      <span tal:content="python: context.getStructures().Title()"></span>
                                  </tal:cond>
                              </li>
                              <li>
                                  <tal:def define="themes context/getRawThemesNews">
-                                    <label class="left">Temas:</label>
+                                    <label class="alinhamento">Temas:</label>
                                     <span tal:repeat="item themes" tal:content="item" />
                                  </tal:def>
                              </li>
                              <li>
-                                 <label class="left">Tipo:</label>
+                                 <label class="alinhamento">Tipo:</label>
                                  <span tal:content="context/tipo|nothing"></span>
                              </li>
                              <li>
-                                 <label class="left">Número:</label>
+                                 <label class="alinhamento">Número:</label>
                                  <span tal:content="context/numero|nothing"></span>
                              </li>
 
                              <tal:cond condition="context/vigencia">
                                  <li>
-                                    <label class="left">Vigencia:</label>
+                                    <label class="alinhamento">Vigencia:</label>
                                     <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y / %H:%m')"></span>
                                 </li>
                              </tal:cond>
                              <li>
-                                 <label class="left">Classificação:</label>
+                                 <label class="alinhamento">Classificação:</label>
                                  <span tal:content="context/classificacao|nothing"></span>
                              </li>
                         </ul>
