@@ -153,6 +153,16 @@ ATBlobSchema += Schema((
         required=False,
     ),
 
+     BooleanField(
+        name='activ_download',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Download do Arquivo?'),
+            description=_(u'Caso selecionado, permite que seja feito download do arquivo.'),
+        ),
+        required=False,
+    ),
+
 
 
 ))

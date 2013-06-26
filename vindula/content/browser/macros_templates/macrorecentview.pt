@@ -50,8 +50,15 @@
                         </div>
 
                         <div class="columns small-12">
-                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
-                               tal:content= "ctx/Title"></a>
+				<tal:menosletras condition="python: view_macro.contaTitulo(ctx.Title) < 35">
+	                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+	                               tal:content= "ctx/Title" />
+				</tal:menosletras>
+                          	<tal:maisletras condition="python: view_macro.contaTitulo(ctx.Title) > 35">
+				  <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                               		tal:content= "python: ctx.Title()[:35] + '...' " />
+				</tal:maisletras>
+			    
                         </div>
                         <div class="columns small-12">
 
@@ -61,9 +68,19 @@
                                                 ctx.bobobase_modification_time().strftime('%d/%m/%Y'))">ASCOM / 27/03/2013 </small>
                         </div>
                         <div class="columns small-12">
-                            <p class="discrete"
-                               tal:content="python:'%s acessos' % view_macro.ger_mount_access(ctx)">12000 acessos</p>
-                        </div>
+                            <p class="discrete">
+			       <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
+					Acesse agora!
+			       </tal:semacesso>
+			       <tal:comacesso condition="python: view_macro.ger_mount_access(ctx)">	
+	                               <span tal:replace="python:'%s acessos' % view_macro.ger_mount_access(ctx)" />
+			       </tal:comacesso>
+
+			    </p>
+                        
+
+
+			</div>
                     </div>
                 </div>
             </tal:rep>
