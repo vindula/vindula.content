@@ -18,11 +18,11 @@
                 <tal:rep repeat="item items">
                     <div class="columns large-12" tal:define="obj item/content/getObject">
                         <div class="tile-item row">
-                            <div class="columns small-3 image-box " id="image_tile">
+                            <div class="columns small-2 image-box " id="image_tile">
                                 <img width="30" height="30" src="++theme++vindula.themedefault/images/demos/demo1-th.png"
                                      tal:attributes="src python: view_macro.getImagem(obj)" />
                             </div>
-                            <div class="columns small-9 data-box">
+                            <div class="columns small-10 data-box">
                                 <a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                                                     tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
                             </div>
