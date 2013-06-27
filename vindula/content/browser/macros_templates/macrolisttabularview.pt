@@ -71,7 +71,8 @@
                                          define="item_object item/getObject|python: item;">
         
                                     <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
-                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';">
+                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';
+                                                        width field/width|nothing;">
                                         <tal:cond condition="not:field/is_image|nothing">
                                             <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
                                                tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
