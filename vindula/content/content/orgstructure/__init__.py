@@ -225,8 +225,8 @@ class OrganizationalStructure(ATFolder):
             return image.absolute_url() +'/image_tile'
         else:
             return ''
-
-
-
+        
+    def getSiglaOrTitle(self):
+        return self.getSiglaunidade() or self.Title()
 
 registerType(OrganizationalStructure, PROJECTNAME)
