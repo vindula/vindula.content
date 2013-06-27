@@ -42,7 +42,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         widget=VindulaReferenceSelectionWidget(
             #default_search_index='SearchableText',
             label=_(u"Imagem "),
-            description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')),
+            description='Será exibido na listagem de notícias e na própria notícia. A imagem será redimensionada para um tamanho adequado.')
+    ),
 
     BooleanField(
         name='activ_image',
@@ -53,6 +54,20 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         ),
         required=False,
     ),
+
+    ReferenceField('structures',
+        multiValued=0,
+        allowed_types=('OrganizationalStructure',),
+        relationship='structures',
+        widget=VindulaReferenceSelectionWidget(
+            #default_search_index='SearchableText',
+            typeview='list',
+            label=_(u"Unidade Organizacional"),
+            description=_(u"Selecione a Unidade Organizacional da página."),
+            ),
+        required=False
+    ),
+
 
     BooleanField(
         name='active_author',
@@ -127,7 +142,7 @@ class VindulaNews(ATNewsItem):
             return image.absolute_url() +'/image_tile'
         else:
             return ''
-        
+
     def getFormattedStringTags(self):
         return (' / ').join(self.Subject())
 
