@@ -25,4 +25,14 @@ OSInf_schema =  Schema((
         schemata = 'Informações'
     ),
 
+    StringField(
+        name = 'phone_alternative',
+        widget=StringWidget(
+            label= 'Telefone Alternativo da Unidade',
+            description= 'Digite o telefone alternativo de contato.',
+        ),
+        schemata = 'Informações'
+    ),
+
+
 ))

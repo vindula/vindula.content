@@ -14,6 +14,7 @@ from AccessControl import ClassSecurityInfo
 
 from zope.app.component.hooks import getSite
 
+from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
@@ -225,8 +226,27 @@ class OrganizationalStructure(ATFolder):
             return image.absolute_url() +'/image_tile'
         else:
             return ''
-        
+
     def getSiglaOrTitle(self):
         return self.getSiglaunidade() or self.Title()
+
+    def getSigla_and_Title(self):
+        text = '%s <br/> %s' %(self.getSiglaOrTitle(),
+                                self.Title())
+        return text
+
+
+    def getContatoInfo(self):
+        text = '%s <br/> %s <br/> %s' %(self.getEmail(),
+                                        self.getPhone_number(),
+                                        self.getPhone_alternative())
+        return text
+
+    def getGestorInfo(self):
+        user_obj =  FuncDetails(username=unicode(self.getManager(),'utf-8'))
+        text = "%s <br/> %s " %(user_obj.get('name',self.getManager()),
+                                user_obj.get('position',''))
+
+        return text
 
 registerType(OrganizationalStructure, PROJECTNAME)
