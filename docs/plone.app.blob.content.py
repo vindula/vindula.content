@@ -268,19 +268,16 @@ class ATBlob(ATCTFileContent, ImageMixin):
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
 
-
-
-    field = self.getPrimaryField()
+        field = self.getPrimaryField()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
         elif field.getContentType(self) in ATFile.inlineMimetypes:
-
-        if self.activ_download:
+            if self.activ_download:
                 return field.index_html(self, REQUEST, RESPONSE)
-        else:
-        url = self.aq_parent.absolute_url()
-        UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
-        self.REQUEST.RESPONSE.redirect(url)
+            else:
+                url = self.aq_parent.absolute_url()
+                UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+                self.REQUEST.RESPONSE.redirect(url)
         else:
             if self.activ_download:
                 return field.download(self, REQUEST, RESPONSE)
@@ -288,9 +285,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
                 url = self.aq_parent.absolute_url()
                 UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
                 self.REQUEST.RESPONSE.redirect(url)
-
-
-    # helper & explicit accessor and mutator methods
 
     security.declarePrivate('getBlobWrapper')
     def getBlobWrapper(self):
@@ -326,7 +320,7 @@ class ATBlob(ATCTFileContent, ImageMixin):
             loaded into memory if a suitable transform was found.
             this should probably use `plone.transforms` in the future """
 
-    field = self.getPrimaryField()
+        field = self.getPrimaryField()
         source = field.getContentType(self)
         transforms = getToolByName(self, 'portal_transforms')
         if transforms._findPath(source, mimetype) is None:

@@ -364,6 +364,18 @@ class MacroMoreAccessViews(grok.View):
         if result:
             result = result[0].get('count')
         return result
+    
+    def getExtension(self, obj):
+        if obj.content_type in PDF:
+            return ".PDF"
+        elif obj.content_type in DOC:
+            return ".DOC"
+        elif obj.content_type in PPT:
+            return ".PPT"
+        elif obj.content_type in EXCEL:
+            return ".XLS"
+
+        return None
 
 class MacroRecentView(MacroMoreAccessViews):
     grok.context(Interface)
