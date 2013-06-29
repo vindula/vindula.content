@@ -92,7 +92,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     return [uuidToObject(uids)]
             else:
                 return []
-        
+
         if 'Pessoas' in portal_type:
             itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
 
@@ -115,13 +115,13 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
         if keywords and keywords != 'null':
             query['Subject'] = keywords
-            
+
         if 'File' in portal_type:
             review_state = False
-            
+
         search = Search(self.context,query,rs=review_state)
         list_files = search.result
-        
+
         if structures and structures != 'null':
             if not isinstance(structures,list):
                 structures = [structures]
@@ -151,7 +151,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         except TypeError:
             #Retorna o valor do atributo passado
             result = getattr(item, attr)
-        
+
         try:
             return {'value': result.Title(),
                     'name': result.Title(),
@@ -169,7 +169,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         except TypeError:
             return {'value': result,
                     'name': result}
-    
+
     def getUIDS(self, obj_list):
         try:
             obj_list.count
@@ -183,7 +183,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             return [i.UID for i in obj_list]
         except AttributeError:
             return obj_list
-        
+
 class MacroFilterView(grok.View):
     grok.context(Interface)
     grok.name('macro_filter_file')
@@ -197,7 +197,7 @@ class MacroFilterView(grok.View):
         self.request = request
         self.context = context
         self.pc = getToolByName(context, 'portal_catalog')
-    
+
     def list_filter(self, is_theme,is_structures):
         result = []
         if is_theme:
@@ -209,7 +209,7 @@ class MacroFilterView(grok.View):
             search = Search(self.context,query)
             result = search.result
         return result
-        
+
     #Funcao que retorna o total de itens de cada vador de um determaninado indice
     def getTopIndex(self, index, qtd=5, only=[]):
         stats = {}
@@ -222,12 +222,12 @@ class MacroFilterView(grok.View):
                     stats[str(key)] = len(t)
                 else:
                     stats[str(key)] = 1
-        
+
         od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
         items = od.items()
         items.reverse()
         return OrderedDict(items[:qtd])
-    
+
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
         query = {}
@@ -246,12 +246,12 @@ class MacroFilterView(grok.View):
                     count_file += 1
             if count_file:
                 result_structures[structure] = count_file
-        
+
         od = OrderedDict(sorted(result_structures.items(), key=lambda t: t[1]))
         items = od.items()
         items.reverse()
         return OrderedDict(items[:qtd])
-    
+
     def getFormatTypes(self):
         content_types = self.getTopIndex('content_type', only=PDF+DOC+PPT+EXCEL)
         checkbox = {}
@@ -265,7 +265,7 @@ class MacroFilterView(grok.View):
             elif index in EXCEL:
                 checkbox['EXCEL'] = content_types.get(index)
         return checkbox
-    
+
     def getStructureSelected(self):
         context = self.context
         try:
@@ -276,7 +276,7 @@ class MacroFilterView(grok.View):
                 return self.getSuperStructure(context)
         except AttributeError:
             return None
-            
+
     def getSuperStructure(self, context):
         if context.portal_type == 'OrganizationalStructure':
             return context
@@ -284,7 +284,7 @@ class MacroFilterView(grok.View):
             return None
         else:
             return self.getSuperStructure(context.aq_parent)
-        
+
     def getPortalTypes(self):
         context = self.context
         types = ['File',]
@@ -296,12 +296,12 @@ class MacroFilterView(grok.View):
                 types = [types]
         except AttributeError:
             return types
-        
+
         return types
-    
+
     def getAllSubjects(self):
         return self.pc.uniqueValuesFor("Subject")
-        
+
 
 class MacroCommentsView(grok.View):
     grok.context(Interface)
@@ -329,14 +329,14 @@ class MacroMoreAccessViews(grok.View):
     def list_files(self, portal_type):
         list_files = []
         review_state = True
-        
+
         try:
             portal_type = eval(portal_type)
         except TypeError:
             pass
         except NameError:
             pass
-        
+
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
             review_state = False
@@ -358,7 +358,7 @@ class MacroMoreAccessViews(grok.View):
             url = base + "icon-default.png"
 
         return url
-    
+
     def ger_mount_access(self, obj):
         result = ModelsContentAccess().getContAccess([obj.UID()])
         if result:

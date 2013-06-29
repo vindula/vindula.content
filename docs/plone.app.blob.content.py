@@ -39,6 +39,8 @@ from vindula.content import MessageFactory as _
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 from vindula.content.models.content_field import ContentField
+from vindula.myvindula.tools.utils import UtilMyvindula
+
 
 ATBlobSchema = ATContentTypeSchema.copy()
 
@@ -56,7 +58,7 @@ ATBlobSchema += Schema((
             ),
         required=False
     ),
-    
+
     ReferenceField('structuresClient',
         multiValued=1,
         allowed_types=('OrganizationalStructure',),
@@ -242,17 +244,51 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return DisplayList(tuple(L))
 
 
+    security.declareProtected(View, 'download')
+    def download(self, REQUEST=None, RESPONSE=None):
+        """Download the file (use default index_html)
+        """
+        if REQUEST is None:
+            REQUEST = self.REQUEST
+        if RESPONSE is None:
+            RESPONSE = REQUEST.RESPONSE
+
+        if self.activ_download:
+            field = self.getPrimaryField()
+            return field.download(self, REQUEST, RESPONSE)
+        else:
+            url = self.aq_parent.absolute_url()
+            UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+            self.REQUEST.RESPONSE.redirect(url)
+
+
+
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
-        field = self.getPrimaryField()
+
+
+
+    field = self.getPrimaryField()
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
         elif field.getContentType(self) in ATFile.inlineMimetypes:
-            return field.index_html(self, REQUEST, RESPONSE)
+
+        if self.activ_download:
+                return field.index_html(self, REQUEST, RESPONSE)
         else:
-            return field.download(self, REQUEST, RESPONSE)
+        url = self.aq_parent.absolute_url()
+        UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+        self.REQUEST.RESPONSE.redirect(url)
+        else:
+            if self.activ_download:
+                return field.download(self, REQUEST, RESPONSE)
+            else:
+                url = self.aq_parent.absolute_url()
+                UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+                self.REQUEST.RESPONSE.redirect(url)
+
 
     # helper & explicit accessor and mutator methods
 
@@ -289,7 +325,8 @@ class ATBlob(ATCTFileContent, ImageMixin):
             `FileField.getIndexable` and rather naive as all data gets
             loaded into memory if a suitable transform was found.
             this should probably use `plone.transforms` in the future """
-        field = self.getPrimaryField()
+
+    field = self.getPrimaryField()
         source = field.getContentType(self)
         transforms = getToolByName(self, 'portal_transforms')
         if transforms._findPath(source, mimetype) is None:
