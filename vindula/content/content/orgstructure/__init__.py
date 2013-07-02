@@ -49,6 +49,18 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSIn
         required=False
     ),
 
+    ReferenceField('units',
+        multiValued=0,
+        allowed_types=('Unit',),
+        relationship='units',
+        widget=VindulaReferenceSelectionWidget(
+            typeview='list',
+            label=_(u"Escolha uma Unidade"),
+            description=_(u"Selecione uma Unidade"),
+            ),
+        required=False
+    ),
+
     BooleanField(
         name='unidadeEspecial',
         default=False,
@@ -90,7 +102,17 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSIn
                 usersOnly=True
                 ),
             required=True,
-            ),
+    ),
+
+    StringField(
+            name='vice_manager',
+            widget = widget.UserAndGroupSelectionWidget(
+                label=_(u"Gestor substituto "),
+                description=_(u"Indique quem é o gestor substituto  dessa Unidade Organizacional."),
+                usersOnly=True
+                ),
+            required=False,
+    ),
 
     TextField(
             name='text',

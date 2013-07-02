@@ -157,7 +157,6 @@ class VindulaWebServeObjectContent(grok.View):
     def render(self):
         self.request.response.setHeader("Content-type","application/json")
         self.request.response.setHeader("charset", "UTF-8")
-        print self.retorno
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
@@ -233,6 +232,56 @@ class VindulaWebServeObjectContent(grok.View):
 
             D['extra_details'] = extra_details
 
+
+        # restore the original context
+        setSecurityManager(old_security_manager)
+
+        self.retorno = D
+
+class VindulaWebServeObjectUser(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-object-user')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def __init__(self, context, request):
+        self.request = request
+        self.context = context
+
+        self.portal_membership = getToolByName(self.context, "portal_membership")
+        self.groups_tool = getToolByName(self, 'portal_groups')
+
+        super(VindulaWebServeObjectUser,self).__init__(context, request)
+
+
+    def checkPermission(self, username):
+        D ={}
+        user_obj = self.portal_membership.getMemberById(username)
+        groups = self.groups_tool.getGroupsByUserId(username)
+
+        D['groups'] = [g.id for g in groups ]
+        D['has_manager'] =  user_obj.has_role('Manager')
+        return D
+
+
+    def update(self):
+        user_admin = self.portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(self.request,user_admin)
+
+        username = self.request.form.get('username','')
+        D = {}
+        D.update(self.checkPermission(username))
 
         # restore the original context
         setSecurityManager(old_security_manager)

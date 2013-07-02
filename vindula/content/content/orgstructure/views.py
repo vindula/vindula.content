@@ -105,7 +105,7 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
         columns = rows[:1]
         rows = rows[1:]
         data = []
-        
+
         if columns:
             columns = columns[0].replace('\n','').split(';')
 
@@ -122,11 +122,21 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
         for row in data:
             obj_pai = self.context.portal_catalog({'id':row['unidade_pai'].lower(),
                                                    'portal_type':'OrganizationalStructure'})
+
+            obj_unidade = self.context.portal_catalog({'id':row['localizacao'].lower(),
+                                                       'portal_type':'Unit'})
+
             if obj_pai:
                 obj_pai = obj_pai[0].getObject().UID()
                 obj_pai = self.context.portal_catalog({'UID':obj_pai})[0].getObject()
             else:
                 obj_pai = ''
+
+            if obj_unidade:
+                obj_unidade = obj_unidade[0].getObject().UID()
+                obj_unidade = self.context.portal_catalog({'UID':obj_unidade})[0].getObject()
+            else:
+                obj_unidade = ''
 
             objeto = {'type_name':'OrganizationalStructure',
                       'siglaunidade':row['siglaunidade'],
@@ -135,11 +145,15 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
                       'unidadeEspecial': True,
                       'tipounidade': u'',
                       'employees':[],
-                      'manager':'administrador'}
+                      'manager':'administrador',
+                      'vice_manager': 'administrador',
+                      }
             try:
                 obj = folder.invokeFactory(**objeto)
                 obj = self.context[obj]
                 obj.setStructures(obj_pai)
+                obj.setUnits(obj_unidade)
+
                 obj.at_post_create_script()
                 transaction.commit()
                 result = '%s: Conteúdo criado com sucesso.<br>' % row['siglaunidade']
@@ -149,4 +163,3 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
             retorno.append(result)
 
         return ''.join(retorno)
-    
