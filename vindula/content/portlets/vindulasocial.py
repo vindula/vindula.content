@@ -32,16 +32,19 @@ class IVindulaSocialPortlet(IPortletDataProvider):
                              description=_(u'Ação do vindula api.'),
                              required=True,
                              default=u'')
-
-
+    
+    remove_title = schema.Bool(title=_(u"Remover título"),
+                            description=_(u"Se ativado remove o título inserido acima."),
+                            default=False)
 
 class Assignment(base.Assignment):
     implements(IVindulaSocialPortlet)
 
-    def __init__(self,title_portlet=u'', action=u''):
+    def __init__(self,title_portlet=u'', action=u'', remove_title=''):
 
         self.title_portlet = title_portlet
         self.action = action
+        self.remove_title = remove_title
 
 
     @property
