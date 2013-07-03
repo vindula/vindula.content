@@ -111,9 +111,9 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
 
         for row in rows:
             row_dict = {}
-            for column in enumerate(columns):
+            for number,column in enumerate(columns):
                 row_fields = row.replace('\n','').split(';')
-                row_dict[columns[column[0]]] = row_fields[0]
+                row_dict[column] = row_fields[number]
 
             data.append(row_dict)
         #######################################################
