@@ -205,9 +205,9 @@ class MacroFilterView(grok.View):
 
         elif is_structures:
             query = {'portal_type':('OrganizationalStructure',)}
-
             search = Search(self.context,query)
             result = search.result
+            
         return result
 
     #Funcao que retorna o total de itens de cada vador de um determaninado indice
