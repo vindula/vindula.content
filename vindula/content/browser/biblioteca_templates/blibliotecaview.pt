@@ -17,12 +17,12 @@
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
                 <tal:def define="portal_type python: ('File',);
-                                 title_box string:MAIS ACESSADOS">
+                                 title_box string:Mais Acessados">
                     <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
                 </tal:def>
 
                 <tal:def define="portal_type python: ('File',);
-                                 title_box string:ITENS RECENTES">
+                                 title_box string:Itens Recentes">
                     <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
                 </tal:def>
 
