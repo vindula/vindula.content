@@ -147,7 +147,7 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
                       'employees':[],
                       'manager':'administrador',
                       'vice_manager': 'administrador',
-                      'tipounidade':row['tipounidade'],
+                      'tipounidade':row['tipounidade'].replace(' ', ''),
                       }
             try:
                 obj = folder.invokeFactory(**objeto)
