@@ -147,6 +147,7 @@ class ImportUnidadeOrgView(grok.View, UtilMyvindula):
                       'employees':[],
                       'manager':'administrador',
                       'vice_manager': 'administrador',
+                      'tipounidade':row['tipounidade'],
                       }
             try:
                 obj = folder.invokeFactory(**objeto)
