@@ -36,8 +36,8 @@
                             <div class="right">
                                 <form class="left custom">
                                     <select name="order_by"  id="customDropdown" class="right order_by medium">
-                                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais Acessados</option>
-                                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens Recentes</option>
+                                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais acessados</option>
+                                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens recentes</option>
                                     </select>
                                 </form>
                                 <div class="right ajax_pagination" id="pag-nav">
