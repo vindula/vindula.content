@@ -84,7 +84,13 @@ class MacroListFileView(grok.View):
                     try:
                         if isinstance(values, str):
                             values = eval(values)
-                        return [uuidToObject(uuid).getStructures() for uuid in values]
+#                        L = []
+#                        for uuid in values:
+#                            obj = uuidToObject(uuid)
+#                            if obj:
+#                                L.append(obj)
+#                        return L
+                        return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
                     except SyntaxError:
                         return [uuidToObject(values).getStructures()]
                 else:
