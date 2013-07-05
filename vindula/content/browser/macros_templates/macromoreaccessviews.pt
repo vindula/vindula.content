@@ -53,7 +53,6 @@
                                       <div class="number-of-type">
                                         <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>
                                       </div>
-                                      
                                       <div class="extension-of-type" tal:condition="extension"
                                            tal:define="extension python:view_macro.getExtension(ctx);">
                                         <h6 tal:content="extension"></h6>

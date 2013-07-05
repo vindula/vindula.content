@@ -395,6 +395,18 @@ class MacroRecentView(MacroMoreAccessViews):
         list_files = search.result
 
         return list_files
+    
+    def getExtension(self, obj):
+        if obj.content_type in PDF:
+            return ".PDF"
+        elif obj.content_type in DOC:
+            return ".DOC"
+        elif obj.content_type in PPT:
+            return ".PPT"
+        elif obj.content_type in EXCEL:
+            return ".XLS"
+
+        return None
 
 class MacroComboStandard(grok.View):
     grok.context(Interface)
