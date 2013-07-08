@@ -19,11 +19,11 @@
         <input type="hidden" id="portal_type" tal:attributes="value portal_type" />
         <input type="hidden" id="services" tal:attributes="value services" />
         <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
-        
+
         <div class="row" tal:attributes="class python: accordion and 'accordion' or ''">
             <!-- TODO: ARRUMAR A PAGINACAO QUANDO ACCORDION
                        ARRUMAR UM PADARO PARA A ALTURA DOS BOXES -->
-            
+
             <div class="title columns large-12">
                 <div class="right ajax_pagination" id="pag-nav">
                     <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
@@ -38,7 +38,7 @@
                     <hr/>
                 </h4>
             </div>
-            
+
             <div class="container clear list-container">
                 <tal:rep repeat="item batch">
                     <tal:cond condition="not:services">
@@ -53,7 +53,7 @@
                                       <div class="number-of-type">
                                         <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>
                                       </div>
-                                      
+
                                       <div class="extension-of-type" tal:condition="extension"
                                            tal:define="extension python:view_macro.getExtension(ctx);">
                                         <h6 tal:content="extension"></h6>
@@ -75,13 +75,24 @@
                                       <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
                                   </div>
                                   <div class="columns small-12">
-                                      <p class="discrete"
-                                         tal:content="python:'%s acessos' % view_macro.ger_mount_access(ctx)">12000 acessos</p>
+
+                                      <p class="discrete">
+                                        <small tal:condition="ctx/getTipo|nothing"
+                                               tal:replace="python: ' %s /' % ctx.getTipo()">Apresentação</small>
+
+                                        <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
+                                            Acesse agora!
+                                        </tal:semacesso>
+                                        <tal:comacesso condition="python: view_macro.ger_mount_access(ctx)">
+                                            <small tal:replace="python:'%s acessos' % view_macro.ger_mount_access(ctx)" />
+                                        </tal:comacesso>
+
+                                      </p>
                                   </div>
                             </div>
                         </div>
                     </tal:cond>
-                    
+
                     <tal:cond condition="services">
                         <div class="large-3 columns item-service">
                             <div tal:define="ctx item/content/getObject|nocall:item">

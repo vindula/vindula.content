@@ -50,37 +50,37 @@
                         </div>
 
                         <div class="columns small-12">
-				<tal:menosletras condition="python: view_macro.contaTitulo(ctx.Title) < 35">
-	                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
-	                               tal:content= "ctx/Title" />
-				</tal:menosletras>
-                          	<tal:maisletras condition="python: view_macro.contaTitulo(ctx.Title) > 35">
-				  <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
-                               		tal:content= "python: ctx.Title()[:35] + '...' " />
-				</tal:maisletras>
-			    
+                  				<tal:menosletras condition="python: view_macro.contaTitulo(ctx.Title) < 35">
+                  	                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                  	                               tal:content= "ctx/Title" />
+                  				</tal:menosletras>
+                          <tal:maisletras condition="python: view_macro.contaTitulo(ctx.Title) > 35">
+                  				  <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                                                 		tal:content= "python: ctx.Title()[:35] + '...' " />
+                  				</tal:maisletras>
+
                         </div>
                         <div class="columns small-12">
 
                             <small tal:condition="ctx/getStructures|nothing"
-                                   tal:content="python:'%s%s' %
-                                                (ctx.getStructures() and ctx.getStructures().Title()+' / ',
-                                                ctx.bobobase_modification_time().strftime('%d/%m/%Y'))">ASCOM / 27/03/2013 </small>
+                                   tal:content="python:ctx.getStructures().Title()+' /'">ASCOM </small>
+                            <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
+
                         </div>
                         <div class="columns small-12">
                             <p class="discrete">
-			       <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
-					Acesse agora!
-			       </tal:semacesso>
-			       <tal:comacesso condition="python: view_macro.ger_mount_access(ctx)">	
-	                               <span tal:replace="python:'%s acessos' % view_macro.ger_mount_access(ctx)" />
-			       </tal:comacesso>
 
-			    </p>
-                        
+                              <small tal:condition="ctx/getTipo|nothing"
+                                     tal:replace="python: ' %s /' % ctx.getTipo()">Apresentação</small>
 
-
-			</div>
+                              <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
+                  					      Acesse agora!
+                  			      </tal:semacesso>
+                  			      <tal:comacesso condition="python: view_macro.ger_mount_access(ctx)">
+                  	              <span tal:replace="python:'%s acessos' % view_macro.ger_mount_access(ctx)" />
+                  			      </tal:comacesso>
+			                      </p>
+                        </div>
                     </div>
                 </div>
             </tal:rep>
