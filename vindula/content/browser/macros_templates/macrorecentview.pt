@@ -20,7 +20,7 @@
             <div class="right ajax_pagination" id="pag-nav">
                 <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
             </div>
-            <h5>
+            <h4>
                 <tal:cond condition="accordion">
                     <a href="#" tal:content="title_box" />
                 </tal:cond>
@@ -28,7 +28,7 @@
                     <tal:replace tal:content="title_box" />
                 </tal:cond>
                 <hr/>
-            </h5>
+            </h4>
         </div>
 
         <div class="container list-container">
@@ -46,6 +46,10 @@
 
                             <div class="number-of-type">
                               <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>
+                            </div>
+                            <div class="extension-of-type" tal:condition="extension"
+                                 tal:define="extension python:view_macro.getExtension(ctx);">
+                                <h6 tal:content="extension"></h6>
                             </div>
                         </div>
 

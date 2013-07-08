@@ -8,82 +8,93 @@
 
         </metal:styleslot>
 
-    <body>
-        <div metal:fill-slot="content-core">
-            <div metal:define-macro="page-view"
-                 tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
+<body>
+<metal:main fill-slot="main">
+    <metal:main define-macro="main">
+        
+        <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load"></div>
+        <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
+        
+        <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
+                                                       data_type context/portal_type|nothing">
+        </div>
+                                                       
+        <div metal:define-macro="page-view"
+             tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
 
-                <script type="text/javascript" src=""
-                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+            <script type="text/javascript" src=""
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
-                <tal:def define="portal_type python: ('File',);
-                                 title_box string:Mais acessados">
-                    <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
-                </tal:def>
+            <tal:def define="portal_type python: ('File',);
+                             title_box string:Mais acessados">
+                <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
+            </tal:def>
 
-                <tal:def define="portal_type python: ('File',);
-                                 title_box string:Itens recentes">
-                    <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
-                </tal:def>
+            <tal:def define="portal_type python: ('File',);
+                             title_box string:Itens recentes">
+                <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
+            </tal:def>
 
-                <div class="section-biblioteca-tabs section-container tabs" data-section>
-                    <section>
-                        <h5 class="title" data-section-title>
-                            <a href="#section1">Tema</a>
-                        </h5>
-                        <div class="content" data-section-content>
-                            <!-- ABA Tema -->
-                            <div id="theme">
-                                <tal:def tal:define="is_theme python:True">
-                                    <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
-                                </tal:def>
+            <div class="section-biblioteca-tabs section-container tabs" data-section>
+                <section>
+                    <h5 class="title" data-section-title>
+                        <a href="#section1">Tema</a>
+                    </h5>
+                    <div class="content" data-section-content>
+                        <!-- ABA Tema -->
+                        <div id="theme">
+                            <tal:def tal:define="is_theme python:True">
+                                <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
+                            </tal:def>
 
-                                <tal:def define="theme view_macro/getThemes">
-                                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                            <tal:def define="theme view_macro/getThemes">
+                                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                            </tal:def>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h5 class="title" data-section-title>
+                        <a href="#section2">Unidade</a>
+                    </h5>
+                    <div class="content" data-section-content>
+                        <!-- ABA Unidade -->
+                        <div id="structures">
+                            <tal:def define="is_structures python:True">
+                                <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
+                            </tal:def>
+
+                            <tal:def define="structures view_macro/getStructures">
+                                <metal:block metal:use-macro="context/macro_list_file/macros/view" />
+                            </tal:def>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h5 class="title">
+                        <a href="#section3">Documento</a>
+                    </h5>
+
+                    <div class="content">
+                        <!-- ABA Documento -->
+                        <div class="conteiner" id="documento">
+                            <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
+
+                            <div id="itens">
+                                <tal:def define="portal_type python: ('File',);
+                                                 fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                                {'label': 'Número', 'attribute': 'getNumero'},
+                                                                {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                                {'label': 'Título', 'attribute': 'Title'},];">
+                                    <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                                 </tal:def>
                             </div>
                         </div>
-                    </section>
-                    <section>
-                        <h5 class="title" data-section-title>
-                            <a href="#section2">Unidade</a>
-                        </h5>
-                        <div class="content" data-section-content>
-                            <!-- ABA Unidade -->
-                            <div id="structures">
-                                <tal:def define="is_structures python:True">
-                                    <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
-                                </tal:def>
-
-                                <tal:def define="structures view_macro/getStructures">
-                                    <metal:block metal:use-macro="context/macro_list_file/macros/view" />
-                                </tal:def>
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <h5 class="title">
-                            <a href="#section3">Documento</a>
-                        </h5>
-                        <div class="content">
-                            <!-- ABA Documento -->
-                            <div class="conteiner" id="documento">
-                                <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
-
-                                <div id="itens">
-                                    <tal:def define="portal_type python: ('File',);
-                                                     fields python:[{'label': 'UO', 'attribute': 'getStructures'},
-                                                                    {'label': 'Número', 'attribute': 'getNumero'},
-                                                                    {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                                    {'label': 'Título', 'attribute': 'Title'},];">
-                                        <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
-                                    </tal:def>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+                    </div>
+                </section>
             </div>
         </div>
-    </body>
+    </metal:main>
+</metal:main>
+</body>
 </html>

@@ -71,7 +71,7 @@
                                   </div>
                                   <div class="columns small-12">
                                       <small tal:condition="ctx/getStructures|nothing"
-                                             tal:content="python:ctx.getStructures().Title()+' /'">ASCOM </small>
+                                             tal:content="python:ctx.getStructures().getSiglaOrTitle()+' /'">ASCOM </small>
                                       <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
                                   </div>
                                   <div class="columns small-12">
