@@ -336,7 +336,7 @@
         tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
 
     <!-- Adiciona o javascript de filtro -->
-    <tal:cond condition="not:request/filter-file-js">
+    <tal:cond condition="not:request/filter-file-js|nothing">
         <script type="text/javascript" src=""
             tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
@@ -453,13 +453,19 @@
 
                             <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndex('ThemeNews')">
                                 <tal:rep repeat="item items/keys">
-                                    <label tal:attributes="for python:theme and item/UID or item">
+                                    <label tal:define="item_uid item/UID|nothing"
+                                           tal:attributes="for python:(theme and item_uid) or item">
                                         <input type="checkbox"
-                                               tal:attributes="id python:theme and item/UID or item;
-                                                               value python:theme and item/UID or item;
+                                               tal:attributes="id python:(theme and item_uid) or item;
+                                                               value python:(theme and item_uid) or item;
                                                                name class_filter;">
                                         <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (theme and item.Title() or item, items.get(item))"> </tal:rep>
+                                        <tal:cond tal:condition="item/Title|nothing">
+                                          <tal:rep tal:content="python:'%s (%s)' % (theme and item.Title())"></tal:rep>
+                                        </tal:cond>
+                                        <tal:cond tal:condition="not: item/Title|nothing">
+                                          <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                        </tal:cond>
                                     </label>
                                 </tal:rep>
                             </div>

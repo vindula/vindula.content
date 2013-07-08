@@ -109,6 +109,16 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         required=False,
     ),
 
+    BooleanField(
+        name='activ_discussion',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar Comentarios",
+            description='Caso selecionado, ativa a opção de comentarios.',
+        ),
+        required=False,
+    ),
+
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
 VindulaNews_schema['description'].widget.label = 'Sumário'
@@ -117,12 +127,16 @@ VindulaNews_schema['text'].widget.label = 'Corpo do texto'
 VindulaNews_schema['text'].widget.description = 'Texto da Notícia'
 VindulaNews_schema['image'].widget.visible = invisivel
 
+VindulaNews_schema['allowDiscussion'].widget.visible = invisivel
+
 finalizeATCTSchema(VindulaNews_schema, folderish=False)
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
+VindulaNews_schema.changeSchemataForField('activ_discussion', 'settings')
 VindulaNews_schema.changeSchemataForField('themesNews', 'categorization')
 VindulaNews_schema.moveField('themesNews', before='subject')
 VindulaNews_schema.moveField('imageRelac', before='imageCaption')
+
 
 class VindulaNews(ATNewsItem):
     """ Reserve Content for VindulaNews"""

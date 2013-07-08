@@ -165,6 +165,15 @@ ATBlobSchema += Schema((
         required=False,
     ),
 
+    BooleanField(
+        name='activ_discussion',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar Comentarios",
+            description='Caso selecionado, ativa a opção de comentarios.',
+        ),
+        required=False,
+    ),
 
 
 ))
@@ -176,6 +185,10 @@ ATBlobSchema['title'].required = False
 
 finalizeATCTSchema(ATBlobSchema, folderish=False, moveDiscussion=False)
 ATBlobSchema.registerLayer('marshall', BlobMarshaller())
+
+invisivel = {'view':'invisible','edit':'invisible',}
+ATBlobSchema['allowDiscussion'].widget.visible = invisivel
+ATBlobSchema.changeSchemataForField('activ_discussion', 'settings')
 
 
 try:

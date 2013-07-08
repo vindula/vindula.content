@@ -1,12 +1,27 @@
 <metal:view_macro define-macro="view"
                   tal:define="view_macro python:context.restrictedTraverse('macro-comments-content');">
-    <h4 class="title">
-       Comentários
-       <hr />
-    </h4>
-    
-    <p>Comente aqui o conteúdo</p>
-    <div class="vd_comment" tal:attributes="data_uid context/UID;
-                                            data_type context/portal_type"></div>
-</metal:view_macro>
 
+    <tal:block tal:define="view_coments python:context.restrictedTraverse('@@myvindula-comments');
+
+                           activ_vindula context/activ_comment|context/isDiscussable|nothing;
+                           activ_discussion context/getActiv_discussion|nothing;
+
+                           context_discussion python: activ_vindula or activ_discussion;
+
+                           isDiscussionAllowed view_coments/is_discussion_allowed;
+                           has_replies has_replies|python:False;
+                           enable python:view_coments.discussionAllowed(isDiscussionAllowed, has_replies, activ_discussion);"
+
+               tal:condition="enable">
+
+        <h4 class="title">
+           Comentários
+           <hr />
+        </h4>
+
+        <p>Comente aqui o conteúdo</p>
+        <div class="vd_comment" tal:attributes="data_uid context/UID;
+                                                data_type context/portal_type"></div>
+
+    </tal:block>
+</metal:view_macro>

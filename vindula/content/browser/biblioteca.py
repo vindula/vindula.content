@@ -73,7 +73,7 @@ class MacroListFileView(grok.View):
             list_files = self.searchFile_byStructures(value,sort_on)
 
         return list_files
-    
+
     def getRequestItems(self):
         request = self.request
         if 'list_files[]' in request.keys() or 'list_files' in request.keys():
@@ -104,7 +104,7 @@ class MacroListFileView(grok.View):
                             return [themes]
                     else:
                         return self.getAllKeyword('ThemeNews').keys()
-    
+
     def getStructures_byUID(self,UID):
         if UID:
             object = self.rtool.lookupObject(UID)
@@ -124,7 +124,7 @@ class MacroListFileView(grok.View):
                     object = structures.getObject()
                 except AttributeError:
                     #O objeto já veio como Objeto nao como Brain
-                    object = structures 
+                    object = structures
 
             refs = self.rtool.getBackReferences(object, 'structures', targetObject=None)
             for ref in refs:
@@ -167,7 +167,7 @@ class MacroListFileView(grok.View):
             url = base + "icon-default.png"
 
         return url
-    
+
     def getUIDS(self, obj_list):
         try:
             obj_list.count
@@ -181,7 +181,7 @@ class MacroListFileView(grok.View):
             return [i.UID for i in obj_list]
         except AttributeError:
             return obj_list
-        
+
     def getAllKeyword(self, name_index):
         stats = {}
         index = self.ctool._catalog.indexes[name_index]
@@ -200,8 +200,8 @@ class FilterItensView(grok.View):
     grok.context(Interface)
     grok.name('list-filter')
     grok.require('zope2.View')
-    
-    
+
+
     def getItems(self):
         request = self.request
         self.catalog_tool = getToolByName(self.context, 'portal_catalog')
@@ -209,15 +209,16 @@ class FilterItensView(grok.View):
         items = []
         theme = request.form.get('theme')
         structure = request.form.get('structures')
-        
+
         if theme:
+            portal = self.context.portal_url.getPortalObject()
             items = self.catalog_tool({'portal_type': ['File',],
-                                       'path': {'query': '/'.join(self.context.getPhysicalPath()), 'depth': 99},
-                                       'review_state': ['published', 'internally_published', 'external'],
+                                       'path': {'query': '/'.join(portal.getPhysicalPath()), 'depth': 99},
+                                       # 'review_state': ['published', 'internally_published', 'external'],
                                        'ThemeNews': theme,
                                        })
             items = [i.getObject() for i in items]
-            
+
         elif structure:
             structure = uuidToObject(structure)
             refs = self.reference_tool.getBackReferences(structure, 'structures')
@@ -225,7 +226,7 @@ class FilterItensView(grok.View):
                 ref = ref.getSourceObject()
                 if ref.portal_type == 'File':
                     items.append(ref)
-                    
+
         return items
 
 
