@@ -92,13 +92,10 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     return [uuidToObject(uids)]
             else:
                 return []
-
         if 'Pessoas' in portal_type:
             itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
-
         else:
             itens = self.busca_catalog(subject, keywords, structures, portal_type)
-
         return itens
 
     def busca_catalog(self, subject, keywords, structures, portal_type):
