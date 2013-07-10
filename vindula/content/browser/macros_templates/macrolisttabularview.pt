@@ -71,9 +71,9 @@
                                          define="item_object item/getObject|python: item;">
         
                                     <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
-                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';
+                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
                                                         width field/width|nothing;">
-                                        <tal:cond condition="not:field/is_image|nothing">
+                                        <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
                                             <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
                                                tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
                                                                title value_field/name|nothing">
@@ -81,10 +81,16 @@
                                             </a>
                                             <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
                                                     tal:content="structure value_field/value|nothing"></span>
-        
                                         </tal:cond>
                                         <tal:cond condition="field/is_image|nothing">
                                             <img tal:attributes="src value_field/value" />
+                                        </tal:cond>
+                                        <tal:cond condition="field/is_action|nothing">
+                                            <a>
+                                                <div class="icon-action">
+                                                    <i class="vindula-icon-cog"></i>
+                                                </div>
+                                            </a>
                                         </tal:cond>
                                     </td>
                                 </tal:rep>

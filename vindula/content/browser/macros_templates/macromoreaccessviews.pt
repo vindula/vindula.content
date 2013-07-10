@@ -28,7 +28,7 @@
                 <div class="right ajax_pagination" id="pag-nav">
                     <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
                 </div>
-                <h4>
+                <h5>
                     <tal:cond condition="accordion">
                         <a href="#" tal:content="title_box" />
                     </tal:cond>
@@ -36,7 +36,7 @@
                         <tal:replace tal:content="title_box" />
                     </tal:cond>
                     <hr/>
-                </h4>
+                </h5>
             </div>
 
             <div class="container clear list-container">
