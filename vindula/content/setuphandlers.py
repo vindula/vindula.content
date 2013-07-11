@@ -34,7 +34,8 @@ def add_catalog_indexes(context, logger=None):
     # Specify the indexes you want, with ('index_name', 'index_type')
     wanted = (('tipo', 'KeywordIndex'),
               ('classificacao', 'KeywordIndex'),
-              ('content_type', 'KeywordIndex'),)
+              ('content_type', 'KeywordIndex'),
+              ('tipounidade', 'KeywordIndex'),)
     
     indexables = []
     for name, meta_type in wanted:

@@ -5,4 +5,5 @@
    <column value="tipo"/>
    <column value="classificacao"/>
    <column value="content_type"/>
+   <column value="tipounidade"/>
 </object>
