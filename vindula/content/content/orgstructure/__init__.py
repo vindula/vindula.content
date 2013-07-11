@@ -238,6 +238,7 @@ class OrganizationalStructure(ATFolder):
             tipounidade = tipounidade.replace('\r', '')
             tipounidade = tipounidade.split('\n')
             for modalidade in tipounidade:
+               modalidade = modalidade.strip()
                result.append((modalidade, modalidade))
         return result
 
