@@ -249,6 +249,14 @@ class OrganizationalStructure(ATFolder):
             return image.absolute_url() +'/image_tile'
         else:
             return ''
+    
+    def getImageSize(self, size='mini'):
+        image = self.getImage()
+
+        if image:
+            return image.absolute_url() +'/image_' + size
+        else:
+            return ''
 
     def getSiglaOrTitle(self):
         return self.getSiglaunidade() or self.Title()
