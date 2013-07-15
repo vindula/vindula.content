@@ -178,7 +178,8 @@ class VindulaWebServeObjectContent(grok.View):
         context = reference_catalog.lookupObject(uid)
         if context:
             HistoryView = ContentHistoryView(context, context.REQUEST)
-            context_owner = context.getOwner().getUserName()
+            try:context_owner = context.getOwner().getUserName()
+            except: context_owner = 'administrador'
             image_content = ''
             if hasattr(context, 'getImageIcone'):
                 img = context.getImageIcone()
