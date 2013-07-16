@@ -1,0 +1,62 @@
+<html>
+	<body metal:use-macro="here/main_template/macros/master">
+		<metal:block fill-slot="top_slot">
+	          <tal:dummy tal:define="dummy python:request.set('disable_border',1);
+                                    disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                                    disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+		</metal:block>
+	  	<div metal:fill-slot="content-core">
+			<h2 class="h2title">Contatos do portal</h2>
+      		<meta:macro metal:define-macro="page-view">                  
+				<tal:def define="member python:context.portal_membership.getAuthenticatedMember();
+								 view_listall python: context.restrictedTraverse('@@myvindulalistcontatos');
+								 form_data view_listall/load_list | python:{};">
+	                           					     
+		        	<div id="interna" class="userlist" tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+											                       b_size python:20;
+											                       b_start python:0;
+											                       b_start request/b_start | b_start">
+		        		<div id="busca">
+		        			<form tal:attributes="action string:${context/portal_url}/myvindulalistall" method="post" id="portlet-ramais">
+		        				<div style="float: left; padding-right: 5px;">
+							    	<label>Nome:</label>
+									<input type="text" name="title" size="26" tal:attributes="value python: request.get('title', '')"/>
+								</div>
+								<div style="float:left;"> 
+									<input type="submit" name="SearchSubmit" value="Buscar" class="context" i18n:attributes="value"/>
+								</div>
+				     	 	</form>
+		        		</div>
+						<div class="visualClear"></div>
+						<div tal:condition="form_data" class="all-users">
+										 
+							<tal:def define="batch python:Batch(form_data, b_size, int(b_start));"> 
+								 
+								<div  class="user" tal:repeat="item batch">
+    					            <!-- Dados para utilização da macro -->                                     
+                                    <tal:def define="size_img string:90px;
+                                                     principal_name item/Title;
+                                                     view_contato python: True;
+                                                     details python: [];">
+                                        <div metal:use-macro="context/myvindula-imageprofiles-macro/macros/userprofiles" />       
+                                    </tal:def>
+					            </div>
+					            
+					            <div class="visualClear"></div>
+					            <div class="navigation-users">
+                                    <div metal:use-macro="here/batch_macros/macros/navigation" />
+                                </div>
+			          		</tal:def>
+						</div>
+						
+						<div tal:condition="not: form_data">
+							<br>
+							<h3>N&atilde;o h&aacute; resultados.</h3>
+						</div>
+		        	</div>
+				</tal:def>
+				
+	  		</meta:macro>
+	  	</div>    
+  </body>
+</html>

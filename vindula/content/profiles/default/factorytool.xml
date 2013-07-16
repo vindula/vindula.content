@@ -10,5 +10,6 @@
 		<type portal_type="InternalLink"/>
 		<type portal_type="VindulaPhotoAlbum"/>
 		<type portal_type="VindulaEdital"/>
+		<type portal_type="VindulaContato"/>
 	</factorytypes>
 </object>
