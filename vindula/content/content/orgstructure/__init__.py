@@ -248,7 +248,7 @@ class OrganizationalStructure(ATFolder):
         if image:
             return image.absolute_url() +'/image_tile'
         else:
-            return ''
+            return getSite().portal_url()+'/++resource++vindula.content/images/icon-org-default.png'
     
     def getImageSize(self, size='mini'):
         image = self.getImage()
