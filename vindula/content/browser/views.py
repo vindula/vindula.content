@@ -199,9 +199,11 @@ class VindulaWebServeObjectContent(grok.View):
                 else:
                     date = datetime.fromtimestamp(history.get('time','')).strftime('%Y-%m-%d %H:%M:%S')
 
-                #print 30*'##'
-                #print history
-                L.append({'actor': history.get('actor',{}).get('username',''),
+                actor = history.get('actor',{})
+                if not actor:
+                    actor = ''
+
+                L.append({'actor': actor,
                           'action':  history.get('transition_title',''),
                           'type': tipo,
                           'date':date,})
