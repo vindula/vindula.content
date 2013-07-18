@@ -62,10 +62,14 @@ $j(document).ready(function(){
                         if (!$dom.find('.container').length)
                             $contents = $dom.filter('.container');
                         
-                        url_table = $j('base').attr('href') + '/table_sorter.js';
-                        $j.get(url_table, function(data){
-                            $j.globalEval(data);
-                        });
+                        var list_js = ['/table_sorter.js'],
+                            url_js = '';
+                        for(var i=0;i<list_js.length;i++){
+                            url_js = url_base + list_js[i];
+                            $j.get(url_js, function(data){
+                                $j.globalEval(data);
+                            });
+                        }
                         
                         $container.html($contents.contents());
                     }

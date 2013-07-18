@@ -72,6 +72,8 @@ class SearchFileterView(grok.View):
                 elif field == 'document-subject': 
                     query['Subject'] = values
                 elif field == 'unit-type':
+                    if(values.find(',') != -1):
+                        values = values.split(',')
                     if 'all' in values:
                         values = self.getAllKeyword('tipounidade')
                         values = values.keys()
@@ -173,9 +175,7 @@ class SearchFileterView(grok.View):
         if has_searchable_text and unit_locations: 
             self.result = aux_list_structures
             return
-        
-        
-        print self.result
+
         #verificar a logica disso
         if not self.result and \
            not unit_locations and \

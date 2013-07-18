@@ -449,6 +449,7 @@ class MacroFollow(grok.View):
     grok.require('zope2.View')
     grok.name('macro-follow-content')
     
+    
 class MacroMessage(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
