@@ -32,7 +32,6 @@ class AutocompleteView(grok.View):
         action = form.get('action', None)
         term = form.get('term', None)
         self.result = [] # zero a variavel com os resultados
-        
         if term:
             if action == 'document-type':
                 tipos = self.getTipo()
@@ -50,7 +49,18 @@ class AutocompleteView(grok.View):
                     if term.lower() in tipo.lower():
                         self.result.append({'id':tipo,
                                              'name': '%s (%s)' % (tipo,tipos.get(tipo)) })
-            
+            elif action == 'unit-type':
+                tipos_unidade = self.getIndexesValue('tipounidade')
+                for tipo in tipos_unidade.keys():
+                    if term.lower() in tipo.lower():
+                        self.result.append({'id':tipo,
+                                             'name': '%s' % (tipo) })
+            elif action == 'unit-location':
+                units = self.getUnitLocations()
+                for uid in units.keys():
+                    if term.lower() in units[uid].lower():
+                        self.result.append({'id':uid,
+                                            'name': '%s' % (units[uid]) })
             return
         
     def getStructuresAndCountFile(self, context, relationship):
@@ -103,3 +113,18 @@ class AutocompleteView(grok.View):
                     stats[str(key)] = 1
         
         return stats
+    
+    def getUnitLocations(self):
+        query = {}
+        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
+        query['portal_type'] = ('Unit',)
+        query['review_state'] = ['published', 'internally_published', 'external']
+        units = self.catalog_tool(**query)
+        result_units = {}
+        
+        for unit in units:
+            unit = unit.getObject()
+            if self.reference_tool.getBackReferences(unit, 'units'):
+                result_units[unit.UID()] = unit.Title()
+        
+        return result_units

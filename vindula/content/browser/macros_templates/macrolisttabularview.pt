@@ -1,10 +1,10 @@
+<tal:cond condition="python:request.get('macro')=='default'">
 <metal:view_macro define-macro="view">
-    
     <div class="items">
         <script type="text/javascript" src=""
-                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
         <script type="text/javascript" src=""
-                    tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/tabular_tile.js"></script>
     
         <div class="filterFile list_file" id="tabular_view">
             <div class="container">
@@ -28,7 +28,7 @@
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
                     <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
                     <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
-                    <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
+                    <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file?macro=default" >
                     <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUIDS(list_files)" >
                     
                     <meta:macro metal:define-macro="navegacao-macro">
@@ -86,7 +86,9 @@
                                             <img tal:attributes="src value_field/value" />
                                         </tal:cond>
                                         <tal:cond condition="field/is_action|nothing">
-                                            <a>
+                                            <a href="#" class="button-action"
+                                               tal:attributes="id item/UID|nothing;
+                                                               type_object item/portal_type|nothing">
                                                 <div class="icon-action">
                                                     <i class="vindula-icon-cog"></i>
                                                 </div>
@@ -103,10 +105,10 @@
         </div>
     </div>
 </metal:view_macro>
+</tal:cond>
 
-
+<tal:cond condition="python:request.get('macro')=='personal'">>
 <metal:view_macro define-macro="personal_view">
-    
     <div class="items">
         <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
@@ -132,7 +134,7 @@
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
                     <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
                     <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
-                    <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file" >
+                    <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file?macro=personal" >
                     <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUIDS(list_files)" >
                     
                     
@@ -163,8 +165,8 @@
                         <tbody>
                             <tr tal:repeat="item batch">
                                 <td width="200">
-                                    <a tal:attributes="href string:${context/portal_url}${item/getUrlPerfil};">
-                                        <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone};" />
+                                    <a tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};">
+                                        <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
                                         <div style="width: 120px; padding-left: 5px;" class="left">
                                             <span tal:content="python: item.get('name')"></span>
                                         </div>
@@ -176,11 +178,11 @@
                                 </td>
                                 
                                 <td width="40">
-                                    <a tal:content="item/get_sigla_unidadeprincipal"></a>
+                                    <a tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
                                 </td>
                                 
                                 <td width="140" class="contact-column">
-                                    <p tal:replace="structure item/getContato"></p>
+                                    <p tal:replace="structure item/getContato|nothing"></p>
                                 </td>
                                 
                                 <td class="action-column" width="40">
@@ -199,3 +201,4 @@
         </div>
     </div>
 </metal:view_macro>
+</tal:cond>

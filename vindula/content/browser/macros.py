@@ -208,10 +208,10 @@ class MacroFilterView(grok.View):
         return result
 
     #Funcao que retorna o total de itens de cada vador de um determaninado indice
+    #Se passar qtd=None retorna todos os itens
     def getTopIndex(self, index, qtd=5, only=[]):
         stats = {}
         index = self.catalog_tool._catalog.indexes[index]
-
         for key in index.uniqueValues():
             if key and (not only or str(key) in only):
                 t = index._index.get(key)
@@ -223,8 +223,12 @@ class MacroFilterView(grok.View):
         od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
         items = od.items()
         items.reverse()
-        return OrderedDict(items[:qtd])
-
+        
+        if qtd:
+            items = items[:qtd]
+            
+        return OrderedDict(items)
+        
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
         query = {}
@@ -274,14 +278,6 @@ class MacroFilterView(grok.View):
         except AttributeError:
             return None
 
-    def getSuperStructure(self, context):
-        if context.portal_type == 'OrganizationalStructure':
-            return context
-        if context.portal_type == 'Plone Site':
-            return None
-        else:
-            return self.getSuperStructure(context.aq_parent)
-
     def getPortalTypes(self):
         context = self.context
         types = ['File',]
@@ -298,8 +294,35 @@ class MacroFilterView(grok.View):
 
     def getAllSubjects(self):
         return self.pc.uniqueValuesFor("Subject")
-
-
+    
+    def getSuperStructure(self, context):
+        if context.portal_type == 'OrganizationalStructure':
+            return context.UID()
+        if context.portal_type == 'Plone Site':
+            return None
+        else:
+            return self.getSuperStructure(context.aq_parent)
+    
+    #Metodo retorna as unidades/localizacoes das estruras organizacionais
+    def getUnitLocations(self, qtd=5):
+        query = {}
+        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
+        query['portal_type'] = ('Unit',)
+        query['review_state'] = ['published', 'internally_published', 'external']
+        units = self.catalog_tool(**query)
+        result_units = {}
+        
+        for unit in units:
+            unit = unit.getObject()
+            if self.reference_tool.getBackReferences(unit, 'units'):
+                result_units[unit.UID()] = unit.Title()
+        
+        od = OrderedDict(sorted(result_units.items(), key=lambda t: t[1]))
+        items = od.items()
+        items.reverse()
+        return OrderedDict(items[:qtd])
+            
+    
 class MacroCommentsView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
@@ -409,7 +432,6 @@ class MacroComboStandard(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro-comboStandard-content')
-
 
 class MacroRating(grok.View):
     grok.context(Interface)

@@ -135,6 +135,129 @@
     </tal:def>
 </metal:view_macro>
 
+<metal:view_macro define-macro="unit-tabular">
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/jquery.tokeninput.js"></script>
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/plone_autocomplete.js"></script>
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input.css">
+    <link rel="stylesheet" href="" type="text/css"
+        tal:attributes="href string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/token-input-facebook.css">
+    <!-- Adiciona o javascript de filtro -->
+    <tal:cond condition="not:request/filter-file-js|nothing">
+        <script type="text/javascript" src=""
+            tal:attributes="src string:${context/portal_url|nothing}/++resource++vindula.content/js/ajax_filter_file.js"></script>
+        <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
+    </tal:cond>
+    <tal:def define="view_macro nocall:context/@@macro_filter_file;
+                     SearchableTextFilter request/SearchableTextFilter|python:'';
+                     structure_selected view_macro/getStructureSelected|nothing;
+                     portal_types view_macro/getPortalTypes|nothing;
+                     tipos_unidade view_macro/getUnitTypes|nothing">
+
+        <div class="section-biblioteca-accordion filterFile" id="filter_file">
+            <p class="title-filter hasInput">
+              <!-- tal:condition="not_filter|python:True" -->
+                <a href="#" >
+                    <i class="more-itens vindula-icon-plus-sign"></i>
+                    <span class="more-itens">Refinar Pesquisa</span>
+                </a>
+                <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
+            </p>
+            <div class="content-filter">
+                <form class="form-columns-tag">
+                    <input type="hidden" name="structure-selected" id="structure-selected"
+                           tal:attributes="value nocall:structure_selected">
+
+                    <input type="hidden" name="portal-types" id="portal-types"
+                           tal:attributes="value portal_types">
+                           
+                    <div class="tags left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Tipo da Unidade
+                                </strong>
+                                <label class="right"
+                                       for="all-unit-type">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-unit-type"
+                                           name="unit-type" />
+                                    <span class="custom checkbox"></span>
+                                    Todos
+                                </label>
+                            </div>
+    
+                            <input placeholder="Digite o tipo da unidade" type="text" name="unit-type" id="unit-type" class="unit-type">
+    
+                            <div tal:define="items python:view_macro.getTopIndex('tipounidade')">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox"
+                                               name="unit-type"
+                                               tal:attributes="id item;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s' % (item)"></tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tags left large-4 small-4">
+                        <div class="block-filter">
+                            <div class="clear label-filter">
+                                <strong class="left">
+                                    Localização
+                                </strong>
+                                <label class="right"
+                                       for="all-unit-location">
+                                    <input type="checkbox"
+                                           value="all"
+                                           id="all-unit-location"
+                                           name="unit-location" />
+                                    <span class="custom checkbox"></span>
+                                    Todos
+                                </label>
+                            </div>
+    
+                            <input placeholder="Digite a localização" type="text" name="unit-location" id="unit-location" class="unit-location">
+                            
+                            <div tal:define="items python:view_macro.getUnitLocations()">
+                                <tal:rep repeat="item items/keys">
+                                    <label tal:attributes="for item">
+                                        <input type="checkbox"
+                                               name="unit-location"
+                                               tal:attributes="id item;
+                                                               value item;">
+                                        <span class="custom checkbox"></span>
+                                        <tal:rep tal:content="python:'%s' % (items[item])"></tal:rep>
+                                    </label>
+                                </tal:rep>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="container-button-group">
+                <div class="right">
+                    <a class='clearFilter'>Limpar Filtro</a>
+                    <a class='execFilter tiny button radius'>Aplicar</a>
+                </div>
+            </div>
+            <!-- Spinner -->
+            <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+            </div>
+        </div>
+    </tal:def>
+</metal:view_macro>
+
 <metal:view_macro define-macro="tabular-library">
     <script type="text/javascript" src=""
         tal:attributes="src string:${context/portal_url|nothing}/vindula-api/static/jquery-tokeninput/locales/pt_BR.js"></script>

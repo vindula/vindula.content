@@ -36,7 +36,9 @@ class SearchFileterView(grok.View):
         
         query = {}
         references = {}
+        unit_locations = []
         self.result = []
+        has_searchable_text = False
         
         query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
         query['portal_type'] = ['File',]
@@ -69,6 +71,11 @@ class SearchFileterView(grok.View):
                     query['content_type'] = eval(values)
                 elif field == 'document-subject': 
                     query['Subject'] = values
+                elif field == 'unit-type':
+                    if 'all' in values:
+                        values = self.getAllKeyword('tipounidade')
+                        values = values.keys()
+                    query['tipounidade'] = values
                 elif field == 'structure-owner':
                     if not isinstance(values, list): values = [values]
                     if 'all' in values:
@@ -91,6 +98,12 @@ class SearchFileterView(grok.View):
                     else:
                         objs = [uuidToObject(uuid) for uuid in values if uuid]
                     references['structuresClient'] = objs
+                elif field == 'unit-location':
+                    if not isinstance(values, list): values = [values]
+                    if 'all' in values:
+                        unit_locations = self.getAllUnits()
+                    else:
+                        unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
                 elif field == 'structure-selected':
                     query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
                 elif field == 'portal-types':
@@ -118,13 +131,13 @@ class SearchFileterView(grok.View):
         if query.get('tipo') or \
            query.get('classificacao') or \
            query.get('effective') or \
-           query.get('SearchableText'):
+           query.get('SearchableText') or \
+           query.get('tipounidade'):
             self.result = files
         
+        aux_list_structures = []
         for reference in references.items():
             relationship, objs = reference[0], reference[1]
-            has_searchable_text = False
-            aux_list = []
             for obj in objs:
                 refs = self.reference_tool.getBackReferences(obj, relationship)
                 for ref in refs:
@@ -133,17 +146,40 @@ class SearchFileterView(grok.View):
                         has_searchable_text = True
                         if ref_obj.UID() in self.result and \
                            ref_obj.portal_type in query.get('portal_type'):
-                            aux_list.append(ref_obj.UID())
+                            aux_list_structures.append(ref_obj.UID())
                     else:
                         if ref_obj.UID() not in self.result and \
                            ref_obj.portal_type in query.get('portal_type'):
                             self.result.append(ref_obj.UID())
             
-            if has_searchable_text: 
-                self.result = aux_list
-                return
+        if has_searchable_text and references: 
+            self.result = aux_list_structures
+            return
+        
+        aux_list_units = []
+        for location in unit_locations:
+            refs = self.reference_tool.getBackReferences(location, 'units')
+            for ref in refs:
+                ref_obj = ref.getSourceObject()
+                if query.get('SearchableText'):
+                    if ref_obj.UID() in self.result and \
+                       ref_obj.portal_type in query.get('portal_type'):
+                        aux_list_units.append(ref_obj.UID())
+                else:
+                    if ref_obj.UID() not in self.result and \
+                       ref_obj.portal_type in query.get('portal_type'):
+                        self.result.append(ref_obj.UID())
                         
-        if not self.result:
+        if has_searchable_text and unit_locations: 
+            self.result = aux_list_structures
+            return
+        
+        
+        print self.result
+        #verificar a logica disso
+        if not self.result and \
+           not unit_locations and \
+           not references:
             self.result = files
             
         return
@@ -154,6 +190,13 @@ class SearchFileterView(grok.View):
                                         })
         if structures:
             return [i.getObject() for i in structures]
+        
+    def getAllUnits(self):
+        units = self.catalog_tool({'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99},
+                                        'portal_type': ('Unit',),
+                                        })
+        if units:
+            return [i.getObject() for i in units]
         
     
     def getAllKeyword(self, name_index):
