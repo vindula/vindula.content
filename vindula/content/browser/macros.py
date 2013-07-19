@@ -8,7 +8,9 @@ from vindula.content.models.content import ModelsContent
 from vindula.content.models.content_access import ModelsContentAccess
 
 from vindula.myvindula.models.funcdetails import FuncDetails
+from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
 from vindula.myvindula.tools.utils import UtilMyvindula
+
 from plone.app.uuid.utils import uuidToObject
 
 from datetime import datetime
@@ -321,6 +323,15 @@ class MacroFilterView(grok.View):
         items = od.items()
         items.reverse()
         return OrderedDict(items[:qtd])
+    
+    def getValuesField(self, field, qtd=5):
+        field = ModelsConfgMyvindula().get_configuration_By_fields(field)
+        items = []
+        if field:
+            items = field.choices.splitlines()
+            if items:
+                items = sorted(items)
+        return items[:qtd]
             
     
 class MacroCommentsView(grok.View):

@@ -34,7 +34,11 @@ $j(document).ready(function(){
                 }
             }
             else{
-                params[name] = this.value;
+                if(this.value.indexOf(',') != -1 && this.value[0] != '('){
+                    params[name] = this.value.split(',');
+                }else{
+                    params[name] = this.value;
+                }
             }
         });
         
@@ -53,7 +57,7 @@ $j(document).ready(function(){
                 params_container['type'] = $data_box.find('#type').val();
                 params_container['document-theme'] = params['document-theme'];
                 
-                $j.get(
+                $j.post(
                     url_display,
                     params_container,
                     function(data){

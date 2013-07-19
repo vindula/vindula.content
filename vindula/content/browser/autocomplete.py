@@ -10,6 +10,8 @@ from vindula.content.browser.macros import Search, PDF, DOC, PPT, EXCEL
 from Products.CMFCore.utils import getToolByName
 from vindula.content.models.content_field import ContentField
 
+from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
+
 import json
 
 class AutocompleteView(grok.View):
@@ -61,6 +63,18 @@ class AutocompleteView(grok.View):
                     if term.lower() in units[uid].lower():
                         self.result.append({'id':uid,
                                             'name': '%s' % (units[uid]) })
+            elif action == 'cargo':
+                cargos = self.getValuesField('cargo')
+                for cargo in cargos:
+                    if term.lower() in cargo.lower():
+                        self.result.append({'id':cargo,
+                                            'name': '%s' % (cargo) })
+            elif action == 'activity':
+                atividades = self.getValuesField('atividades')
+                for atividade in atividades:
+                    if term.lower() in atividade.lower():
+                        self.result.append({'id':atividade,
+                                            'name': '%s' % (atividade) })
             return
         
     def getStructuresAndCountFile(self, context, relationship):
@@ -128,3 +142,12 @@ class AutocompleteView(grok.View):
                 result_units[unit.UID()] = unit.Title()
         
         return result_units
+    
+    def getValuesField(self, field, qtd=5):
+        field = ModelsConfgMyvindula().get_configuration_By_fields(field)
+        items = []
+        if field:
+            items = field.choices.splitlines()
+            if items:
+                items = sorted(items)
+        return items

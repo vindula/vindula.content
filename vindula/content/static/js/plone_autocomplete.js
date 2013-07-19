@@ -7,6 +7,9 @@ $j(document).ready(function() {
     createInputToken(url,$j(".document-format"),'Digite o tipo');
     createInputToken(url,$j(".unit-type"),'Digite o tipo da unidade');
     createInputToken(url,$j(".unit-location"),'Digite a localização');
+    createInputToken(url,$j(".cargo"),'Digite a localização');
+    createInputToken(url,$j(".activity"),'Digite a localização');
+    createInputToken(url,$j(".main-structure"),'Digite a localização');
     
 });
 
