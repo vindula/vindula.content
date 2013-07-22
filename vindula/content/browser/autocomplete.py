@@ -80,7 +80,7 @@ class AutocompleteView(grok.View):
             elif action == 'main-structure':
                 structures = self.getValuesByFieldName('unidadeprincipal', True)
                 for structure in structures.keys():
-                    if term.lower() in structure.Title().lower():
+                    if term.lower() in structure.Title().lower() or term.lower() in structure.getSiglaOrTitle().lower():
                         self.result.append({'id':structure.UID(),
                                             'name': '%s (%s)' % (structure.Title(), structures[structure]) })
             return
