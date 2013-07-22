@@ -168,7 +168,7 @@ class AutocompleteView(grok.View):
                 try:
                     value = eval(value.value)
                     value = value[0]
-                except NameError:
+                except(SyntaxError, NameError):
                     value = value.value
                 value = uuidToObject(value)
             else:
