@@ -1,5 +1,6 @@
 function executaAjax(ctx, b_start, b_size, sort_on){
 	var url = ctx.find('input#absolute_url').val(),
+        url_base = $j('base').attr('href'),
 		theme = ctx.find('input#theme').val(),
         structures = ctx.find('input#structures').val(),
         portal_type = ctx.find('input#portal_type').val(),
@@ -38,7 +39,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     $j.ajax({
         url: url,
         data: params,
-        dataType: 'POST',
+        type: 'POST',
         success: function(data){
             var dom = $j(data);
             
@@ -62,7 +63,16 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             {
                 content = dom.filter(ctx_id).find('.container').contents();
                 var paginator = dom.filter(ctx_id).find('.ajax_pagination').contents();
-            } 
+            }
+            
+            var list_js = ['/table_sorter.js'],
+                url_js = '';
+            for(var i=0;i<list_js.length;i++){
+                url_js = url_base + list_js[i];
+                $j.get(url_js, function(data){
+                    $j.globalEval(data);
+                });
+            }
             
             ctx.find('.container').html(content);
             ctx.find('.ajax_pagination').html(paginator);

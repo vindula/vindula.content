@@ -56,6 +56,7 @@ $j(document).ready(function(){
                 params_container['fields'] = fields;
                 params_container['type'] = $data_box.find('#type').val();
                 params_container['document-theme'] = params['document-theme'];
+                params_container['portal_type'] = params['portal-types'];
                 
                 $j.post(
                     url_display,

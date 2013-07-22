@@ -648,8 +648,7 @@
                                   structure request/structures|nothing;">
 
 
-                    <input type="hidden" tal:attributes="name python:theme and 'document-theme' or 'structure-owner';
-                                                         value python:theme or structure or '';">
+                    <input type="hidden" name="portal-types" value="Pessoas" />
 
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
@@ -726,7 +725,7 @@
                                     UO Principal
                                 </strong>
                                 <label class="right"
-                                       for="all-main-structure">
+                                       for="all-fb.">
                                     <input type="checkbox"
                                            value="all"
                                            id="all-main-structure"
@@ -738,15 +737,15 @@
 
                             <input placeholder="Digite a unidade principal" type="text" name="main-structure" id="main-structure" class="main-structure">
 
-                            <div tal:define="items view_macro/getFormatTypes">
+                            <div tal:define="items python:view_macro.getValuesByFieldName('unidadeprincipal', True)">
                                 <tal:rep repeat="item items/keys">
-                                    <label tal:attributes="for item">
+                                    <label tal:attributes="for item/UID">
                                         <input type="checkbox"
                                                name="main-structure"
-                                               tal:attributes="id item;
-                                                               value item;">
+                                               tal:attributes="id item/UID;
+                                                               value item/UID;">
                                         <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"></tal:rep>
                                     </label>
                                 </tal:rep>
                             </div>

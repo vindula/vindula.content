@@ -8,6 +8,9 @@ from plone.app.uuid.utils import uuidToObject
 from vindula.content.models.content import ModelsContent
 from vindula.content.browser.macros import Search, PDF, DOC, PPT, EXCEL
 
+from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
+from vindula.myvindula.models.funcdetails import FuncDetails
+
 from Products.CMFCore.utils import getToolByName
 from vindula.content.models.content_field import ContentField
 
@@ -44,142 +47,163 @@ class SearchFileterView(grok.View):
         query['portal_type'] = ['File',]
         start = False
         end = False
+        if form.get('portal-types') == 'Pessoas':
+            filter = {}
 
-        for item in form.items():
-            field, values = item[0], item[1]
-            field = field.replace('[', '').replace(']', '')
-            if values:
-                if field == 'document-type':
-                    if 'all' in values:
-                        values = self.getAllKeyword('tipo')
-                        values = values.keys()
-                    query['tipo'] = values
-                elif field == 'document-classification':
-                    if 'all' in values:
-                        values = self.getAllKeyword('classificacao')
-                        values = values.keys()
-                    query['classificacao'] = values
-                elif field == 'date-start':
-                    start = datetime.strptime(values, '%d/%m/%Y')
-                elif field == 'date-end':
-                    end = datetime.strptime(values, '%d/%m/%Y')
-                elif field == 'SearchableText':
-                    query['SearchableText'] = '*%s*' % values
-                elif field == 'document-theme':
-                    query['ThemeNews'] = values
-                elif field == 'document-format':
-                    query['content_type'] = eval(values)
-                elif field == 'document-subject': 
-                    query['Subject'] = values
-                elif field == 'unit-type':
-                    if 'all' in values:
-                        values = self.getAllKeyword('tipounidade')
-                        values = values.keys()
-                    query['tipounidade'] = values
-                elif field == 'structure-owner':
-                    if not isinstance(values, list): values = [values]
-                    if 'all' in values:
-                        if self.all_structures:
-                            objs = self.all_structures
-                        else:
-                            self.all_structures = self.getAllStructures()
-                            objs = self.all_structures
-                    else:
-                        objs = [uuidToObject(uuid) for uuid in values if uuid]
-                    references['structures'] = objs
-                elif field == 'structure-client':
-                    if not isinstance(values, list): values = [values]
-                    if 'all' in values:
-                        if self.all_structures:
-                            objs = self.all_structures
-                        else:
-                            self.all_structures = self.getAllStructures()
-                            objs = self.all_structures
-                    else:
-                        objs = [uuidToObject(uuid) for uuid in values if uuid]
-                    references['structuresClient'] = objs
-                elif field == 'unit-location':
-                    if not isinstance(values, list): values = [values]
-                    if 'all' in values:
-                        unit_locations = self.getAllUnits()
-                    else:
-                        unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
-                elif field == 'structure-selected':
-                    query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
-                elif field == 'portal-types':
-                    try:
-                        if isinstance(values, str):
-                            values = eval(values)
-                    except NameError:
-                        values = [values]
-                    query['portal_type'] = values
+            for item in form.items():
+                field, values = item[0], item[1]
+                field = field.replace('[', '').replace(']', '')
+                if values:
+                    if field == 'cargo':
+                        filter['cargos'] = '%'+values+'%'
+                    elif field == 'activity':
+                        filter['atividades'] = '%'+values+'%'
+                    elif field == 'main-structure':
+                        filter['unidadeprincipal'] = '%'+values+'%'
+                    elif field == 'SearchableText':
+                        filter['name'] = '%'+values+'%'
+                        filter['username'] = '%'+values+'%'
+            
+            users = FuncDetails.get_FuncDetailsByField(filter)
 
-        if start or end:
-            if not start:
-                query['effective'] = {'query':end, 'range': 'max'}
-            elif not end:
-                query['effective'] = {'query':start, 'range': 'min'}
-            else:
-                query['effective'] = {'query':(start, end), 'range': 'min:max'}
-        
-        if not 'File' in query.get('portal_type'):
-            query['review_state'] = ['published', 'internally_published', 'external']
-        
-        
-        files = self.catalog_tool(**query)
-        files = [i.UID for i in files]
-        if query.get('tipo') or \
-           query.get('classificacao') or \
-           query.get('effective') or \
-           query.get('SearchableText') or \
-           query.get('tipounidade'):
-            self.result = files
-        
-        aux_list_structures = []
-        for reference in references.items():
-            relationship, objs = reference[0], reference[1]
-            for obj in objs:
-                refs = self.reference_tool.getBackReferences(obj, relationship)
+            for user in users:
+                self.result.append(user.username)
+        else:
+            for item in form.items():
+                field, values = item[0], item[1]
+                field = field.replace('[', '').replace(']', '')
+                if values:
+                    if field == 'document-type':
+                        if 'all' in values:
+                            values = self.getAllKeyword('tipo')
+                            values = values.keys()
+                        query['tipo'] = values
+                    elif field == 'document-classification':
+                        if 'all' in values:
+                            values = self.getAllKeyword('classificacao')
+                            values = values.keys()
+                        query['classificacao'] = values
+                    elif field == 'date-start':
+                        start = datetime.strptime(values, '%d/%m/%Y')
+                    elif field == 'date-end':
+                        end = datetime.strptime(values, '%d/%m/%Y')
+                    elif field == 'SearchableText':
+                        query['SearchableText'] = '*%s*' % values
+                    elif field == 'document-theme':
+                        query['ThemeNews'] = values
+                    elif field == 'document-format':
+                        query['content_type'] = eval(values)
+                    elif field == 'document-subject': 
+                        query['Subject'] = values
+                    elif field == 'unit-type':
+                        if 'all' in values:
+                            values = self.getAllKeyword('tipounidade')
+                            values = values.keys()
+                        query['tipounidade'] = values
+                    elif field == 'structure-owner':
+                        if not isinstance(values, list): values = [values]
+                        if 'all' in values:
+                            if self.all_structures:
+                                objs = self.all_structures
+                            else:
+                                self.all_structures = self.getAllStructures()
+                                objs = self.all_structures
+                        else:
+                            objs = [uuidToObject(uuid) for uuid in values if uuid]
+                        references['structures'] = objs
+                    elif field == 'structure-client':
+                        if not isinstance(values, list): values = [values]
+                        if 'all' in values:
+                            if self.all_structures:
+                                objs = self.all_structures
+                            else:
+                                self.all_structures = self.getAllStructures()
+                                objs = self.all_structures
+                        else:
+                            objs = [uuidToObject(uuid) for uuid in values if uuid]
+                        references['structuresClient'] = objs
+                    elif field == 'unit-location':
+                        if not isinstance(values, list): values = [values]
+                        if 'all' in values:
+                            unit_locations = self.getAllUnits()
+                        else:
+                            unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
+                    elif field == 'structure-selected':
+                        query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
+                    elif field == 'portal-types':
+                        try:
+                            if isinstance(values, str):
+                                values = eval(values)
+                        except NameError:
+                            values = [values]
+                        query['portal_type'] = values
+    
+            if start or end:
+                if not start:
+                    query['effective'] = {'query':end, 'range': 'max'}
+                elif not end:
+                    query['effective'] = {'query':start, 'range': 'min'}
+                else:
+                    query['effective'] = {'query':(start, end), 'range': 'min:max'}
+            
+            if not 'File' in query.get('portal_type'):
+                query['review_state'] = ['published', 'internally_published', 'external']
+            
+            
+            files = self.catalog_tool(**query)
+            files = [i.UID for i in files]
+            if query.get('tipo') or \
+               query.get('classificacao') or \
+               query.get('effective') or \
+               query.get('SearchableText') or \
+               query.get('tipounidade'):
+                self.result = files
+            
+            aux_list_structures = []
+            for reference in references.items():
+                relationship, objs = reference[0], reference[1]
+                for obj in objs:
+                    refs = self.reference_tool.getBackReferences(obj, relationship)
+                    for ref in refs:
+                        ref_obj = ref.getSourceObject()
+                        if query.get('SearchableText'):
+                            has_searchable_text = True
+                            if ref_obj.UID() in self.result and \
+                               ref_obj.portal_type in query.get('portal_type'):
+                                aux_list_structures.append(ref_obj.UID())
+                        else:
+                            if ref_obj.UID() not in self.result and \
+                               ref_obj.portal_type in query.get('portal_type'):
+                                self.result.append(ref_obj.UID())
+                
+            if has_searchable_text and references: 
+                self.result = aux_list_structures
+                return
+            
+            aux_list_units = []
+            for location in unit_locations:
+                refs = self.reference_tool.getBackReferences(location, 'units')
                 for ref in refs:
                     ref_obj = ref.getSourceObject()
                     if query.get('SearchableText'):
-                        has_searchable_text = True
                         if ref_obj.UID() in self.result and \
                            ref_obj.portal_type in query.get('portal_type'):
-                            aux_list_structures.append(ref_obj.UID())
+                            aux_list_units.append(ref_obj.UID())
                     else:
                         if ref_obj.UID() not in self.result and \
                            ref_obj.portal_type in query.get('portal_type'):
                             self.result.append(ref_obj.UID())
-            
-        if has_searchable_text and references: 
-            self.result = aux_list_structures
-            return
-        
-        aux_list_units = []
-        for location in unit_locations:
-            refs = self.reference_tool.getBackReferences(location, 'units')
-            for ref in refs:
-                ref_obj = ref.getSourceObject()
-                if query.get('SearchableText'):
-                    if ref_obj.UID() in self.result and \
-                       ref_obj.portal_type in query.get('portal_type'):
-                        aux_list_units.append(ref_obj.UID())
-                else:
-                    if ref_obj.UID() not in self.result and \
-                       ref_obj.portal_type in query.get('portal_type'):
-                        self.result.append(ref_obj.UID())
-                        
-        if has_searchable_text and unit_locations: 
-            self.result = aux_list_structures
-            return
-
-        #verificar a logica disso
-        if not self.result and \
-           not unit_locations and \
-           not references:
-            self.result = files
-            
+                            
+            if has_searchable_text and unit_locations: 
+                self.result = aux_list_structures
+                return
+    
+            #verificar a logica disso
+            if not self.result and \
+               not unit_locations and \
+               not references:
+                self.result = files
+                
         return
     
     def getAllStructures(self):

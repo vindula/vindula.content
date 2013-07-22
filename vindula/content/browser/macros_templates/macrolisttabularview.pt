@@ -122,20 +122,19 @@
                                      b_size request/b_size|string:10;
                                      b_start python:0;
                                      b_start request/b_start | b_start;
-        
-                                     portal_type portal_type|request/portal_type|nothing;
+                                     
                                      fields fields|python:eval(request.fields) or None;
-        
-                                     list_files python:view_macro.list_files('', '', '', portal_type) or [];
+                                     
+                                     list_files python:view_macro.list_files('', '', '', 'Pessoas') or [];
                                      
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
-                    <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
+                    <input type="hidden" id="portal_type" name="portal_type" value="Pessoas">
                     <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
                     <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file?macro=personal" >
-                    <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUIDS(list_files)" >
+                    <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUserName(list_files)" >
                     
                     
                     <metal:block metal:use-macro="context/macro_tabular_file/macros/navegacao-macro" />

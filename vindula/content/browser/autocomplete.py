@@ -10,7 +10,9 @@ from vindula.content.browser.macros import Search, PDF, DOC, PPT, EXCEL
 from Products.CMFCore.utils import getToolByName
 from vindula.content.models.content_field import ContentField
 
+from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
 from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
+from plone.app.uuid.utils import uuidToObject
 
 import json
 
@@ -75,6 +77,12 @@ class AutocompleteView(grok.View):
                     if term.lower() in atividade.lower():
                         self.result.append({'id':atividade,
                                             'name': '%s' % (atividade) })
+            elif action == 'main-structure':
+                structures = self.getValuesByFieldName('unidadeprincipal', True)
+                for structure in structures.keys():
+                    if term.lower() in structure.Title().lower():
+                        self.result.append({'id':structure.UID(),
+                                            'name': '%s (%s)' % (structure.Title(), structures[structure]) })
             return
         
     def getStructuresAndCountFile(self, context, relationship):
@@ -150,4 +158,25 @@ class AutocompleteView(grok.View):
             items = field.choices.splitlines()
             if items:
                 items = sorted(items)
+        return items
+    
+    def getValuesByFieldName(self, field_name, is_object=False):
+        values = ModelsDadosFuncdetails.get_DadosFuncdetails_byFieldName(field_name)
+        items = {}
+        for value in values:
+            if is_object:
+                try:
+                    value = eval(value.value)
+                    value = value[0]
+                except NameError:
+                    value = value.value
+                value = uuidToObject(value)
+            else:
+                value = value.value
+                
+            if items.get(value):
+                items[value] += 1
+            else:
+                items[value] = 1
+        
         return items

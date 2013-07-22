@@ -9,6 +9,7 @@ from vindula.content.models.content_access import ModelsContentAccess
 
 from vindula.myvindula.models.funcdetails import FuncDetails
 from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
+from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from plone.app.uuid.utils import uuidToObject
@@ -84,16 +85,27 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     def list_files(self, subject, keywords, structures, portal_type):
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
-            uids = self.request.get('list_files[]', self.request.get('list_files'))
-            if uids:
+            values = self.request.get('list_files[]', self.request.get('list_files'))
+            if values:
                 try:
-                    if isinstance(uids, str):
-                        uids = eval(uids)
-                    return [uuidToObject(uuid) for uuid in uids]
-                except (SyntaxError, NameError):
-                    return [uuidToObject(uids)]
+                    if isinstance(values, str):
+                        values = eval(values)
+                except NameError:
+                    values = [values]
+
+                if 'Pessoas' in portal_type:
+                    try:
+                        return [FuncDetails(self.Convert_utf8(username)) for username in values]
+                    except (SyntaxError, NameError):
+                        return [FuncDetails(self.Convert_utf8(values))]
+                else:
+                    try:
+                        return [uuidToObject(uuid) for uuid in values]
+                    except (SyntaxError, NameError):
+                        return [uuidToObject(values)]
             else:
                 return []
+                
         if 'Pessoas' in portal_type:
             itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
         else:
@@ -171,7 +183,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     def getUIDS(self, obj_list):
         try:
-            obj_list.count
             if not isinstance(obj_list, list): obj_list = [obj_list]
         except AttributeError:
              pass
@@ -180,6 +191,17 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             return [i.UID() for i in obj_list]
         except TypeError:
             return [i.UID for i in obj_list]
+        except AttributeError:
+            return obj_list
+        
+    def getUserName(self, obj_list):
+        try:
+            if not isinstance(obj_list, list): obj_list = [obj_list]
+        except AttributeError:
+             pass
+
+        try:
+            return [i.username for i in obj_list]
         except AttributeError:
             return obj_list
 
@@ -332,7 +354,30 @@ class MacroFilterView(grok.View):
             if items:
                 items = sorted(items)
         return items[:qtd]
-            
+    
+    def getValuesByFieldName(self, field_name, is_object=False, qtd=5):
+        values = ModelsDadosFuncdetails.get_DadosFuncdetails_byFieldName(field_name)
+        items = {}
+        for value in values:
+            if is_object:
+                try:
+                    value = eval(value.value)
+                    value = value[0]
+                except NameError:
+                    value = value.value
+                value = uuidToObject(value)
+            else:
+                value = value.value
+                
+            if items.get(value):
+                items[value] += 1
+            else:
+                items[value] = 1
+        
+        od = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
+        items = od.items()
+        items.reverse()
+        return OrderedDict(items[:qtd])
     
 class MacroCommentsView(grok.View):
     grok.context(Interface)
