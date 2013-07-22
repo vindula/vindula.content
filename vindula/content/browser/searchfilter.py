@@ -53,17 +53,27 @@ class SearchFileterView(grok.View):
             for item in form.items():
                 field, values = item[0], item[1]
                 field = field.replace('[', '').replace(']', '')
+                
                 if values:
+                    if isinstance(values, list):
+                        values_filter = ''
+                        for value in values:
+                            values_filter += '%'+value+'%'
+                    else:
+                        values_filter = '%'+values+'%'
+                        
+                    values_filter = values_filter.replace('%%', '%')
+                    
                     if field == 'cargo':
-                        filter['cargos'] = '%'+values+'%'
+                        filter['cargos'] = values_filter
                     elif field == 'activity':
-                        filter['atividades'] = '%'+values+'%'
+                        filter['atividades'] = values_filter
                     elif field == 'main-structure':
-                        filter['unidadeprincipal'] = '%'+values+'%'
+                        filter['unidadeprincipal'] = values_filter
                     elif field == 'SearchableText':
-                        filter['name'] = '%'+values+'%'
-                        filter['username'] = '%'+values+'%'
-            
+                        filter['name'] = values_filter
+                        filter['username'] = values_filter
+                        
             users = FuncDetails.get_FuncDetailsByField(filter)
 
             for user in users:
