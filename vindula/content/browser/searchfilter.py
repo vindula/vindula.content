@@ -56,14 +56,12 @@ class SearchFileterView(grok.View):
                 
                 if values:
                     if isinstance(values, list):
-                        values_filter = ''
+                        values_filter = []
                         for value in values:
-                            values_filter += '%'+value+'%'
+                            values_filter.append('%'+value+'%')
                     else:
                         values_filter = '%'+values+'%'
                         
-                    values_filter = values_filter.replace('%%', '%')
-                    
                     if field == 'cargo':
                         filter['cargos'] = values_filter
                     elif field == 'activity':
