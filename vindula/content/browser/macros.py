@@ -69,8 +69,13 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                 date = history.get('time','').strftime('%d/%m/%Y')
             else:
                 date = datetime.fromtimestamp(history.get('time','')).strftime('%d/%m/%Y')
-
-            actor = self.get_prefs_user(history.get('actor',{}).get('username',''))
+            
+            if history:
+                actor = history.get('actor',{})
+                if actor:
+                    actor = actor.get('username','')
+                if actor:
+                    actor = self.get_prefs_user(actor)
 
             L.append({'actor': actor.get('name',''),
                       # 'action':  history.get('transition_title',''),
