@@ -82,7 +82,7 @@ class AutocompleteView(grok.View):
                 for structure in structures.keys():
                     if term.lower() in structure.Title().lower() or term.lower() in structure.getSiglaOrTitle().lower():
                         self.result.append({'id':structure.UID(),
-                                            'name': '%s (%s)' % (structure.Title(), structures[structure]) })
+                                            'name': '%s (%s)' % (structure.getSiglaOrTitle(), structures[structure]) })
             return
         
     def getStructuresAndCountFile(self, context, relationship):

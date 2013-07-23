@@ -167,17 +167,19 @@
                                     <a tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};">
                                         <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
                                         <div style="width: 120px; padding-left: 5px;" class="left">
-                                            <span tal:content="python: item.get('name')"></span>
+                                            <span tal:content="python:item.get('name')"></span>
                                         </div>
                                     </a>
                                 </td>
                                 
                                 <td width="40">
-                                    <span tal:content="python: item.get('cargo')"></span>
+                                    <span tal:content="python:item.get('cargo')"></span>
                                 </td>
                                 
                                 <td width="40">
-                                    <a tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
+                                    <a tal:define="structure item/get_unidadeprincipal|nothing" 
+                                       tal:attributes="href structure/absolute_url|nothing" 
+                                       tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
                                 </td>
                                 
                                 <td width="140" class="contact-column">
