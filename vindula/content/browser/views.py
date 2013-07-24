@@ -207,8 +207,11 @@ class VindulaWebServeObjectContent(grok.View):
                           'action':  history.get('transition_title',''),
                           'type': tipo,
                           'date':date,})
-
-            D['history'] = L
+            
+            if context.portal_type == 'File':
+                D['history'] = ['Documento criado']
+            else:
+                D['history'] = L
 
             D['details'] = {'uid': context.UID(),
                             'type': context.portal_type,
