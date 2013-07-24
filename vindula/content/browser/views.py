@@ -202,17 +202,18 @@ class VindulaWebServeObjectContent(grok.View):
                 actor = history.get('actor',{})
                 if not actor:
                     actor = ''
-
-                L.append({'actor': actor,
-                          'action':  history.get('transition_title',''),
-                          'type': tipo,
-                          'date':date,})
+                
+                dic_history = {'actor': actor,
+                               'type': tipo,
+                               'date':date,}
+                
+                if context.portal_type == 'File':
+                    dic_history['action'] = 'Documento criado'
+                else:
+                    dic_history['action'] = history.get('transition_title','')
+                
+                L.append(dic_history)
             
-            if context.portal_type == 'File':
-                D['history'] = ['Documento criado']
-            else:
-                D['history'] = L
-
             D['details'] = {'uid': context.UID(),
                             'type': context.portal_type,
                             'title': context.Title(),
