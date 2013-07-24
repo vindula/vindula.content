@@ -59,12 +59,12 @@
                                         <h6 tal:content="extension"></h6>
                                       </div>
                                   </div>
-                                  <div class="columns small-12">
+                                  <div class="columns small-12 title-more-access">
   	                                <tal:menosletras condition="python: view_macro_func.contaTitulo(ctx.Title) < 35">
           	                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
                   	                       tal:content= "ctx/Title" />
                           	        </tal:menosletras>
-                                 		<tal:maisletras condition="python: view_macro_func.contaTitulo(ctx.Title) > 35">
+                             		<tal:maisletras condition="python: view_macro_func.contaTitulo(ctx.Title) > 35">
                                     	    <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
                                                  tal:content= "python: ctx.Title()[:35] + '...' " />
   	                                </tal:maisletras>
