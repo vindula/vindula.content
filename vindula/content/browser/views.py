@@ -214,6 +214,8 @@ class VindulaWebServeObjectContent(grok.View):
                 
                 L.append(dic_history)
             
+            D['history'] = L
+            
             D['details'] = {'uid': context.UID(),
                             'type': context.portal_type,
                             'title': context.Title(),
