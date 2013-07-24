@@ -171,6 +171,8 @@ class VindulaWebServeObjectContent(grok.View):
 
         # stash the existing security manager so we can restore it
         old_security_manager = getSecurityManager()
+        try:username_logged = portal_membership.getAuthenticatedMember().getUserName()
+        except:username_logged = 'administrador'
 
         # create a new context, as the owner of the folder
         newSecurityManager(self.request,user_admin)
@@ -179,7 +181,7 @@ class VindulaWebServeObjectContent(grok.View):
         if context:
             HistoryView = ContentHistoryView(context, context.REQUEST)
             try:context_owner = context.getOwner().getUserName()
-            except: context_owner = 'administrador'
+            except:context_owner = 'administrador'
             image_content = ''
             if hasattr(context, 'getImageIcone'):
                 img = context.getImageIcone()
@@ -209,8 +211,8 @@ class VindulaWebServeObjectContent(grok.View):
                           'date':date,})
             
             if context.portal_type == 'File':
-                D['history'] = [{'actor': context_owner,
-                                 'action':  'Documento criado',
+                D['history'] = [{'actor': username_logged,
+                                 'action':  'Edited',
                                  'type': context.portal_type,
                                  'date':context.bobobase_modification_time().strftime('%Y-%m-%d %H:%M:%S'),}]
             else:
