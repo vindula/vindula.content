@@ -38,7 +38,7 @@
                                                                      CHECKED python:item_id in themes and 'checked' or '';"
                                                      type="checkbox" class="filter" name="document-theme" />
                                               <span class="checkbox">
-                                                  <tal:cont content="item_obj/title">title</tal:cont>
+                                                  <tal:cont content="item_id">title</tal:cont>
                                               </span>
 
                                           </label>
