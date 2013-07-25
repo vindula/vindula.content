@@ -91,7 +91,7 @@ class MacroListFileView(grok.View):
 #                                L.append(obj)
 #                        return L
                         return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
-                    except SyntaxError:
+                    except (NameError, SyntaxError):
                         return [uuidToObject(values).getStructures()]
                 else:
                     themes = self.request.get('document-theme[]', self.request.get('document-theme'))
