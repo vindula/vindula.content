@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from five import grok
-
+from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.interfaces import IBaseObject
 
 from zope.app.container.interfaces import IObjectRemovedEvent
@@ -12,14 +12,21 @@ from vindula.myvindula.models.plone_event import PloneEvent
 
 
 def addEventPlone(context, tipo):
+    portal_membership = getToolByName(context, "portal_membership")
+
     uid = context.UID()
     portal_type = context.portal_type
+
+    try:actor = portal_membership.getAuthenticatedMember().getUserName()
+    except:actor = 'administrador'
+
     if not 'portal_factory' in context.getPhysicalPath():
         print '-'*30
         print uid
         print tipo
+        print actor
         print '-'*30
-        PloneEvent().set_event(uid,portal_type)
+        PloneEvent().set_event(uid,portal_type,actor)
 
 
 #---------Criação de um objeto

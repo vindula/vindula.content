@@ -171,8 +171,9 @@ class VindulaWebServeObjectContent(grok.View):
 
         # stash the existing security manager so we can restore it
         old_security_manager = getSecurityManager()
-        try:username_logged = portal_membership.getAuthenticatedMember().getUserName()
-        except:username_logged = 'administrador'
+        
+        #usuario temporario para o tipo de conteudo ATFILE, que não tem History
+        username_logged = "XXusertmpXX"
 
         # create a new context, as the owner of the folder
         newSecurityManager(self.request,user_admin)
