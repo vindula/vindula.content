@@ -13,6 +13,7 @@ from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
 from vindula.myvindula.tools.utils import UtilMyvindula
 
 from plone.app.uuid.utils import uuidToObject
+from Products.ZCatalog.Lazy import LazyMap
 
 from datetime import datetime
 
@@ -187,7 +188,9 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     def getUIDS(self, obj_list):
         try:
-            if not isinstance(obj_list, list): obj_list = [obj_list]
+            if not isinstance(obj_list, list) and \
+               not isinstance(obj_list, LazyMap): 
+                obj_list = [obj_list]
         except AttributeError:
              pass
 
