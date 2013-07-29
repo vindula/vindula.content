@@ -131,7 +131,7 @@ VindulaNews_schema['allowDiscussion'].widget.visible = invisivel
 
 finalizeATCTSchema(VindulaNews_schema, folderish=False)
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
-VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
+VindulaNews_schema.changeSchemataForField('activ_share_footer', 'settings')
 VindulaNews_schema.changeSchemataForField('activ_discussion', 'settings')
 VindulaNews_schema.changeSchemataForField('themesNews', 'categorization')
 VindulaNews_schema.moveField('themesNews', before='subject')
