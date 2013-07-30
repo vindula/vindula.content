@@ -43,18 +43,6 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         success: function(data){
             var dom = $j(data);
             
-            /*
-            dom.filter('script').each(function(){
-                var content_script = this.text || this.textContent || this.innerHTML || ''
-                if (content_script)
-                    $j.eval(content_script);
-                else
-                    $j.get(this.src, function(data){
-                        $j.eval(data);
-                    })
-            });
-            */
-            
             // Feito assim pois tem fez que o dom retorna com o FIND e tem vez que retorna com o FILTER
             var content = dom.find(ctx_id+' .container').contents();
             if (content.length)
