@@ -28,7 +28,9 @@
 					</div>
 					<div class="portlet-user-info cell width-9 position-6">
 					     											     	      	
-			        	<h4><a class="profile-link" tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage}"
+			        	<h4><a class="profile-link" 
+                               tal:attributes="href string:${here/portal_url}/myvindulalistuser?user=${manage};
+                                               data-username manage;">
 							   tal:content="user_manage/name | obj/username|nothing">func</a></h4>
 			        	<p>
 			        		<span tal:replace="user_manage/position|nothing" /><br />
