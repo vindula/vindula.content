@@ -164,7 +164,9 @@
                         <tbody>
                             <tr tal:repeat="item batch">
                                 <td width="200">
-                                    <a tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};">
+                                    <a class="profile-link"
+                                       tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
+                                                       data-username python:item.get('username');">
                                         <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
                                         <div style="width: 120px; padding-left: 5px;" class="left">
                                             <span tal:content="python:item.get('name')"></span>
