@@ -88,7 +88,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
 
-    def list_files(self, subject, keywords, structures, portal_type):
+    def list_files(self, subject, keywords, structures, portal_type=[]):
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
             values = self.request.get('list_files[]', self.request.get('list_files'))
             if values:
