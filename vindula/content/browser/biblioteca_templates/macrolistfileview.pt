@@ -92,7 +92,7 @@
                                             <metal:use use-macro="context/macro_list_file/macros/contenttype" />
                                         </div>
             
-                                        <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or repeat['item'].end()">
+                                        <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or repeat['item'].end">
                                             <tal:structure content="structure python:'</div>\n</div>'"></tal:structure>
                                         </tal:cond>
             
