@@ -81,16 +81,19 @@ class MacroListFileView(grok.View):
             type = request.get('type')
             if values:
                 if type == 'structure':
+                    L = []
                     try:
                         if isinstance(values, str):
                             values = eval(values)
-#                        L = []
-#                        for uuid in values:
-#                            obj = uuidToObject(uuid)
-#                            if obj:
-#                                L.append(obj)
-#                        return L
-                        return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
+                            
+                        for uuid in values:
+                            obj = uuidToObject(uuid)
+                            if obj:
+                                struc = obj.getStructures()
+                                if struc not in L:
+                                    L.append(struc)
+                        return L
+#                        return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
                     except (NameError, SyntaxError):
                         return [uuidToObject(values).getStructures()]
                 else:
