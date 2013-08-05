@@ -72,7 +72,7 @@
                                                             <strong tal:content="item_object/Title"></strong></a>
                                                         <p tal:condition="item_object/getStructures|nothing"
                                                             tal:content="python:'%s%s' %
-                                                                        (item_object.getStructures() and item_object.getStructures().Title()+' / ',
+                                                                        (item_object.getStructures() and item_object.getStructures().getSiglaOrTitle()+' / ',
                                                                         item_object.bobobase_modification_time().strftime('%d/%m/%Y'))"></p>
                                                     </div>
                                                 </div>
