@@ -27,7 +27,7 @@
                 <div class="content-filter">
                     <div class="content-filter">
                         <form>
-                            <ul class="small-block-grid-2 large-block-grid-4">
+                            <ul class="small-block-grid-2 large-block-grid-4 list-content">
                                 <tal:rep repeat="item list_filter">
                                     <tal:def define="item_obj item/getObject|item;
                                                      item_id  item_obj/UID|item_obj">
@@ -51,7 +51,7 @@
                                                                      CHECKED python:item_id in structures and 'checked' or '';"
                                                      type="checkbox" class="filter" name="structure-owner" />
                                               <span class="checkbox"></span>
-                                              <tal:cont content="item_obj/title">title</tal:cont>
+                                              <tal:cont content="item_obj/getSiglaOrTitle|item_obj/title|nothing">title</tal:cont>
                                           </label>
                                         </li>
                                     </tal:def>
