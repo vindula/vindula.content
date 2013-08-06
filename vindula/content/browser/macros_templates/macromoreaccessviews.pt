@@ -78,7 +78,7 @@
 
                                       <p class="discrete">
                                         <small tal:condition="ctx/getTipo|nothing"
-                                               tal:replace="python: ' %s /' % ctx.getTipo()">Apresentação</small>
+                                               tal:replace="python: ' %s /' % ((len(ctx.getTipo()) < 35) and ctx.getTipo() or ctx.getTipo()[:35]+'...')">Apresentação</small>
 
                                         <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
                                             Acesse agora!
