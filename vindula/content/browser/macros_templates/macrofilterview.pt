@@ -362,7 +362,7 @@
                                                    tal:attributes="id item/UID;
                                                                    value item/UID;">
                                             <span class="custom checkbox"></span>
-                                            <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"> </tal:rep>
                                         </label>
                                     </tal:cond>
                                 </tal:rep>
@@ -396,7 +396,7 @@
                                                                    name string:structure-client;
                                                                    value item/UID;">
                                             <span class="custom checkbox"></span>
-                                            <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"> </tal:rep>
                                         </label>
                                     </tal:cond>
                                 </tal:rep>
