@@ -16,6 +16,7 @@ from plone.app.uuid.utils import uuidToObject
 from Products.ZCatalog.Lazy import LazyMap
 
 from datetime import datetime
+from DateTime import DateTime
 
 from collections import OrderedDict
 
@@ -95,7 +96,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                 try:
                     if isinstance(values, str):
                         values = eval(values)
-                except NameError:
+                except (SyntaxError, NameError):
                     values = [values]
 
                 if 'Pessoas' in portal_type:
@@ -158,33 +159,40 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
 
     def getValueField(self, item, attr):
+        data_object = {} 
+        
         try:
             #Retorna o valor do metodo passado
             result = getattr(item, attr)()
         except AttributeError:
-            return {'value': '',
-                    'name': ''}
+            return  {'value': '',
+                     'name': ''}
         except TypeError:
             #Retorna o valor do atributo passado
             result = getattr(item, attr)
 
         try:
-            return {'value': result.Title(),
-                    'name': result.Title(),
-                    'type': result.portal_type,
-                    'url': result.absolute_url(),}
+            data_object = {'value': result.Title(),
+                           'name': result.Title(),
+                           'type': result.portal_type,
+                           'url': result.absolute_url(),}
         except AttributeError:
             try:
-                return {'value': result,
-                        'name': item.Title(),
-                        'type': item.portal_type,
-                        'url': item.absolute_url(),}
+                data_object = {'value': result,
+                               'name': item.Title(),
+                               'type': item.portal_type,
+                               'url': item.absolute_url(),}
             except AttributeError:
-                return {'value': result,
-                        'name': result}
+                data_object = {'value': result,
+                               'name': result}
         except TypeError:
-            return {'value': result,
-                    'name': result}
+            data_object = {'value': result,
+                           'name': result}
+
+        if isinstance(data_object.get('value', ''), DateTime):
+            data_object['value'] = data_object['value'].strftime('%d/%m/%Y as %H:%M')
+            
+        return data_object
 
     def getUIDS(self, obj_list):
         try:
