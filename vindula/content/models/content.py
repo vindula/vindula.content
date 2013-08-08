@@ -72,8 +72,8 @@ class ModelsContent(Storm, BaseStore):
         if not path:
             path = context.portal_url.getPortalObject().getPhysicalPath()
 
-        # if rs:
-        #     query.update({'review_state': ['published', 'internally_published', 'external']})
+        if rs:
+            query.update({'review_state': ['published', 'internally_published', 'external']})
 
         query.update({'path': {'query':'/'.join(path)},
                      'sort_on':'effective',
