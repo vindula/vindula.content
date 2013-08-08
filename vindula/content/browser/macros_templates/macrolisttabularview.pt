@@ -21,7 +21,7 @@
                                      keywords request/keywords|request/keywords[]|python:'';
                                      structures structures|request/structures|request/structures[]|python:'';
         
-                                     list_files list_files|python:view_macro.list_files(subject,keywords,structures, portal_type) or [];
+                                     list_files list_files|python:view_macro.list_files(subject,keywords,structures, portal_type,fields) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
@@ -30,7 +30,7 @@
                     <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
                     <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file?macro=default" >
                     <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUIDS(list_files)" >
-                    
+
                     <meta:macro metal:define-macro="navegacao-macro">
                         <div id="paginacao">
                             <div id="size-nav" class="left">
@@ -67,10 +67,10 @@
                         </thead>
                         <tbody>
                             <tr tal:repeat="item batch">
-                                <tal:rep repeat="field fields"
+                                <tal:rep repeat="field item/fields"
                                          define="item_object item/getObject|python: item;">
         
-                                    <td tal:define="value_field python: view_macro.getValueField(item_object, field['attribute'])"
+                                    <td tal:define="value_field python: field"
                                         tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
                                                         width field/width|nothing;">
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">

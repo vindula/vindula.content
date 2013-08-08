@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import hashlib
 from five import grok
 from zope.interface import Interface
 from Products.CMFCore.utils import getToolByName
@@ -17,6 +18,9 @@ from Products.ZCatalog.Lazy import LazyMap
 
 from datetime import datetime
 from DateTime import DateTime
+
+from redis_cache import cache_it
+from vindula.myvindula.cache import get_redis_connection
 
 from collections import OrderedDict
 
@@ -84,39 +88,66 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                           'date':date,})
         return L
 
+import json
+
 class MacroListtabularView(grok.View, UtilMyvindula):
     grok.context(Interface)
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
 
-    def list_files(self, subject, keywords, structures, portal_type):
-        if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
-            values = self.request.get('list_files[]', self.request.get('list_files'))
-            if values:
-                try:
-                    if isinstance(values, str):
-                        values = eval(values)
-                except (SyntaxError, NameError):
-                    values = [values]
+    #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
+    def list_files(self, subject, keywords, structures, portal_type, fields=None):
+        #TODO: Solucao temporaria, fazer funcionar o decorator
+        redis = get_redis_connection()        
+        key = hashlib.md5('%s:%s:%s:%s:%s' %(subject,keywords,structures,portal_type,fields)).hexdigest()
+        key = 'Biblioteca:list_files:%s' % key
+        cached_data = redis.get(key)
+        if not cached_data:
+            if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
+                values = self.request.get('list_files[]', self.request.get('list_files'))
+                if values:
+                    try:
+                        if isinstance(values, str):
+                            values = eval(values)
+                    except (SyntaxError, NameError):
+                        values = [values]
 
-                if 'Pessoas' in portal_type:
-                    try:
-                        return [FuncDetails(self.Convert_utf8(username)) for username in values]
-                    except (SyntaxError, NameError):
-                        return [FuncDetails(self.Convert_utf8(values))]
+                    if 'Pessoas' in portal_type:
+                        try:
+                            return [FuncDetails(self.Convert_utf8(username)) for username in values]
+                        except (SyntaxError, NameError):
+                            return [FuncDetails(self.Convert_utf8(values))]
+                    else:
+                        try:
+                            return [uuidToObject(uuid) for uuid in values]
+                        except (SyntaxError, NameError):
+                            return [uuidToObject(values)]
                 else:
-                    try:
-                        return [uuidToObject(uuid) for uuid in values]
-                    except (SyntaxError, NameError):
-                        return [uuidToObject(values)]
+                    return []
+                    
+            if 'Pessoas' in portal_type:
+                itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
             else:
-                return []
-                
-        if 'Pessoas' in portal_type:
-            itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+                itens = self.busca_catalog(subject, keywords, structures, portal_type)
+                itens_dict = []
+                for i in itens:
+                    #pegando fields                
+                    item_fields = []
+                    for f in fields:
+                        item_fields.append(self.getValueField(i, f['attribute']))
+                    item = {'UID':i.UID,
+                            'fields':item_fields}
+
+                    itens_dict.append(item)
+
+            pipe = redis.pipeline()
+            pipe.setex(key, 600, json.dumps(itens_dict))
+            pipe.sadd('Biblioteca:keys:%s' % key, key)
+            pipe.execute()
+
+            return itens_dict
         else:
-            itens = self.busca_catalog(subject, keywords, structures, portal_type)
-        return itens
+            return json.loads(cached_data)
 
     def busca_catalog(self, subject, keywords, structures, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
@@ -182,9 +213,15 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                                'name': item.Title(),
                                'type': item.portal_type,
                                'url': item.absolute_url(),}
-            except AttributeError:
-                data_object = {'value': result,
-                               'name': result}
+            except:
+                try:
+                    data_object = {'value': result,
+                                   'name': item.Title,
+                                   'type': item.portal_type,
+                                   'url': item.getObject().absolute_url(),}
+                except AttributeError:
+                    data_object = {'value': result,
+                                   'name': result}
         except TypeError:
             data_object = {'value': result,
                            'name': result}
