@@ -68,7 +68,7 @@
                         <tbody>
                             <tr tal:repeat="item batch">
                                 <tal:rep repeat="field item/fields"
-                                         define="item_object item/getObject|python: item;">
+                                         define="item_object item/getObject|python:item;">
         
                                     <td tal:define="value_field python: field"
                                         tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
