@@ -45,7 +45,6 @@ class Search(object):
 
         self.result = portal_catalog(**query)
 
-
 class MacroPropertiesView(grok.View, UtilMyvindula):
     grok.context(Interface)
     grok.require('zope2.View')
@@ -87,7 +86,6 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                           # 'type': tipo,
                           'date':date,})
         return L
-
 
 class MacroListtabularView(grok.View, UtilMyvindula):
     grok.context(Interface)
@@ -310,27 +308,35 @@ class MacroFilterView(grok.View):
         
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
-        query = {}
-        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
-        query['portal_type'] = ('OrganizationalStructure',)
-        query['review_state'] = ['published', 'internally_published', 'external']
-        structures = self.catalog_tool(**query)
-        result_structures = {}
-        for structure in structures:
-            structure = structure.getObject()
-            count_file = 0
-            refs = self.reference_tool.getBackReferences(structure, relationship)
-            for ref in refs:
-                ref = ref.getSourceObject()
-                if ref.portal_type == 'File':
-                    count_file += 1
-            if count_file:
-                result_structures[structure] = count_file
+        key = hashlib.md5('%s:%s:%s' %(index,qtd,only)).hexdigest()
+        key = 'Biblioteca:getCountFilesByStructure::%s' % key
 
-        od = OrderedDict(sorted(result_structures.items(), key=lambda t: t[1]))
-        items = od.items()
-        items.reverse()
-        return OrderedDict(items[:qtd])
+        data = get_redis_cache(key)
+        if not data:
+            query = {}
+            query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
+            query['portal_type'] = ('OrganizationalStructure',)
+            query['review_state'] = ['published', 'internally_published', 'external']
+            structures = self.catalog_tool(**query)
+            result_structures = {}
+            for structure in structures:
+                structure = structure.getObject()
+                count_file = 0
+                refs = self.reference_tool.getBackReferences(structure, relationship)
+                for ref in refs:
+                    ref = ref.getSourceObject()
+                    if ref.portal_type == 'File':
+                        count_file += 1
+                if count_file:
+                    result_structures[structure] = count_file
+
+            od = OrderedDict(sorted(result_structures.items(), key=lambda t: t[1]))
+            items = od.items()
+            items.reverse()
+            data = OrderedDict(items[:qtd])
+            set_redis_cache(key,'Biblioteca:getTopIndex:keys',data,3600)
+
+        return data
 
     def getFormatTypes(self):
         content_types = self.getTopIndex('content_type', only=PDF+DOC+PPT+EXCEL)
