@@ -19,7 +19,7 @@ from Products.ZCatalog.Lazy import LazyMap
 from datetime import datetime
 from DateTime import DateTime
 
-from redis_cache import cache_it
+#from redis_cache import cache_it
 from vindula.myvindula.cache import get_redis_connection
 
 from collections import OrderedDict
