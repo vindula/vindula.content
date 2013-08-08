@@ -308,7 +308,7 @@ class MacroFilterView(grok.View):
         
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
-        key = hashlib.md5('%s:%s:%s' %(index,qtd,only)).hexdigest()
+        key = hashlib.md5('%s:%s' % (relationship,qtd)).hexdigest()
         key = 'Biblioteca:getCountFilesByStructure::%s' % key
 
         data = get_redis_cache(key)
@@ -333,7 +333,14 @@ class MacroFilterView(grok.View):
             od = OrderedDict(sorted(result_structures.items(), key=lambda t: t[1]))
             items = od.items()
             items.reverse()
-            data = OrderedDict(items[:qtd])
+            items = OrderedDict(items[:qtd])
+            data = []
+            for i in items.keys():
+                item = {'UID':i.UID(),
+                        'title':i.getSiglaOrTitle(),
+                        'qtd':items.get(i)}
+                data.append(item)
+
             set_redis_cache(key,'Biblioteca:getTopIndex:keys',data,3600)
 
         return data

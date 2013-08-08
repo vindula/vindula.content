@@ -354,7 +354,7 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
 
                             <div tal:define="items python:view_macro.getCountFilesByStructure('structures')">
-                                <tal:rep repeat="item items/keys">
+                                <tal:rep repeat="item items">
                                     <tal:cond condition="item">
                                         <label tal:attributes="for item/UID">
                                             <input type="checkbox"
@@ -362,7 +362,7 @@
                                                    tal:attributes="id item/UID;
                                                                    value item/UID;">
                                             <span class="custom checkbox"></span>
-                                            <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"> </tal:rep>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
                                         </label>
                                     </tal:cond>
                                 </tal:rep>
@@ -388,7 +388,7 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-client" id="structure-client" class="structure-client">
 
                             <div tal:define="items python:view_macro.getCountFilesByStructure('structuresClient')">
-                                <tal:rep repeat="item items/keys">
+                                <tal:rep repeat="item items">
                                     <tal:cond condition="item">
                                         <label tal:attributes="for item/UID">
                                             <input type="checkbox"
@@ -396,7 +396,7 @@
                                                                    name string:structure-client;
                                                                    value item/UID;">
                                             <span class="custom checkbox"></span>
-                                            <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"> </tal:rep>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
                                         </label>
                                     </tal:cond>
                                 </tal:rep>
