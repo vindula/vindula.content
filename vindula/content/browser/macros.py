@@ -20,7 +20,7 @@ from datetime import datetime
 from DateTime import DateTime
 
 #from redis_cache import cache_it
-from vindula.myvindula.cache import get_redis_connection
+from vindula.myvindula.cache import *
 
 from collections import OrderedDict
 
@@ -88,7 +88,6 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
                           'date':date,})
         return L
 
-import json
 
 class MacroListtabularView(grok.View, UtilMyvindula):
     grok.context(Interface)
@@ -97,11 +96,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
     def list_files(self, subject, keywords, structures, portal_type, fields=None):
-        #TODO: Solucao temporaria, fazer funcionar o decorator
-        redis = get_redis_connection()        
+        #TODO: Solucao temporaria, fazer funcionar o decorator     
         key = hashlib.md5('%s:%s:%s:%s:%s' %(subject,keywords,structures,portal_type,fields)).hexdigest()
-        key = 'Biblioteca:list_files:%s' % key
-        cached_data = redis.get(key)
+        key = 'Biblioteca:list_files::%s' % key
+        
+        cached_data = get_redis_cache(key)
         if not cached_data:
             if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
                 values = self.request.get('list_files[]', self.request.get('list_files'))
@@ -140,14 +139,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
                     itens_dict.append(item)
 
-            pipe = redis.pipeline()
-            pipe.setex(key, 600, json.dumps(itens_dict))
-            pipe.sadd('Biblioteca:keys:%s' % key, key)
-            pipe.execute()
+            set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
 
             return itens_dict
         else:
-            return json.loads(cached_data)
+            return cached_data
 
     def busca_catalog(self, subject, keywords, structures, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
@@ -187,7 +183,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             list_files = result
 
         return list_files
-
 
     def getValueField(self, item, attr):
         data_object = {} 
@@ -286,24 +281,32 @@ class MacroFilterView(grok.View):
     #Funcao que retorna o total de itens de cada vador de um determaninado indice
     #Se passar qtd=None retorna todos os itens
     def getTopIndex(self, index, qtd=5, only=[]):
-        stats = {}
-        index = self.catalog_tool._catalog.indexes[index]
-        for key in index.uniqueValues():
-            if key and (not only or str(key) in only):
-                t = index._index.get(key)
-                if type(t) is not int:
-                    stats[str(key)] = len(t)
-                else:
-                    stats[str(key)] = 1
+        key = hashlib.md5('%s:%s:%s' %(index,qtd,only)).hexdigest()
+        key = 'Biblioteca:getTopIndex::%s' % key
 
-        od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
-        items = od.items()
-        items.reverse()
-        
-        if qtd:
-            items = items[:qtd]
+        data = get_redis_cache(key)
+        if not data:
+            stats = {}
+            index = self.catalog_tool._catalog.indexes[index]
+            for key in index.uniqueValues():
+                if key and (not only or str(key) in only):
+                    t = index._index.get(key)
+                    if type(t) is not int:
+                        stats[str(key)] = len(t)
+                    else:
+                        stats[str(key)] = 1
+
+            od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
+            items = od.items()
+            items.reverse()
             
-        return OrderedDict(items)
+            if qtd:
+                items = items[:qtd]
+            
+            data = OrderedDict(items)
+            set_redis_cache(key,'Biblioteca:getTopIndex:keys',data,3600)
+
+        return data
         
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):
