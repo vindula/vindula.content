@@ -15,7 +15,7 @@
 
         </metal:js>
         <metal:styleslot fill-slot="style_slot">
-        	<link id="galleria-js" rel="stylesheet" type="text/css" media="screen"
+        	<link rel="stylesheet" type="text/css" media="screen" id="new-theme"
 			      tal:attributes="href string:${view/jsGalleria}/themes/twelve/galleria.twelve.css">
 			
 	        <style type="text/css">

@@ -68,9 +68,8 @@
                         <tbody>
                             <tr tal:repeat="item batch">
                                 <tal:rep repeat="field item/fields"
-                                         define="item_object item/getObject|python: item;">
-        
-                                    <td tal:define="value_field python: field"
+                                         define="item_object item/getObject|python:item;">
+                                    <td tal:define="value_field python:field.get('data_value')"
                                         tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
                                                         width field/width|nothing;">
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">

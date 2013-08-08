@@ -50,7 +50,7 @@
     </div>
     
     <div class="ajax_loader">
-        <img src="http://192.168.0.113/loader.gif">
+        <img tal:attributes="src string:${context/portal_url}/loader.gif" src="loader.gif">
     </div>
 </div>
 </body>

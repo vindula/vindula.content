@@ -97,7 +97,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         #TODO: Solucao temporaria, fazer funcionar o decorator     
         key = hashlib.md5('%s:%s:%s:%s:%s' %(subject,keywords,structures,portal_type,fields)).hexdigest()
         key = 'Biblioteca:list_files::%s' % key
-        
         cached_data = get_redis_cache(key)
         if not cached_data:
             if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
@@ -123,7 +122,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     return []
                     
             if 'Pessoas' in portal_type:
-                itens = FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+                return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
             else:
                 itens = self.busca_catalog(subject, keywords, structures, portal_type)
                 itens_dict = []
@@ -131,7 +130,15 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     #pegando fields                
                     item_fields = []
                     for f in fields:
-                        item_fields.append(self.getValueField(i, f['attribute']))
+                        field_dic = {}
+                        for att in f.items():
+                            if att[1]:
+                                if att[0] == 'attribute':
+                                    field_dic['data_value'] = self.getValueField(i, att[1])
+                                else:
+                                    field_dic[att[0]]=att[1]
+                        item_fields.append(field_dic)
+#                        item_fields.append(self.getValueField(i, f['attribute']))
                     item = {'UID':i.UID,
                             'fields':item_fields}
 
@@ -184,6 +191,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     def getValueField(self, item, attr):
         data_object = {} 
+        
+        try:
+            item = item.getObject()
+        except AttributeError:
+            pass
         
         try:
             #Retorna o valor do metodo passado
