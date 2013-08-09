@@ -139,7 +139,10 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                                     field_dic[att[0]]=att[1]
                         item_fields.append(field_dic)
 #                        item_fields.append(self.getValueField(i, f['attribute']))
-                    item = {'UID':i.UID,
+                    item_UID = i.UID
+                    if not isinstance(item_UID,str):
+                        item_UID = i.UID()
+                    item = {'UID':item_UID,
                             'fields':item_fields}
 
                     itens_dict.append(item)
