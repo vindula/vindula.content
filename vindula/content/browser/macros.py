@@ -513,6 +513,18 @@ class MacroMoreAccessViews(grok.View):
             url = base + "icon-ppoint.png"
         elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
             url = base + "icon-excel.png"
+        elif obj.portal_type in ['VindulaPhotoAlbum']:
+            photos = obj.contentValues()
+            if photos:
+                url = photos[0].absolute_url()+'/image_preview'
+            else:
+                url = base + "icon-default.png"
+        elif obj.portal_type in ['VindulaVideo']:
+            photo = obj.getImage_preview()
+            if photo:
+                url = photo.absolute_url()+'/image_preview'
+            else:
+                url = base + "icon-default.png"
         else:
             url = base + "icon-default.png"
 

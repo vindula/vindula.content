@@ -46,8 +46,8 @@
                             <div class="box-more-acess"
                                  tal:define="ctx item/content/getObject|nocall:item">
                                   <div class="container-of-type">
-                                      <div class="container-image columns small-12">
-                                          <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                                      <div tal:attributes="class python:'container-image columns small-12 %s' % (ctx.portal_type in ['VindulaPhotoAlbum', 'VindulaVideo'] and 'all-image' or 'default-image');">
+                                          <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx);" />
                                       </div>
 
                                       <div class="number-of-type">

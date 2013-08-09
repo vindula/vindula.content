@@ -31,6 +31,9 @@
             meta_type="Factory-based Type Information with dynamic views"/>		
 
     <object name="File"    
-            meta_type="Factory-based Type Information with dynamic views"/>     
+            meta_type="Factory-based Type Information with dynamic views"/>
+   
+    <object name="VindulaVideo"    
+            meta_type="Factory-based Type Information with dynamic views"/>  
  
 </object>

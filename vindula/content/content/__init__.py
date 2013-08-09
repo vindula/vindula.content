@@ -5,3 +5,4 @@ import vindulaportlet
 import vindulaphotoalbum
 import vindulaedital
 import unit
+import vindulavideo
