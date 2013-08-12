@@ -125,7 +125,7 @@
                                      
                                      fields fields|python:eval(request.fields) or None;
                                      
-                                     list_files python:view_macro.list_files('', '', '', 'Pessoas') or [];
+                                     list_files python:view_macro.list_files('', '', '', 'Pessoas', fields) or [];
                                      
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
