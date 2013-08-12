@@ -93,67 +93,68 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     grok.require('zope2.View')
 
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
-    def list_files(self, subject, keywords, structures, portal_type, fields=None):
-        #TODO: Solucao temporaria, fazer funcionar o decorator     
-        key = hashlib.md5('%s:%s:%s:%s:%s' %(subject,keywords,structures,portal_type,fields)).hexdigest()
-        key = 'Biblioteca:list_files::%s' % key
-        cached_data = get_redis_cache(key)
-        if not cached_data:
-            if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
-                values = self.request.get('list_files[]', self.request.get('list_files'))
-                if values:
+    def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[]):
+        if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
+            values = self.request.get('list_files[]', self.request.get('list_files'))
+            if values:
+                try:
+                    if isinstance(values, str):
+                        values = eval(values)
+                except (SyntaxError, NameError):
+                    values = [values]
+
+                if 'Pessoas' in portal_type:
                     try:
-                        if isinstance(values, str):
-                            values = eval(values)
+                        return [FuncDetails(self.Convert_utf8(username)) for username in values]
                     except (SyntaxError, NameError):
-                        values = [values]
-
-                    if 'Pessoas' in portal_type:
-                        try:
-                            return [FuncDetails(self.Convert_utf8(username)) for username in values]
-                        except (SyntaxError, NameError):
-                            return [FuncDetails(self.Convert_utf8(values))]
-                    else:
-                        try:
-                            return [uuidToObject(uuid) for uuid in values]
-                        except (SyntaxError, NameError):
-                            return [uuidToObject(values)]
+                        return [FuncDetails(self.Convert_utf8(values))]
                 else:
-                    return []
+                    try:
+                        objs = [uuidToObject(uuid) for uuid in values]
+                    except (SyntaxError, NameError):
+                        objs = [uuidToObject(values)]
                     
-            if 'Pessoas' in portal_type:
-                return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+                    return self.geraDicUIDAndFields(objs, fields)
             else:
-                itens = self.busca_catalog(subject, keywords, structures, portal_type)
-                itens_dict = []
-                for i in itens:
-                    #pegando fields                
-                    item_fields = []
-                    for f in fields:
-                        field_dic = {}
-                        for att in f.items():
-                            if att[1]:
-                                if att[0] == 'attribute':
-                                    field_dic['data_value'] = self.getValueField(i, att[1])
-                                else:
-                                    field_dic[att[0]]=att[1]
-                        item_fields.append(field_dic)
-#                        item_fields.append(self.getValueField(i, f['attribute']))
-                    item_UID = i.UID
-                    if not isinstance(item_UID,str):
-                        item_UID = i.UID()
-                    item = {'UID':item_UID,
-                            'fields':item_fields}
-
-                    itens_dict.append(item)
-
-            set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
-
-            return itens_dict
+                return []
         else:
-            return cached_data
-
-    def busca_catalog(self, subject, keywords, structures, portal_type):
+            #TODO: Solucao temporaria, fazer funcionar o decorator
+            key = hashlib.md5('%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields)).hexdigest()
+            key = 'Biblioteca:list_files::%s' % key
+            cached_data = get_redis_cache(key)
+            if not cached_data:
+                if 'Pessoas' in portal_type:
+                    return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+                else:
+                    itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
+                    itens_dict = self.geraDicUIDAndFields(itens, fields)
+                
+                set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
+                return itens_dict
+            else:
+                return cached_data
+    
+    def geraDicUIDAndFields(self, object_list, fields):
+        result = []
+        for i in object_list:
+            item_fields = []
+            for f in fields:
+                field_dic = {}
+                for att in f.items():
+                    if att[1]:
+                        if att[0] == 'attribute':
+                            field_dic['data_value'] = self.getValueField(i, att[1])
+                        else:
+                            field_dic[att[0]]=att[1]
+                item_fields.append(field_dic)
+            item_UID = i.UID
+            if not isinstance(item_UID,str):
+                item_UID = i.UID()
+            result.append({'UID':item_UID,
+                           'fields':item_fields})
+        return result
+    
+    def busca_catalog(self, subject, keywords, structures, theme, portal_type):
         rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
         review_state = True
@@ -170,6 +171,9 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
         if 'File' in portal_type:
             review_state = False
+            
+        if theme:
+            query['ThemeNews'] = theme
 
         search = Search(self.context,query,rs=review_state)
         list_files = search.result
@@ -239,21 +243,24 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             
         return data_object
 
-    def getUIDS(self, obj_list):
-        try:
-            if not isinstance(obj_list, list) and \
-               not isinstance(obj_list, LazyMap): 
-                obj_list = [obj_list]
-        except AttributeError:
-             pass
-
-        try:
-            return [i.UID() for i in obj_list]
-        except TypeError:
-            return [i.UID for i in obj_list]
-        except AttributeError:
-            return obj_list
-        
+#    def getUIDS(self, obj_list):
+#        try:
+#            if not isinstance(obj_list, list) and \
+#               not isinstance(obj_list, LazyMap): 
+#                obj_list = [obj_list]
+#        except AttributeError:
+#             pass
+#
+#        try:
+#            return [i.UID() for i in obj_list]
+#        except TypeError:
+#            return [i.UID for i in obj_list]
+#        except AttributeError:
+#            return obj_list
+    
+    def getUIDS(self, dict_obj_list):
+        return [i.get('UID') for i in dict_obj_list]
+    
     def getUserName(self, obj_list):
         try:
             if not isinstance(obj_list, list): obj_list = [obj_list]

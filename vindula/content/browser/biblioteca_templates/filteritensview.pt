@@ -24,7 +24,6 @@
 
                     <div id="itens">
                         <tal:def define="portal_type python: ('File',);
-                                         list_files view_macro/getItems;
                                          fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                         {'label': 'Número', 'attribute': 'getNumero'},
                                                         {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},

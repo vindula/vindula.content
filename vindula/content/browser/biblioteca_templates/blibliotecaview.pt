@@ -77,12 +77,12 @@
 
                     <div class="content">
                         <!-- ABA Documento -->
-                        <div class="conteiner" id="documento">
+                        <div class="conteiner" id="documento"
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
                             <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
 
                             <div id="itens">
-                                <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
-                                                 fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                                 {'label': 'Número', 'attribute': 'getNumero'},
                                                                 {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
                                                                 {'label': 'Título', 'attribute': 'Title'},];">

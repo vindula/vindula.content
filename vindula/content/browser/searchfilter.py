@@ -14,6 +14,8 @@ from vindula.myvindula.models.funcdetails import FuncDetails
 from Products.CMFCore.utils import getToolByName
 from vindula.content.models.content_field import ContentField
 
+from vindula.myvindula.cache import *
+
 from datetime import datetime
 import json
 
@@ -36,6 +38,9 @@ class SearchFileterView(grok.View):
         self.catalog_tool = getToolByName(context, 'portal_catalog')
         self.reference_tool = getToolByName(context, 'reference_catalog')
         self.all_structures = []
+
+        itens_dict = []
+        key = ''
         
         query = {}
         references = {}
@@ -47,6 +52,7 @@ class SearchFileterView(grok.View):
         query['portal_type'] = ['File',]
         start = False
         end = False
+
         if form.get('portal-types') == 'Pessoas':
             filter = {}
 
@@ -79,7 +85,12 @@ class SearchFileterView(grok.View):
             for item in form.items():
                 field, values = item[0], item[1]
                 field = field.replace('[', '').replace(']', '')
+                
                 if values:
+                    if str(values) in key:
+                        continue
+
+                    key += '%s:' % values
                     if field == 'document-type':
                         if 'all' in values:
                             values = self.getAllKeyword('tipo')
@@ -144,72 +155,80 @@ class SearchFileterView(grok.View):
                         except NameError:
                             values = [values]
                         query['portal_type'] = values
-    
-            if start or end:
-                if not start:
-                    query['effective'] = {'query':end, 'range': 'max'}
-                elif not end:
-                    query['effective'] = {'query':start, 'range': 'min'}
-                else:
-                    query['effective'] = {'query':(start, end), 'range': 'min:max'}
             
-            if not 'File' in query.get('portal_type'):
-                query['review_state'] = ['published', 'internally_published', 'external']
+            key = 'Biblioteca:searchfilter::%s' % key
+            cached_data = get_redis_cache(key)
             
-            
-            files = self.catalog_tool(**query)
-            files = [i.UID for i in files]
-            if query.get('tipo') or \
-               query.get('classificacao') or \
-               query.get('effective') or \
-               query.get('SearchableText') or \
-               query.get('tipounidade'):
-                self.result = files
-            
-            aux_list_structures = []
-            for reference in references.items():
-                relationship, objs = reference[0], reference[1]
-                for obj in objs:
-                    refs = self.reference_tool.getBackReferences(obj, relationship)
+            if not cached_data:
+                if start or end:
+                    if not start:
+                        query['effective'] = {'query':end, 'range': 'max'}
+                    elif not end:
+                        query['effective'] = {'query':start, 'range': 'min'}
+                    else:
+                        query['effective'] = {'query':(start, end), 'range': 'min:max'}
+                
+                if not 'File' in query.get('portal_type'):
+                    query['review_state'] = ['published', 'internally_published', 'external']
+                
+                
+                files = self.catalog_tool(**query)
+                files = [i.UID for i in files]
+                if query.get('tipo') or \
+                   query.get('classificacao') or \
+                   query.get('effective') or \
+                   query.get('SearchableText') or \
+                   query.get('tipounidade'):
+                    self.result = files
+                
+                aux_list_structures = []
+                for reference in references.items():
+                    relationship, objs = reference[0], reference[1]
+                    for obj in objs:
+                        refs = self.reference_tool.getBackReferences(obj, relationship)
+                        for ref in refs:
+                            ref_obj = ref.getSourceObject()
+                            if query.get('SearchableText'):
+                                has_searchable_text = True
+                                if ref_obj.UID() in self.result and \
+                                   ref_obj.portal_type in query.get('portal_type'):
+                                    aux_list_structures.append(ref_obj.UID())
+                            else:
+                                if ref_obj.UID() not in self.result and \
+                                   ref_obj.portal_type in query.get('portal_type'):
+                                    self.result.append(ref_obj.UID())
+                    
+                if has_searchable_text and references: 
+                    self.result = aux_list_structures
+                    return
+                
+                aux_list_units = []
+                for location in unit_locations:
+                    refs = self.reference_tool.getBackReferences(location, 'units')
                     for ref in refs:
                         ref_obj = ref.getSourceObject()
                         if query.get('SearchableText'):
-                            has_searchable_text = True
                             if ref_obj.UID() in self.result and \
                                ref_obj.portal_type in query.get('portal_type'):
-                                aux_list_structures.append(ref_obj.UID())
+                                aux_list_units.append(ref_obj.UID())
                         else:
                             if ref_obj.UID() not in self.result and \
                                ref_obj.portal_type in query.get('portal_type'):
                                 self.result.append(ref_obj.UID())
+                                
+                if has_searchable_text and unit_locations: 
+                    self.result = aux_list_structures
+                    return
+        
+                #verificar a logica disso
+                if not self.result and \
+                   not unit_locations and \
+                   not references:
+                     self.result = files
                 
-            if has_searchable_text and references: 
-                self.result = aux_list_structures
-                return
-            
-            aux_list_units = []
-            for location in unit_locations:
-                refs = self.reference_tool.getBackReferences(location, 'units')
-                for ref in refs:
-                    ref_obj = ref.getSourceObject()
-                    if query.get('SearchableText'):
-                        if ref_obj.UID() in self.result and \
-                           ref_obj.portal_type in query.get('portal_type'):
-                            aux_list_units.append(ref_obj.UID())
-                    else:
-                        if ref_obj.UID() not in self.result and \
-                           ref_obj.portal_type in query.get('portal_type'):
-                            self.result.append(ref_obj.UID())
-                            
-            if has_searchable_text and unit_locations: 
-                self.result = aux_list_structures
-                return
-    
-            #verificar a logica disso
-            if not self.result and \
-               not unit_locations and \
-               not references:
-                self.result = files
+                set_redis_cache(key,'Biblioteca:searchfilter:keys',self.result,600)
+            else:
+                self.result = cached_data
                 
         return
     

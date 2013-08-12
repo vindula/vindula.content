@@ -277,7 +277,8 @@
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
-                     SearchableTextFilter request/SearchableTextFilter|python:'';">
+                     SearchableTextFilter request/SearchableTextFilter|python:'';
+                     portal_type portal_type|request/portal_type|nothing">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -290,6 +291,9 @@
             </p>
             <div class="content-filter">
                 <form class="form-columns-tag" tal:condition="not_filter|python:True">
+                    
+                    <input type="hidden" name="portal-types" tal:attributes="value portal_type;">
+                    
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
                             <div class="clear label-filter">
@@ -490,6 +494,7 @@
 
                     <input type="hidden" tal:attributes="name python:theme and 'document-theme' or 'structure-owner';
                                                          value python:theme or structure or '';">
+                    
 
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
@@ -579,19 +584,19 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
 
                             <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndex('ThemeNews')">
-                                <tal:rep repeat="item items/keys">
+                                <tal:rep repeat="item items">
                                     <label tal:define="item_uid item/UID|nothing"
-                                           tal:attributes="for python:(theme and item_uid) or item">
+                                           tal:attributes="for python:(theme and item_uid) or item;">
                                         <input type="checkbox"
                                                tal:attributes="id python:(theme and item_uid) or item;
                                                                value python:(theme and item_uid) or item;
                                                                name class_filter;">
                                         <span class="custom checkbox"></span>
-                                        <tal:cond tal:condition="item/Title|nothing">
-                                          <tal:rep tal:content="python:'%s (%s)' % (theme and item.Title())"></tal:rep>
+                                        <tal:cond tal:condition="python:isinstance(item, str)">
+                                          <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
                                         </tal:cond>
-                                        <tal:cond tal:condition="not: item/Title|nothing">
-                                          <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                        <tal:cond tal:condition="python:not isinstance(item, str)">
+                                          <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
                                         </tal:cond>
                                     </label>
                                 </tal:rep>
