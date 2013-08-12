@@ -62,6 +62,9 @@ VindulaVideo_schema =  ATDocumentSchema.copy() + Schema((
 
 finalizeATCTSchema(VindulaVideo_schema, folderish=True)
 invisivel = {'view':'invisible','edit':'invisible',}
+
+VindulaVideo_schema['text'].widget.visible = invisivel 
+
 VindulaVideo_schema.changeSchemataForField('activ_portlteRight', 'settings')
 VindulaVideo_schema.changeSchemataForField('activ_portletLeft', 'settings')
 
