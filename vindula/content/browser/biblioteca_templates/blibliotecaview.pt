@@ -16,7 +16,7 @@
         <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
         
         <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
-                                                       data_type context/portal_type|nothing">
+                                               data_type context/portal_type|nothing">
         </div>
                                                        
         <div metal:define-macro="page-view"

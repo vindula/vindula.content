@@ -91,7 +91,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     grok.context(Interface)
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
-
+    
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
     def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[]):
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
@@ -122,13 +122,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             key = hashlib.md5('%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields)).hexdigest()
             key = 'Biblioteca:list_files::%s' % key
             cached_data = get_redis_cache(key)
-            if not cached_data:
-                if 'Pessoas' in portal_type:
-                    return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
-                else:
-                    itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
-                    itens_dict = self.geraDicUIDAndFields(itens, fields)
-                
+            if 'Pessoas' in portal_type:
+                return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+            elif not cached_data:
+                itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
+                itens_dict = self.geraDicUIDAndFields(itens, fields)
                 set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
                 return itens_dict
             else:
@@ -271,7 +269,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             return [i.username for i in obj_list]
         except AttributeError:
             return obj_list
-
+        
 class MacroFilterView(grok.View):
     grok.context(Interface)
     grok.name('macro_filter_file')

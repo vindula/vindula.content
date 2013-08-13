@@ -13,7 +13,7 @@
                                      b_size request/b_size|string:10;
                                      b_start python:0;
                                      b_start request/b_start | b_start;
-        
+
                                      portal_type portal_type|request/portal_type|python:[];
                                      fields fields|python:eval(request.fields) or None;
         
@@ -107,7 +107,7 @@
 </metal:view_macro>
 </tal:cond>
 
-<tal:cond condition="python:request.get('macro')=='personal'">>
+<tal:cond condition="python:request.get('macro')=='personal'">
 <metal:view_macro define-macro="personal_view">
     <div class="items">
         <script type="text/javascript" src=""
@@ -125,7 +125,7 @@
                                      
                                      fields fields|python:eval(request.fields) or None;
                                      
-                                     list_files python:view_macro.list_files('', '', '', 'Pessoas', fields) or [];
+                                     list_files python:view_macro.list_files('', '', '', '',  'Pessoas') or [];
                                      
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
