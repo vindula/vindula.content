@@ -746,8 +746,8 @@
 
                             <input placeholder="Digite a unidade principal" type="text" name="main-structure" id="main-structure" class="main-structure">
 
-                            <div tal:define="items python:view_macro.getValuesByFieldName('unidadeprincipal', True)">
-                                <tal:rep repeat="item items/keys">
+                            <div tal:define="items python:view_macro.getFiltroUnidade('unidadeprincipal', True)">
+                                <tal:rep repeat="item items">
                                     <tal:cond condition="item">
                                         <label tal:attributes="for item/UID">
                                             <input type="checkbox"
@@ -755,7 +755,7 @@
                                                    tal:attributes="id item/UID;
                                                                    value item/UID;">
                                             <span class="custom checkbox"></span>
-                                            <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"></tal:rep>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('sigla'), item.get('qtd'))"></tal:rep>
                                         </label>
                                     </tal:cond>
                                 </tal:rep>

@@ -441,14 +441,37 @@ class MacroFilterView(grok.View):
         return OrderedDict(items[:qtd])
     
     def getValuesField(self, field, qtd=5):
-        field = ModelsConfgMyvindula().get_configuration_By_fields(field)
-        items = []
-        if field:
-            items = field.choices.splitlines()
-            if items:
-                items = sorted(items)
-        return items[:qtd]
-    
+        key = generate_cache_key('vindula.content:Macros:getValuesField::',field=field,qtd=str(qtd))
+        items = get_redis_cache(key)
+        if not items:
+            field = ModelsConfgMyvindula().get_configuration_By_fields(field)
+            items = []
+            if field:
+                items = field.choices.splitlines()
+                if items:
+                    items = sorted(items)
+
+            items = items[:qtd]
+            set_redis_cache(key,'vindula.content:Macros:getValuesField:keys',items,7200)
+        return items
+
+    def getFiltroUnidade(self, field_name, is_object=False, qtd=5):
+        key = generate_cache_key('vindula.content:Macros:getFiltroUnidade::',
+                                 field_name=field_name,
+                                 is_object=str(is_object),
+                                 qtd=str(qtd))
+        L =  get_redis_cache(key)
+        if not L:
+            items = self.getValuesByFieldName(field_name, is_object, qtd)
+            L = []
+            for item in items:
+                item_dict = {'UID':item.UID(),
+                             'sigla':item.getSiglaOrTitle(),
+                             'qtd':items.get(item)}
+                L.append(item_dict)
+            set_redis_cache(key,'vindula.content:Macros:getFiltroUnidade:keys',L,7200)
+        return L
+
     def getValuesByFieldName(self, field_name, is_object=False, qtd=5):
         values = ModelsDadosFuncdetails.get_DadosFuncdetails_byFieldName(field_name)
         items = {}
@@ -471,7 +494,8 @@ class MacroFilterView(grok.View):
         od = OrderedDict(sorted(items.items(), key=lambda t: t[1]))
         items = od.items()
         items.reverse()
-        return OrderedDict(items[:qtd])
+        items = OrderedDict(items[:qtd])
+        return items
     
 class MacroCommentsView(grok.View):
     grok.context(Interface)

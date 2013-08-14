@@ -23,8 +23,7 @@
                                      theme theme|request/theme|python:'';
                                      
                                      list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields) or [];
-                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));
-                                     dummy python:view_macro.print_text('LIST FILES 1')">
+                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -128,8 +127,7 @@
                                      
                                      list_files python:view_macro.list_files('', '', '', '',  'Pessoas') or [];
                                      
-                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));
-                                     dummy python:view_macro.print_text('LIST FILES 2')">
+                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
