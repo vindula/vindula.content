@@ -92,6 +92,12 @@ class MacroListtabularView(grok.View, UtilMyvindula):
     grok.name('macro_tabular_file')
     grok.require('zope2.View')
     
+    def print_text(self,text):
+        print text
+
+    def getItem(self,username):
+        return FuncDetails(username)
+
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
     def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[]):
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
@@ -123,7 +129,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             key = 'Biblioteca:list_files::%s' % key
             cached_data = get_redis_cache(key)
             if 'Pessoas' in portal_type:
-                return FuncDetails.get_AllFuncDetails(self.Convert_utf8(subject))
+                return FuncDetails.get_AllFuncUsernameList(self.Convert_utf8(subject))
             elif not cached_data:
                 itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
                 itens_dict = self.geraDicUIDAndFields(itens, fields)

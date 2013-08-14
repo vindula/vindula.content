@@ -23,7 +23,8 @@
                                      theme theme|request/theme|python:'';
                                      
                                      list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields) or [];
-                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
+                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));
+                                     dummy python:view_macro.print_text('LIST FILES 1')">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -127,7 +128,8 @@
                                      
                                      list_files python:view_macro.list_files('', '', '', '',  'Pessoas') or [];
                                      
-                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
+                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));
+                                     dummy python:view_macro.print_text('LIST FILES 2')">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
                     <input type="hidden" id="b_start" tal:attributes="value b_start" />
@@ -162,39 +164,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr tal:repeat="item batch">
-                                <td width="200">
-                                    <a class="profile-link"
-                                       tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
-                                                       data-username python:item.get('username');">
-                                        <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
-                                        <div style="width: 120px; padding-left: 5px;" class="left">
-                                            <span tal:content="python:item.get('name')"></span>
-                                        </div>
-                                    </a>
-                                </td>
-                                
-                                <td width="40">
-                                    <span tal:content="python:item.get('cargo')"></span>
-                                </td>
-                                
-                                <td width="40">
-                                    <a tal:define="structure item/get_unidadeprincipal|nothing" 
-                                       tal:attributes="href structure/absolute_url|nothing" 
-                                       tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
-                                </td>
-                                
-                                <td width="140" class="contact-column">
-                                    <p tal:replace="structure item/getContato|nothing"></p>
-                                </td>
-                                
-                                <td class="action-column" width="40">
-                                    <a>
-                                        <div class="icon-action">
-                                            <i class="vindula-icon-cog"></i>
-                                        </div>
-                                    </a>
-                                </td>
+                            <tr tal:repeat="item_batch batch">
+                                <tal:item define="item python:view_macro.getItem(item_batch)">
+                                    <td width="200">
+                                        <a class="profile-link"
+                                           tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
+                                                           data-username python:item.get('username');">
+                                            <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
+                                            <div style="width: 120px; padding-left: 5px;" class="left">
+                                                <span tal:content="python:item.get('name')"></span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    
+                                    <td width="40">
+                                        <span tal:content="python:item.get('cargo')"></span>
+                                    </td>
+                                    
+                                    <td width="40">
+                                        <a tal:define="structure item/get_unidadeprincipal|nothing" 
+                                           tal:attributes="href structure/absolute_url|nothing" 
+                                           tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
+                                    </td>
+                                    
+                                    <td width="140" class="contact-column">
+                                        <p tal:replace="structure item/getContato|nothing"></p>
+                                    </td>
+                                    
+                                    <td class="action-column" width="40">
+                                        <a>
+                                            <div class="icon-action">
+                                                <i class="vindula-icon-cog"></i>
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tal:item>
                             </tr>
                         </tbody>
                      </table>
