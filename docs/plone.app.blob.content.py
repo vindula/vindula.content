@@ -90,6 +90,15 @@ ATBlobSchema += Schema((
              description=u"Digite o numero do documento.",
         ),
     ),
+    
+    IntegerField(
+        name='revisao',
+        widget=IntegerWidget(
+            label=_(u"Revisão"),
+            description=_(u"Número de revisão do documento."),
+        ),
+        default=0,
+    ),
 
     DateTimeField(
         name='vigencia',
