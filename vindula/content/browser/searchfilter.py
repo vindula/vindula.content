@@ -76,11 +76,16 @@ class SearchFileterView(grok.View):
                         filter['unidadeprincipal'] = values_filter
                     elif field == 'SearchableText':
                         filter['name'] = values_filter
-                        
+            
             users = FuncDetails.get_FuncDetailsByField(filter)
 
             for user in users:
-                self.result.append(user.username)
+                if not isinstance(user,unicode) and not isinstance(user,str):
+                    user = user.username
+
+                user = unicode(user)
+                self.result.append(user)
+
         else:
             for item in form.items():
                 field, values = item[0], item[1]
