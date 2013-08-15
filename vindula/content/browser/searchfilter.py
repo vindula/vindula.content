@@ -101,11 +101,10 @@ class SearchFileterView(grok.View):
                             values = self.getAllKeyword('tipo')
                             values = values.keys()
                         query['tipo'] = values
-                    elif field == 'document-classification':
-                        if 'all' in values:
-                            values = self.getAllKeyword('classificacao')
-                            values = values.keys()
-                        query['classificacao'] = values
+                    elif field == 'document-status':
+                        if 'all' in values or isinstance(values, list):
+                            continue
+                        query['getStatus'] = eval(values)
                     elif field == 'date-start':
                         start = datetime.strptime(values, '%d/%m/%Y')
                     elif field == 'date-end':

@@ -331,6 +331,13 @@ class MacroFilterView(grok.View):
             set_redis_cache(key,'Biblioteca:getTopIndex:keys',data,3600)
 
         return data
+    
+    #Funcao que retorna os status dos documentos
+    def getDocsStatus(self):
+        data = {'True': 'Vigente',
+                'False': 'Vencido'}  
+
+        return data
         
     #Funcao que retorna o as estruturas organizacionais e seus arquivos relacionados
     def getCountFilesByStructure(self, relationship, qtd=5):

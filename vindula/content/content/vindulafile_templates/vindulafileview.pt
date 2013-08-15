@@ -112,20 +112,20 @@
                                  <label class="alinhamento">Tipo:</label>
                                  <span tal:content="context/tipo|nothing"></span>
                              </li>
-                             <li>
+                             <li tal:condition="context/numero|nothing">
                                  <label class="alinhamento">Número:</label>
                                  <span tal:content="context/numero|nothing"></span>
                              </li>
 
-                             <tal:cond condition="context/vigencia">
+                             <tal:cond condition="context/getVigencia">
                                  <li>
                                     <label class="alinhamento">Vigencia:</label>
                                     <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y / %H:%m')"></span>
                                 </li>
                              </tal:cond>
                              <li>
-                                 <label class="alinhamento">Classificação:</label>
-                                 <span tal:content="context/classificacao|nothing"></span>
+                                 <label class="alinhamento">Status:</label>
+                                 <span tal:content="python:context.getStatus() and 'Vigente' or 'Vencido'"></span>
                              </li>
                         </ul>
 

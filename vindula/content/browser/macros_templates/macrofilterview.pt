@@ -412,27 +412,27 @@
                         <div class="block-filter">
                             <div class="clear label-filter">
                                 <strong class="left">
-                                    Classificação
+                                    Status
                                 </strong>
                                 <label class="right"
-                                       for="all-document-classification">
+                                       for="all-document-status">
                                     <input type="checkbox"
                                            value="all"
-                                           id="all-document-classification"
-                                           name="document-classification" />
+                                           id="all-document-status"
+                                           name="document-status" />
                                     <span class="custom checkbox"></span>Todos
                                 </label>
                             </div>
 
-                            <div tal:define="items python:view_macro.getTopIndex('classificacao')">
+                            <div tal:define="items view_macro/getDocsStatus">
                                 <tal:rep repeat="item items/keys">
                                     <label tal:attributes="for item">
                                         <input type="checkbox"
                                                tal:attributes="id item;
-                                                               name string:document-classification;
+                                                               name string:document-status;
                                                                value item;">
                                         <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                        <tal:rep tal:content="python:'%s' % (items.get(item))"> </tal:rep>
                                     </label>
                                 </tal:rep>
                             </div>
