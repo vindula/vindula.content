@@ -441,7 +441,7 @@ class MacroFilterView(grok.View):
         return OrderedDict(items[:qtd])
     
     def getValuesField(self, field, qtd=5):
-        key = generate_cache_key('vindula.content:Macros:getValuesField::',field=field,qtd=str(qtd))
+        key = generate_cache_key('vindula.content:Macros:getValuesField',field=field,qtd=str(qtd))
         items = get_redis_cache(key)
         if not items:
             field = ModelsConfgMyvindula().get_configuration_By_fields(field)
@@ -456,7 +456,7 @@ class MacroFilterView(grok.View):
         return items
 
     def getFiltroUnidade(self, field_name, is_object=False, qtd=5):
-        key = generate_cache_key('vindula.content:Macros:getFiltroUnidade::',
+        key = generate_cache_key('vindula.content:Macros:getFiltroUnidade',
                                  field_name=field_name,
                                  is_object=str(is_object),
                                  qtd=str(qtd))
