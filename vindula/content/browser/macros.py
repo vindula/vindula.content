@@ -120,7 +120,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                     except (SyntaxError, NameError):
                         objs = [uuidToObject(values)]
                     
-                    return self.geraDicUIDAndFields(objs, fields)
+                    return self.geraDicForFields(objs, fields)
             else:
                 return []
         else:
@@ -132,13 +132,13 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                 return FuncDetails.get_AllFuncUsernameList(self.Convert_utf8(subject))
             elif not cached_data:
                 itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
-                itens_dict = self.geraDicUIDAndFields(itens, fields)
+                itens_dict = self.geraDicForFields(itens, fields)
                 set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
                 return itens_dict
             else:
                 return cached_data
     
-    def geraDicUIDAndFields(self, object_list, fields):
+    def geraDicForFields(self, object_list, fields):
         result = []
         for i in object_list:
             item_fields = []
@@ -155,6 +155,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             if not isinstance(item_UID,str):
                 item_UID = i.UID()
             result.append({'UID':item_UID,
+                           'portal_type':i.portal_type,
                            'fields':item_fields})
         return result
     

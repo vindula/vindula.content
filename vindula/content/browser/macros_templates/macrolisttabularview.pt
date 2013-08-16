@@ -88,7 +88,7 @@
                                         <tal:cond condition="field/is_action|nothing">
                                             <a href="#" class="button-action"
                                                tal:attributes="id item/UID|nothing;
-                                                               type_object item/portal_type|nothing">
+                                                               type_object item/portal_type|nothing;">
                                                 <div class="icon-action">
                                                     <i class="vindula-icon-cog"></i>
                                                 </div>
