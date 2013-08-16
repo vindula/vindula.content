@@ -1,38 +1,53 @@
 <html metal:use-macro="context/main_template/macros/master">
 
-        <metal:js fill-slot="javascript_head_slot">
+<head>
+    <metal:js fill-slot="javascript_head_slot">
+    
+    </metal:js>
+    
+    <metal:styleslot fill-slot="style_slot">
+    
+    </metal:styleslot>
+</head>
 
-        </metal:js>
-
-        <metal:styleslot fill-slot="style_slot">
-
-        </metal:styleslot>
-
-    <body>
-        <div metal:fill-slot="content-core" class="row">
-            <div class="columns large-12">
-                <div class="container" id="documento"
-                     tal:define="view_macro nocall:context/@@list-filter;">
-
-                    <h5>
-                        <tal:replace tal:content="request/theme|theme|nothing" />
-                        <hr/>
-                    </h5>
-                    <br/>
-
-                    <metal:block metal:use-macro="context/macro_filter_file/macros/filter-selected" />
-
-                    <div id="itens">
-                        <tal:def define="portal_type python: ('File',);
-                                         fields python:[{'label': 'UO', 'attribute': 'getStructures'},
-                                                        {'label': 'Número', 'attribute': 'getNumero'},
-                                                        {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                        {'label': 'Título', 'attribute': 'Title'},];">
-                            <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
-                        </tal:def>
+<body>
+    <metal:main fill-slot="main">
+        <metal:main define-macro="main">
+            
+            <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load"></div>
+            <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
+            
+            <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
+                                           data_type context/portal_type|nothing">
+            </div>
+            
+            <div class="row content-core">
+                <div class="columns large-12">
+                    <div class="container" id="documento"
+                         tal:define="view_macro nocall:context/@@list-filter;">
+        
+                        <h5>
+                            <tal:replace tal:content="request/theme|theme|nothing" />
+                            <hr/>
+                        </h5>
+                        <br/>
+        
+                        <metal:block metal:use-macro="context/macro_filter_file/macros/filter-selected" />
+        
+                        <div id="itens">
+                            <tal:def define="portal_type python: ('File',);
+                                             fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                            {'label': 'Número', 'attribute': 'getNumero'},
+                                                            {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                            {'label': 'Título', 'attribute': 'Title'},];">
+                                <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                            </tal:def>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </body>
+            
+        </metal:main>
+    </metal:main>
+</body>
 </html>
