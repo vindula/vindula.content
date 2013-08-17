@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+
+	<head>
+ 		<metal:block fill-slot="top_slot">
+            <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>
+
+        </metal:block>
+	</head>
+	<body>
+		<metal:main fill-slot="main" >
+
+            <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+            <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+            <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
+                                                    data_type context/portal_type|nothing" />
+
+			<div class="content-core row">
+
+                <div class="columns large-12">
+                    <h5 class="title">
+                        <span tal:replace="string:${context/getSiglaunidade|nothing} - ${context/Title|nothing}"> ASCOM - Assessoria de Comunicação </span>
+                        <hr/>
+                    </h5>
+                </div>
+
+				<div class="columns large-9"
+                     tal:define="defaulValue python: view.getDefaultValue('home_principal')"
+					 tal:condition="python: context.getLayout_content() or defaulValue">
+
+					<tal:def define="context python:context.getLayout_content() or defaulValue">
+     					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
+     				</tal:def>
+
+				</div>
+				<div class="columns large-3"
+                     tal:define="defaulValue python: view.getDefaultValue('portlet_esquerdo')"
+					 tal:condition="python: context.getLayout_accessory() or defaulValue">
+
+					<tal:def define="context python:context.getLayout_accessory() or defaulValue;
+									 columns_accessory python:True" >
+      					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
+					</tal:def>
+
+				</div>
+			</div>
+		</metal:main>
+	</body>
+</html>

@@ -12,23 +12,31 @@
 
   <!-- Grok the package to initialise schema interfaces and content classes -->
   <grok:grok package="." />
-  
+
   <include package=".browser" />
   <include package=".portlets" />
-  
+
   <include package="plone.behavior" file="meta.zcml" />
   <include package="plone.directives.form" file="meta.zcml" />
   <include package="plone.directives.form" />
-  
+
+  <!--
+  <include package="archetypes.schemaextender" />
+  <adapter factory=".extender.ATFileExtender" />
+
+  <adapter factory="vindula.content.content.adapter.BlobbableVindulaFile" />
+  -->
+
   <i18n:registerTranslations directory="locales" />
   <!-- -*- extra stuff goes here -*- -->
   <five:registerPackage package="." initialize=".initialize" />
-  
-  <subscriber handler=".content.vindulaphotoalbum.CreatVindulaPhotoAlbum" />
-  
+
+  <subscriber handler=".content.orgstructure.subscribe.CreatElemetsOrganizationalStructure" />
   <subscriber for=".content.interfaces.IOrgstructureModifiedEvent"
-   			  handler=".content.orgstructure.CreatGroupInPloneSite" />
-   			  
+              handler=".content.orgstructure.subscribe.CreatGroupInPloneSite" />
+
+  <subscriber handler=".content.vindulaphotoalbum.CreatVindulaPhotoAlbum" />
+
   <!-- Register an extension profile to make the product installable
        in Plone -->
   <genericsetup:registerProfile
@@ -50,17 +58,34 @@
 
 
   <!-- -*- extra stuff goes here -*- -->
-  
+
   <include file="skins.zcml" />
-  
+
   <exclude package="collective.quickupload" file="configure.zcml" />
   <include package="collective.quickupload" file="minimal.zcml" />
-  
+
   <class class="vindula.content.content.vindulafolder.VindulaFolder">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
   </class>
   <class class="vindula.content.content.vindulaphotoalbum.VindulaPhotoAlbum">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
   </class>
+  
+  
+  <!-- Register the import step -->
+  <genericsetup:importStep
+      name="vindula.content"
+      title="vindula.content special import handlers"
+      description=""
+      handler="vindula.content.setuphandlers.import_various" />
+
+  <!-- Register the upgrade step -->
+  <genericsetup:upgradeStep
+      title="Add catalog indexes"
+      description=""
+      source="0001"
+      destination="2.0a3"
+      handler="vindula.content.setuphandlers.add_catalog_indexes"
+      profile="vindula.content:default" />
 
 </configure>

@@ -1,0 +1,8 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-share-content');">
+
+    <div class="vd_share" tal:attributes="data_uid context/UID;
+                                          data_type context/portal_type"></div>
+
+</metal:view_macro>
+

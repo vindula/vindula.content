@@ -3,40 +3,63 @@
 <portlets
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
-  
+
 	<portlet
 		addview="vindula.content.PortletEstruturaHierarquica"
 		title="Portlet Estrutura Hierárquica"
 		description="Portlet Estrutura Hierárquica">
-			
+
 			<!--for interface="vindula.content.content.orgstructure.IOrganizationalStructure" /-->
-	</portlet>	
+	</portlet>
 
 	<portlet
 		addview="vindula.content.VindulaCarregaPortlet"
 		title="Vindula Carrega Portlet"
 		description="Vindula Carrega Portlet">
-		
+
 	</portlet>
-	
+
 	<portlet
 		addview="vindula.content.PortletEO_Gestor"
 		title="Portlet EH - Gestor"
 		description="Portlet EH - Gestor">
-		
+
 	</portlet>
+
 	<portlet
 		addview="vindula.content.PortletEO_Colaboradores"
 		title="Portlet EH - Colaboradores"
 		description="Portlet EH - Colaboradores">
-		
+
 	</portlet>
-    
+
 	<portlet
         addview="vindula.content.VindulaNewsPortlet"
         title="Portlet Vindula News"
         description="Portlet Vindula News">
-        
-    </portlet>					
+
+    </portlet>
+
+    <portlet
+		addview="vindula.content.PortletAcoes"
+		title="Portlet de Ações"
+		description="Portlet de Ações">
+
+	</portlet>
+
+    <portlet
+		addview="vindula.content.PortletSeeAlso"
+		title="Portlet de Veja Também"
+		description="Portlet de Veja Também">
+
+	</portlet>
+
+    <portlet
+        addview="vindula.content.PortletVindulaSocial"
+        title="Portlet de Ações do Vindula Api"
+        description="Portlet de Ações do Vindula Api">
+
+    </portlet>
+
 
 </portlets>

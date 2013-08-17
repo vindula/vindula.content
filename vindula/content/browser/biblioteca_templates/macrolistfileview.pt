@@ -1,0 +1,112 @@
+<metal:view_macro define-macro="view">
+    
+    <div class="items">
+        <tal:block define="view_macro python:context.restrictedTraverse('macro_list_file');
+                           theme theme|nothing;
+                           structures structures|nothing;
+                           items view_macro/getRequestItems;
+                           items python:items or (theme and theme or structures);
+                           type request/type|python:theme and 'theme' or 'structure';
+                           sort_on request/sort_on|string:access;">
+    
+            <div class="container">
+                <input type="hidden" id="type" tal:attributes="value type" />
+                <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_list_file" />
+                
+                <tal:rep repeat="item items"
+                         condition="items">
+                    <div tal:attributes="class string:list_file ${item/Title|nothing}" id="list_file"
+                         tal:condition="batch"
+                         tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                                     b_size request/b_size|string:5;
+                                     b_start python:0;
+                                     b_start request/b_start | b_start;
+                                     list_files python: view_macro.list_files(type, item, sort_on) or [];
+                                     batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
+                                         
+                        <div class="titulo_area">
+                            <h5 class="left" tal:condition="python:type=='theme'">
+                                <a href="#" tal:content="item" tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?theme=${item}"></a>
+                            </h5>
+                            <h5 class="left" tal:condition="python:type=='structure'">
+                                <a href="#" tal:define="structure_title item/Title| python: view_macro.getStructures_byUID(item).Title()"
+                                            tal:content="structure_title"
+                                            tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?structures=${item/UID|item}"></a>
+                            </h5>
+                            <div class="right">
+                                <form class="left custom">
+                                    <select name="order_by"  id="customDropdown" class="right order_by medium">
+                                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais acessados</option>
+                                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens recentes</option>
+                                    </select>
+                                </form>
+                                <div class="right ajax_pagination" id="pag-nav">
+                                    <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+            
+                        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+                        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+            
+                        <div class="list-container">
+                            <div class="row">
+                                <tal:rep repeat="item batch">
+                                    <tal:cond condition="repeat/item/start">
+                                        <div class="columns large-6">
+                                            <metal:define define-macro="contenttype">
+                                                <div class="container-of-type" tal:define="item_object item/getObject|python:item">
+            
+                                                    <div class="image-content">
+                                                        <img class="type-file"
+                                                             src="++theme++vindula.themedefault/images/demos/demo2-Banner_Destaque.jpg"
+                                                             tal:attributes="src python: view_macro.get_url_typeIcone(item_object)"/>
+                                                    </div>
+            
+                                                    <div class="number-of-type">
+                                                        <h6 tal:content="repeat/item/number"></h6>
+                                                    </div>
+                                                    <div class="caption-of-type">
+                                                        <a tal:attributes="href string:${item_object/absolute_url}/view">
+                                                            <strong tal:content="item_object/Title"></strong></a>
+                                                        <p tal:condition="item_object/getStructures|nothing"
+                                                            tal:content="python:'%s%s' %
+                                                                        (item_object.getStructures() and item_object.getStructures().Title()+' / ',
+                                                                        item_object.bobobase_modification_time().strftime('%d/%m/%Y'))"></p>
+                                                    </div>
+                                                </div>
+                                            </metal:define>
+                                        </div>
+                                    </tal:cond>
+            
+                                    <tal:cond condition="not: repeat/item/start">
+            
+                                        <tal:cond condition="python:repeat['item'].number() == 2 or repeat['item'].number() == 4">
+                                            <tal:structure content="structure python: view_macro.getRowCssClass()"></tal:structure>
+                                            <!-- Esta renderizando a string a baixo -->
+                                            <!--div class="columns large-3"><div class="row">-->
+                                        </tal:cond>
+            
+                                        <div class="columns large-12">
+                                            <metal:use use-macro="context/macro_list_file/macros/contenttype" />
+                                        </div>
+            
+                                        <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or len(batch) == 2 or len(batch) == 4">
+                                            <tal:structure content="structure python:'</div>\n</div>'"></tal:structure>
+                                        </tal:cond>
+            
+                                    </tal:cond>
+                                </tal:rep>
+                            </div>
+                        </div>
+                        <!-- Spinner -->
+                        <div id="spinner" class="display-none" style="text-align:center; margin: 30px;">
+                            <img src="" alt="spinner" align="center" tal:attributes="src string:${context/portal_url}/++resource++vindula.myvindula.views/ajaxLoader.gif" />
+                        </div>
+                    </div>
+                </tal:rep>
+            </div>
+        </tal:block>
+    </div>
+</metal:view_macro>

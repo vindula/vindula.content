@@ -1,0 +1,16 @@
+<dl class="portlet" tal:define="view view/data">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <h6 class="tile" tal:content="view/get_title">Portlet Veja Tambem</h6>
+        <span class="portletTopRight"></span>
+    </dt>
+    <dd class="portletItem row" >
+        <metal:block metal:use-macro="context/macro-see_also-content/macros/portlet" />
+    </dd>
+    <dd class="portletFooter"></dd>
+    <div class="visualClear"></div>
+</dl>
+
+
+

@@ -33,3 +33,7 @@ class IVindulaEdital(Interface):
 
 class IVindulaContato(Interface):
     """ Interface for VindulaContato content type """
+
+class IVindulaFile(Interface):
+    """ Interface for VindulaFile content type """
+

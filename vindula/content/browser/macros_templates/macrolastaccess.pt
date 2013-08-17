@@ -1,0 +1,5 @@
+<metal:view_macro define-macro="view">
+    <div class="vd_last_access row" tal:attributes="data_type context/portal_type;
+                                                     data_uid context/UID;">
+    </div>
+</metal:view_macro>

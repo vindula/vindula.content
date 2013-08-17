@@ -9,7 +9,7 @@
     the metal:use-macro="context/list_news_batch/macros/navigation" statement in your
     template with a tal:define="batch_base_url YOUR_BASE_URL" tales expression.
 </tal:comment>
-<div class="listingBarBalls"
+<div class="listing-bar"
      metal:define-macro="navigation"
      
      tal:define="request request|context/request|container/request|nothing;
@@ -20,40 +20,33 @@
                  url batch_base_url | request/ACTUAL_URL;
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
-
-    <span class="previous float-left"
-      tal:define="p batch/previous | nothing"
-      
-      tal:condition="p">
-        <div id="cycle-prev" class="circle semi-circle-lf semi-circle float-left c-pointer">
-            <input name="prev" type="hidden" tal:attributes="value p/first" />
-            <img class="left" src="/++theme++vindula.themedefault/images/buttons/seta_left.png" title="Anterior"/>
-        </div>
-    </span>
-
-    <span class="next float-right"
-      tal:define="n batch/next | nothing"
-      tal:condition="n">
-        <div id="cycle-next" class="circle semi-circle-rg semi-circle float-left c-pointer">
-            <input name="next" type="hidden" tal:attributes="value n/first" />
-            <img class="right" src="/++theme++vindula.themedefault/images/buttons/seta_right.png" title="Próximo"/>
-        </div>
-    </span>
-
-    <tal:comment tal:condition="nothing">
-      Pagelist with quantum leap links to previous pages for quick navigation
-    </tal:comment>
-
-	<div id="geral_breadcrumb" style="padding: 3px 3px 0 !important;" class="float-left">
-		<span tal:content="batch/pagenumber">3457</span>
-		
-	    <tal:comment tal:replace="nothing">
-	      Link to last
-	    </tal:comment>
-	    <span>/ 
-	        <span tal:content="batch/numpages">3457</span>
-	    </span>
-	</div>
+    
+    <div style="padding: 3px 3px 0 !important;" class="left">
+        <strong tal:content="batch/pagenumber">3457</strong>
+        <span> de 
+            <span tal:content="batch/numpages">3457</span>
+        </span>
+    </div>    
+    
+    <div class="right">
+        <span class="previous left"
+              tal:define="p batch/previous|nothing"
+              tal:condition="p">
+            <div class="pagination" id="cycle-prev" class="left">
+                <input name="prev" type="hidden" tal:attributes="value p/first" />
+                <span class="previous"/>
+            </div>
+        </span>
+    
+        <span class="next right"
+              tal:define="n batch/next | nothing"
+              tal:condition="n">
+            <div class="pagination" id="cycle-next" class="left">
+                <input name="next" type="hidden" tal:attributes="value n/first" />
+                <span class="next"/>
+            </div>
+        </span>
+    </div>
 </div>
 
 </body>

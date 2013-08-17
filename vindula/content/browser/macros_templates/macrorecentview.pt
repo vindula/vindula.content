@@ -1,0 +1,93 @@
+<metal:view_macro define-macro="view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro_recent_content');
+                              absolute_url absolute_url|request/absolute_url|string:${context/portal_url}/macro_recent_content;
+                              portal_type portal_type|request/portal_type|string:File;
+                              list_itens list_itens|python:view_macro.list_files(portal_type);
+                              Batch python:modules['Products.CMFPlone'].Batch;
+                              b_size request/b_size|string:4;
+                              b_start python:0;
+                              accordion accordion|nothing;
+                              title_box title_box|request/title_box|nothing;
+                              b_start request/b_start | b_start;
+                              batch python:Batch(list_itens, int(b_size), int(b_start), pagerange=len(list_itens));">
+
+    <div tal:attributes="class python: accordion and 'list_file row accordion' or 'list_file row'" id="recent_view">
+        <input type="hidden" id="b_size" tal:attributes="value b_size" />
+        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+        <input type="hidden" id="absolute_url" tal:attributes="value absolute_url" >
+
+        <div class="title columns large-12">
+            <div class="right ajax_pagination" id="pag-nav">
+                <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+            </div>
+            <h4>
+                <tal:cond condition="accordion">
+                    <a href="#" tal:content="title_box" />
+                </tal:cond>
+                <tal:cond condition="not:accordion">
+                    <tal:replace tal:content="title_box" />
+                </tal:cond>
+                <hr/>
+            </h4>
+        </div>
+
+        <div class="container list-container">
+            <tal:rep repeat="item batch">
+                <div tal:attributes="class python:'large-%s columns' % (int(12/len(batch)))">
+
+                    <div class="box-more-acess"
+                         tal:define="ctx item/getObject|nocall:item">
+
+                        <div class="container-of-type">
+
+                            <div class="container-image">
+                                <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                            </div>
+
+                            <div class="number-of-type">
+                              <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>
+                            </div>
+                            <div class="extension-of-type" tal:condition="extension"
+                                 tal:define="extension python:view_macro.getExtension(ctx);">
+                                <h6 tal:content="extension"></h6>
+                            </div>
+                        </div>
+
+                        <div class="columns small-12 title-box">
+      				         <tal:menosletras condition="python: view_macro.contaTitulo(ctx.Title) < 35">
+  	                             <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+  	                                tal:content= "ctx/Title" />
+                  		     </tal:menosletras>
+                             <tal:maisletras condition="python: view_macro.contaTitulo(ctx.Title) > 35">
+                  		         <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                             		tal:content= "python: ctx.Title()[:35] + '...' " />
+                  			 </tal:maisletras>
+                        </div>
+                        <div class="columns small-12">
+
+                            <small tal:condition="ctx/getStructures|nothing"
+                                   tal:content="python:ctx.getStructures().Title()+' /'">ASCOM </small>
+                            <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
+
+                        </div>
+                        <div class="columns small-12">
+                            <p class="discrete">
+
+                              <small tal:condition="ctx/getTipo|nothing"
+                                     tal:replace="python: ' %s /' % ctx.getTipo()">Apresentação</small>
+
+                              <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
+                  					      Acesse agora!
+                  			      </tal:semacesso>
+                  			      <tal:comacesso condition="python: view_macro.ger_mount_access(ctx)">
+                  	              <span tal:replace="python:'%s acessos' % view_macro.ger_mount_access(ctx)" />
+                  			      </tal:comacesso>
+			                      </p>
+                        </div>
+                    </div>
+                </div>
+            </tal:rep>
+
+        </div>
+    </div>
+</metal:view_macro>

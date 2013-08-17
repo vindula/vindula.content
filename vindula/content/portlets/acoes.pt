@@ -1,0 +1,35 @@
+<dl class="portlet" tal:define="view view/data">
+
+	<dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <!-- <span class="tile" tal:content="view/get_title">Portlet Title</span> -->
+		<span class="tile">Ações</span>
+        <span class="portletTopRight"></span>
+    </dt>
+    <dd class="portletItem" tal:condition="not:view/check_content|nothing"> 
+        <div id="portlet-acoes"> 
+            <p>Este tipo de portlet só funciona dentro de estruturas organizacionais</p>
+            
+        </div>
+    </dd>
+    <dd class="portletItem" tal:condition="view/check_content|nothing">
+		<div id="portlet-acoes"> 
+			<p><a href="discussoes/discussoes">Iniciar Discussão</a></p>
+			<p><a href="paginas/paginas">Criar Página</a></p>
+			<p><a href="arquivos/arquivos">Subir Arquivo</a></p>
+			<p><a href="blog/blog">Escrever Artigo no Blog</a></p>
+			<p><a href="questionarios/questionarios">Criar Questionário</a></p>
+			<p><a href="projetos/projetos">Criar Projeto</a></p>
+			<p><a href="video-audio/video-audio">Subir Vídeo</a></p>
+			<p><a href="album-de-foto/album-de-foto">Criar Álbum de Fotos</a></p>
+			<p><a href="evento/evento">Criar Evento</a></p>
+			<p><a href="links/links">Criar Link</a></p>
+			<p><a href="evento/evento">Criar Classificado</a></p>
+			<p><a href="reserva/reserva">Efetuar Reserva</a></p>
+			<p><a href="formulario/formulario">Criar Formulário</a></p>
+
+		</div>
+	</dd>
+    <dd class="portletFooter"></dd>
+	<div class="visualClear"></div>
+</dl>

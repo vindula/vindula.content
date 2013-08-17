@@ -1,0 +1,28 @@
+<div metal:define-macro="view">
+    <div i18n:domain="plone" 
+         id="category" 
+         tal:define="categories context/Subject|nothing;
+         url_quote nocall:modules/Products.PythonScripts.standard/url_quote;"
+         tal:condition="categories">
+        <div class="accordion">
+            <div class="title">
+                <h5>
+                    <a class="" href="#">Tags</a>
+                    <hr/>
+                </h5>
+            </div>
+            
+            <div class="container">
+                <p>
+                    <span tal:repeat="category categories">
+                        <a href="" class="link-category" rel="tag" 
+                           tal:content="category" tal:define="quotedCat python:url_quote(category)" 
+                           tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@search?Subject%3Alist=${quotedCat}">Category
+                        </a>
+                        <span class="separator" tal:condition="not: repeat/category/end">/</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
