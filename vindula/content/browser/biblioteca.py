@@ -81,17 +81,20 @@ class MacroListFileView(grok.View):
             type = request.get('type')
             if values:
                 if type == 'structure':
+                    L = []
                     try:
                         if isinstance(values, str):
                             values = eval(values)
-#                        L = []
-#                        for uuid in values:
-#                            obj = uuidToObject(uuid)
-#                            if obj:
-#                                L.append(obj)
-#                        return L
-                        return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
-                    except SyntaxError:
+                            
+                        for uuid in values:
+                            obj = uuidToObject(uuid)
+                            if obj:
+                                struc = obj.getStructures()
+                                if struc not in L:
+                                    L.append(struc)
+                        return L
+#                        return [uuidToObject(uuid).getStructures() for uuid in values if uuidToObject(uuid)]
+                    except (NameError, SyntaxError):
                         return [uuidToObject(values).getStructures()]
                 else:
                     themes = self.request.get('document-theme[]', self.request.get('document-theme'))
@@ -163,6 +166,18 @@ class MacroListFileView(grok.View):
             url = base + "icon-ppoint.png"
         elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
             url = base + "icon-excel.png"
+        elif obj.portal_type in ['VindulaPhotoAlbum']:
+            photos = obj.contentValues()
+            if photos:
+                url = photos[0].absolute_url()+'/image_preview'
+            else:
+                url = base + "icon-default.png"
+        elif obj.portal_type in ['VindulaVideo']:
+            photo = obj.getImage_preview()
+            if photo:
+                url = photo.absolute_url()+'/image_preview'
+            else:
+                url = base + "icon-default.png"
         else:
             url = base + "icon-default.png"
 

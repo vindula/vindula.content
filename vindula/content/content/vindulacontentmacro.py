@@ -23,8 +23,13 @@ class IVindulaContentMacro(form.Schema):
                          Para gerenciar as macros <a href=\"/control-panel-objects/vindula_categories\" target=\"_blank\">clique aqui</a>."),
          source=ControlPanelMacro('vindula_categories', 'list_macros'),
          required=False,
-        )
-        
+    )
+    
+    deactivate_title = schema.Bool(
+        title=_(u"Desativar título"),
+        description=_(u'Selecione este campo para desativar o título do Content Macro'),
+        required=False,
+    )
   
 # View
   

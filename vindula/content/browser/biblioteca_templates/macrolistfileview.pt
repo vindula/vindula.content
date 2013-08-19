@@ -72,7 +72,7 @@
                                                             <strong tal:content="item_object/Title"></strong></a>
                                                         <p tal:condition="item_object/getStructures|nothing"
                                                             tal:content="python:'%s%s' %
-                                                                        (item_object.getStructures() and item_object.getStructures().Title()+' / ',
+                                                                        (item_object.getStructures() and item_object.getStructures().getSiglaOrTitle()+' / ',
                                                                         item_object.bobobase_modification_time().strftime('%d/%m/%Y'))"></p>
                                                     </div>
                                                 </div>
@@ -92,7 +92,7 @@
                                             <metal:use use-macro="context/macro_list_file/macros/contenttype" />
                                         </div>
             
-                                        <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or len(batch) == 2 or len(batch) == 4">
+                                        <tal:cond condition="python:repeat['item'].number() == 3 or repeat['item'].number() == 5 or repeat['item'].end">
                                             <tal:structure content="structure python:'</div>\n</div>'"></tal:structure>
                                         </tal:cond>
             

@@ -37,3 +37,6 @@ class IVindulaContato(Interface):
 class IVindulaFile(Interface):
     """ Interface for VindulaFile content type """
 
+class IVindulaVideo(Interface):
+    """ Interface for VindulaFile content type """
+

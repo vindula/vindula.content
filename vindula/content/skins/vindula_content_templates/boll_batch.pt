@@ -11,7 +11,6 @@
 </tal:comment>
 <div class="listing-bar"
      metal:define-macro="navigation"
-     
      tal:define="request request|context/request|container/request|nothing;
                  batch batch|nothing;
                  batchformkeys batchformkeys|nothing;
@@ -21,33 +20,38 @@
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
     
-    <div style="padding: 3px 3px 0 !important;" class="left">
-        <strong tal:content="batch/pagenumber">3457</strong>
-        <span> de 
-            <span tal:content="batch/numpages">3457</span>
-        </span>
-    </div>    
+    <div class="content-pagination">
+        <div style="padding: 3px 3px 0 !important;" class="left">
+            <strong tal:content="batch/pagenumber">3457</strong>
+            <span> de 
+                <span tal:content="batch/numpages">3457</span>
+            </span>
+        </div>    
+        
+        <div class="right">
+            <span class="previous left"
+                  tal:define="p batch/previous|nothing"
+                  tal:condition="p">
+                <div class="pagination" id="cycle-prev" class="left">
+                    <input name="prev" type="hidden" tal:attributes="value p/first" />
+                    <span class="previous"/>
+                </div>
+            </span>
+        
+            <span class="next right"
+                  tal:define="n batch/next | nothing"
+                  tal:condition="n">
+                <div class="pagination" id="cycle-next" class="left">
+                    <input name="next" type="hidden" tal:attributes="value n/first" />
+                    <span class="next"/>
+                </div>
+            </span>
+        </div>
+    </div>
     
-    <div class="right">
-        <span class="previous left"
-              tal:define="p batch/previous|nothing"
-              tal:condition="p">
-            <div class="pagination" id="cycle-prev" class="left">
-                <input name="prev" type="hidden" tal:attributes="value p/first" />
-                <span class="previous"/>
-            </div>
-        </span>
-    
-        <span class="next right"
-              tal:define="n batch/next | nothing"
-              tal:condition="n">
-            <div class="pagination" id="cycle-next" class="left">
-                <input name="next" type="hidden" tal:attributes="value n/first" />
-                <span class="next"/>
-            </div>
-        </span>
+    <div class="ajax_loader">
+        <img tal:attributes="src string:${context/portal_url}/loader.gif" src="loader.gif">
     </div>
 </div>
-
 </body>
 </html>

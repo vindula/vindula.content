@@ -76,8 +76,9 @@ ATBlobSchema += Schema((
         name='tipo',
         searchable = True,
         widget = SelectionWidget(
-            label=u"Tipo",
-            description=u"Selecione o tipo do documento.",
+            label=u"Tipologia",
+            description=u"Selecione a tipologia do documento.",
+            format = 'select', 
         ),
         vocabulary='get_tipo',
     ),
@@ -90,27 +91,25 @@ ATBlobSchema += Schema((
              description=u"Digite o numero do documento.",
         ),
     ),
+    
+    IntegerField(
+        name='revisao',
+        widget=IntegerWidget(
+            label=_(u"Revisão"),
+            description=_(u"Número de revisão do documento."),
+        ),
+        default=0,
+    ),
 
     DateTimeField(
         name='vigencia',
         searchable = True,
-        default_method = 'getDefaultTime',
+#        default_method = 'getDefaultTime',
         widget = CalendarWidget(
             label=u"Vigencia",
             description=u"Vigencia do documento",
             show_hm = False
         ),
-    ),
-
-    StringField(
-        "classificacao",
-        searchable = True,
-        widget = SelectionWidget(
-            label=u"Classificação",
-            description=u"Selecione a Classificação do documento.",
-        ),
-        vocabulary='get_classificacao',
-        required=False,
     ),
 
     LinesField(
@@ -239,21 +238,12 @@ class ATBlob(ATCTFileContent, ImageMixin):
     def getDefaultTime(self):
         return DateTime()
 
-    def get_classificacao(self):
-        content_fields = ContentField().get_content_file_by_type(u'classificacao')
-        L = []
-        for item in content_fields:
-            L.append((item,item))
-
-        return DisplayList(L)
-
-
-
     def get_tipo(self):
         content_fields = ContentField().get_content_file_by_type(u'tipo')
-        L = []
+        L = [('', '-- Selecione --')]
         for item in content_fields:
             L.append((item,item))
+            
         return DisplayList(tuple(L))
 
 
@@ -458,6 +448,12 @@ class ATBlob(ATCTFileContent, ImageMixin):
             url = base + "icon-default.png"
 
         return url
-
+    
+    def getStatus(self):
+        dt_vigencia = self.getVigencia()
+        if (not dt_vigencia or dt_vigencia > DateTime()):
+            return True
+        else:
+            return False
 
 registerType(ATBlob, packageName)

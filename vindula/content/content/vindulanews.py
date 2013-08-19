@@ -93,8 +93,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         name='activ_share',
         default=True,
         widget=BooleanWidget(
-            label="Ativar Compartilhamento - Superior",
-            description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área superior da página.',
+            label="Ativar Barra Social - Superior",
+            description='Caso selecionado, ativa a barra social na área superior da página.',
         ),
         required=False,
     ),
@@ -103,8 +103,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         name='activ_share_footer',
         default=True,
         widget=BooleanWidget(
-            label="Ativar Compartilhamento - Inferior",
-            description='Caso selecionado, ativa a opção de compartilhamento entre redes sociais, na área inferior da página.',
+            label="Ativar Barra Social - Inferior",
+            description='Caso selecionado, ativa a barra social na área inferior da página.',
         ),
         required=False,
     ),
@@ -113,8 +113,8 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         name='activ_discussion',
         default=True,
         widget=BooleanWidget(
-            label="Ativar Comentarios",
-            description='Caso selecionado, ativa a opção de comentarios.',
+            label="Ativar Comentários",
+            description='Caso selecionado, ativa a opção de comentários.',
         ),
         required=False,
     ),
@@ -131,7 +131,7 @@ VindulaNews_schema['allowDiscussion'].widget.visible = invisivel
 
 finalizeATCTSchema(VindulaNews_schema, folderish=False)
 VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
-VindulaNews_schema.changeSchemataForField('activ_share', 'settings')
+VindulaNews_schema.changeSchemataForField('activ_share_footer', 'settings')
 VindulaNews_schema.changeSchemataForField('activ_discussion', 'settings')
 VindulaNews_schema.changeSchemataForField('themesNews', 'categorization')
 VindulaNews_schema.moveField('themesNews', before='subject')

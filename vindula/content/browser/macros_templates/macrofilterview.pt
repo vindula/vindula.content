@@ -27,7 +27,7 @@
                 <div class="content-filter">
                     <div class="content-filter">
                         <form>
-                            <ul class="small-block-grid-2 large-block-grid-4">
+                            <ul class="small-block-grid-2 large-block-grid-4 list-content">
                                 <tal:rep repeat="item list_filter">
                                     <tal:def define="item_obj item/getObject|item;
                                                      item_id  item_obj/UID|item_obj">
@@ -38,7 +38,7 @@
                                                                      CHECKED python:item_id in themes and 'checked' or '';"
                                                      type="checkbox" class="filter" name="document-theme" />
                                               <span class="checkbox">
-                                                  <tal:cont content="item_obj/title">title</tal:cont>
+                                                  <tal:cont content="item_id">title</tal:cont>
                                               </span>
 
                                           </label>
@@ -51,7 +51,7 @@
                                                                      CHECKED python:item_id in structures and 'checked' or '';"
                                                      type="checkbox" class="filter" name="structure-owner" />
                                               <span class="checkbox"></span>
-                                              <tal:cont content="item_obj/title">title</tal:cont>
+                                              <tal:cont content="item_obj/getSiglaOrTitle|item_obj/title|nothing">title</tal:cont>
                                           </label>
                                         </li>
                                     </tal:def>
@@ -277,7 +277,8 @@
         <tal:dummy tal:define="use_js_filter python:request.set('filter-file-js',1);" />
     </tal:cond>
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
-                     SearchableTextFilter request/SearchableTextFilter|python:'';">
+                     SearchableTextFilter request/SearchableTextFilter|python:'';
+                     portal_type portal_type|request/portal_type|nothing">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -290,6 +291,9 @@
             </p>
             <div class="content-filter">
                 <form class="form-columns-tag" tal:condition="not_filter|python:True">
+                    
+                    <input type="hidden" name="portal-types" tal:attributes="value portal_type;">
+                    
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
                             <div class="clear label-filter">
@@ -354,15 +358,17 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
 
                             <div tal:define="items python:view_macro.getCountFilesByStructure('structures')">
-                                <tal:rep repeat="item items/keys">
-                                    <label tal:attributes="for item/UID">
-                                        <input type="checkbox"
-                                               name="structure-owner"
-                                               tal:attributes="id item/UID;
-                                                               value item/UID;">
-                                        <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
-                                    </label>
+                                <tal:rep repeat="item items">
+                                    <tal:cond condition="item">
+                                        <label tal:attributes="for item/UID">
+                                            <input type="checkbox"
+                                                   name="structure-owner"
+                                                   tal:attributes="id item/UID;
+                                                                   value item/UID;">
+                                            <span class="custom checkbox"></span>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
+                                        </label>
+                                    </tal:cond>
                                 </tal:rep>
                             </div>
 
@@ -386,15 +392,17 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-client" id="structure-client" class="structure-client">
 
                             <div tal:define="items python:view_macro.getCountFilesByStructure('structuresClient')">
-                                <tal:rep repeat="item items/keys">
-                                    <label tal:attributes="for item/UID">
-                                        <input type="checkbox"
-                                               tal:attributes="id item/UID;
-                                                               name string:structure-client;
-                                                               value item/UID;">
-                                        <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item.Title(), items.get(item))"> </tal:rep>
-                                    </label>
+                                <tal:rep repeat="item items">
+                                    <tal:cond condition="item">
+                                        <label tal:attributes="for item/UID">
+                                            <input type="checkbox"
+                                                   tal:attributes="id item/UID;
+                                                                   name string:structure-client;
+                                                                   value item/UID;">
+                                            <span class="custom checkbox"></span>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
+                                        </label>
+                                    </tal:cond>
                                 </tal:rep>
                             </div>
 
@@ -404,27 +412,27 @@
                         <div class="block-filter">
                             <div class="clear label-filter">
                                 <strong class="left">
-                                    Classificação
+                                    Status
                                 </strong>
                                 <label class="right"
-                                       for="all-document-classification">
+                                       for="all-document-status">
                                     <input type="checkbox"
                                            value="all"
-                                           id="all-document-classification"
-                                           name="document-classification" />
+                                           id="all-document-status"
+                                           name="document-status" />
                                     <span class="custom checkbox"></span>Todos
                                 </label>
                             </div>
 
-                            <div tal:define="items python:view_macro.getTopIndex('classificacao')">
+                            <div tal:define="items view_macro/getDocsStatus">
                                 <tal:rep repeat="item items/keys">
                                     <label tal:attributes="for item">
                                         <input type="checkbox"
                                                tal:attributes="id item;
-                                                               name string:document-classification;
+                                                               name string:document-status;
                                                                value item;">
                                         <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                        <tal:rep tal:content="python:'%s' % (items.get(item))"> </tal:rep>
                                     </label>
                                 </tal:rep>
                             </div>
@@ -486,6 +494,7 @@
 
                     <input type="hidden" tal:attributes="name python:theme and 'document-theme' or 'structure-owner';
                                                          value python:theme or structure or '';">
+                    
 
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
@@ -575,19 +584,19 @@
                             <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
 
                             <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndex('ThemeNews')">
-                                <tal:rep repeat="item items/keys">
+                                <tal:rep repeat="item items">
                                     <label tal:define="item_uid item/UID|nothing"
-                                           tal:attributes="for python:(theme and item_uid) or item">
+                                           tal:attributes="for python:(theme and item_uid) or item;">
                                         <input type="checkbox"
                                                tal:attributes="id python:(theme and item_uid) or item;
                                                                value python:(theme and item_uid) or item;
                                                                name class_filter;">
                                         <span class="custom checkbox"></span>
-                                        <tal:cond tal:condition="item/Title|nothing">
-                                          <tal:rep tal:content="python:'%s (%s)' % (theme and item.Title())"></tal:rep>
+                                        <tal:cond tal:condition="python:isinstance(item, str)">
+                                          <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
                                         </tal:cond>
-                                        <tal:cond tal:condition="not: item/Title|nothing">
-                                          <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"> </tal:rep>
+                                        <tal:cond tal:condition="python:not isinstance(item, str)">
+                                          <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
                                         </tal:cond>
                                     </label>
                                 </tal:rep>
@@ -737,16 +746,18 @@
 
                             <input placeholder="Digite a unidade principal" type="text" name="main-structure" id="main-structure" class="main-structure">
 
-                            <div tal:define="items python:view_macro.getValuesByFieldName('unidadeprincipal', True)">
-                                <tal:rep repeat="item items/keys">
-                                    <label tal:attributes="for item/UID">
-                                        <input type="checkbox"
-                                               name="main-structure"
-                                               tal:attributes="id item/UID;
-                                                               value item/UID;">
-                                        <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s (%s)' % (item.getSiglaOrTitle(), items.get(item))"></tal:rep>
-                                    </label>
+                            <div tal:define="items python:view_macro.getFiltroUnidade('unidadeprincipal', True)">
+                                <tal:rep repeat="item items">
+                                    <tal:cond condition="item">
+                                        <label tal:attributes="for item/UID">
+                                            <input type="checkbox"
+                                                   name="main-structure"
+                                                   tal:attributes="id item/UID;
+                                                                   value item/UID;">
+                                            <span class="custom checkbox"></span>
+                                            <tal:rep tal:content="python:'%s (%s)' % (item.get('sigla'), item.get('qtd'))"></tal:rep>
+                                        </label>
+                                    </tal:cond>
                                 </tal:rep>
                             </div>
                         </div>

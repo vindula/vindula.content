@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="pt-br"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+    
+	<head>
+        <metal:js fill-slot="javascript_head_slot">
+            <script type="text/javascript" 
+                    tal:attributes="src string:${context/portal_url}/++resource++vindula.content/js/vindula_video.js">
+            </script>
+        </metal:js>
+        <metal:styleslot fill-slot="style_slot">
+        </metal:styleslot>
+		
+		<metal:block fill-slot="top_slot">
+			<tal:cond tal:condition="not: context/getActiv_portletLeft">
+			     <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>	
+            </tal:cond>				
+            
+			<tal:cond tal:condition="not: context/getActiv_portlteRight">
+			     <tal:dummy tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);" />	
+			</tal:cond>
+            
+        </metal:block>
+		
+    </head>
+    <body>
+        <metal:main fill-slot="content-core">
+            
+            <tal:video define="video context/getFile_video|nothing;"
+                       tal:condition="nocall:video">
+                <a class="autoFlowPlayer" tal:attributes="href string:${context/absolute_url}/@@download/file_video/${video/filename};"></a>
+            </tal:video>
+            
+	    </metal:main>
+	</body>
+</html>

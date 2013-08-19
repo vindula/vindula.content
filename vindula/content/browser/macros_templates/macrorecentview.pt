@@ -39,9 +39,8 @@
                          tal:define="ctx item/getObject|nocall:item">
 
                         <div class="container-of-type">
-
-                            <div class="container-image">
-                                <img width="80px" tal:attributes="src python: view_macro.get_url_typeIcone(ctx) "/>
+                            <div tal:attributes="class python:'container-image %s' % (ctx.portal_type in ['VindulaPhotoAlbum', 'VindulaVideo'] and 'all-image' or 'default-image');">
+                                <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx);" />
                             </div>
 
                             <div class="number-of-type">
@@ -66,7 +65,7 @@
                         <div class="columns small-12">
 
                             <small tal:condition="ctx/getStructures|nothing"
-                                   tal:content="python:ctx.getStructures().Title()+' /'">ASCOM </small>
+                                   tal:content="python:ctx.getStructures().getSiglaOrTitle()+' /'">ASCOM </small>
                             <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
 
                         </div>
@@ -74,7 +73,7 @@
                             <p class="discrete">
 
                               <small tal:condition="ctx/getTipo|nothing"
-                                     tal:replace="python: ' %s /' % ctx.getTipo()">Apresentação</small>
+                                     tal:replace="python: ' %s /' % ((len(ctx.getTipo()) < 35) and ctx.getTipo() or ctx.getTipo()[:35]+'...')">Apresentação</small>
 
                               <tal:semacesso condition="not: python: view_macro.ger_mount_access(ctx)">
                   					      Acesse agora!

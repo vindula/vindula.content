@@ -16,7 +16,7 @@
         <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load"></div>
         
         <div class="vd_access" tal:attributes="data_uid context/UID|nothing;
-                                                       data_type context/portal_type|nothing">
+                                               data_type context/portal_type|nothing">
         </div>
                                                        
         <div metal:define-macro="page-view"
@@ -25,12 +25,12 @@
             <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
-            <tal:def define="portal_type python: ('File',);
+            <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
                              title_box string:Mais acessados">
                 <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
             </tal:def>
 
-            <tal:def define="portal_type python: ('File',);
+            <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
                              title_box string:Itens recentes">
                 <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
             </tal:def>
@@ -77,12 +77,12 @@
 
                     <div class="content">
                         <!-- ABA Documento -->
-                        <div class="conteiner" id="documento">
+                        <div class="conteiner" id="documento"
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
                             <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
 
                             <div id="itens">
-                                <tal:def define="portal_type python: ('File',);
-                                                 fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                                 {'label': 'Número', 'attribute': 'getNumero'},
                                                                 {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
                                                                 {'label': 'Título', 'attribute': 'Title'},];">

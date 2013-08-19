@@ -33,8 +33,9 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     params['absolute_url'] = url
     params['list_files'] = list_files
 
-	ctx.find('#spinner').removeClass('display-none');
+	ctx.find('.ajax_loader').show();
 	ctx.find('div.see_also_news').addClass('display-none');
+    ctx.find('div.content-pagination').css('opacity', '0.2');
 
     $j.ajax({
         url: url,
@@ -42,18 +43,6 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         type: 'POST',
         success: function(data){
             var dom = $j(data);
-            
-            /*
-            dom.filter('script').each(function(){
-                var content_script = this.text || this.textContent || this.innerHTML || ''
-                if (content_script)
-                    $j.eval(content_script);
-                else
-                    $j.get(this.src, function(data){
-                        $j.eval(data);
-                    })
-            });
-            */
             
             // Feito assim pois tem fez que o dom retorna com o FIND e tem vez que retorna com o FILTER
             var content = dom.find(ctx_id+' .container').contents();
@@ -76,6 +65,8 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             
             ctx.find('.container').html(content);
             ctx.find('.ajax_pagination').html(paginator);
+            ctx.find('.ajax_loader').hide();
+            ctx.find('div.content-pagination').css('opacity', '1');
     	}
     });
 }

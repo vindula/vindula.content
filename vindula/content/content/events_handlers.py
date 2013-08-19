@@ -7,12 +7,16 @@ from Products.Archetypes.interfaces import IBaseObject
 from zope.app.container.interfaces import IObjectRemovedEvent
 from Products.CMFCore.interfaces import IActionSucceededEvent
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent, IObjectModifiedEvent
+from zope.app.component.hooks import getSite
 
 from vindula.myvindula.models.plone_event import PloneEvent
 
 
 def addEventPlone(context, tipo):
-    portal_membership = getToolByName(context, "portal_membership")
+    try:
+        portal_membership = getToolByName(context, "portal_membership")
+    except AttributeError:
+        portal_membership = getToolByName(getSite(), "portal_membership")
 
     uid = context.UID()
     portal_type = context.portal_type
