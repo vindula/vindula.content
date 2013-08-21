@@ -112,9 +112,18 @@
                                  <label class="alinhamento">Tipo:</label>
                                  <span tal:content="context/tipo|nothing"></span>
                              </li>
-                             <li tal:condition="context/numero|nothing">
-                                 <label class="alinhamento">Número:</label>
-                                 <span tal:content="context/numero|nothing"></span>
+                             
+                             <li>
+                                 <tal:cond condition="context/numero|nothing">
+                                     <label class="alinhamento">Número:</label>
+                                     <span tal:content="context/numero|nothing"></span>
+                                 </tal:cond>
+                                 
+                                 <tal:cond condition="context/revisao|nothing">
+                                     <span tal:condition="context/numero|nothing">/</span>
+                                     <label class="alinhamento">Revisão:</label>
+                                     <span tal:content="context/revisao|nothing"></span>
+                                 </tal:cond>
                              </li>
 
                              <tal:cond condition="context/getVigencia">
