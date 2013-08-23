@@ -93,7 +93,7 @@
               <!-- tal:condition="not_filter|python:True" -->
                 <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
-                    <span class="more-itens">Refinar Pesquisa</span>
+                    <span class="more-itens">Pesquisa Avançada</span>
                 </a>
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
@@ -163,7 +163,7 @@
               <!-- tal:condition="not_filter|python:True" -->
                 <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
-                    <span class="more-itens">Refinar Pesquisa</span>
+                    <span class="more-itens">Pesquisa Avançada</span>
                 </a>
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
@@ -285,7 +285,7 @@
               <!-- tal:condition="not_filter|python:True" -->
                 <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
-                    <span class="more-itens">Refinar Pesquisa</span>
+                    <span class="more-itens">Pesquisa Avançada</span>
                 </a>
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Título, Resumo, Número ou Revisão" tal:attributes="value SearchableTextFilter" />
             </p>
@@ -481,7 +481,7 @@
               <!-- tal:condition="not_filter|python:True" -->
                 <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
-                    <span class="more-itens">Refinar Pesquisa</span>
+                    <span class="more-itens">Pesquisa Avançada</span>
                 </a>
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
@@ -646,7 +646,7 @@
               <!-- tal:condition="not_filter|python:True" -->
                 <a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
-                    <span class="more-itens">Refinar Pesquisa</span>
+                    <span class="more-itens">Pesquisa Avançada</span>
                 </a>
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
