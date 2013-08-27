@@ -148,9 +148,6 @@
                                     Nome
                                 </th>
                                 <th width="40">
-                                    Cargo
-                                </th>
-                                <th width="40">
                                     Unidade
                                 </th>
                                 <th width="140">
@@ -173,10 +170,6 @@
                                                 <span tal:content="python:item.get('name')"></span>
                                             </div>
                                         </a>
-                                    </td>
-                                    
-                                    <td width="40">
-                                        <span tal:content="python:item.get('cargo')"></span>
                                     </td>
                                     
                                     <td width="40">
