@@ -53,14 +53,10 @@
                         </div>
 
                         <div class="columns small-12 title-box">
-      				         <tal:menosletras condition="python: view_macro.contaTitulo(ctx.Title) < 35">
-  	                             <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
-  	                                tal:content= "ctx/Title" />
-                  		     </tal:menosletras>
-                             <tal:maisletras condition="python: view_macro.contaTitulo(ctx.Title) > 35">
-                  		         <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
-                             		tal:content= "python: ctx.Title()[:35] + '...' " />
-                  			 </tal:maisletras>
+                            
+                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                               tal:content="python:view_macro.limitTextSize(ctx.Title(), 35)" />
+
                         </div>
                         <div class="columns small-12">
 
