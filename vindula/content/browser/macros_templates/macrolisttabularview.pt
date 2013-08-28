@@ -114,7 +114,9 @@
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
         <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
-    
+        <script type="text/javascript" src=""
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/tabular_tile.js"></script>
+                
         <div class="filterFile list_file" id="tabular_view">
             <div class="container">
                 <tal:def tal:define="view_macro nocall:context/macro_tabular_file;
