@@ -40,13 +40,17 @@ class AutocompleteView(grok.View):
         action = form.get('action', None)
         term = form.get('term', None)
         self.result = [] # zero a variavel com os resultados
+        
         if term:
             if action == 'document-type':
                 tipos = self.getTipo()
+                #TODO:
+                #Ver como passar o portal_type atraves do JS para fazer a pesquisa somente pelos tipos de conteudos certos
+                #Nesse momento foi removido a cantagem de arquivos ex: 'Tipo 1 (12)'
                 for tipo in tipos.keys():
                     if term.lower() in tipo.lower():
                         self.result.append({'id':tipo,
-                                             'name': '%s (%s)' % (tipo,tipos.get(tipo)) })
+                                             'name': '%s' % (tipo) })
             elif action == 'structure-owner':
                 self.result = self.getStructuresAndCountFile(self.portal, 'structures')
             elif action =='structure-client':
