@@ -688,3 +688,19 @@ class MacroSeeAlso(grok.View):
             return obj.getImageIcone()
         else:
             return ''
+        
+class StructureModal(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('modal-structure')
+    
+    def convertUIDToStructure(self, UID):
+        return uuidToObject(UID);
+    
+    
+    
+    
+    
+    
+    
+    
