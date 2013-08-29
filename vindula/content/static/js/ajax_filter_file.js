@@ -67,7 +67,7 @@ $j(document).ready(function(){
                         if (!$dom.find('.container').length)
                             $contents = $dom.filter('.container');
                         
-                        var list_js = ['/table_sorter.js', '/++resource++vindula.myvindula.views/js/myvindula_modal.js'],
+                        var list_js = ['/table_sorter.js', '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
                             url_js = '';
                         for(var i=0;i<list_js.length;i++){
                             url_js = url_base + list_js[i];
