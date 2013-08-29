@@ -109,6 +109,9 @@ $j(document).ready(function(){
           .removeAttr('checked')
           .removeAttr('selected');
           
+        $j('input[name="SearchableTextFilter"]')
+          .val('');
+          
     });
     
      $j('.datepicker').datepicker({
