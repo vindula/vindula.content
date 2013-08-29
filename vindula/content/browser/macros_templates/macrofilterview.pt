@@ -194,7 +194,7 @@
     
                             <input placeholder="Digite o tipo da unidade" type="text" name="unit-type" id="unit-type" class="unit-type">
     
-                            <div tal:define="items python:view_macro.getTopIndex('tipounidade')">
+                            <div tal:define="items python:view_macro.getTopIndexByPortalType('tipounidade', portal_types)">
                                 <tal:rep repeat="item items/keys">
                                     <label tal:attributes="for item">
                                         <input type="checkbox"
@@ -312,7 +312,7 @@
 
                             <input placeholder="Digite o tipo" type="text" name="document-type" id="document-type" class="document-type">
 
-                            <div tal:define="items python:view_macro.getTopIndex('tipo')">
+                            <div tal:define="items python:view_macro.getTopIndexByPortalType('tipo', portal_type)">
                                 <tal:rep repeat="item items/keys">
                                     <label tal:attributes="for item">
                                         <input type="checkbox"
@@ -547,7 +547,7 @@
 
                             <input placeholder="Digite o tipo" type="text" name="document-type" id="document-type" class="document-type">
 
-                            <div tal:define="items python:view_macro.getTopIndex('tipo')">
+                            <div tal:define="items python:view_macro.getTopIndexByPortalType('tipo')">
                                 <tal:rep repeat="item items/keys">
                                     <label tal:attributes="for item">
                                         <input type="checkbox"
@@ -583,7 +583,7 @@
 
                             <input placeholder="Digite a letra inicial" type="text" name="structure-owner" id="structure-owner" class="structure-owner">
 
-                            <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndex('ThemeNews')">
+                            <div tal:define="items python:theme and view_macro.getCountFilesByStructure('structures') or view_macro.getTopIndexByPortalType('ThemeNews')">
                                 <tal:rep repeat="item items">
                                     <label tal:define="item_uid item/UID|nothing"
                                            tal:attributes="for python:(theme and item_uid) or item;">

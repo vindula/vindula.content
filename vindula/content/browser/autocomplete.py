@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from five import grok
+import hashlib
 from zope.interface import Interface
 from Products.CMFCore.interfaces import ISiteRoot
 from AccessControl import ClassSecurityInfo
@@ -15,6 +16,9 @@ from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
 from plone.app.uuid.utils import uuidToObject
 
 import json
+
+#from redis_cache import cache_it
+from vindula.myvindula.cache import *
 
 class AutocompleteView(grok.View):
     grok.context(Interface)
@@ -105,7 +109,7 @@ class AutocompleteView(grok.View):
         return result_structures
     
     def getTipo(self):
-        return self.getIndexesValue('tipo')
+        return self.getTopIndexByPortalType('tipo')
     
     def getFormatTypes(self):
         content_types = self.getIndexesValue('content_type', only=PDF+DOC+PPT+EXCEL)
@@ -135,6 +139,29 @@ class AutocompleteView(grok.View):
                     stats[str(key)] = 1
         
         return stats
+    
+    def getTopIndexByPortalType(self, name_index, portal_types=[]):
+        key = hashlib.md5('%s:%s' %(name_index,portal_types)).hexdigest()
+        key = 'Biblioteca:getTopIndexByPortalType::%s' % key
+        data = get_redis_cache(key)
+        if not data:
+            stats = {}
+            query = {'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}}
+            
+            if portal_types:
+                query['portal_types'] = portal_types
+            
+            index = self.catalog_tool._catalog.indexes[name_index]
+            for index_key in index.uniqueValues():
+                if index_key:
+                    query[name_index] = index_key
+                    items = self.catalog_tool(query)
+                    if items:
+                        stats[index_key] = len(items)
+
+            data = stats
+            set_redis_cache(key,'Biblioteca:getTopIndexByPortalType:keys',data,3600)
+        return data
     
     def getUnitLocations(self):
         query = {}

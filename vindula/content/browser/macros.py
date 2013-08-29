@@ -333,6 +333,38 @@ class MacroFilterView(grok.View):
 
         return data
     
+    def getTopIndexByPortalType(self, name_index, portal_types=[], qtd=5,):
+        key = hashlib.md5('%s:%s:%s' %(name_index,portal_types,qtd)).hexdigest()
+        key = 'Biblioteca:getTopIndexByPortalType::%s' % key
+
+        data = get_redis_cache(key)
+        if not data:
+            stats = {}
+            query = {'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}}
+            
+            if portal_types:
+                query['portal_types'] = portal_types
+            
+            index = self.catalog_tool._catalog.indexes[name_index]
+            for key_index in index.uniqueValues():
+                if key_index:
+                    query[name_index] = key_index
+                    items = self.catalog_tool(query)
+                    if items:
+                        stats[key_index] = len(items)
+
+            od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
+            items = od.items()
+            items.reverse()
+            
+            if qtd:
+                items = items[:qtd]
+            
+            data = OrderedDict(items)
+            set_redis_cache(key,'Biblioteca:getTopIndexByPortalType:keys',data,3600)
+
+        return data
+    
     #Funcao que retorna os status dos documentos
     def getDocsStatus(self):
         data = {'True': 'Vigente',
