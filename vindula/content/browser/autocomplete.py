@@ -149,7 +149,7 @@ class AutocompleteView(grok.View):
             query = {'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}}
             
             if portal_types:
-                query['portal_types'] = portal_types
+                query['portal_type'] = portal_types
             
             index = self.catalog_tool._catalog.indexes[name_index]
             for index_key in index.uniqueValues():
