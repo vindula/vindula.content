@@ -3,6 +3,8 @@
 	
   	<object name="vindula.content.content.vindulacontentmacro" meta_type="Dexterity FTI" />
   
+  	<object name="vindula.content.content.vindulacontentapi" meta_type="Dexterity FTI" />
+    
     <object name="VindulaNews"	
 			meta_type="Factory-based Type Information with dynamic views"/> 
     
