@@ -333,6 +333,38 @@ class MacroFilterView(grok.View):
 
         return data
     
+    def getTopIndexByPortalType(self, name_index, portal_types=[], qtd=5,):
+        key = hashlib.md5('%s:%s:%s' %(name_index,portal_types,qtd)).hexdigest()
+        key = 'Biblioteca:getTopIndexByPortalType::%s' % key
+
+        data = get_redis_cache(key)
+        if not data:
+            stats = {}
+            query = {'path': {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}}
+            
+            if portal_types:
+                query['portal_type'] = portal_types
+            
+            index = self.catalog_tool._catalog.indexes[name_index]
+            for key_index in index.uniqueValues():
+                if key_index:
+                    query[name_index] = key_index
+                    items = self.catalog_tool(query)
+                    if items:
+                        stats[key_index] = len(items)
+
+            od = OrderedDict(sorted(stats.items(), key=lambda t: t[1]))
+            items = od.items()
+            items.reverse()
+            
+            if qtd:
+                items = items[:qtd]
+            
+            data = OrderedDict(items)
+            set_redis_cache(key,'Biblioteca:getTopIndexByPortalType:keys',data,3600)
+
+        return data
+    
     #Funcao que retorna os status dos documentos
     def getDocsStatus(self):
         data = {'True': 'Vigente',
@@ -473,10 +505,11 @@ class MacroFilterView(grok.View):
             items = self.getValuesByFieldName(field_name, is_object, qtd)
             L = []
             for item in items:
-                item_dict = {'UID':item.UID(),
-                             'sigla':item.getSiglaOrTitle(),
-                             'qtd':items.get(item)}
-                L.append(item_dict)
+                if item:
+                    item_dict = {'UID':item.UID(),
+                                 'sigla':item.getSiglaOrTitle(),
+                                 'qtd':items.get(item)}
+                    L.append(item_dict)
             set_redis_cache(key,'vindula.content:Macros:getFiltroUnidade:keys',L,7200)
         return L
 
@@ -590,6 +623,18 @@ class MacroMoreAccessViews(grok.View):
             return ".XLS"
 
         return None
+    
+    def limitTextSize(self, text, size=100):
+        if len(text) > size:
+            i = size
+            try:
+                while text[i] != " ":
+                    i += 1
+                return text[:i]+'...'
+            except IndexError:
+                return text
+        else:
+            return text
 
 class MacroRecentView(MacroMoreAccessViews):
     grok.context(Interface)
@@ -598,8 +643,7 @@ class MacroRecentView(MacroMoreAccessViews):
 
 
     def contaTitulo(self, titulo):
-	return len(titulo())
-
+	       return len(titulo())
 
     def list_files(self, portal_type):
         list_files = []
@@ -677,3 +721,19 @@ class MacroSeeAlso(grok.View):
             return obj.getImageIcone()
         else:
             return ''
+        
+class StructureModal(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('modal-structure')
+    
+    def convertUIDToStructure(self, UID):
+        return uuidToObject(UID);
+    
+    
+    
+    
+    
+    
+    
+    

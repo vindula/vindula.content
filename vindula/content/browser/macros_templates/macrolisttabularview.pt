@@ -114,7 +114,9 @@
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
         <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
-    
+        <script type="text/javascript" src=""
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/tabular_tile.js"></script>
+                
         <div class="filterFile list_file" id="tabular_view">
             <div class="container">
                 <tal:def tal:define="view_macro nocall:context/macro_tabular_file;
@@ -148,9 +150,6 @@
                                     Nome
                                 </th>
                                 <th width="40">
-                                    Cargo
-                                </th>
-                                <th width="40">
                                     Unidade
                                 </th>
                                 <th width="140">
@@ -167,16 +166,13 @@
                                     <td width="200">
                                         <a class="profile-link"
                                            tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
-                                                           data-username python:item.get('username');">
+                                                           data-type string:UserObject;
+                                                           data-value python:item.get('username');">
                                             <img class="left" width="50" tal:attributes="src string:${context/portal_url}${item/getImageIcone|nothing};" />
                                             <div style="width: 120px; padding-left: 5px;" class="left">
                                                 <span tal:content="python:item.get('name')"></span>
                                             </div>
                                         </a>
-                                    </td>
-                                    
-                                    <td width="40">
-                                        <span tal:content="python:item.get('cargo')"></span>
                                     </td>
                                     
                                     <td width="40">
@@ -190,7 +186,9 @@
                                     </td>
                                     
                                     <td class="action-column" width="40">
-                                        <a>
+                                        <a href="#" class="button-action"
+                                           tal:attributes="id item/username|nothing;
+                                                           type_object string:UserObject;">
                                             <div class="icon-action">
                                                 <i class="vindula-icon-cog"></i>
                                             </div>

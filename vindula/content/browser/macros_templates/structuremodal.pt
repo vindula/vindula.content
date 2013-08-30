@@ -1,0 +1,76 @@
+<metal:macro define-macro="page-view"
+             tal:define="view_modal nocall:context/@@modal-structure;
+                         uid_structure request/content_value|nothing;">
+    
+    <tal:cond condition="uid_structure">
+        <div class="vindula-modal"
+             tal:define="structure python:view_modal.convertUIDToStructure(uid_structure);">
+                 
+            <div class="seta-box">
+                <img tal:attributes="src string:${context/portal_url}/++resource++vindula.tile/images/seta-box.png">
+            </div>
+            
+            <div class="personal-info">
+                <div class="clear">
+                    <div class="image-box left">
+                        <img tal:attributes="src python:structure.getImageSize('thumb')" width="90px" class="image-modal" />
+                    </div>
+                    <div class="info-box left">
+                        <h6 class="title-structure" tal:content="structure/getSiglaOrTitle"></h6>
+                        <p class="discrete" tal:content="structure/Title"></p>
+                        
+                        <!--tal:cond condition="user_profile/get_unidadeprincipal|nothing">
+                            <a tal:define="structure user_profile/get_unidadeprincipal;"
+                               tal:content="structure/getSiglaOrTitle"
+                               tal:attributes="href structure/absolute_url;
+                                               alt structure/getSiglaOrTitle;"></a>
+                        </tal:cond-->
+                        
+                        <div class="contato">
+                            <div class="block" tal:condition="structure/getEmail|nothing">
+                                <a href="#" tal:define="email structure/getEmail|string: "
+                                   tal:attributes="href python: 'mailto:'+ email"
+                                   tal:content="structure/getEmail|string: ">contato@empresa.com</a>
+                            </div>
+                            <div class="block" tal:condition="structure/getPhone_number|nothing">
+                                <span tal:content="structure/getPhone_number"></span>
+                            </div>
+                            <div class="block" 
+                                 tal:define="campus structure/getUnits|nothing"
+                                 tal:condition="campus">
+                                <strong>Campus:</strong>
+                                <a href="#" tal:content="campus/Title"
+                                   tal:attributes="href campus/absolute_url;
+                                                   alt campus/Title;">
+                                </a>
+                            </div>
+                            <div class="block" tal:condition="structure/getLocation|nothing">
+                                <strong>Localização:</strong>
+                                <span tal:content="structure/getLocation|string:">Lorem Ipsum, Ed. Sodeles, Amete daram 232</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear status-box">
+                    <span tal:content="structure/Description"></span>
+                </div>
+            </div>
+            
+            <div class="social-info">
+                <div class="social-follow clear">
+                    <!--div class="vd-social-left left" tal:define="UID uid_structure;
+                                                                 TYPES string:OrganizationalStructure;">
+                        <div metal:use-macro="context/macro-message-content/macros/view" />
+                    </div-->
+                    
+                    <div class="vd-social-left left" tal:define="UID uid_structure;
+                                                                 TYPES string:OrganizationalStructure;">
+                        <div metal:use-macro="context/macro-follow-content/macros/view" />
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </tal:cond>                  
+
+</metal:macro>

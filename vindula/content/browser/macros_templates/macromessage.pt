@@ -2,6 +2,6 @@
                   tal:define="view_macro python:context.restrictedTraverse('macro-message-content');">
 
     <div id="new_message_button" class="vd_message_button" tal:attributes="data_uid UID|context/UID;
-                                                                     data_type TYPES|context/portal_type"></div>
+                                                                           data_type TYPES|context/portal_type"></div>
 
 </metal:view_macro>
