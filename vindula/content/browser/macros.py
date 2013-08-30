@@ -505,10 +505,11 @@ class MacroFilterView(grok.View):
             items = self.getValuesByFieldName(field_name, is_object, qtd)
             L = []
             for item in items:
-                item_dict = {'UID':item.UID(),
-                             'sigla':item.getSiglaOrTitle(),
-                             'qtd':items.get(item)}
-                L.append(item_dict)
+                if item:
+                    item_dict = {'UID':item.UID(),
+                                 'sigla':item.getSiglaOrTitle(),
+                                 'qtd':items.get(item)}
+                    L.append(item_dict)
             set_redis_cache(key,'vindula.content:Macros:getFiltroUnidade:keys',L,7200)
         return L
 
