@@ -74,7 +74,7 @@
                                         tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
                                                         width field/width|nothing;">
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
-                                            <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
+                                            <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
                                                tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
                                                                title value_field/name|nothing">
                                                 <span tal:content="structure value_field/value|nothing"></span>
