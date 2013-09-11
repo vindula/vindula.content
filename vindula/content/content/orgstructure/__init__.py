@@ -55,8 +55,8 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSIn
         relationship='units',
         widget=VindulaReferenceSelectionWidget(
             typeview='list',
-            label=_(u"Escolha uma Unidade"),
-            description=_(u"Selecione uma Unidade"),
+            label=_(u"Escolha um Campus"),
+            description=_(u"Selecione o Campus da Unidade Organizacional"),
             ),
         required=False
     ),
