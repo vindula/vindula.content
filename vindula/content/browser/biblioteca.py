@@ -14,7 +14,7 @@ from plone.app.uuid.utils import uuidToObject
 class BlibliotecaView(grok.View):
     grok.context(Interface)
     grok.name('biblioteca-view')
-    grok.require('zope2.View')
+    grok.require('cmf.SetOwnPassword')
 
     themes = []
 
