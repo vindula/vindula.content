@@ -300,3 +300,44 @@ class VindulaWebServeObjectUser(grok.View):
 
         self.retorno = D
 
+
+
+class VindulaWebServeObjectGroup(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-object-group')
+    grok.require('zope2.View')
+
+    retorno = []
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        portal_membership = getToolByName(self.context, "portal_membership")
+        user_admin = portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(self.request,user_admin)
+
+        group = self.request.form.get('group','')
+        groups_tool = getToolByName(self.context, 'portal_groups')
+
+        group_obj = groups_tool.getGroupById(group)
+        members = group_obj.getGroupMembers()
+        
+        L = []
+        for member in members:
+            L.append({'username':member.getUserName(),
+                       'email':member.getProperty('email'),
+                       'fullname': member.getProperty('fullname')
+                     })
+
+        # restore the original context
+        setSecurityManager(old_security_manager)
+
+        self.retorno = L

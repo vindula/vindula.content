@@ -38,7 +38,7 @@
         
         <div class="vd_access" tal:attributes="data_uid context/UID|nothing; data_type context/portal_type|nothing"></div>                                             
         
-        <div id="_portlet_social">
+        <div id="_portlet_social" style="margin-top: 10px;">
 
             <div class="action" tal:attributes="data_uid context/UID|nothing;
                                                 data_type context/portal_type|nothing;
