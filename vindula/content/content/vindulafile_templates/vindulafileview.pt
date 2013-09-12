@@ -152,15 +152,22 @@
                         <p tal:condition="context/activ_download">
                           <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
                         </p>
-
-                        <metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
-
-                        <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
-
-                        <metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
-
+                        
                         <tal:cond condition="not: active_accessory">
+                            
+                            <div class="accordion">
+                                <div class="title">
+                                    <h5>
+                                        <a class="" href="#">Veja Também</a>
+                                        <hr/>
+                                    </h5>
+                                </div>
 
+                                <div class="container">
+                                    <metal:block metal:use-macro="context/macro-see_also-content/macros/full_view" />
+                                </div>
+                            </div>
+                            
                             <div class="accordion">
                                 <div class="title">
                                     <h5>
@@ -174,20 +181,13 @@
                                 </div>
                             </div>
 
-                            <div class="accordion">
-                                <div class="title">
-                                    <h5>
-                                        <a class="" href="#">Veja Também</a>
-                                        <hr/>
-                                    </h5>
-                                </div>
-
-                                <div class="container">
-                                    <metal:block metal:use-macro="context/macro-see_also-content/macros/full_view" />
-                                </div>
-                            </div>
-
                         </tal:cond>
+                        
+                        <metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
+
+                        <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
+
+                        <metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
 
 
                     <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
