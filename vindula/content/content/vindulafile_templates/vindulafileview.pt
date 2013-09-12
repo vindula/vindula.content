@@ -183,7 +183,7 @@
                                 </div>
 
                                 <div class="container">
-                                    <metal:block metal:use-macro="context/macro-see_also-content/macros/view" />
+                                    <metal:block metal:use-macro="context/macro-see_also-content/macros/full_view" />
                                 </div>
                             </div>
 
