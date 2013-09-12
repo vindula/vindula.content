@@ -16,15 +16,14 @@
                         <img tal:attributes="src python:structure.getImageSize('thumb')" width="90px" class="image-modal" />
                     </div>
                     <div class="info-box left">
-                        <h6 class="title-structure" tal:content="structure/getSiglaOrTitle"></h6>
-                        <p class="discrete" tal:content="structure/Title"></p>
-                        
-                        <!--tal:cond condition="user_profile/get_unidadeprincipal|nothing">
-                            <a tal:define="structure user_profile/get_unidadeprincipal;"
-                               tal:content="structure/getSiglaOrTitle"
+                        <h6 class="title-structure">
+                            <a tal:content="structure/getSiglaOrTitle"
                                tal:attributes="href structure/absolute_url;
-                                               alt structure/getSiglaOrTitle;"></a>
-                        </tal:cond-->
+                                               alt structure/Title;
+                                               title structure/Title;"></a>
+                        </h6>
+                        
+                        <p class="discrete" tal:content="structure/Title"></p>
                         
                         <div class="contato">
                             <div class="block" tal:condition="structure/getEmail|nothing">
@@ -32,20 +31,26 @@
                                    tal:attributes="href python: 'mailto:'+ email"
                                    tal:content="structure/getEmail|string: ">contato@empresa.com</a>
                             </div>
+                            <div class="block"
+                                 tal:condition="gestor"
+                                 tal:define="gestor structure/getManager|string:;
+                                             view_macro_structure nocall:context/@@infostructure-view;
+                                             dados_gestor python:view_macro_structure.get_prefs_user(gestor);">
+                                <a class="block" href="#" tal:attributes="href dados_gestor/getUrlPerfil|string: "
+                                                          tal:content="dados_gestor/name|gestor">Pedro Miranda Prado</a>
+                            </div>
                             <div class="block" tal:condition="structure/getPhone_number|nothing">
                                 <span tal:content="structure/getPhone_number"></span>
                             </div>
                             <div class="block" 
                                  tal:define="campus structure/getUnits|nothing"
                                  tal:condition="campus">
-                                <strong>Campus:</strong>
                                 <a href="#" tal:content="campus/Title"
                                    tal:attributes="href campus/absolute_url;
                                                    alt campus/Title;">
                                 </a>
                             </div>
                             <div class="block" tal:condition="structure/getLocation|nothing">
-                                <strong>Localização:</strong>
                                 <span tal:content="structure/getLocation|string:">Lorem Ipsum, Ed. Sodeles, Amete daram 232</span>
                             </div>
                         </div>
