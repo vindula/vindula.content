@@ -15,6 +15,7 @@
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
         <input type="hidden" id="absolute_url" tal:attributes="value absolute_url" >
+        <input type="hidden" id="portal_type" tal:attributes="value portal_type" >
 
         <div class="title columns large-12">
             <div class="right ajax_pagination" id="pag-nav">

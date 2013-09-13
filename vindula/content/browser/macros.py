@@ -647,7 +647,14 @@ class MacroRecentView(MacroMoreAccessViews):
 
     def list_files(self, portal_type):
         list_files = []
-
+        if isinstance(portal_type, str):
+            try:
+                portal_type = eval(portal_type)
+            except NameError:
+                pass
+            except TypeError:
+                pass
+        
         query = {'portal_type': portal_type}
         search = Search(self.context, query, rs=False)
         list_files = search.result
