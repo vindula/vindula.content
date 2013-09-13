@@ -54,8 +54,19 @@ function executaAjax(ctx, b_start, b_size, sort_on){
                 var paginator = dom.filter(ctx_id).find('.ajax_pagination').contents();
             }
             
-            var list_js = ['/table_sorter.js', '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
+            var list_js = ['/table_sorter.js',
+                           '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
                 url_js = '';
+                
+            $('a.button-action', dom).click(function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var url = '/vindula-api/social/combo/action_tabular/';
+                url = url.concat(window.token+'/'+$(this).attr('type_object')+'/'+this.id);
+                
+                $j(window.parent.document).vindula('add_combo_action_tabular', {'id': this.id, 'src': url, 'iframe_class': 'new_combo_action_tabular', 'left': '-17px'});
+            });
+            
             for(var i=0;i<list_js.length;i++){
                 url_js = url_base + list_js[i];
                 $j.get(url_js, function(data){
