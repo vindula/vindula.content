@@ -595,7 +595,7 @@
                                         <tal:cond tal:condition="python:isinstance(item, str)">
                                           <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
                                         </tal:cond>
-                                        <tal:cond tal:condition="python:not isinstance(item, str)">
+                                        <tal:cond tal:condition="python:not isinstance(item, str) and not isinstance(item, unicode)">
                                           <tal:rep tal:content="python:'%s (%s)' % (item.get('title'), item.get('qtd'))"> </tal:rep>
                                         </tal:cond>
                                     </label>
