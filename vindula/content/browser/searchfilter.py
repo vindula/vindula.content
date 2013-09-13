@@ -53,7 +53,7 @@ class SearchFileterView(grok.View):
         start = False
         end = False
 
-        if form.get('portal-types') == 'Pessoas':
+        if form.get('portal-type') == 'Pessoas':
             filter = {}
 
             for item in form.items():
@@ -152,7 +152,7 @@ class SearchFileterView(grok.View):
                             unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
                     elif field == 'structure-selected':
                         query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
-                    elif field == 'portal-types':
+                    elif field == 'portal-type':
                         try:
                             if isinstance(values, str):
                                 values = eval(values)

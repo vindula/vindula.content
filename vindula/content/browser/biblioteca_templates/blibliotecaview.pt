@@ -58,6 +58,27 @@
                 </section>
                 <section>
                     <h5 class="title" data-section-title>
+                        <a href="#section2">Palavra Chave</a>
+                    </h5>
+                    <div class="content" data-section-content>
+                        <!-- ABA Palavra Chave -->
+                        <div id="subjects"
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
+                            <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+
+                            <div id="itens">
+                                <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                                {'label': 'Número', 'attribute': 'getNumero'},
+                                                                {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                                {'label': 'Título', 'attribute': 'Title'},];">
+                                    <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                                </tal:def>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h5 class="title" data-section-title>
                         <a href="#section2">Unidade</a>
                     </h5>
                     <div class="content" data-section-content>

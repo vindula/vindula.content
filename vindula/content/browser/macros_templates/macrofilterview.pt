@@ -85,7 +85,7 @@
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
                      SearchableTextFilter request/SearchableTextFilter|python:'';
                      structure_selected view_macro/getStructureSelected|nothing;
-                     portal_types view_macro/getPortalTypes|nothing;
+                     portal_type request/portal_type|portal_type|view_macro/getPortalTypes|nothing;
                      subjects view_macro/getAllSubjects;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
@@ -102,8 +102,8 @@
                     <input type="hidden" name="structure-selected" id="structure-selected"
                            tal:attributes="value nocall:structure_selected">
 
-                    <input type="hidden" name="portal-types" id="portal-types"
-                           tal:attributes="value portal_types">
+                    <input type="hidden" name="portal-type" id="portal-type"
+                           tal:attributes="value portal_type">
 
                     <ul class="small-block-grid-2 large-block-grid-4">
                         <tal:rep repeat="item subjects">
@@ -172,7 +172,7 @@
                     <input type="hidden" name="structure-selected" id="structure-selected"
                            tal:attributes="value nocall:structure_selected">
 
-                    <input type="hidden" name="portal-types" id="portal-types"
+                    <input type="hidden" name="portal-type" id="portal-type"
                            tal:attributes="value portal_types">
                            
                     <div class="tags left large-4 small-4">
@@ -292,7 +292,7 @@
             <div class="content-filter">
                 <form class="form-columns-tag" tal:condition="not_filter|python:True">
                     
-                    <input type="hidden" name="portal-types" tal:attributes="value portal_type;">
+                    <input type="hidden" name="portal-type" tal:attributes="value portal_type;">
                     
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
@@ -657,7 +657,7 @@
                                   structure request/structures|nothing;">
 
 
-                    <input type="hidden" name="portal-types" value="Pessoas" />
+                    <input type="hidden" name="portal-type" value="Pessoas" />
 
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
