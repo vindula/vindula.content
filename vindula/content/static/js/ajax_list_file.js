@@ -57,7 +57,11 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             var list_js = ['/table_sorter.js',
                            '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
                 url_js = '';
-                
+            
+            if (dom.find('.social-box').length){
+                dom.find('.social-box').vindula(null, {user_token: window.token});    
+            }
+            
             $('a.button-action', dom).click(function(event){
                 event.preventDefault();
                 event.stopPropagation();

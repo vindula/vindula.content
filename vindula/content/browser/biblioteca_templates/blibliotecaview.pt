@@ -28,12 +28,6 @@
                 <tal:dummy tal:define="use_js_list python:request.set('list-file-js',1);" />
             </tal:cond>
             
-            <tal:cond condition="not:request/vindula-accordion-js|nothing">
-                <script type="text/javascript" src=""
-                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/vindula_accordion.js"></script>
-                <tal:dummy tal:define="use_js_accordion python:request.set('vindula-accordion-js',1);" />
-            </tal:cond>
-
             <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
                              title_box string:Mais acessados">
                 <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
