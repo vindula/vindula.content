@@ -455,7 +455,6 @@ class VindulaWebServeAllUsersPlone(grok.View):
             user_info['can_set_password'] = canPasswordSet
             results.append(user_info)
         
-        import pdb;pdb.set_trace()
         # Sort the users by fullname
 #        results.sort(key=lambda x: x is not None and x['fullname'] is not None and normalizeString(x['fullname']) or '')
         
