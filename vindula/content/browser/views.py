@@ -18,6 +18,13 @@ from five import grok
 from zope.interface import Interface
 from datetime import datetime
 
+import logging
+from itertools import chain
+from Products.CMFPlone.utils import normalizeString
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+
+logger = logging.getLogger('plone.app.controlpanel')
+
 MULTISPACE = u'\u3000'.encode('utf-8')
 
 import json
@@ -366,12 +373,95 @@ class VindulaWebServeAllUsersPlone(grok.View):
 
 
     def update(self):
+#        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+#        import pdb;pdb.set_trace()
+##        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+#        
+#        plone_ad_user = searchView.searchUsers()
+#        plone_ad_user = [i.get('login') for i in plone_ad_user]
+#        
+#        self.retorno = plone_ad_user
+        acl = getToolByName(self, 'acl_users')
+        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
+
+        mtool = getToolByName(self, 'portal_membership')
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+        # First, search for all inherited roles assigned to each group.
+        # We push this in the request so that IRoles plugins are told provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', False)
+        self.request.set('__ignore_direct_roles__', True)
+        inheritance_enabled_users = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+        allInheritedRoles = {}
+        for user_info in inheritance_enabled_users:
+            userId = user_info['id']
+            user = acl.getUserById(userId)
+            # play safe, though this should never happen
+            if user is None:
+                logger.warn('Skipped user without principal object: %s' % userId)
+                continue
+            allAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                # getRolesForPrincipal can return None
+                roles = rolemaker.getRolesForPrincipal(user) or ()
+                allAssignedRoles.extend(roles)
+            allInheritedRoles[userId] = allAssignedRoles
+
+        # We push this in the request such IRoles plugins don't provide
+        # the roles from the groups the principal belongs.
+        self.request.set('__ignore_group_roles__', True)
+        self.request.set('__ignore_direct_roles__', False)
+        explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+
+        # Tack on some extra data, including whether each role is explicitly
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        results = []
+        for user_info in explicit_users:
+            userId = user_info['id']
+            user = mtool.getMemberById(userId)
+            # play safe, though this should never happen
+            if user is None:
+                logger.warn('Skipped user without principal object: %s' % userId)
+                continue
+            explicitlyAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                # getRolesForPrincipal can return None
+                roles = rolemaker.getRolesForPrincipal(user) or ()
+                explicitlyAssignedRoles.extend(roles)
+
+#            roleList = {}
+#            for role in self.portal_roles:
+#                canAssign = user.canAssignRole(role)
+#                if role == 'Manager' and not self.is_zope_manager:
+#                    canAssign = False
+#                roleList[role]={'canAssign': canAssign,
+#                                'explicit': role in explicitlyAssignedRoles,
+#                                'inherited': role in allInheritedRoles[userId]}
+
+            canDelete = user.canDelete()
+            canPasswordSet = user.canPasswordSet()
+#            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+#                if not self.is_zope_manager:
+#                    canDelete = False
+#                    canPasswordSet = False
+
+#            user_info['roles'] = roleList
+            user_info['fullname'] = user.getProperty('fullname', '')
+            user_info['email'] = user.getProperty('email', '')
+            user_info['can_delete'] = canDelete
+            user_info['can_set_email'] = user.canWriteProperty('email')
+            user_info['can_set_password'] = canPasswordSet
+            results.append(user_info)
         
-#        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+        import pdb;pdb.set_trace()
+        # Sort the users by fullname
+#        results.sort(key=lambda x: x is not None and x['fullname'] is not None and normalizeString(x['fullname']) or '')
         
-        plone_ad_user = searchView.searchUsers()
-        plone_ad_user = [i.get('login') for i in plone_ad_user]
+        results = [i.get('login') for i in results]
+        self.retorno = results
+        # Reset the request variable, just in case.
+        self.request.set('__ignore_group_roles__', False)
         
-        self.retorno = plone_ad_user
         return self.retorno
