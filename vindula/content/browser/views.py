@@ -367,24 +367,12 @@ class VindulaWebServeAllUsersPlone(grok.View):
 
 
     def update(self):
-        portal_membership = getToolByName(self.context, "portal_membership")
-        user_admin = portal_membership.getMemberById('admin')
-
-        # stash the existing security manager so we can restore it
-        old_security_manager = getSecurityManager()
-
-        # create a new context, as the owner of the folder
-        newSecurityManager(self.request,user_admin)
-        
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        
+
 #        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
         plone_ad_user = searchView.searchUsers()
         plone_ad_user = [i.get('login') for i in plone_ad_user]
-        
         self.retorno = plone_ad_user
-        
-        # restore the original context
-        setSecurityManager(old_security_manager)
-        
+
+
         return self.retorno
