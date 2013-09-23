@@ -4,10 +4,11 @@
         <tal:block define="view_macro python:context.restrictedTraverse('macro_list_file');
                            theme theme|nothing;
                            structures structures|nothing;
+                           type request/type|python:theme and 'theme' or 'structure';
+                           sort_on request/sort_on|string:access;
                            items view_macro/getRequestItems;
                            items python:items or (theme and theme or structures);
-                           type request/type|python:theme and 'theme' or 'structure';
-                           sort_on request/sort_on|string:access;">
+                           items python:view_macro.sortItems(type, items);">
     
             <div class="container">
                 <input type="hidden" id="type" tal:attributes="value type" />
@@ -22,22 +23,27 @@
                                      b_start python:0;
                                      b_start request/b_start | b_start;
                                      block_title python: type=='theme' and item or (item.Title or view_macro.getStructures_byUID(item).Title());
+                                     qtd_items python:items[item];
                                      list_files python: view_macro.list_files(type, item, sort_on) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
                                          
                         <div class="titulo_area">
+                            
                             <h5 class="left" tal:condition="python:type=='theme'">
-                                <a href="#" class="accordion" tal:content="block_title" 
-                                   tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?theme=${item};
-                                                   id item">
+                                <a class="accordion arrow arrow-left left"
+                                   tal:attributes="id block_title">
+                                </a>
+                                <a href="#" tal:content="string:${block_title} (${qtd_items})" 
+                                   tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?theme=${item};">
                                 </a>
                             </h5>
                             <h5 class="left" tal:condition="python:type=='structure'">
-                                <a href="#" class="accordion"
-                                   tal:content="structure_title"
+                                <a class="accordion arrow arrow-left left"
+                                   tal:attributes="id block_title">
+                                </a>
+                                <a href="#" tal:content="string:${block_title} (${qtd_items})"
                                    tal:define="structure_title item/Title| python: view_macro.getStructures_byUID(item).Title()"
-                                   tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?structures=${item/UID|item};
-                                                   id block_title;">
+                                   tal:attributes="href string: ${context/absolute_url|nothing}/list-filter?structures=${item/UID|item};">
                                 </a>
                             </h5>
                             <div class="right">

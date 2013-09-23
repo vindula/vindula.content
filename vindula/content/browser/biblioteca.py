@@ -10,6 +10,8 @@ from vindula.content.browser.macros import Search
 from Products.CMFCore.utils import getToolByName
 from plone.app.uuid.utils import uuidToObject
 
+from collections import OrderedDict
+
 
 class BlibliotecaView(grok.View):
     grok.context(Interface)
@@ -209,7 +211,22 @@ class MacroListFileView(grok.View):
                 else:
                     stats[str(key)] = 1
         return stats
-
+    
+    def sortItems(self, type, items):
+        D = {}
+        for item in items:
+            if type =='structure':
+                objects = self.searchFile_byStructures(item)
+            else:
+                objects = self.searchFile_byTheme(item)
+            
+            D[item] = len(objects)
+        
+        od = OrderedDict(sorted(D.items(), key=lambda t: t[1]))
+        items = od.items()
+        items.reverse()
+        
+        return OrderedDict(items)
 
 class FilterItensView(grok.View):
     grok.context(Interface)
