@@ -1,8 +1,11 @@
 <tal:cond condition="python:request.get('macro')=='default'">
 <metal:view_macro define-macro="view">
     <div class="items">
-        <script type="text/javascript" src=""
+        <tal:cond condition="not:request/list-file-js|nothing">
+            <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+            <tal:dummy tal:define="use_js_list python:request.set('list-file-js',1);" />
+        </tal:cond>
         <script type="text/javascript" src=""
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/tabular_tile.js"></script>
     
@@ -71,14 +74,25 @@
                                 <tal:rep repeat="field item/fields"
                                          define="item_object item/getObject|python:item;">
                                     <td tal:define="value_field python:field.get('data_value')"
-                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
+                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';
                                                         width field/width|nothing;">
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
-                                            <a target="_blank" tal:condition="python:value_field.get('url',False) and not field.get('without_link',False)"
+                                            
+                                            <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and not value_field.get('type',False) == 'OrganizationalStructure'"
                                                tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
-                                                               title value_field/name|nothing">
+                                                               title value_field/name|nothing;">
                                                 <span tal:content="structure value_field/value|nothing"></span>
                                             </a>
+                                            
+                                            <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and value_field.get('type',False) == 'OrganizationalStructure'"
+                                               class="structure-link"
+                                               tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
+                                                               title value_field/name|nothing;
+                                                               data-type string:Structure;
+                                                               data-value item/UID|nothing;">
+                                                <span tal:content="structure value_field/value|nothing"></span>
+                                            </a>
+                                            
                                             <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
                                                     tal:content="structure value_field/value|nothing"></span>
                                         </tal:cond>
@@ -86,13 +100,10 @@
                                             <img tal:attributes="src value_field/value" />
                                         </tal:cond>
                                         <tal:cond condition="field/is_action|nothing">
-                                            <a href="#" class="button-action"
-                                               tal:attributes="id item/UID|nothing;
-                                                               type_object item/portal_type|nothing;">
-                                                <div class="icon-action">
-                                                    <i class="vindula-icon-cog"></i>
-                                                </div>
-                                            </a>
+                                            <div class="social-box">
+                                                <div class="vd_combo_standard" tal:attributes="data_uid item/UID|nothing;
+                                                                                               data_type item/portal_type|nothing"></div>
+                                            </div>
                                         </tal:cond>
                                     </td>
                                 </tal:rep>
@@ -110,8 +121,11 @@
 <tal:cond condition="python:request.get('macro')=='personal'">
 <metal:view_macro define-macro="personal_view">
     <div class="items">
-        <script type="text/javascript" src=""
-                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+        <tal:cond condition="not:request/list-file-js|nothing">
+            <script type="text/javascript" src=""
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+            <tal:dummy tal:define="use_js_list python:request.set('list-file-js',1);" />
+        </tal:cond>
         <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/table_sorter.js"></script>
         <script type="text/javascript" src=""
@@ -146,16 +160,16 @@
                     <table class="listing blue-head personal" width="100%">
                         <thead>
                             <tr>
-                                <th width="200">
+                                <th>
                                     Nome
                                 </th>
-                                <th width="40">
+                                <th>
                                     Unidade
                                 </th>
-                                <th width="140">
+                                <th>
                                     Contato
                                 </th>
-                                <th width="40">
+                                <th>
                                     Açoes
                                 </th>
                             </tr>
@@ -163,7 +177,7 @@
                         <tbody>
                             <tr tal:repeat="item_batch batch">
                                 <tal:item define="item python:view_macro.getItem(item_batch)">
-                                    <td width="200">
+                                    <td>
                                         <a class="profile-link"
                                            tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
                                                            data-type string:UserObject;
@@ -175,17 +189,17 @@
                                         </a>
                                     </td>
                                     
-                                    <td width="40">
+                                    <td>
                                         <a tal:define="structure item/get_unidadeprincipal|nothing" 
                                            tal:attributes="href structure/absolute_url|nothing" 
                                            tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
                                     </td>
                                     
-                                    <td width="140" class="contact-column">
+                                    <td class="contact-column">
                                         <p tal:replace="structure item/getContato|nothing"></p>
                                     </td>
                                     
-                                    <td class="action-column" width="40">
+                                    <td class="action-column">
                                         <a href="#" class="button-action"
                                            tal:attributes="id item/username|nothing;
                                                            type_object string:UserObject;">

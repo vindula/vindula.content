@@ -21,10 +21,13 @@
                                                        
         <div metal:define-macro="page-view"
              tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
-
-            <script type="text/javascript" src=""
+            
+            <tal:cond condition="not:request/list-file-js|nothing">
+                <script type="text/javascript" src=""
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
-
+                <tal:dummy tal:define="use_js_list python:request.set('list-file-js',1);" />
+            </tal:cond>
+            
             <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
                              title_box string:Mais acessados">
                 <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
@@ -50,6 +53,27 @@
                             <tal:def define="theme view_macro/getThemes">
                                 <metal:block metal:use-macro="context/macro_list_file/macros/view" />
                             </tal:def>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h5 class="title" data-section-title>
+                        <a href="#section2">Palavra Chave</a>
+                    </h5>
+                    <div class="content" data-section-content>
+                        <!-- ABA Palavra Chave -->
+                        <div id="subjects"
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
+                            <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
+
+                            <div id="itens">
+                                <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                                                {'label': 'Número', 'attribute': 'getNumero'},
+                                                                {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
+                                                                {'label': 'Título', 'attribute': 'Title'},];">
+                                    <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
+                                </tal:def>
+                            </div>
                         </div>
                     </div>
                 </section>

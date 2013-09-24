@@ -647,7 +647,14 @@ class MacroRecentView(MacroMoreAccessViews):
 
     def list_files(self, portal_type):
         list_files = []
-
+        if isinstance(portal_type, str):
+            try:
+                portal_type = eval(portal_type)
+            except NameError:
+                pass
+            except TypeError:
+                pass
+        
         query = {'portal_type': portal_type}
         search = Search(self.context, query, rs=False)
         list_files = search.result
@@ -711,10 +718,10 @@ class MacroSeeAlso(grok.View):
         query = {'portal_type':(context.portal_type)}
         query['Subject'] = context.getRawSubject()
 
-        result = ModelsContent().search_catalog_by_access(context=self.context,
-                                                           **query)
-
-        return result
+        result = ModelsContent().search_catalog_by_access(context=context, **query)
+        items = [brain for brain in result if brain.get('content').uid != context.UID()]
+        
+        return items
 
     def getImagem(self,obj):
         if hasattr(obj, 'getImageIcone'):

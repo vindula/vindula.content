@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_inner
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
 from zope.app.component.hooks import getSite
+from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
 
 
 from Products.ATContentTypes.criteria import _criterionRegistry
@@ -16,6 +18,7 @@ from AccessControl.SecurityManagement import newSecurityManager, getSecurityMana
 from five import grok
 from zope.interface import Interface
 from datetime import datetime
+from itertools import chain
 
 MULTISPACE = u'\u3000'.encode('utf-8')
 
@@ -309,3 +312,76 @@ class VindulaWebServeObjectUser(grok.View):
 
         self.retorno = D
 
+
+
+class VindulaWebServeObjectGroup(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-object-group')
+    grok.require('zope2.View')
+
+    retorno = []
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        portal_membership = getToolByName(self.context, "portal_membership")
+        user_admin = portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(self.request,user_admin)
+
+        group = self.request.form.get('group','')
+        groups_tool = getToolByName(self.context, 'portal_groups')
+
+        group_obj = groups_tool.getGroupById(group)
+        members = group_obj.getGroupMembers()
+        
+        L = []
+        for member in members:
+            L.append({'username':member.getUserName(),
+                       'email':member.getProperty('email'),
+                       'fullname': member.getProperty('fullname')
+                     })
+
+        # restore the original context
+        setSecurityManager(old_security_manager)
+
+        self.retorno = L
+
+
+# Metodo que retorna todos os usuarios do plone e do ad ou ldap que estiver plugado
+class VindulaWebServeAllUsersPlone(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-all-users-plone')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def __init__(self, context, request):
+        self.request = request
+        self.context = context
+
+        super(VindulaWebServeAllUsersPlone,self).__init__(context, request)
+
+
+    def update(self):
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+#        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+        plone_ad_user = searchView.searchUsers()
+        plone_ad_user = [i.get('login') for i in plone_ad_user]
+        self.retorno = plone_ad_user
+
+
+        return self.retorno

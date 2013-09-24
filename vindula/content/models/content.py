@@ -72,14 +72,13 @@ class ModelsContent(Storm, BaseStore):
         if not path:
             path = context.portal_url.getPortalObject().getPhysicalPath()
 
-        if rs:
+        if rs and 'File' not in query.get('portal_type'):
             query.update({'review_state': ['published', 'internally_published', 'external']})
-
+        
         query.update({'path': {'query':'/'.join(path)},
                      'sort_on':'effective',
                      'sort_order':'descending',})
-
-
+        
         result = portal_catalog(**query)
-
+        
         return self.orderBy_access(result)

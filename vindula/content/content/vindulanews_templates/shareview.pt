@@ -3,7 +3,8 @@
 			<div class="opcao1">
 				<h4>Compartilhar</h4>
 				<!-- AddThis Button BEGIN -->
-				  <div class="vd-social-left">
+				  <div class="vd-social-left"
+                       tal:define="change_id change_id|nothing">
                   	 <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
                   </div>
 				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4ea6f1236e1e6dd4"></script>

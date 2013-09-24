@@ -5,7 +5,7 @@
 		xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  
  <!-- Basic metadata -->
- <property name="title" i18n:translate="">Vindula Content API</property>
+ <property name="title" i18n:translate="">Vindula Content Iframe</property>
  <property name="description" i18n:translate="">Visualiza uma ação do vindula api pré-definida.</property>
  <property name="content_icon">++resource++vindula.content.images/vindulacontentmacro.png</property>
  <property name="allow_discussion">True</property>

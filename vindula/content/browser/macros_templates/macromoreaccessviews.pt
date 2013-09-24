@@ -46,9 +46,12 @@
                             <div class="box-more-acess"
                                  tal:define="ctx item/content/getObject|nocall:item">
                                   <div class="container-of-type">
-                                      <div tal:attributes="class python:'container-image columns small-12 %s' % (ctx.portal_type in ['VindulaPhotoAlbum', 'VindulaVideo'] and 'all-image' or 'default-image');">
-                                          <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx);" />
-                                      </div>
+                                      <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')">
+                                          <div tal:attributes="class python:'container-image columns small-12 %s' % (ctx.portal_type in ['VindulaPhotoAlbum', 'VindulaVideo'] and (ctx.portal_type == 'VindulaVideo' and 'vindula-video all-image' or 'all-image') or 'default-image');">
+                                            <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx);" />
+                                            <i></i>
+                                          </div>
+                                      </a>
 
                                       <div class="number-of-type">
                                         <h6 tal:content="python: int(b_start) + int(repeat['item'].number())"></h6>

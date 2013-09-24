@@ -36,10 +36,12 @@
         
                         <div id="itens">
                             <tal:def define="portal_type python: ('File',);
-                                             fields python:[{'label': 'UO', 'attribute': 'getStructures'},
+                                             fields python:[{'label':  ''     , 'attribute': 'getImageIcone', 'is_image': 'True', 'width':  '65',},
+                                                            {'label': 'UO', 'attribute': 'getStructures'},
                                                             {'label': 'Número', 'attribute': 'getNumero'},
                                                             {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                            {'label': 'Título', 'attribute': 'Title'},];">
+                                                            {'label': 'Título', 'attribute': 'Title'},
+                                                            {'label': 'Açoes', 'attribute': '', 'is_action':  'True', 'width':  '40',},];">
                                 <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                             </tal:def>
                         </div>
