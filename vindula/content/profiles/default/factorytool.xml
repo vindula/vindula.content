@@ -11,5 +11,7 @@
 		<type portal_type="VindulaPhotoAlbum"/>
 		<type portal_type="VindulaEdital"/>
 		<type portal_type="VindulaContato"/>
+		<type portal_type="VindulaTeam"/>
+		<type portal_type="VindulaEmployee"/>
 	</factorytypes>
 </object>

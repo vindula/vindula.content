@@ -31,6 +31,7 @@
     <element value="vindula_folder_summary_imgSmall_view"/>
     <element value="vindula_folder_summary_noImg_view"/>
 	<element value="vindula_folder_edital_view"/>
+	<element value="vindula_folder_summary_categoria_view"/>
  </property>
   
  <!--alias from="(Default)" to="view_organizarional"/-->

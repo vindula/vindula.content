@@ -3,6 +3,7 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
 from zope.app.component.hooks import getSite
 
+
 from Products.ATContentTypes.criteria import _criterionRegistry
 
 from plone.app.layout.viewlets.content import ContentHistoryView
@@ -17,6 +18,7 @@ from zope.interface import Interface
 from datetime import datetime
 
 MULTISPACE = u'\u3000'.encode('utf-8')
+
 
 import json
 
@@ -48,7 +50,8 @@ class VindulaListNews(BrowserView):
         return result
 
 class VindulaResultsNews(BrowserView):
-    def QueryFilter(self):
+        
+    def QueryFilter(self, portal_type=('ATNewsItem','VindulaNews')):
         form = self.request.form
         submitted = form.get('submitted', False)
         form_cookies = {}
@@ -80,8 +83,14 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective', 'sort_order':'reverse'})
+            result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
         return result
+
+
+    def QueryFilterFolder(self, portal_type=('ATFolder','VindulaFolder')):
+        return self.QueryFilter(portal_type)
+    
+
 
     def getCookies(self, cookies=None):
         form_cookies = {}

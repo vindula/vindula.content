@@ -39,6 +39,12 @@
             meta_type="Factory-based Type Information with dynamic views"/>
    
     <object name="VindulaVideo"    
-            meta_type="Factory-based Type Information with dynamic views"/>  
+            meta_type="Factory-based Type Information with dynamic views"/> 
+            
+    <object name="VindulaTeam"    
+            meta_type="Factory-based Type Information with dynamic views"/>
+            
+    <object	name="VindulaEmployee"
+    		meta_type="Factory-based Type Information with dynamic views"/>   
  
 </object>
