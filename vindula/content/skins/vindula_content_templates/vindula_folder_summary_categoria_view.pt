@@ -1,0 +1,30 @@
+<html metal:use-macro="context/main_template/macros/master">
+        
+        <metal:js fill-slot="javascript_head_slot">
+            <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js"></script>
+            <script type="text/javascript" src="" 
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script>
+        </metal:js>
+        
+        <metal:styleslot fill-slot="style_slot">
+            <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
+        </metal:styleslot>
+    <body>
+		<div class="teste do teste teste">
+	        <metal:content-core fill-slot="main">
+	        
+	            <tal:def define="com_image python:False; 
+	                             size_image_width string:98px;
+	                             size_image_height string:73px;
+								 view_search python:context.restrictedTraverse('@@vindula_news_result_view');
+								 itens view_search/QueryFilterFolder;
+								 habilita_pesquisa python: False;
+								 habilita_descricao python: True;">
+					<metal:block metal:use-macro="context/vindula_folder_summary_imgBig_view/macros/principal" />            	
+				</tal:def>
+	    	</metal:content-core>            
+		</div>
+        
+    </body>
+</html>

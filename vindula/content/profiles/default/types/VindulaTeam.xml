@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<object name="VindulaTeam" 
+   	 	meta_type="Factory-based Type Information with dynamic views"
+		xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ 
+ <!-- Basic metadata -->
+ <property name="title" i18n:translate="">Equipe</property>
+ <property name="description" i18n:translate="">Equipe.</property>
+ <property name="content_icon">++resource++vindula.content.images/folder.gif</property>
+ <property name="content_meta_type">VindulaTeam</property>
+ <property name="product">vindula.content</property>
+ <property name="factory">addVindulaTeam</property>
+  <property name="allow_discussion">False</property>
+ <property name="global_allow">True</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"> 
+ 	<element value="VindulaEmployee"/>
+ </property>
+ 
+ <property name="immediate_view">view</property>
+ <property name="default_view">view</property>
+ 
+ <property name="default_view_fallback">False</property>
+ 
+ <property name="view_methods">
+    <element value="view"/>
+ </property>
+  
+ <!--alias from="(Default)" to="view_organizarional"/-->
+ <alias from="index.html" to="(dynamic view)"/>
+ <alias from="view" to="(selected layout)"/>
+ <alias from="edit" to="base_edit"/>
+ 
+ <action title="View" 
+         action_id="view"
+         category="object" 
+         condition_expr=""
+         url_expr="string:${object_url}" 
+         visible="True">
+  <permission value="View"/>
+ </action>
+ 
+ <action title="Edit" 
+         action_id="edit"
+         category="object" 
+         condition_expr=""
+         url_expr="string:${object_url}/edit" 
+         visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+
+</object>
