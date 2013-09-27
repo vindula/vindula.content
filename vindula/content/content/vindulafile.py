@@ -202,14 +202,16 @@ window.initializeDV = function(){
         sidebar: %(sidebar)s,
         width: %(width)s,
         search: %(search)s,
-        container: '#DV-container' });
+        container: '#DV-container',
+        zoom: %(zoom)s });
 }
 if(hash.search("\#(document|pages|text)\/") != -1 || (%(fullscreen)s &&
         hash != '#bypass-fullscreen')){
     window.currentDocument = DV.load(window.documentData, {
         sidebar: true,
         search: %(search)s,
-        container: document.body });
+        container: document.body,
+        zoom: %(zoom)s });
     jQuery('body').addClass('fullscreen');
 }else{
     window.initializeDV();
@@ -222,5 +224,6 @@ if(hash.search("\#(document|pages|text)\/") != -1 || (%(fullscreen)s &&
     'sidebar': str(sidebar).lower(),
     'search': str(search).lower(),
     'width': width,
-    'data': json.dumps(self.dv_data())
+    'data': json.dumps(self.dv_data()),
+    'zoom': '800'
 }
