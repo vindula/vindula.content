@@ -56,6 +56,9 @@ VindulaEmployee_schema['text'].widget.label = 'Sobre'
 VindulaEmployee_schema['text'].widget.description = 'Descrição do funcionário'
 VindulaEmployee_schema['title'].widget.description = 'Nome do funcionário'
 VindulaEmployee_schema.moveField('cargo', before='description')
+VindulaEmployee_schema['activ_image'].widget.description = "Caso selecionado, ativa a opção de visualizar a foto junto com o conteúdo do funcionário."
+VindulaEmployee_schema['imageRelac'].widget.description = "Será exibido no perfil do usuário. A imagem será redimensionada para um tamanho adequado"
+
 
 
 

@@ -17,7 +17,7 @@
 											                       b_start python:0;
 											                       b_start request/b_start | b_start">
 		        		<div id="busca">
-		        			<form tal:attributes="action string:${context/portal_url}/myvindulalistall" method="post" id="portlet-ramais">
+		        			<form action="" method="post" >
 		        				<div style="float: left; padding-right: 5px;">
 							    	<label>Nome:</label>
 									<input type="text" name="title" size="26" tal:attributes="value python: request.get('title', '')"/>

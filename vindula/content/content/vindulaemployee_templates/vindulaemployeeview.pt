@@ -26,14 +26,14 @@
 						<a tal:attributes="href context/absolute_url" tal:content="context/title | nothing">Matheus Spagiari</a>
 					</div>
 					<div class="more-info-func">
-						<span tal:content="context/description">13ª</span>
+						<p tal:content="context/Description">13ª</p>
 					</div>
 				</div>
 			</div>
 			<div class="large-4 columns">
 				<div class="info-email">
 					<div class="icon-info-email">
-						<img src="">
+						<img src="++resource++vindula.themedefault/images/icons/Icon_footer_email.png">
 					</div>
 					<div class="content-email">
 						<span tal:content="context/getEmail"></span>
@@ -41,20 +41,23 @@
 				</div>
 				<div class="info-tel">
 					<div class="icon-tel">
+						<img src="++resource++vindula.themedefault/images/icons/Icon_footer_telefone.png"
 					</div>
 					<div class="content-tel">
 						<span tal:content="context/getPhone_number"></span>
 					</div>
 				</div>
 			</div>
-		</div>		
-		
+		</div>
+		</div>
 		<div class="row">
-			<div class="large-12 columns">
-				<p tal:content="structure context/getText" class="desc-biografia">
-				</p>
-			</div>
+				<div class="large-12 columns descricao-employee">
+					<div tal:content=" structure context/getText" class="desc-biografia">
+					</div>
+				</div>
 		</div>	
+
+	
 	</metal:main>
 </body>
 

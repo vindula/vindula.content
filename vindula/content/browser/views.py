@@ -94,6 +94,9 @@ class VindulaResultsNews(BrowserView):
         return self.QueryFilter(portal_type)
     
 
+    def QueryFilterEquipe(self,portal_type=('VindulaTeam',)):
+        return self.QueryFilter(portal_type)
+
 
     def getCookies(self, cookies=None):
         form_cookies = {}

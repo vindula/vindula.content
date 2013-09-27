@@ -11,7 +11,7 @@
             <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
         </metal:styleslot>
     <body>
-		<div class="teste do teste teste">
+		<div class="conteudo-categoria">
 	        <metal:content-core fill-slot="main">
 	        
 	            <tal:def define="com_image python:False; 

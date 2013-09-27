@@ -43,6 +43,7 @@
     		<div> 
     			<div class="titulo_info">
     				<h2 tal:content="context/Title"></h2>
+					<hr >
     				<div class="descricao_titulo">
     					<tal:cond condition="context/active_author">
     						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>

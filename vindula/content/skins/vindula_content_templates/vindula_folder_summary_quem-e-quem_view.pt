@@ -1,0 +1,100 @@
+<html metal:use-macro="context/main_template/macros/master">
+        
+        <metal:js fill-slot="javascript_head_slot">
+            <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js"></script>
+            <script type="text/javascript" src="" 
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script>
+			<script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js"></script>
+
+        </metal:js>
+        
+        <metal:styleslot fill-slot="style_slot">
+            <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
+        </metal:styleslot>
+    <body>
+		<div class="conteudo-quem-e-quem">
+	        <metal:content-core fill-slot="main">
+
+				<tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+									 view_search python:context.restrictedTraverse('@@vindula_news_result_view');
+									 itens view_search/QueryFilterEquipe;
+				                     b_size request/b_size|string:10;
+				                     b_start python:0;
+				                     b_start request/b_start | b_start;
+				                     batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));
+									 habilita_descricao python: True">
+				
+				    <input type="hidden" id="b_size" tal:attributes="value b_size" />
+				    <input type="hidden" id="b_start" tal:attributes="value b_start" />
+					
+
+ 					<div class="cont_superior">
+                        <div class="titulo marginDif1">
+                            <h2 tal:content="context/Title">Title Highlighted News</h2>
+							<hr>
+                        </div>
+                       <div class="visualClear"></div>
+                    </div>
+
+					<div class="descricao_titulo" tal:condition="habilita_descricao">
+							<p tal:content="context/Description"></p>
+					</div>
+
+					<div id="busca" class="clear">
+						<form action="" method="post" >
+							<div class="input-busca-quem-e-quem clear">
+						    	<label></label>
+								<input type="text" name="keyword" size="26" placeholder="Palavra-chave" tal:attributes="value python: request.get('keyword', '')"/>
+							</div>
+							<div class="button-buscar-quem-e-quem"> 
+								<input type="submit" name="submitted" value="Buscar" class="context" i18n:attributes="value"/>
+							</div>
+				 	 	</form>
+					</div>
+					<meta:macro metal:define-macro="navegacao-macro">
+				        <div id="paginacao">
+				            <div id="size-nav" class="float-left">
+				                <p>
+				                    <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
+				                    |
+				                    <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+				                        <a class="c-pointer" id="itenspage"
+				                           tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
+				                        <a class="c-pointer" id="itenspage"
+				                           tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
+				                        <a class="c-pointer" id="itenspage"
+				                           tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
+				                        <a class="c-pointer" id="itenspage"
+				                           tal:attributes="style python:b_size == '40' and css or '' ">40</a>
+				                    </span>
+				                </p>
+				                                                    
+				            </div>
+				            <div id="pag-nav" class="float-right">
+				                <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
+				            </div>
+				        </div>
+						<div class="visualClear"></div>
+					</meta:macro>
+
+
+					<tal:rep repeat="equipe batch">
+						<tal:def define="context python: equipe.getObject();">
+							 <metal:block metal:use-macro="context/@@view/macros/macro-equipe"/>
+						
+						</tal:def>
+					
+					</tal:rep>
+				
+				
+				
+				</tal:def>
+		
+
+	    	</metal:content-core>            
+		</div>
+        
+    </body>
+</html>
