@@ -24,8 +24,9 @@
                                      keywords request/keywords|request/keywords[]|python:'';
                                      structures structures|request/structures|request/structures[]|python:'';
                                      theme theme|request/theme|python:'';
+									 path path|nothing;
                                      
-                                     list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields) or [];
+                                     list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields, path=path) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
