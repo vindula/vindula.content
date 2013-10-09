@@ -7,9 +7,11 @@
 		<type portal_type="OrganizationalStructure"/>
 		<type portal_type="Unit"/>
 		<type portal_type="VindulaPortlet"/>
+		<type portal_type="VindulaFile"/>
 		<type portal_type="InternalLink"/>
 		<type portal_type="VindulaPhotoAlbum"/>
 		<type portal_type="VindulaEdital"/>
+		<type portal_type="VindulaVideo"/>
 		<type portal_type="VindulaContato"/>
 		<type portal_type="VindulaTeam"/>
 		<type portal_type="VindulaEmployee"/>
