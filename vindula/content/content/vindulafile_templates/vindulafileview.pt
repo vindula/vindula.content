@@ -34,8 +34,6 @@
           <script type="text/javascript" src=""
                   tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
-          <script tal:attributes="src string:${context/portal_url}/++resource++vindula.content/js/vindula_accordion.js"></script>
-
 		  <!--tal:annotate tal:condition="view/can_modify">
 		    <link rel="stylesheet" type="text/css"
 		      tal:attributes="href string:${context/portal_url}/++resource++dv.resources/jquery.imgareaselect/css/imgareaselect-default.css" />
@@ -198,8 +196,8 @@
                     <metal:block metal:use-macro="context/macro-see_also-content/macros/view" />
                 </div>
 
-
-                <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
+<!-- 
+                <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" /> -->
 			</metal:main-macro>
 		</metal:main>
 	</body>

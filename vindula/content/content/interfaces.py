@@ -51,7 +51,14 @@ class IVindulaFile(Interface):
 
 class IVindulaVideo(Interface):
     """ Interface for VindulaFile content type """
+    
+class IVindulaTeam(Interface):
+    """ Interface for VindulaTeam content type """
 
 
 class IVindulaRevista(Interface):
     """ Interface for VindulaRevista content type """
+
+
+class IVindulaEmployee(Interface):
+    """ Interface for VindulaTeam content type """

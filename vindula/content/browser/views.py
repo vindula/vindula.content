@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_inner
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
 from zope.app.component.hooks import getSite
+from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
+
 
 from Products.ATContentTypes.criteria import _criterionRegistry
 
@@ -15,8 +18,10 @@ from AccessControl.SecurityManagement import newSecurityManager, getSecurityMana
 from five import grok
 from zope.interface import Interface
 from datetime import datetime
+from itertools import chain
 
 MULTISPACE = u'\u3000'.encode('utf-8')
+
 
 import json
 
@@ -48,7 +53,8 @@ class VindulaListNews(BrowserView):
         return result
 
 class VindulaResultsNews(BrowserView):
-    def QueryFilter(self):
+        
+    def QueryFilter(self, portal_type=('ATNewsItem','VindulaNews')):
         form = self.request.form
         submitted = form.get('submitted', False)
         form_cookies = {}
@@ -80,8 +86,17 @@ class VindulaResultsNews(BrowserView):
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type': ('ATNewsItem','VindulaNews',), 'sort_on': 'effective', 'sort_order':'reverse'})
+            result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
         return result
+
+
+    def QueryFilterFolder(self, portal_type=('ATFolder','VindulaFolder')):
+        return self.QueryFilter(portal_type)
+    
+
+    def QueryFilterEquipe(self,portal_type=('VindulaTeam',)):
+        return self.QueryFilter(portal_type)
+
 
     def getCookies(self, cookies=None):
         form_cookies = {}
@@ -341,3 +356,35 @@ class VindulaWebServeObjectGroup(grok.View):
         setSecurityManager(old_security_manager)
 
         self.retorno = L
+
+
+# Metodo que retorna todos os usuarios do plone e do ad ou ldap que estiver plugado
+class VindulaWebServeAllUsersPlone(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-all-users-plone')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def __init__(self, context, request):
+        self.request = request
+        self.context = context
+
+        super(VindulaWebServeAllUsersPlone,self).__init__(context, request)
+
+
+    def update(self):
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+#        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
+        plone_ad_user = searchView.searchUsers()
+        plone_ad_user = [i.get('login') for i in plone_ad_user]
+        self.retorno = plone_ad_user
+
+
+        return self.retorno

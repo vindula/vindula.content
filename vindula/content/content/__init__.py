@@ -6,3 +6,5 @@ import vindulaphotoalbum
 import vindulaedital
 import unit
 import vindulavideo
+import vindulateam
+import vindulaemployee

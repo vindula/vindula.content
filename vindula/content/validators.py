@@ -4,6 +4,9 @@ from Products.validation.interfaces.IValidator import IValidator
 from zope.app.component.hooks import getSite
 # from vindula.myvindula.user import ModelsDepartment
 
+from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
+from Products.CMFCore.utils import getToolByName
+
 class SameUserValidator:
     implements(IValidator)
 
@@ -11,6 +14,16 @@ class SameUserValidator:
         self.name = name
 
     def __call__(self, value, *args, **kwargs):
+        context = getSite()
+        portal_membership = getToolByName(context, "portal_membership")
+        user_admin = portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(context,user_admin)            
+        
         portalGroup = getSite().portal_groups
         instance    = kwargs.get('instance', None)
         req = kwargs['REQUEST']
@@ -25,7 +38,10 @@ class SameUserValidator:
             alterado = set(atual) - set(news)
 
             for j in alterado:
-                portalGroup.getGroupById(id_grupo).removeMember(j)
+                portalGroup.getGroupById(id_grupo).removeMember(j) 
+
+        # restore the original context
+        setSecurityManager(old_security_manager)
 
 class UpdateUserManageEmployeesValidator:
     implements(IValidator)
@@ -35,6 +51,15 @@ class UpdateUserManageEmployeesValidator:
 
     def __call__(self, value, *args, **kwargs):
         #TODO AJUTAR OS DEPARTAMENTOS DOS USUARIOS NA UNIDADE ORGANIZACIONAL
+        context =  getSite()
+        portal_membership = getToolByName(context, "portal_membership")
+        user_admin = portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(context,user_admin)       
 
         portalGroup = getSite().portal_groups
         instance = kwargs.get('instance', None)
@@ -120,3 +145,6 @@ class UpdateUserManageEmployeesValidator:
 
                 portalGroup.getGroupById(id_grupo_Manage).removeMember(gestor_old)
                 portalGroup.getGroupById(id_grupo_Manage).addMember(gestor_new)
+        
+        # restore the original context
+        setSecurityManager(old_security_manager)

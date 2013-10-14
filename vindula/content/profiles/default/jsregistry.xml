@@ -8,4 +8,8 @@
     <javascript authenticated="False" cacheable="False" compression="none"
                 conditionalcomment="" cookable="True" enabled="True" expression=""
                 id="++resource++vindula.content/js/galleria/galleria-1.2.8.min.js" inline="False"/>
+                
+    <javascript authenticated="False" cacheable="True" compression="safe"
+                conditionalcomment="" cookable="True" enabled="True" expression=""
+                id="++resource++vindula.content/js/vindula_accordion.js" inline="False"/>
 </object>

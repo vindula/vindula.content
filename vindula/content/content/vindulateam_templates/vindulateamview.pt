@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+
+<head>
+	
+</head>
+
+<body>
+	<metal:main fill-slot="main">
+		  <metal:macro define-macro="macro-equipe">
+			<div class="conteudo-employee">
+				<div class="title-equipe">
+					<h3 tal:content="context/Title">Titulo</h3>
+					<hr>
+				</div>
+					<tal:rep repeat="employee context/values">
+						<div class="row">
+							<div class="large-8 columns">		
+								<div class="large-4 columns photo-func-equipe" tal:condition="employee/getImageRelac | nothing">
+									<img tal:attributes="src python: employee.getImageRelac().absolute_url()+'/image_tile';
+		    														     alt employee/imageCaption; title employee/imageCaption;">
+								</div>
+								<div class="large-8 columns info-func-equipe">
+									<div class="cargo-func">
+										<h4 tal:content="employee/cargo | nothing">Presidente Geral</h4>
+									</div>
+									<div class="nome-func">
+										<a tal:attributes="href employee/absolute_url" tal:content="employee/title | nothing">Matheus Spagiari</a>
+									</div>
+									<div class="more-info-func">
+										<span tal:content="employee/description">13ª</span>
+									</div>
+								</div>
+							</div>
+							<div class="large-4 columns">
+								<div class="info-email">
+									<div class="icon-info-email">
+										<img src="++resource++vindula.themedefault/images/icons/Icon_footer_email.png">
+									</div>
+									<div class="content-email">
+										<span tal:content="employee/getEmail"></span>
+									</div>
+								</div>
+								<div class="info-tel">
+									<div class="icon-tel">
+										<img src="++resource++vindula.themedefault/images/icons/Icon_footer_telefone.png"
+									</div>
+									<div class="content-tel">
+										<span tal:content="employee/getPhone_number"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+		
+							<div class="large-12 columns" >
+								<div tal:content="structure employee/getText" id="desc-biografia" class="borderDif">
+								</div>
+							</div>
+					</tal:rep>
+				</div>	
+
+			</metal:macro>
+		</metal:main>
+</body>
+
+</html>

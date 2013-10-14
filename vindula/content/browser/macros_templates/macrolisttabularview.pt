@@ -24,8 +24,9 @@
                                      keywords request/keywords|request/keywords[]|python:'';
                                      structures structures|request/structures|request/structures[]|python:'';
                                      theme theme|request/theme|python:'';
+									 path path|nothing;
                                      
-                                     list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields) or [];
+                                     list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields, path=path) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
         
                     <input type="hidden" id="b_size" tal:attributes="value b_size" />
@@ -74,7 +75,7 @@
                                 <tal:rep repeat="field item/fields"
                                          define="item_object item/getObject|python:item;">
                                     <td tal:define="value_field python:field.get('data_value')"
-                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or field.get('is_action', None) and 'action-column' or '';
+                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';
                                                         width field/width|nothing;">
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
                                             
@@ -100,13 +101,10 @@
                                             <img tal:attributes="src value_field/value" />
                                         </tal:cond>
                                         <tal:cond condition="field/is_action|nothing">
-                                            <a href="#" class="button-action"
-                                               tal:attributes="id item/UID|nothing;
-                                                               type_object item/portal_type|nothing;">
-                                                <div class="icon-action">
-                                                    <i class="vindula-icon-cog"></i>
-                                                </div>
-                                            </a>
+                                            <div class="social-box">
+                                                <div class="vd_combo_standard" tal:attributes="data_uid item/UID|nothing;
+                                                                                               data_type item/portal_type|nothing"></div>
+                                            </div>
                                         </tal:cond>
                                     </td>
                                 </tal:rep>
@@ -163,16 +161,16 @@
                     <table class="listing blue-head personal" width="100%">
                         <thead>
                             <tr>
-                                <th width="200">
+                                <th>
                                     Nome
                                 </th>
-                                <th width="40">
+                                <th>
                                     Unidade
                                 </th>
-                                <th width="140">
+                                <th>
                                     Contato
                                 </th>
-                                <th width="40">
+                                <th>
                                     Açoes
                                 </th>
                             </tr>
@@ -180,7 +178,7 @@
                         <tbody>
                             <tr tal:repeat="item_batch batch">
                                 <tal:item define="item python:view_macro.getItem(item_batch)">
-                                    <td width="200">
+                                    <td>
                                         <a class="profile-link"
                                            tal:attributes="href string:${context/portal_url}${item/getUrlPerfil|nothing};
                                                            data-type string:UserObject;
@@ -192,17 +190,17 @@
                                         </a>
                                     </td>
                                     
-                                    <td width="40">
+                                    <td>
                                         <a tal:define="structure item/get_unidadeprincipal|nothing" 
                                            tal:attributes="href structure/absolute_url|nothing" 
                                            tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
                                     </td>
                                     
-                                    <td width="140" class="contact-column">
+                                    <td class="contact-column">
                                         <p tal:replace="structure item/getContato|nothing"></p>
                                     </td>
                                     
-                                    <td class="action-column" width="40">
+                                    <td class="action-column">
                                         <a href="#" class="button-action"
                                            tal:attributes="id item/username|nothing;
                                                            type_object string:UserObject;">

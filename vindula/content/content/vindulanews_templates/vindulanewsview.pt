@@ -43,6 +43,7 @@
     		<div> 
     			<div class="titulo_info">
     				<h2 tal:content="context/Title"></h2>
+					<hr >
     				<div class="descricao_titulo">
     					<tal:cond condition="context/active_author">
     						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
@@ -52,8 +53,9 @@
     			</div>
     
     			<tal:cont condition="view/check_share|nothing">
-    				<tal:cont condition="context/activ_share|nothing">
-    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    				<tal:cont condition="context/activ_share|nothing"
+                              define="change_id string:top">
+    					<div metal:use-macro="context/vindula-content-share/macros/share"></div>
     				</tal:cont>
     			</tal:cont>
     
@@ -81,8 +83,9 @@
     		</div>
     		<!-- end: New -->
     		<tal:cont condition="view/check_share|nothing">
-    			<tal:cont condition="context/activ_share_footer|nothing">
-    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    			<tal:cont condition="context/activ_share_footer|nothing"
+                          define="change_id string:botton">
+					<div metal:use-macro="context/vindula-content-share/macros/share"></div>
     			</tal:cont>
    			</tal:cont>
     	<div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />

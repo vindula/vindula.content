@@ -16,6 +16,15 @@ import transaction
 
 @grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)
 def RemoveGroupInPloneSite(context, event):
+    portal_membership = getToolByName(context, "portal_membership")
+    user_admin = portal_membership.getMemberById('admin')
+
+    # stash the existing security manager so we can restore it
+    old_security_manager = getSecurityManager()
+
+    # create a new context, as the owner of the folder
+    newSecurityManager(context,user_admin)    
+    
     portalGroup = context.portal_url.getPortalObject().portal_groups
 
     tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
@@ -27,7 +36,9 @@ def RemoveGroupInPloneSite(context, event):
         id_grupo = context.UID() +'-'+tipo['tipo']
         try: portalGroup.removeGroup(id_grupo)
         except: pass
-
+    
+    # restore the original context
+    setSecurityManager(old_security_manager)
 
 
 class OrgstructureModifiedEvent(object):
@@ -41,6 +52,15 @@ class OrgstructureModifiedEvent(object):
 
 def CreatGroupInPloneSite(event):
     ctx = event.context
+    portal_membership = getToolByName(ctx, "portal_membership")
+    user_admin = portal_membership.getMemberById('admin')
+
+    # stash the existing security manager so we can restore it
+    old_security_manager = getSecurityManager()
+
+    # create a new context, as the owner of the folder
+    newSecurityManager(ctx,user_admin)
+
     ctxPai = ctx.aq_parent
     portalGroup =  ctx.portal_url.getPortalObject().portal_groups
     tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
@@ -80,6 +100,10 @@ def CreatGroupInPloneSite(event):
 
         portalGroup.getGroupById(id_grupo_employees).addMember(user)
     ctx.Groups_view = tuple(new_tupla)
+
+    # restore the original context
+    setSecurityManager(old_security_manager)
+
 
 
 @grok.subscribe(IOrganizationalStructure, IObjectAddedEvent)

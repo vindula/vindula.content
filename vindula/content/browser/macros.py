@@ -31,15 +31,17 @@ EXCEL = ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexc
 
 class Search(object):
 
-    def __init__(self, context, query={}, rs=True):
+    def __init__(self, context, query={}, rs=True,):
         portal_catalog = getToolByName(context, 'portal_catalog')
-        path = context.portal_url.getPortalObject().getPhysicalPath()
+
+        if not 'path' in query.keys():
+            portal_path = context.portal_url.getPortalObject().getPhysicalPath()
+            query.update({'path': {'query':'/'.join(portal_path)}})
 
         if rs:
             query.update({'review_state': ['published', 'internally_published', 'external']})
 
-        query.update({'path': {'query':'/'.join(path)},
-                      'sort_on':'created',
+        query.update({'sort_on':'created',
                       'sort_order':'descending',
                      })
 
@@ -99,7 +101,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         return FuncDetails(username)
 
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
-    def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[]):
+    def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[], path=None):
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
             values = self.request.get('list_files[]', self.request.get('list_files'))
             if values:
@@ -131,7 +133,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             if 'Pessoas' in portal_type:
                 return FuncDetails.get_AllFuncUsernameList(self.Convert_utf8(subject))
             elif not cached_data:
-                itens = self.busca_catalog(subject, keywords, structures, theme, portal_type)
+                itens = self.busca_catalog(subject, keywords, structures, theme, portal_type, path)
                 itens_dict = self.geraDicForFields(itens, fields)
                 set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
                 return itens_dict
@@ -159,7 +161,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                            'fields':item_fields})
         return result
     
-    def busca_catalog(self, subject, keywords, structures, theme, portal_type):
+    def busca_catalog(self, subject, keywords, structures, theme, portal_type, path):
         rtool = getToolByName(self.context, "reference_catalog")
         list_files = []
         review_state = True
@@ -179,6 +181,11 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             
         if theme:
             query['ThemeNews'] = theme
+
+        
+        if path:
+            query['path'] = {'query': path }
+
 
         search = Search(self.context,query,rs=review_state)
         list_files = search.result

@@ -56,7 +56,19 @@ VindulaVideo_schema =  ATDocumentSchema.copy() + Schema((
         widget= ImageWidget(label='Imagem do vídeo',
                            description='Insira uma imagem para aparecer na capa da Biblioteca'),
         required=True,
-    ),                                                   
+    ),
+    
+    LinesField(
+        'themesNews',
+        multiValued=1,
+        accessor="ThemeNews",
+        searchable=True,
+        schemata='categorization',
+        widget=KeywordWidget(
+            label=_(u'Temas'),
+            description=_(u'Selecione os temas.'),
+        ),
+    ),                   
 
 ))
 
