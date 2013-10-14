@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+      	
+<head>
+	<metal:js fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script>
+    </metal:js>
+</head>
+
+<body>
+    <metal:block fill-slot="content-description">
+        <!-- Remoção da macro description padrão do plone-->
+        <span> </span>
+    </metal:block>
+    <metal:main fill-slot="main">
+		<div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load"></div>
+            <div class="vd_access" tal:attributes="data_uid context/UID|nothing;data_type context/portal_type|nothing"></div>
+			<div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" tal:condition="not:ajax_load" />
+    		<div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+			<!-- Data -->
+    		<div>
+    			<tal:cond condition="context/active_date">
+    				<div class="info_topoBoxTipo">
+    					<div class="info_data" tal:condition="context/effective_date|nothing">
+    						<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+    					</div>
+    					<div class="visualClear"></div>
+    				</div>
+    			</tal:cond>
+    			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
+    				<h4 tal:content="string:Comentários (${contcomments})"></h4>
+    			</div-->
+    			<div class="visualClear"></div>
+    		</div>
+    
+    		<!-- start: New -->
+    		<div> 
+    			<div class="titulo_info">
+    				<h2 tal:content="context/Title"></h2>
+    				<div class="descricao_titulo">
+    					<tal:cond condition="context/active_author">
+    						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
+    					</tal:cond>
+    					<p tal:content="context/Description"></p>
+    				</div>
+    			</div>
+    
+    			<tal:cont condition="view/check_share|nothing">
+    				<tal:cont condition="context/activ_share|nothing">
+    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    				</tal:cont>
+    			</tal:cont>
+    
+    			<div>
+    				<tal:condition condition="context/getActiv_image">
+    					<div id="newsImageContainer" tal:condition="context/getImage">
+    						<div id="parent-fieldname-image">
+    							<div class="bk_imagem">
+    								<a tal:attributes="href python: context.getImage().absolute_url() +'/image_view_fullscreen'">
+    									<img tal:attributes="src python: context.getImage().absolute_url()+'/image_mini';
+    														     alt context/imageCaption; title context/imageCaption;">
+    								</a>
+    								<p class="discreet img_legenda" tal:condition="context/imageCaption">
+    									<span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
+    								</p>
+    							</div>
+    						</div>
+    					</div>
+    				</tal:condition>		
+    
+    				<div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
+    				<div class="visualClear"></div>
+                    <div>
+                        <a href=""
+                           tal:attributes="href string:${context/absolute_url}/file">
+                            <p>Download da revista</p>
+                        </a>
+
+                    </div>
+    			</div>
+    
+    		</div>
+    		<!-- end: New -->
+    		<tal:cont condition="view/check_share|nothing">
+    			<tal:cont condition="context/activ_share_footer|nothing">
+    					<div metal:use-macro="context/vindula-content-share/macros/share" />
+    			</tal:cont>
+   			</tal:cont>
+    	<div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
+    </metal:main>
+
+</body>
+</html>
