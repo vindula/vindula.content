@@ -23,6 +23,7 @@ VindulaRevista_schema = ATNewsItemSchema.copy() + Schema((
 
 
     FileField('file',
+        searchable=True,
         widget= FileWidget(label='Arquivo da Publicação',
             description='Insira um arquivo da publicação'),
         required=True,
