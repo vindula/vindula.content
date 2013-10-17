@@ -54,8 +54,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
                 var paginator = dom.filter(ctx_id).find('.ajax_pagination').contents();
             }
             
-            var list_js = ['/table_sorter.js',
-                           '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
+            var list_js = ['/table_sorter.js'], //'/++resource++vindula.myvindula.views/js/vindula_modal.js'],
                 url_js = '';
             
             if (dom.find('.social-box').length){
