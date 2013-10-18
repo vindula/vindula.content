@@ -24,20 +24,15 @@
 			<div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" tal:condition="not:ajax_load" />
     		<div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
 			<!-- Data -->
-    		<div>
+    		<!--div>
     			<tal:cond condition="context/active_date">
     				<div class="info_topoBoxTipo">
     					<div class="info_data" tal:condition="context/effective_date|nothing">
-    						<h4 tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></h4>
+    						<small tal:content="python: context.effective_date.strftime('%d/%m/%Y / %H:%M')"></small>
     					</div>
-    					<div class="visualClear"></div>
     				</div>
     			</tal:cond>
-    			<!--div class="indicacao_comentario" tal:condition="python: contcomments!= 0">
-    				<h4 tal:content="string:Comentários (${contcomments})"></h4>
-    			</div-->
-    			<div class="visualClear"></div>
-    		</div>
+    		</div-->
     
     		<!-- start: New -->
     		<div> 
@@ -46,7 +41,7 @@
 					<hr >
     				<div class="descricao_titulo">
     					<tal:cond condition="context/active_author">
-    						<h4 tal:content="string: Autor: ${view/authorname|nothing}">Author</h4>
+    						<span tal:content="string: Autor: ${view/authorname|nothing}">Author</span>
     					</tal:cond>
     					<p tal:content="context/Description"></p>
     				</div>

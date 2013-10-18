@@ -1,7 +1,7 @@
 <metal:macro define-macro="share">
 		<div id="viewlet-share" class="opcoes_noticia">
 			<div class="opcao1">
-				<h4>Compartilhar</h4>
+				<span class="label-share">Compartilhar</span>
 				<!-- AddThis Button BEGIN -->
 				  <div class="vd-social-left"
                        tal:define="change_id change_id|nothing">
