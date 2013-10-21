@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+        
+<head>
+    <metal:js fill-slot="javascript_head_slot">
+        <!--script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script-->
+    </metal:js>
+    
+    <metal:styleslot fill-slot="style_slot">
+    </metal:styleslot>
+</head>
+
+<body>
+    <metal:main fill-slot="main">
+                
+        <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+        <div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" tal:condition="not:ajax_load" />
+        <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+        <div id="content-core"
+             metal:define-macro="page-view"
+             tal:define="view nocall:context/list-procedures;
+                         ctx python:view.getContext(context);
+                         items python:view.getProcedures(ctx);">
+                         
+            <link type="text/css" rel="stylesheet" media="all" tal:attributes="href string:${context/portal_url|nothing}/++resource++vindula.content/css/list-procedure.css" />
+
+            <table class="listing">
+                <thead>
+                    <tr>
+                        <th>Nº REF.</th>
+                        <th>TÍTULO DO DOCUMENTO</th>
+                        <th>REVISÃO</th>
+                        <th>DATA</th>
+                        <th>PDF</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tal:rep repeat="item items">
+                        <tr>
+                            <td><span tal:content="item/getRefNumber|nothing"></span></td>
+                            <td><span tal:content="item/Title|nothing"></span></td>
+                            <td><span tal:content="item/getRevisionNumber|nothing"></span></td>
+                            <td tal:condition="item/getUploadDate|nothing">
+                                <span tal:content="python: item.getUploadDate().strftime('%d/%m/%Y')"></span>
+                            </td>
+                            <td class="search-cell"><a tal:attributes="href string:${item/absolute_url}/download;
+                                                   title item/Title;
+                                                   alt item/Title;"><div class="view-procedure"></div></a>
+                            </td>
+                        </tr>
+                    </tal:rep>
+                </tbody>
+            </table>
+        </div>
+        <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
+    </metal:main>
+</body>
+</html>

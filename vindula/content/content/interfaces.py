@@ -3,6 +3,9 @@ from zope.interface import Interface, Attribute
 
 class IVindulaNews(Interface):
     """ Interface for VindulaNews content type """
+    
+class IProcedure(Interface):
+    """ Interface for IProcedure content type """
 
 class IVindulaFolder(Interface):
     """ Interface for VindulaFolder content type """

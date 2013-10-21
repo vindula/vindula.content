@@ -1,0 +1,7 @@
+.view-procedure { 
+    background: url(++resource++vindula.content/images/search.png) no-repeat; 
+    width:16px;
+    height:16px; 
+}
+
+.search-cell { text-align: center; }
