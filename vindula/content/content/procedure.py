@@ -192,7 +192,7 @@ registerType(Procedure, PROJECTNAME)
 
 class ListProceduresView(grok.View):
     grok.context(Interface)
-    grok.require('zope2.View') 
+    grok.require('cmf.SetOwnPassword') 
     grok.name('list-procedures')
     
     
