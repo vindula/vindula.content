@@ -41,7 +41,10 @@ class ModelsContent(Storm, BaseStore):
     def getContent_by_uid(self,uid):
         data = self.store.find(ModelsContent, ModelsContent.uid==uid).one()
         return data
-
+    
+    def getContent_by_id(self,id):
+        data = self.store.find(ModelsContent, ModelsContent.id==id).one()
+        return data
 
     def orderBy_access(self,result_query ):
         UIDs = []
