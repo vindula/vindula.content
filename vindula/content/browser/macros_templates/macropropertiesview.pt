@@ -1,6 +1,5 @@
 <metal:view_macro define-macro="view"
                   tal:define="view_macro python:context.restrictedTraverse('macro-propertis-content');">
-    
     <div class="accordion">
         <div class="title">
             <h5>
@@ -17,7 +16,12 @@
             <tal:cond condition="view_macro/creation_date|nothing"><label class="left">Data Criação:</label><p tal:content="view_macro/creation_date"></p></tal:cond>
         </div>
     </div>
-    
+</metal:view_macro>
+
+
+<metal:view_macro define-macro="changes_view"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-propertis-content');">
+                      
     <div class="accordion" tal:condition="python: context.portal_type != 'File'">
         <div class="title">
             <h5>
@@ -35,7 +39,5 @@
             <label class="left">Responsável:</label><p tal:content="view_macro/responsible"></p>
         </div>
     </div>
-
-
-
+                   
 </metal:view_macro>
