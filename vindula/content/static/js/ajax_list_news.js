@@ -113,6 +113,8 @@ $j(document).ready(function(){
     $j('a#itenspage').live('click',function(){
        var quant = parseInt($j(this).text());
        AjaxNewsItens(quant,0,true);
+       
+       return false;
     });    
     
     $j('select#page_selector').live('change', function(){
