@@ -45,7 +45,14 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             var dom = $j(data);
             
             // Feito assim pois tem fez que o dom retorna com o FIND e tem vez que retorna com o FILTER
-            var content = dom.find(ctx_id+' .container').contents();
+            var content = dom.find(ctx_id+' .container')
+            
+            if (content.length >= 2){
+                content = content.eq(0);
+            }
+            
+            content = content.contents();
+            
             if (content.length)
                 var paginator = dom.find(ctx_id+' .ajax_pagination').contents();
             else

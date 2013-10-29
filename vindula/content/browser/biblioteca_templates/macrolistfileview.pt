@@ -7,7 +7,7 @@
                            type request/type|python:theme and 'theme' or 'structure';
                            sort_on request/sort_on|string:access;
                            items view_macro/getRequestItems;
-                           items python:items or (theme and theme or structures);
+                           items python:items or (theme and theme or structures) or [];
                            items python:view_macro.sortItems(type, items);">
     
             <div class="container">
