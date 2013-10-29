@@ -53,10 +53,13 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             
             content = content.contents();
             
-            if (content.length)
-                var paginator = dom.find(ctx_id+' .ajax_pagination').contents();
-            else
-            {
+            if (content.length) {
+                var paginator = dom.find(ctx_id+' .ajax_pagination');
+                if (paginator.length >= 2){
+                    paginator = paginator.eq(0);
+                }
+                paginator = paginator.contents();
+            } else {
                 content = dom.filter(ctx_id).find('.container').contents();
                 var paginator = dom.filter(ctx_id).find('.ajax_pagination').contents();
             }
