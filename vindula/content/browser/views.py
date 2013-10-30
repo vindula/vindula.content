@@ -82,8 +82,9 @@ class VindulaResultsNews(BrowserView):
                      text += '*'
                 D['SearchableText'] = quote_chars(text)
 
+            D['meta_type'] = portal_type
             D['sort_on'] = sort_on
-            D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 1}
+            D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 10}
             result = catalog_tool(**D)
         else:
             result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
