@@ -60,7 +60,8 @@
                         </div>
                     </div>
                     
-                    <input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" />
+                    <!--input type="hidden" tal:attributes="value context/absolute_url|nothing" id="portal_url" /-->
+                    <input type="hidden" tal:attributes="value context/getPath|context/portal_url" id="portal_url" />
                     
                     <!-- Spinner -->
                     
