@@ -58,14 +58,16 @@ class VindulaResultsNews(BrowserView):
         form = self.request.form
         submitted = form.get('submitted', False)
         form_cookies = {}
+
         if not submitted and self.request.cookies.get('find-news', None):
             form_cookies = self.getCookies(self.request.cookies.get('find-news', None))
-
+        
         if submitted or form_cookies:
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
+            
             invert = form.get('invert', form_cookies.get('invert', False))
-            sort_on = form.get('sorted',form_cookies.get('sorted', ''))
+            sort_on = form.get('sorted',form_cookies.get('sorted', 'created'))
 
             if sort_on == 'effective':
                 invert = not invert
@@ -73,7 +75,7 @@ class VindulaResultsNews(BrowserView):
             if invert:
                 D['sort_order'] = 'reverse'
             else:
-                D['sort_order'] = ''
+                D['sort_order'] = 'descending'
 
             text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
@@ -81,10 +83,12 @@ class VindulaResultsNews(BrowserView):
                 if '*' not in text:
                      text += '*'
                 D['SearchableText'] = quote_chars(text)
-
+            
+            D['review_state'] = ['published', 'internally_published', 'external']
             D['meta_type'] = portal_type
             D['sort_on'] = sort_on
             D['path'] = {'query':'/'.join(self.context.getPhysicalPath()), 'depth': 10}
+            
             result = catalog_tool(**D)
         else:
             result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
