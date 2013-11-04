@@ -12,14 +12,28 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         ctx_id = "#"+ctx.attr('id');
 
 
-	if (b_start==null)
-        b_start = parseInt(ctx.find('input#b_start').val())
+	if (b_start==null) {
+        b_start = parseInt(ctx.find('input#b_start').val());
+        if (isNaN(b_start)) {
+            b_start = parseInt(ctx.children().find('input#b_start').val());
+        }
+    }
 
-    if (sort_on==null)
-    	sort_on = 'access'
-    
-    if (b_size==null)
-        b_size = parseInt(ctx.find('input#b_size').val())
+    if (sort_on==null) {
+        sort_on = ctx.find('select.order_by');
+        if(sort_on.length) {
+            sort_on = sort_on.val();
+        } else {
+            sort_on = 'access';
+        }
+    }
+        
+    if (b_size==null) {
+        b_size = parseInt(ctx.find('input#b_size').val());
+        if (isNaN(b_size)) {
+            b_size = parseInt(ctx.children().find('input#b_size').val());
+        }
+    }
     
 	params['b_size'] = b_size;
 	params['b_start'] = b_start;
@@ -103,12 +117,14 @@ $j(document).ready(function(){
     		b_start = parseInt($j(this).find('input').val());
         executaAjax($conteiner,b_start,null,null);
     });
-    $j('select.order_by').live('change',function(){
-    	var $conteiner = $j(this).parents('.list_file'),
-    		sort_on = $j(this).val();
-
-    	executaAjax($conteiner,null,null,sort_on);
+    
+    $j('select.order_by').live("change", function(ev){
+        var $conteiner = $j(this).parents('.list_file'),
+            sort_on = $j(this).val();
+            
+        executaAjax($conteiner,null,null,sort_on);
     });
+
     $j('.list_file div#size-nav a').live('click',function(event){
         event.preventDefault();
         event.stopPropagation();

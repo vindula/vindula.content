@@ -3,6 +3,8 @@ from five import grok
 from zope.interface import Interface
 from Products.CMFCore.interfaces import ISiteRoot
 from AccessControl import ClassSecurityInfo
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.component import getUtility
 
 from vindula.content.models.content import ModelsContent
 from vindula.content.browser.macros import Search
@@ -227,6 +229,13 @@ class MacroListFileView(grok.View):
         items.reverse()
         
         return OrderedDict(items)
+    
+    def normalizeString(self, string=''):
+        if string:
+            normalizer = getUtility(IIDNormalizer)
+            return normalizer.normalize(string) 
+        return ''
+            
 
 class FilterItensView(grok.View):
     grok.context(Interface)
