@@ -70,7 +70,6 @@ class MacroListFileView(grok.View):
 
     def list_files(self, type, value, sort_on):
         list_files = []
-
         if type == 'theme':
             list_files = self.searchFile_byTheme([value],sort_on)
         elif type == 'structure':
@@ -134,10 +133,19 @@ class MacroListFileView(grok.View):
                     object = structures
 
             refs = self.rtool.getBackReferences(object, 'structures', targetObject=None)
+            result_query = []
             for ref in refs:
                 obj = ref.getSourceObject()
                 if obj.portal_type == 'File':
-                    result.append(obj)
+                    result_query.append(obj)
+            
+            if result_query:
+                if sort_on == 'access':
+                    for item in ModelsContent().orderBy_access(result_query):
+                        result.append(item.get('content').getObject())
+                else:
+                    result = sorted(result_query, key=lambda res: res.created(), reverse=True)
+                    
         return result
 
     def searchFile_byTheme(self, keywords=[], sort_on='access'):
