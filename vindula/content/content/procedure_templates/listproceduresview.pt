@@ -50,7 +50,7 @@
                             <td tal:condition="item/getUploadDate|nothing">
                                 <span tal:content="python: item.getUploadDate().strftime('%d/%m/%Y')"></span>
                             </td>
-                            <td class="search-cell"><a tal:attributes="href string:${item/absolute_url}/download;
+                            <td class="search-cell"><a tal:attributes="href string:${item/absolute_url}/view;
                                                    title item/Title;
                                                    alt item/Title;"><div class="view-procedure"></div></a>
                             </td>

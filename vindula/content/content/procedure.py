@@ -209,8 +209,8 @@ class ListProceduresView(grok.View):
     def getProcedures(self, context=None):
         p_catalog = getToolByName(self.context, 'portal_catalog')
         
-        query = {'review_state': ['published', 'external'],
-                 'portal_type': 'Procedure',
+        query = {#'review_state': ['published', 'external'],
+                 'portal_type': 'File',
                  'sort_on': 'getObjPositionInParent',}
         
         if not context:
