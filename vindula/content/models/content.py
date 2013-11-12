@@ -51,7 +51,10 @@ class ModelsContent(Storm, BaseStore):
         contentAccess = []
         result = []
         for item in result_query:
-            obj = item.getObject()
+            try:
+                obj = item.getObject()
+            except AttributeError:
+                obj = item
             UIDs.append(obj.UID())
 
         if UIDs:

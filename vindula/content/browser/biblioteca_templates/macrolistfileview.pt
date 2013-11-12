@@ -16,19 +16,20 @@
                 
                 <tal:rep repeat="item items"
                          condition="items">
-                    <div tal:attributes="class string:list_file ${item/Title|nothing}" id="list_file"
+                    <div tal:attributes="class string:list_file ${normalize_title|nothing};
+                                         id normalize_title|nothing;"
                          tal:condition="batch"
                          tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                                      b_size request/b_size|string:5;
                                      b_start python:0;
                                      b_start request/b_start | b_start;
                                      block_title python: type=='theme' and item or (item.Title or view_macro.getStructures_byUID(item).Title());
+                                     normalize_title python: view_macro.normalizeString(block_title);
                                      qtd_items python:items[item];
                                      list_files python: view_macro.list_files(type, item, sort_on) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
                                          
                         <div class="titulo_area">
-                            
                             <h5 class="left" tal:condition="python:type=='theme'">
                                 <a class="accordion arrow arrow-left left"
                                    tal:attributes="id block_title">
@@ -47,11 +48,13 @@
                                 </a>
                             </h5>
                             <div class="right">
-                                <form class="left custom">
-                                    <select name="order_by"  id="customDropdown" class="right order_by medium">
-                                        <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais acessados</option>
-                                        <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens recentes</option>
-                                    </select>
+                                <form class="left custom-select">
+                                    <div class="container-select">
+                                        <select name="order_by" class="right order_by medium">
+                                            <option value="access" tal:attributes="selected python: sort_on=='access' and 'selected' or ''">Mais acessados</option>
+                                            <option value="effective" tal:attributes="selected python: sort_on=='effective' and 'selected' or ''">Itens recentes</option>
+                                        </select>
+                                    </div>
                                 </form>
                                 <div class="right ajax_pagination" id="pag-nav">
                                     <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
@@ -60,12 +63,13 @@
                             <hr/>
                         </div>
             
-                        <input type="hidden" id="b_size" tal:attributes="value b_size" />
-                        <input type="hidden" id="b_start" tal:attributes="value b_start" />
-            
-                        <div class="list-container" 
+                        <div class="list-container container" 
                              tal:attributes="accordion-id block_title;
                                              accordion-collapse string:true;">
+                                                 
+                            <input type="hidden" id="b_size" tal:attributes="value b_size" />
+                            <input type="hidden" id="b_start" tal:attributes="value b_start" />
+                        
                             <div class="row">
                                 <tal:rep repeat="item batch">
                                     <tal:cond condition="repeat/item/start">
