@@ -20,6 +20,8 @@ from zope.interface import Interface
 from datetime import datetime
 from itertools import chain
 
+from vindula.myvindula.registration import ImportUser
+
 MULTISPACE = u'\u3000'.encode('utf-8')
 
 
@@ -393,3 +395,48 @@ class VindulaWebServeAllUsersPlone(grok.View):
 
 
         return self.retorno
+
+
+# Metodo que criar o usuario no acl_user do plone 
+class VindulaWebServeCreateUserPlone(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-create-user-plone')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        dados = {}
+        username = self.request.form.get('username','')
+
+        dados['username'] = username
+        dados['name'] = self.request.form.get('name','')
+        dados['email'] = self.request.form.get('email','')
+
+        if username:
+
+            portal_membership = getToolByName(self.context, "portal_membership")
+            user_admin = portal_membership.getMemberById('admin')
+
+            # stash the existing security manager so we can restore it
+            old_security_manager = getSecurityManager()
+
+            # create a new context, as the owner of the folder
+            newSecurityManager(self.request,user_admin)
+
+
+            ImportUser().importUser(self,{},user=dados) 
+
+            # restore the original context
+            setSecurityManager(old_security_manager)
+
+            self.retorno['response'] = 'Usuario criado com sucesso'
+
+        else:
+            self.retorno['response'] = 'Usuario não criado, dados invalidos'
+        
