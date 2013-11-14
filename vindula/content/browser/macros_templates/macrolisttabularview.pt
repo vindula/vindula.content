@@ -133,7 +133,8 @@
                 tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/tabular_tile.js"></script>
                 
         <div class="filterFile list_file" id="tabular_view">
-            <div class="container">
+            <div class="container" tal:define="hide_result hide_result|nothing;"
+                 tal:attributes="class python:hide_result and 'container hide' or 'container'">
                 <tal:def tal:define="view_macro nocall:context/macro_tabular_file;
                                      Batch python:modules['Products.CMFPlone'].Batch;
                                      b_size request/b_size|string:10;

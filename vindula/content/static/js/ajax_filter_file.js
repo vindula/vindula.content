@@ -16,7 +16,7 @@ $j(document).ready(function(){
             fields = $data_box.find('input[name="fields"]').val(),
             form = $filter.find('form'),
             params = {};
-        
+            
         // FONTE: http://be.twixt.us/jquery/formSubmission.php
         $j(form)
         .find("input:checked, input[type='text'], input[type='hidden'], input[type='password'], option:selected, textarea")
@@ -44,7 +44,6 @@ $j(document).ready(function(){
         
         if (searchableText)
             params['SearchableText'] = searchableText;
-            
         
         $j.ajax({
             url: url_filter,
@@ -77,6 +76,9 @@ $j(document).ready(function(){
                         }
                         
                         $container.html($contents.contents());
+                        if ($container.hasClass('hide')){
+                            $container.removeClass('hide');
+                        }
                     }
                 );
             },
