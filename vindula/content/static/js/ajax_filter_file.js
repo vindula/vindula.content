@@ -5,7 +5,7 @@ function isEmpty(str) {
 $j(document).ready(function(){
     var url = document.URL
     
-    $j('.execFilter').live('click',function(){
+    $j('.execFilter').live('click',function(event){
         var $data_box = $j(this).parents('.filterFile').nextAll('div'),
             $container = $data_box.find('.container'),
             $filter = $j(this).parents('.container-button-group').prev('.content-filter'),
@@ -17,6 +17,9 @@ $j(document).ready(function(){
             form = $filter.find('form'),
             params = {};
             
+        event.preventDefault();
+        event.stopPropagation();
+            
         // FONTE: http://be.twixt.us/jquery/formSubmission.php
         $j(form)
         .find("input:checked, input[type='text'], input[type='hidden'], input[type='password'], option:selected, textarea")
@@ -27,7 +30,8 @@ $j(document).ready(function(){
                     params[name].push(this.value);
                 }
                 else{
-                    var old_value =  params[name]
+                    var old_value =  params[name];
+                    
                     params[name] = new Array();
                     params[name].push(old_value);
                     params[name].push(this.value);
@@ -68,6 +72,7 @@ $j(document).ready(function(){
                         
                         var list_js = ['/table_sorter.js', '/++resource++vindula.myvindula.views/js/vindula_modal.js'],
                             url_js = '';
+                            
                         for(var i=0;i<list_js.length;i++){
                             url_js = url_base + list_js[i];
                             $j.get(url_js, function(data){
@@ -76,6 +81,7 @@ $j(document).ready(function(){
                         }
                         
                         $container.html($contents.contents());
+                        
                         if ($container.hasClass('hide')){
                             $container.removeClass('hide');
                         }
