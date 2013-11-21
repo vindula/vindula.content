@@ -93,7 +93,8 @@ class VindulaResultsNews(BrowserView):
             
             result = catalog_tool(**D)
         else:
-            result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
+            # result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'effective', 'sort_order':'reverse'})
+            result = self.context.getFolderContents({'meta_type':portal_type, 'sort_on': 'sortable_title'})
         return result
 
 

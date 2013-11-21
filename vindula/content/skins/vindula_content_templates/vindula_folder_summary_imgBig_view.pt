@@ -46,7 +46,8 @@
                     </p>
                 </div>
                 
-                <tal:def define="view_search python:context.restrictedTraverse('@@vindula_news_result_view');
+                <tal:def define="dummy python:request.form.get('sorted','sortable_title');
+                                 view_search python:context.restrictedTraverse('@@vindula_news_result_view');
                                  itens itens|  view_search/QueryFilter;
                                  cookies view_search/getCookies;
                                  listBrowserView context/vindula_list_news_view;">
