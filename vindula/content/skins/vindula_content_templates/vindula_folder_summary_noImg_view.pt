@@ -16,7 +16,9 @@
         
             <tal:def define="com_image python:False; 
                              size_image_width string:98px;
-                             size_image_height string:73px;">
+                             size_image_height string:73px;
+                             habilita_pesquisa python: True;
+                             habilita_descricao python: True;>
         
                 <metal:block metal:use-macro="context/vindula_folder_summary_imgBig_view/macros/principal" />
     
