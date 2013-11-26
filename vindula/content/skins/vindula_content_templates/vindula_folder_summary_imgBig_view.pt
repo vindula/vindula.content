@@ -53,8 +53,9 @@
                                  listBrowserView context/vindula_list_news_view;">
                                      
                     <div class="clear" id="busca" tal:condition="habilita_pesquisa">
-                        <div class="field-news left">
-                            <input tal:attributes="value cookies/keyword|nothing " name="field" id="keyword" value="" placeholder="Palavra-chave" />
+                        <div class="field-news">
+                            <input tal:attributes="value cookies/keyword|nothing " class="search-glossario"
+                                   name="field" id="keyword" value="" placeholder="Palavra-chave" />
                         </div>
                         <div class="field-news-right right">
                             <input type="button" value="Aplicar" class="bt_comments" id="searchItems"/>
