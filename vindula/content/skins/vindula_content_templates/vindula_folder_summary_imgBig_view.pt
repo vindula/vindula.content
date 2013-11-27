@@ -53,6 +53,8 @@
                                  listBrowserView context/vindula_list_news_view;">
                                      
                     <div class="clear" id="busca" tal:condition="habilita_pesquisa">
+                        <input type="hidden" value="created" id="sortfield" />
+                        
                         <div class="field-news">
                             <input tal:attributes="value cookies/keyword|nothing " class="search-glossario"
                                    name="field" id="keyword" value="" placeholder="Palavra-chave" />

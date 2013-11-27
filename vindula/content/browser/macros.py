@@ -127,7 +127,7 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                 return []
         else:
             #TODO: Solucao temporaria, fazer funcionar o decorator
-            key = hashlib.md5('%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields)).hexdigest()
+            key = hashlib.md5('%s:%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields,path)).hexdigest()
             key = 'Biblioteca:list_files::%s' % key
             cached_data = get_redis_cache(key)
             if 'Pessoas' in portal_type:

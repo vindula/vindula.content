@@ -2,7 +2,8 @@ $j = jQuery.noConflict();
 
 function AjaxNewsItens (b_size,b_start,limpa_cookie, sort) {
        
-    var url = $j('#portal_url').val() + "/vindula_news_result_view";
+    // var url = $j('#portal_url').val() + "/vindula_news_result_view";
+    var url = $j('base').attr('href') + "vindula_news_result_view";
     var parametro = {};
     
     if ((!$j.cookie("find-news",{ path: window.location.pathname })) || (limpa_cookie)){
