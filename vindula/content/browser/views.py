@@ -300,8 +300,16 @@ class VindulaWebServeObjectUser(grok.View):
         user_obj = self.portal_membership.getMemberById(username)
         groups = self.groups_tool.getGroupsByUserId(username)
 
-        D['groups'] = [g.id for g in groups ]
-        D['has_manager'] =  user_obj.has_role('Manager')
+        if user_obj:
+            D['has_manager'] =  user_obj.has_role('Manager')
+        else:
+            D['has_manager'] = False
+
+        if groups:
+            D['groups'] = [g.id for g in groups ]
+        else:
+            D['groups'] = []
+        
         return D
 
 
