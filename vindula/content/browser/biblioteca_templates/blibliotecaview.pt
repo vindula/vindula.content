@@ -20,7 +20,8 @@
         </div>
                                                        
         <div metal:define-macro="page-view"
-             tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');">
+             tal:define="view_macro python:context.restrictedTraverse('biblioteca-view');
+                         path_biblioteca view_macro/getPath_biblioteca">
             
             <tal:cond condition="not:request/list-file-js|nothing">
                 <script type="text/javascript" src=""
@@ -29,12 +30,14 @@
             </tal:cond>
             
             <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
-                             title_box string:Mais acessados">
+                             title_box string:Mais acessados;
+                             path path_biblioteca">
                 <metal:block metal:use-macro="context/macro_more_access_content/macros/view" />
             </tal:def>
 
             <tal:def define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
-                             title_box string:Itens recentes">
+                             title_box string:Itens recentes;
+                             path path_biblioteca">
                 <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
             </tal:def>
 
@@ -46,11 +49,13 @@
                     <div class="content" data-section-content>
                         <!-- ABA Tema -->
                         <div id="theme">
-                            <tal:def tal:define="is_theme python:True">
+                            <tal:def tal:define="is_theme python:True;
+                                                 path path_biblioteca">
                                 <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                             </tal:def>
 
-                            <tal:def define="theme view_macro/getThemes">
+                            <tal:def define="theme view_macro/getThemes;
+                                             path path_biblioteca">
                                 <metal:block metal:use-macro="context/macro_list_file/macros/view" />
                             </tal:def>
                         </div>
@@ -63,14 +68,16 @@
                     <div class="content" data-section-content>
                         <!-- ABA Palavra Chave -->
                         <div id="subjects"
-                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
+                                         path path_biblioteca">
                             <metal:block metal:use-macro="context/macro_filter_file/macros/tabular" />
 
                             <div id="itens">
                                 <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                                 {'label': 'Número', 'attribute': 'getNumero'},
                                                                 {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                                {'label': 'Título', 'attribute': 'Title'},];">
+                                                                {'label': 'Título', 'attribute': 'Title'},];
+                                                 path path_biblioteca">
                                     <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                                 </tal:def>
                             </div>
@@ -84,11 +91,13 @@
                     <div class="content" data-section-content>
                         <!-- ABA Unidade -->
                         <div id="structures">
-                            <tal:def define="is_structures python:True">
+                            <tal:def define="is_structures python:True;
+                                             path path_biblioteca">
                                 <metal:block metal:use-macro="context/macro_filter_file/macros/view" />
                             </tal:def>
 
-                            <tal:def define="structures view_macro/getStructures">
+                            <tal:def define="structures view_macro/getStructures;
+                                             path path_biblioteca">
                                 <metal:block metal:use-macro="context/macro_list_file/macros/view" />
                             </tal:def>
                         </div>
@@ -102,14 +111,16 @@
                     <div class="content">
                         <!-- ABA Documento -->
                         <div class="conteiner" id="documento"
-                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);">
+                             tal:define="portal_type python: ('File', 'VindulaPhotoAlbum', 'VindulaVideo',);
+                                         path path_biblioteca">
                             <metal:block metal:use-macro="context/macro_filter_file/macros/tabular-library" />
 
                             <div id="itens">
                                 <tal:def define="fields python:[{'label': 'UO', 'attribute': 'getStructures'},
                                                                 {'label': 'Número', 'attribute': 'getNumero'},
                                                                 {'label': 'Aprovação', 'attribute': 'getRawCreation_date'},
-                                                                {'label': 'Título', 'attribute': 'Title'},];">
+                                                                {'label': 'Título', 'attribute': 'Title'},];
+                                                 path path_biblioteca">
                                     <metal:block metal:use-macro="context/macro_tabular_file/macros/view" />
                                 </tal:def>
                             </div>

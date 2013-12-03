@@ -14,6 +14,7 @@ $j(document).ready(function(){
             url_display = $data_box.find('#absolute_url').val(),
             searchableText = $filter.prev('.title-filter').find('input[name="SearchableTextFilter"]').val(),
             fields = $data_box.find('input[name="fields"]').val(),
+            path = $data_box.find('input#path').val(),
             form = $filter.find('form'),
             params = {};
             
@@ -48,6 +49,9 @@ $j(document).ready(function(){
         
         if (searchableText)
             params['SearchableText'] = searchableText;
+
+        if (path)
+            params['context_path'] = path;
         
         $j.ajax({
             url: url_filter,

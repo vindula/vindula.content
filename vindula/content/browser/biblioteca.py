@@ -38,6 +38,11 @@ class BlibliotecaView(grok.View):
 
         query = {'portal_type':('OrganizationalStructure',)}
 
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            query['path'] = {'query':'/'.join(context_path), 'depth':99}
+
         if structures:
             query['UID'] = structures
 
@@ -51,6 +56,15 @@ class BlibliotecaView(grok.View):
     def getThemes(self):
         self.update()
         return self.themes
+
+    def getPath_biblioteca(self):
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            return '/'.join(context_path)
+
+        return None
+
 
 
 class MacroListFileView(grok.View):
@@ -153,6 +167,11 @@ class MacroListFileView(grok.View):
         result = []
 
         query['portal_type'] = ('File',)
+        
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            query['path'] = {'query':'/'.join(context_path), 'depth':99}
 
         if keywords:
             query['ThemeNews'] = keywords

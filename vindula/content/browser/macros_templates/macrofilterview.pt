@@ -12,6 +12,7 @@
                      is_structures is_structures|nothing;
                      themes request/themes[]|python:[];
                      structures request/structures[]|python:[];
+                     path path|request/context_path|nothing;
                      list_filter python:view_macro.list_filter(is_theme,is_structures) or [];">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
@@ -27,6 +28,8 @@
                 <div class="content-filter">
                     <div class="content-filter">
                         <form>
+                            <input type="hidden" id="path" tal:attributes="value path" />
+
                             <ul class="small-block-grid-2 large-block-grid-4 list-content">
                                 <tal:rep repeat="item list_filter">
                                     <tal:def define="item_obj item/getObject|item;
@@ -86,7 +89,8 @@
                      SearchableTextFilter request/SearchableTextFilter|python:'';
                      structure_selected view_macro/getStructureSelected|nothing;
                      portal_type request/portal_type|portal_type|view_macro/getPortalTypes|nothing;
-                     subjects view_macro/getAllSubjects;">
+                     subjects view_macro/getAllSubjects;
+                     path path|request/context_path|nothing;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -104,6 +108,8 @@
 
                     <input type="hidden" name="portal-type" id="portal-type"
                            tal:attributes="value portal_type">
+                    
+                    <input type="hidden" id="path" tal:attributes="value path" />
 
                     <ul class="small-block-grid-2 large-block-grid-4">
                         <tal:rep repeat="item subjects">
@@ -156,7 +162,8 @@
                      SearchableTextFilter request/SearchableTextFilter|python:'';
                      structure_selected view_macro/getStructureSelected|nothing;
                      portal_types view_macro/getPortalTypes|nothing;
-                     tipos_unidade view_macro/getUnitTypes|nothing">
+                     tipos_unidade view_macro/getUnitTypes|nothing;
+                     path path|request/context_path|nothing;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -278,7 +285,8 @@
     </tal:cond>
     <tal:def define="view_macro python:context.restrictedTraverse('macro_filter_file');
                      SearchableTextFilter request/SearchableTextFilter|python:'';
-                     portal_type portal_type|request/portal_type|nothing">
+                     portal_type portal_type|request/portal_type|nothing;
+                     path path|request/context_path|nothing;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
             <p class="title-filter hasInput">
@@ -293,7 +301,9 @@
                 <form class="form-columns-tag" tal:condition="not_filter|python:True">
                     
                     <input type="hidden" name="portal-type" tal:attributes="value portal_type;">
-                    
+
+                    <input type="hidden" id="path" tal:attributes="value path" />
+
                     <div class="tags left large-4 small-4">
                         <div class="block-filter">
                             <div class="clear label-filter">
