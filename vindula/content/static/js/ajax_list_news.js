@@ -65,17 +65,19 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie, sort) {
         
     };
     
-    $j('#spinner').removeClass('display-none');
-    $j('#content-itens').addClass('display-none');
-    
+    if (parametro['keyword']){
+        $j('#spinner').removeClass('display-none');
+        $j('#content-itens').addClass('display-none');
+        
 
-    $j.get(url,parametro, function(data){
-        $j('#content-itens').html(data);
-        $j('#content-itens').removeClass('display-none');
-        $j('#spinner').addClass('display-none');
-		if ($j("#keyword").val())
-			$j('#content-itens').highlight($j("#keyword").val());
-    });
+        $j.get(url,parametro, function(data){
+            $j('#content-itens').html(data);
+            $j('#content-itens').removeClass('display-none');
+            $j('#spinner').addClass('display-none');
+    		if ($j("#keyword").val())
+    			$j('#content-itens').highlight($j("#keyword").val());
+        });
+    };
 }
 
 function clearCookies () {
