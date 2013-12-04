@@ -21,11 +21,11 @@
 					<tal:rep repeat="employee context/values">
 						<div class="row">
 							<div class="large-8 columns">		
-								<div class="large-3 columns photo-func-equipe" tal:condition="employee/getImageRelac | nothing">
+								<div class="large-2 columns photo-func-equipe" tal:condition="employee/getImageRelac | nothing">
 									<img tal:attributes="src python: employee.getImageRelac().absolute_url()+'/image_quem';
 		    														     alt employee/imageCaption; title employee/imageCaption;">
 								</div>
-								<div class="large-9 columns info-func-equipe">
+								<div class="large-10 columns info-func-equipe">
 									<div class="cargo-func">
 										<h4 tal:content="employee/cargo | nothing">Presidente Geral</h4>
 									</div>
