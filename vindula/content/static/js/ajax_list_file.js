@@ -8,6 +8,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         title_box = ctx.find('input#title_box').val(),
         services = ctx.find('input#services').val(),
         list_files = ctx.find('input#list_files').val(),
+        path = ctx.find('input#path').val(),
 		params = {},
         ctx_id = "#"+ctx.attr('id');
 
@@ -45,7 +46,8 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     params['portal_type'] = portal_type
     params['fields'] = fields
     params['absolute_url'] = url
-    params['list_files'] = list_files
+    params['list_files'] = list_files               
+    params['context_path'] = path
 
 	ctx.find('.ajax_loader').show();
 	ctx.find('div.see_also_news').addClass('display-none');

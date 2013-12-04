@@ -38,6 +38,11 @@ class BlibliotecaView(grok.View):
 
         query = {'portal_type':('OrganizationalStructure',)}
 
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            query['path'] = {'query':'/'.join(context_path), 'depth':99}
+
         if structures:
             query['UID'] = structures
 
@@ -51,6 +56,15 @@ class BlibliotecaView(grok.View):
     def getThemes(self):
         self.update()
         return self.themes
+
+    def getPath_biblioteca(self):
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            return '/'.join(context_path)
+
+        return None
+
 
 
 class MacroListFileView(grok.View):
@@ -153,6 +167,11 @@ class MacroListFileView(grok.View):
         result = []
 
         query['portal_type'] = ('File',)
+        
+        context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
+        if context_biblioteca:
+            context_path = self.context.aq_parent.getPhysicalPath()
+            query['path'] = {'query':'/'.join(context_path), 'depth':99}
 
         if keywords:
             query['ThemeNews'] = keywords
@@ -170,13 +189,14 @@ class MacroListFileView(grok.View):
 
     def get_url_typeIcone(self, obj):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
-        if obj.content_type in ['application/pdf', 'application/x-pdf', 'image/pdf']:
-            url = base + "icon-pdf.png"
-        elif obj.content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']:
+        if obj.content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\
+                                  'application/vnd.openxmlformats-officedocument.wordprocessingml.template']:
             url = base + "icon-word.png"
-        elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint']:
+        elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint',\
+                                  'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.presentationml.slideshow']:
             url = base + "icon-ppoint.png"
-        elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel']:
+        elif obj.content_type in ['application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel',\
+                                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.spreadsheetml.template']:
             url = base + "icon-excel.png"
         elif obj.portal_type in ['VindulaPhotoAlbum']:
             photos = obj.contentValues()
@@ -184,6 +204,7 @@ class MacroListFileView(grok.View):
                 url = photos[0].absolute_url()+'/image_preview'
             else:
                 url = base + "icon-default.png"
+        
         elif obj.portal_type in ['VindulaVideo']:
             photo = obj.getImage_preview()
             if photo:

@@ -24,7 +24,7 @@
                                      keywords request/keywords|request/keywords[]|python:'';
                                      structures structures|request/structures|request/structures[]|python:'';
                                      theme theme|request/theme|python:'';
-									 path path|nothing;
+									 path path|request/context_path|nothing;
                                      
                                      list_files python:view_macro.list_files(subject, keywords, structures, theme, portal_type, fields, path=path) or [];
                                      batch python:Batch(list_files, int(b_size), int(b_start), pagerange=len(list_files));">
@@ -34,6 +34,7 @@
                     <input type="hidden" id="portal_type" name="portal_type" tal:attributes="value portal_type">
                     <input type="hidden" id="fields" name="fields" tal:attributes="value fields">
                     <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_tabular_file?macro=default" >
+                    <input type="hidden" id="path" tal:attributes="value path" /> 
                     <input type="hidden" id="list_files" tal:attributes="value python:view_macro.getUIDS(list_files)" >
 
                     <meta:macro metal:define-macro="navegacao-macro">

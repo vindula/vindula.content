@@ -48,7 +48,13 @@ class SearchFileterView(grok.View):
         self.result = []
         has_searchable_text = False
         
-        query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
+        context_path = form.get('path')
+        
+        if context_path:
+            query['path'] = {'query':context_path, 'depth': 99}
+        else:
+            query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
+        
         query['portal_type'] = ['File',]
         start = False
         end = False

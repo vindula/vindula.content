@@ -46,14 +46,17 @@
                     </p>
                 </div>
                 
-                <tal:def define="dummy python:request.form.get('sorted','sortable_title');
-                                 view_search python:context.restrictedTraverse('@@vindula_news_result_view');
+                <tal:def define="view_search python:context.restrictedTraverse('@@vindula_news_result_view');
                                  itens itens|  view_search/QueryFilter;
                                  cookies view_search/getCookies;
+                                 sortfield sortfield|string:created;
+                                 invert invert|python:False;
                                  listBrowserView context/vindula_list_news_view;">
                                      
                     <div class="clear" id="busca" tal:condition="habilita_pesquisa">
-                        <input type="hidden" value="created" id="sortfield" />
+                        <input type="hidden" value="created" id="sortfield" tal:attributes="value sortfield" />
+
+                        <input type="hidden" id="invert" tal:attributes="class python: invert and 'imgSort imgDescend' or 'imgSort'" />
                         
                         <div class="field-news">
                             <input tal:attributes="value cookies/keyword|nothing " class="search-glossario"

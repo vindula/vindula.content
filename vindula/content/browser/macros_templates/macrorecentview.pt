@@ -2,7 +2,8 @@
                   tal:define="view_macro python:context.restrictedTraverse('macro_recent_content');
                               absolute_url absolute_url|request/absolute_url|string:${context/portal_url}/macro_recent_content;
                               portal_type portal_type|request/portal_type|string:File;
-                              list_itens list_itens|python:view_macro.list_files(portal_type);
+                              path path|request/context_path|nothing;
+                              list_itens list_itens|python:view_macro.list_files(portal_type, path);
                               Batch python:modules['Products.CMFPlone'].Batch;
                               b_size request/b_size|string:4;
                               b_start python:0;
@@ -14,6 +15,7 @@
     <div tal:attributes="class python: accordion and 'list_file row accordion' or 'list_file row'" id="recent_view">
         <input type="hidden" id="b_size" tal:attributes="value b_size" />
         <input type="hidden" id="b_start" tal:attributes="value b_start" />
+        <input type="hidden" id="path" tal:attributes="value path" />
         <input type="hidden" id="absolute_url" tal:attributes="value absolute_url" >
         <input type="hidden" id="portal_type" tal:attributes="value portal_type" >
 

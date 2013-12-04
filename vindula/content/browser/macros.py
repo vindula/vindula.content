@@ -568,7 +568,7 @@ class MacroMoreAccessViews(grok.View):
     grok.require('zope2.View')
     grok.name('macro_more_access_content')
 
-    def list_files(self, portal_type):
+    def list_files(self, portal_type, path=None):
         list_files = []
         review_state = True
 
@@ -582,6 +582,9 @@ class MacroMoreAccessViews(grok.View):
         query = {'portal_type': portal_type}
         if 'File' in portal_type:
             review_state = False
+
+        if path:
+            query['path'] = path.split('/')
 
         result = ModelsContent().search_catalog_by_access(context=self.context, rs=review_state, **query)
         return result
@@ -652,7 +655,7 @@ class MacroRecentView(MacroMoreAccessViews):
     def contaTitulo(self, titulo):
 	       return len(titulo())
 
-    def list_files(self, portal_type):
+    def list_files(self, portal_type, path=None):
         list_files = []
         if isinstance(portal_type, str):
             try:
@@ -663,6 +666,10 @@ class MacroRecentView(MacroMoreAccessViews):
                 pass
         
         query = {'portal_type': portal_type}
+
+        if path:
+            query['path'] = {'query': path }
+        
         search = Search(self.context, query, rs=False)
         list_files = search.result
 

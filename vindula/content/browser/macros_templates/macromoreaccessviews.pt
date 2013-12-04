@@ -1,8 +1,9 @@
 <metal:view_macro define-macro="view"
                   tal:define="view_macro python:context.restrictedTraverse('macro_more_access_content');
                               view_macro_func python:context.restrictedTraverse('macro_recent_content');
-			                  portal_type portal_type|request/portal_type|string:File;
-                              list_itens list_itens|python:view_macro.list_files(portal_type);
+			                        portal_type portal_type|request/portal_type|string:File;
+                              path path|request/context_path|nothing;
+                              list_itens list_itens|python:view_macro.list_files(portal_type,path);
                               title_box title_box|request/title_box|nothing;
                               accordion accordion|nothing;
                               services  services|request/services|nothing;
@@ -18,6 +19,7 @@
         <input type="hidden" id="title_box" tal:attributes="value title_box" />
         <input type="hidden" id="portal_type" tal:attributes="value portal_type" />
         <input type="hidden" id="services" tal:attributes="value services" />
+        <input type="hidden" id="path" tal:attributes="value path" />
         <input type="hidden" id="absolute_url" tal:attributes="value string:${context/portal_url}/macro_more_access_content" >
 
         <div class="row" tal:attributes="class python: accordion and 'accordion' or ''">
