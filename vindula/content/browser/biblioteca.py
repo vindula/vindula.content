@@ -189,7 +189,7 @@ class MacroListFileView(grok.View):
 
     def get_url_typeIcone(self, obj):
         base = self.context.portal_url() + "/++resource++vindula.content/images/"
-        elif obj.content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\
+        if obj.content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\
                                   'application/vnd.openxmlformats-officedocument.wordprocessingml.template']:
             url = base + "icon-word.png"
         elif obj.content_type in ['application/vnd.ms-powerpoint', 'application/powerpoint', 'application/mspowerpoint', 'application/x-mspowerpoint',\
