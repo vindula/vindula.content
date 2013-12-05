@@ -3,10 +3,12 @@
         <metal:js fill-slot="javascript_head_slot">
             <script type="text/javascript" src="" 
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js"></script>
-            <script type="text/javascript" src="" 
-                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script>
+            <!-- <script type="text/javascript" src="" 
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script> -->
 			<script type="text/javascript" src="" 
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js"></script>
+            <script type="text/javascript" src=""
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
 
         </metal:js>
         
@@ -16,8 +18,17 @@
     <body>
 		<div class="conteudo-quem-e-quem">
 	        <metal:content-core fill-slot="main">
+	        	<style type="text/css">
+	        		.c-pointer{
+	        			cursor: pointer;
+	        		}
 
-				<tal:def tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+	        	</style>
+
+				<tal:def tal:define="dummy python:request.form.update({'sorted':'getObjPositionInParent'});
+                             		 dummy python:request.form.update({'invert':'True'});
+                             		 sortfield string:getObjPositionInParent;
+									 Batch python:modules['Products.CMFPlone'].Batch;
 									 view_search python:context.restrictedTraverse('@@vindula_news_result_view');
 									 itens view_search/QueryFilterEquipe;
 				                     b_size request/b_size|string:10;
@@ -26,8 +37,10 @@
 				                     batch python:Batch(itens, int(b_size), int(b_start), pagerange=len(itens));
 									 habilita_descricao python: True">
 				
+				<div class="list_file" id="quem_e_quem">
 				    <input type="hidden" id="b_size" tal:attributes="value b_size" />
-				    <input type="hidden" id="b_start" tal:attributes="value b_start" />
+			        <input type="hidden" id="b_start" tal:attributes="value b_start" />
+			        <input type="hidden" id="absolute_url" tal:attributes="value string:${context/absolute_url}/" >
 					
 
  					<div class="cont_superior">
@@ -54,44 +67,50 @@
 				 	 	</form>
 					</div>
 					<meta:macro metal:define-macro="navegacao-macro">
-				        <div id="paginacao">
-				            <div id="size-nav" class="float-left">
-				                <p>
-				                    <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
-				                    |
-				                    <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
-				                        <a class="c-pointer" id="itenspage"
-				                           tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
-				                        <a class="c-pointer" id="itenspage"
-				                           tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
-				                        <a class="c-pointer" id="itenspage"
-				                           tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
-				                        <a class="c-pointer" id="itenspage"
-				                           tal:attributes="style python:b_size == '40' and css or '' ">40</a>
-				                    </span>
-				                </p>
-				                                                    
+				        
+				        <div id="paginacao" class="row ajax_pagination">
+							<div class="columns large-6">
+							    <div id="size-nav" class="float-left">
+					                <p>
+					                    <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span> 
+					                    |
+					                    <span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+					                        <a class="c-pointer" id="itenspage"
+					                           tal:attributes="style python:b_size == '10' and css or '' ">10</a>,
+					                        <a class="c-pointer" id="itenspage"
+					                           tal:attributes="style python:b_size == '20' and css or '' ">20</a>,
+					                        <a class="c-pointer" id="itenspage"
+					                           tal:attributes="style python:b_size == '30' and css or '' ">30</a>,
+					                        <a class="c-pointer" id="itenspage"
+					                           tal:attributes="style python:b_size == '40' and css or '' ">40</a>
+					                    </span>
+					                </p>
+					                                                    
+					            </div>
 				            </div>
-				            <div id="pag-nav" class="float-right">
-				                <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
-				            </div>
+				            <div class="columns large-6">
+					            <div id="pag-nav" class="right">
+					                <!-- <metal:block metal:use-macro="context/list_news_batch/macros/navigation" /> -->
+					                <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+					            </div>
+					        </div>
 				        </div>
 						<div class="visualClear"></div>
+
 					</meta:macro>
 
-
-					<tal:rep repeat="equipe batch">
-						<tal:def define="context python: equipe.getObject();">
-							 <metal:block metal:use-macro="context/@@view/macros/macro-equipe"/>
+					<div class="container">
+						<tal:rep repeat="equipe batch">
+							<tal:def define="context python: equipe.getObject();">
+								 <metal:block metal:use-macro="context/@@view/macros/macro-equipe"/>
+							 <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
+							</tal:def>
 						
-						</tal:def>
-					
-					</tal:rep>
+						</tal:rep>
+					</div>
 				
-				
-				
+				</div>		
 				</tal:def>
-		
 
 	    	</metal:content-core>            
 		</div>
