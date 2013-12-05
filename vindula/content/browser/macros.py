@@ -102,6 +102,10 @@ class MacroListtabularView(grok.View, UtilMyvindula):
 
     #@cache_it(limit=1000, expire=60 * 60 * 24, db_connection=get_redis_connection())
     def list_files(self, subject, keywords, structures, theme, portal_type, fields=None, list_files=[], path=None):
+        p_membership = getToolByName(self.context, 'portal_membership')
+        current_user = p_membership.getAuthenticatedMember()
+        current_username = current_user.getUserName()
+        
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
             values = self.request.get('list_files[]', self.request.get('list_files'))
             if values:
@@ -127,13 +131,16 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                 return []
         else:
             #TODO: Solucao temporaria, fazer funcionar o decorator
-            key = hashlib.md5('%s:%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields,path)).hexdigest()
+
+            #Adciono o usuario logado a chave do redis, pois cada usuario pode ter privilégios diferentes de ver o conteudo
+            key = hashlib.md5('%s:%s:%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields,path,current_username)).hexdigest()
             key = 'Biblioteca:list_files::%s' % key
             cached_data = get_redis_cache(key)
+            
             if 'Pessoas' in portal_type:
                 return FuncDetails.get_AllFuncUsernameList(self.Convert_utf8(subject))
             elif not cached_data:
-                itens = self.busca_catalog(subject, keywords, structures, theme, portal_type, path)
+                itens = self.busca_catalog(subject, keywords, structures, theme, portal_type, path, current_user)
                 itens_dict = self.geraDicForFields(itens, fields)
                 set_redis_cache(key,'Biblioteca:list_files:keys',itens_dict,600)
                 return itens_dict
@@ -161,8 +168,10 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                            'fields':item_fields})
         return result
     
-    def busca_catalog(self, subject, keywords, structures, theme, portal_type, path):
+    def busca_catalog(self, subject, keywords, structures, theme, portal_type, path, current_user):
         rtool = getToolByName(self.context, "reference_catalog")
+        p_workflow = getToolByName(self.context, "portal_workflow")
+        
         list_files = []
         review_state = True
 
@@ -202,12 +211,27 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                 for ref in refs:
                     obj = ref.getSourceObject()
                     if obj.portal_type in portal_type:
-                        result.append(obj)
-
+                        if obj.portal_type == 'Servico':
+                            #Verifico se o objeto do tipo SERVICO é publico, se não for verifico de o usuario que está acessando tem permissão de ver o conteúdo se sim adiciona o obj na listagem
+                            if p_workflow.getInfoFor(obj, 'review_state') in ['published', 'internally_published', 'external'] \
+                                or self.hasPermission(current_user, obj):
+                                result.append(obj)
+                            else:
+                                continue
+                        else:
+                            result.append(obj)
             list_files = result
-
         return list_files
-
+    
+    #Verifica se o usuario tem permissao de ver o objeto ou se é manager 
+    def hasPermission(self, user, obj):
+        user_roles = user.getRolesInContext(obj)
+        if 'Reader' in user_roles or \
+            'Manager' in user_roles:
+            return True
+        
+        return False
+    
     def getValueField(self, item, attr):
         data_object = {} 
         
