@@ -170,8 +170,12 @@ class MacroListFileView(grok.View):
         
         context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
         if context_biblioteca:
-            context_path = self.context.aq_parent.getPhysicalPath()
-            query['path'] = {'query':'/'.join(context_path), 'depth':99}
+            if "context_path" in self.request.keys():
+                context_path = self.request['context_path']
+                query['path'] = {'query': context_path, 'depth':99}    
+            else:
+                context_path = self.context.aq_parent.getPhysicalPath()
+                query['path'] = {'query':'/'.join(context_path), 'depth':99}
 
         if keywords:
             query['ThemeNews'] = keywords

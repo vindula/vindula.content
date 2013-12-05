@@ -62,6 +62,7 @@ $j(document).ready(function(){
                 params_container['list_files'] = data;
                 params_container['fields'] = fields;
                 params_container['type'] = $data_box.find('#type').val();
+                params_container['context_path'] = $data_box.find('input#path').val();
                 params_container['document-theme'] = params['document-theme'];
                 params_container['portal_type'] = params['portal-type'];
                 
