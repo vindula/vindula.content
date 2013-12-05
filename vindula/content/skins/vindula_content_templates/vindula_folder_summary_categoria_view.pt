@@ -5,6 +5,9 @@
                         tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js"></script>
             <script type="text/javascript" src="" 
                     tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script>
+
+            <script type="text/javascript" src=""
+        			tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
         </metal:js>
         
         <metal:styleslot fill-slot="style_slot">

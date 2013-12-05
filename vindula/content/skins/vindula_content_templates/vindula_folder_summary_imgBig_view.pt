@@ -7,6 +7,10 @@
     </script>
     <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js">
     </script>
+
+    <script type="text/javascript" src=""
+        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+
 </metal:js>
 
 <metal:styleslot fill-slot="style_slot">
@@ -29,6 +33,9 @@
                 </script>
                 <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js">
                 </script>
+
+                <script type="text/javascript" src=""
+                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
                 
                 <input type="hidden" id="com_image" tal:attributes="value com_image"/>
                 <input type="hidden" id="size_image_width" tal:attributes="value size_image_width"/>
@@ -83,23 +90,31 @@
                                                  b_start python:0;
                                                  b_start request/b_start |  b_start;
                                                  batch python:Batch(itens,  int(b_size),  int(b_start),  pagerange=len(itens));">
-                                <input type="hidden" id="b_size" tal:attributes="value b_size" />
-                                <input type="hidden" id="b_start" tal:attributes="value b_start" />
+
+                                <div class="list_file" id="folder_summary">
+                                    <input type="hidden" id="b_size" tal:attributes="value b_size" />
+                                    <input type="hidden" id="b_start" tal:attributes="value b_start" />
+                                
                                 <meta:macro metal:define-macro="navegacao-macro">
-                                    <div id="paginacao" class="clear">
+                                    <div id="paginacao" class="clear ajax_pagination">
                                         <div id="size-nav" class="left">
                                             <p>
                                                 <span tal:content="python:'Total: ('+str(len(itens))+')'">Total (XX)</span>
-                                                |<span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:<a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '10' and css or '' ">10</a>,<a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '20' and css or '' ">20</a>,<a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '30' and css or '' ">30</a>,<a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '40' and css or '' ">40</a></span>
+                                                |<span tal:define="css python:'font-weight:bolder;;'">Itens por pagina:
+                                                <a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '10' and css or '' ">10</a> ,
+                                                <a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '20' and css or '' ">20</a> ,
+                                                <a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '30' and css or '' ">30</a> ,
+                                                <a href="#" class="c-pointer" id="itenspage" tal:attributes="style python:b_size == '40' and css or '' ">40</a></span>
                                             </p>
                                         </div>
                                         <div id="pag-nav" class="right">
-                                            <metal:block metal:use-macro="context/list_news_batch/macros/navigation" />
+                                            <!-- <metal:block metal:use-macro="context/list_news_batch/macros/navigation" /> -->
+                                            <metal:block metal:use-macro="context/boll_batch/macros/navigation" />
                                         </div>
                                     </div>
                                 </meta:macro>
                                 <metal:macro define-macro="news-list">
-                                    <div id="news">
+                                    <div id="news" class="container">
                                         <tal:rep repeat="item batch">
                                             <div class="contBoxDestaque" tal:condition="item_object" tal:on-error="nothing" tal:define="item_object item/getObject|nothing">
                                                 <div tal:define="is_end repeat/item/end;" class="clear" tal:attributes="class python: is_end and 'info' or 'info borderDif'">
@@ -164,7 +179,9 @@
                                     </div>
                                 </metal:macro>
                                 <metal:block metal:use-macro="context/vindula_folder_summary_imgBig_view/macros/navegacao-macro" />
+                            </div>
                             </tal:def>
+
                         </meta:macro>
                         
                     </div>
