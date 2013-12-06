@@ -85,7 +85,8 @@ $j(document).ready(function(){
                             });
                         }
                         
-                        $container.html($contents.contents());
+                        // $container.html($contents.contents());
+                        $container.html($contents[0]);
                         
                         if ($container.hasClass('hide')){
                             $container.removeClass('hide');

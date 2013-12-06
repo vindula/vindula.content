@@ -1,22 +1,6 @@
 <html metal:use-macro="context/main_template/macros/master">
     
-<metal:js fill-slot="javascript_head_slot">
-    <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js">
-    </script>
-    <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js">
-    </script>
-    <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js">
-    </script>
-
-    <script type="text/javascript" src=""
-        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
-
-</metal:js>
-
-<metal:styleslot fill-slot="style_slot">
-    <link rel="stylesheet" id="new-theme" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
-</metal:styleslot>
-    
+   
 <body>
     <metal:content-core fill-slot="main">
         <tal:def define="com_image python: True; 
@@ -27,15 +11,14 @@
                  habilita_descricao python: True;">
             <div metal:define-macro="principal" id="list-news">
                 
-                <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js">
-                </script>
-                <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js">
-                </script>
-                <script type="text/javascript" src="" tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js">
-                </script>
+                <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.cookies.min.js"></script>
+                <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_news.js"></script>
+                <script type="text/javascript" src="" 
+                        tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/jquery.highlight.js"></script>
 
-                <script type="text/javascript" src=""
-                    tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_list_file.js"></script>
+                <link rel="stylesheet" href="" type="text/css" tal:attributes="href string:${context/portal_url}/++resource++vindula.content/css/list_news.css">
                 
                 <input type="hidden" id="com_image" tal:attributes="value com_image"/>
                 <input type="hidden" id="size_image_width" tal:attributes="value size_image_width"/>

@@ -117,12 +117,14 @@ $j(document).ready(function(){
     $j('.list_file div#cycle-next, .list_file div#cycle-prev').live('click',function(){
     	var $conteiner = $j(this).parents('.list_file'),
     		b_start = parseInt($j(this).find('input').val());
-        executaAjax($conteiner,b_start,null,null);
+            sort_on = $j("#sortfield").val();
+
+        executaAjax($conteiner,b_start,null,sort_on);
     });
     
     $j('select.order_by').live("change", function(ev){
         var $conteiner = $j(this).parents('.list_file'),
-            sort_on = $j(this).val();
+            sort_on = $j("#sortfield").val();
             
         executaAjax($conteiner,null,null,sort_on);
     });
@@ -131,7 +133,8 @@ $j(document).ready(function(){
         event.preventDefault();
         event.stopPropagation();
         var $conteiner = $j(this).parents('.list_file'),
-            b_size = parseInt($j(this).text());
-        executaAjax($conteiner,null,b_size,null);
+            b_size = parseInt($j(this).text()),
+            sort_on = $j(this).val();
+        executaAjax($conteiner,null,b_size,sort_on);
     });
 });

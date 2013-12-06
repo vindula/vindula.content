@@ -46,7 +46,7 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie, sort) {
         cookie_parametro += 'submitted:boolean='+parametro['submitted:boolean']+'|';
         
         
-        $j.cookie("find-news", cookie_parametro, { path: window.location.pathname });
+        // $j.cookie("find-news", cookie_parametro, { path: window.location.pathname });
     
     }else{
         var cookie_parametro = $j.cookie("find-news",{expires: 7, path: window.location.pathname });
@@ -65,19 +65,19 @@ function AjaxNewsItens (b_size,b_start,limpa_cookie, sort) {
         
     };
     
-    if (parametro['keyword']){
-        $j('#spinner').removeClass('display-none');
-        $j('#content-itens').addClass('display-none');
-        
 
-        $j.get(url,parametro, function(data){
-            $j('#content-itens').html(data);
-            $j('#content-itens').removeClass('display-none');
-            $j('#spinner').addClass('display-none');
-    		if ($j("#keyword").val())
-    			$j('#content-itens').highlight($j("#keyword").val());
-        });
-    };
+    $j('#spinner').removeClass('display-none');
+    $j('#content-itens').addClass('display-none');
+    
+
+    $j.get(url,parametro, function(data){
+        $j('#content-itens').html(data);
+        $j('#content-itens').removeClass('display-none');
+        $j('#spinner').addClass('display-none');
+		if ($j("#keyword").val())
+			$j('#content-itens').highlight($j("#keyword").val());
+    });
+
 }
 
 function clearCookies () {
@@ -86,16 +86,16 @@ function clearCookies () {
 
 $j(document).ready(function(){
 	
-	$j('.imgSort').click(function(){
-		if ($j(this).hasClass('imgDescend'))
-			var sort = '';
-		else
-			var sort = 'True';	
+	// $j('.imgSort').click(function(){
+	// 	if ($j(this).hasClass('imgDescend'))
+	// 		var sort = '';
+	// 	else
+	// 		var sort = 'True';	
 			
-		AjaxNewsItens(null,null,true, sort);
-		$j(this).toggleClass('imgDescend');
-		$j(this).toggleClass('imgAscend');
-	});
+	// 	AjaxNewsItens(null,null,true, sort);
+	// 	$j(this).toggleClass('imgDescend');
+	// 	$j(this).toggleClass('imgAscend');
+	// });
 	
 	$j('#vindula_folder_summary_imgBig_view, #vindula_folder_summary_imgSmall_view, #vindula_folder_summary_noImg_view').click(function(){
 	  clearCookies();
@@ -110,29 +110,54 @@ $j(document).ready(function(){
 			var sort = 'True';
 		else
 			var sort = '';	
-        AjaxNewsItens(null,null,true, sort);
+        if ($j("#keyword").val()){
+            AjaxNewsItens(null,null,true, sort);
+        }
     });
     
-    $j('a#itenspage').live('click',function(){
-       var quant = parseInt($j(this).text());
-       AjaxNewsItens(quant,0,true);
+    // $j('a#itenspage').live('click',function(){
+    //    var quant = parseInt($j(this).text());
+    //    AjaxNewsItens(quant,0,true);
        
-       return false;
-    });    
+    //    return false;
+    // });    
     
-    $j('select#page_selector').live('change', function(){
-        var page = parseInt($j(this).val().split('=')[1]);
-        AjaxNewsItens(null,page,true);
-    });
+    // $j('select#page_selector').live('change', function(){
+    //     var page = parseInt($j(this).val().split('=')[1]);
+    //     AjaxNewsItens(null,page,true);
+    // });
     
-    $j('div#cycle-next').live('click',function(){
-        var page = parseInt($j(this).find('input').val());
-        AjaxNewsItens(null,page,true);
-    });
+    // $j('div#cycle-next').live('click',function(){
+    //     var page = parseInt($j(this).find('input').val());
+    //     AjaxNewsItens(null,page,true);
+    // });
     
-    $j('div#cycle-prev').live('click',function(){
-        var page = parseInt($j(this).find('input').val());
-        AjaxNewsItens(null,page,true);
-    });
+    // $j('div#cycle-prev').live('click',function(){
+    //     var page = parseInt($j(this).find('input').val());
+    //     AjaxNewsItens(null,page,true);
+    // });
 	
+
+    $j('.list_file div#cycle-next, .list_file div#cycle-prev').live('click',function(){
+            // b_start = parseInt($j(this).find('input').val());
+            if ($j('.imgSort').hasClass('imgDescend'))
+                var sort = 'True';
+            else
+                var sort = '';  
+
+            var page = parseInt($j(this).find('input').val());
+                sort_on = $j("#sortfield").val();
+
+            AjaxNewsItens(null,page,null,sort);
+    });
+    
+    $j('.list_file div#size-nav a').live('click',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        var b_size = parseInt($j(this).text());
+            sort_on = $j(this).val();
+        AjaxNewsItens(b_size,0,true,null);
+    });
+
+
 });

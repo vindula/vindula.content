@@ -67,6 +67,7 @@ class VindulaResultsNews(BrowserView):
 
         sort_on = form.get('sorted',form_cookies.get('sorted', 'created'))
         invert = form.get('invert', form_cookies.get('invert', False))
+
         if submitted or form_cookies:
             D = {}
             catalog_tool = getToolByName(self, 'portal_catalog')
@@ -78,6 +79,13 @@ class VindulaResultsNews(BrowserView):
                 D['sort_order'] = 'reverse'
             else:
                 D['sort_order'] = 'descending'
+
+            if sort_on == 'sortable_title':
+                if invert:
+                    D['sort_order'] = 'descending'
+                else:
+                    D['sort_order'] = 'acending'
+
 
             text = form.get('keyword',form_cookies.get('keyword', ''))
             if text:
