@@ -16,6 +16,7 @@ OSInf_schema =  Schema((
         ),
         schemata = 'Informações'
     ),
+    
     StringField(
         name = 'phone_number',
         widget=StringWidget(
@@ -32,6 +33,15 @@ OSInf_schema =  Schema((
             description= 'Digite o telefone alternativo de contato.',
         ),
         schemata = 'Informações'
+    ),
+    
+    StringField(
+        name='wsId',
+        widget=StringWidget(
+            label=_(u"Id do Web Service"),
+            description=_(u"Id relacionado com essa mesma UO no banco de dados. (Campo utilizado na atualização automática, cuidado ao altera-lo)"),
+        ),
+        schemata = 'Informações',
     ),
 
 
