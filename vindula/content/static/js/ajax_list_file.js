@@ -116,7 +116,7 @@ function executaAjax(ctx, b_start, b_size, sort_on){
 $j(document).ready(function(){
     $j('.list_file div#cycle-next, .list_file div#cycle-prev').live('click',function(){
     	var $conteiner = $j(this).parents('.list_file'),
-    		b_start = parseInt($j(this).find('input').val());
+    		b_start = parseInt($j(this).find('input').val()),
             sort_on = $j("#sortfield").val();
 
         executaAjax($conteiner,b_start,null,sort_on);
