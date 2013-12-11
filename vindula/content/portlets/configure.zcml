@@ -67,5 +67,16 @@
          editview=".vindulanews.EditForm"
         />  
     	
+     <plone:portlet
+         name="vindula.content.PortletListagem"
+         interface=".portlet_listagem.IPortletListagem"
+         assignment=".portlet_listagem.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".portlet_listagem.Renderer"
+         addview=".portlet_listagem.AddForm"
+         editview=".portlet_listagem.EditForm"
+        />  
+
 			
 </configure>

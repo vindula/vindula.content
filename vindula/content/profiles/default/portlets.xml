@@ -37,6 +37,13 @@
         title="Portlet Vindula News"
         description="Portlet Vindula News">
         
-    </portlet>					
+    </portlet>	
+
+	<portlet
+        addview="vindula.content.PortletListagem"
+        title="Portlet Listagem"
+        description="Portlet Listagem">
+        
+    </portlet>	    				
 
 </portlets>

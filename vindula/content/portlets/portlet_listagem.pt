@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletListagem"
+    i18n:domain="plone"
+    tal:define="view view/data">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span tal:content="view/get_title">News</span>
+        <span class="portletTopRight"></span>
+    </dt>
+    
+	<dd class="portletItem lastItem"
+		tal:define="normalizeString nocall: context/plone_utils/normalizeString;
+					context view/get_context;
+					itens python:view.get_itensMenu(context)">
+		<ul class="navTree navTreeLevel0">
+            <tal:rep repeat="item itens"> 
+
+				<li class="navTreeItem navTreeTopNode navTreeCurrentNode"
+					tal:define="obj item/getObject|nothing;
+								subItens python:view.get_itensMenu(obj,False);
+								url_imagem python:view.get_imagem(obj);">
+                    
+                    <div tal:define="item_type_class python:'contenttype-' + normalizeString(obj.portal_type);"> 
+						<a tal:attributes="href obj/absolute_url|nothing;
+						                  title obj/title|nothing;
+						                  class string: ${item_type_class}">
+						   
+		                   <img width="16" height="16" tal:condition="url_imagem" tal:attributes="src url_imagem">
+						   <span tal:content="obj/title|nothing">Root item title</span>
+						</a>
+                    </div>
+					
+					<tal:cond condition="subItens">
+						<ul class="navTree navTreeLevel1">
+				            <tal:rep repeat="item subItens"> 
+
+								<li class="navTreeItem navTreeTopNode navTreeCurrentNode"
+									tal:define="obj item/getObject|nothing;
+												url_imagem python:view.get_imagem(obj);">
+
+			                    	<div tal:define="item_type_class python:'contenttype-' + normalizeString(obj.portal_type);"> 
+										<a tal:attributes="href obj/absolute_url|nothing;
+										                   title obj/title|nothing;
+										                   class string:${item_type_class}">
+											
+										   <img width="16" height="16" tal:condition="url_imagem" tal:attributes="src url_imagem">
+										   <span tal:content="obj/title|nothing" class="quebraLinha">Root item title</span>
+										</a>
+									</div>
+								</li>
+							</tal:rep>
+						</ul>
+					</tal:cond>
+				</li>
+				</tal:rep>
+		</ul>
+
+	   <div class="visualClear"></div>
+	</dd>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>
