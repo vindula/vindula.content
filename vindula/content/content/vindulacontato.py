@@ -133,7 +133,7 @@ class VindulaContato(ATCTContent):
         telefones = self.getTelefones()
         texto = ''
         for telefone in telefones:
-            texto += '%s: %s \n' %(telefone.get('title',''),
+            texto += '%s: %s <br />' %(telefone.get('title',''),
                                    telefone.get('number',''))
         return texto
 
