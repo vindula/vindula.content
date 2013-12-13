@@ -495,7 +495,7 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                 newSecurityManager(self.request,user_admin)
                 
                 item = p_catalog(UID = uid_object)
-                
+
                 if item:
                     item = item[0]
                     item = item.getObject()
@@ -504,12 +504,21 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                         if uo_pai:
                             uo_pai = uo_pai[0].getObject()
                             item.setStructures(uo_pai)
-                            
                     if field in ['Manager', 'Vice_manager', 'Employees']:
+                        try:
+                            value = eval(value)
+                        except NameError:
+                            value = str(value)
+                        
+                        if isinstance(value, list):
+                            value = tuple(value)
+                        
                         old_members = eval('item.get%s()' % (field))
                         
                         if isinstance(old_members, str):
                             old_members = [old_members]
+                        elif isinstance(old_members, int):
+                            old_members = [str(old_members)]
                             
                         for member in old_members:
                             id_group_view = uid_object+'-view'
@@ -518,8 +527,11 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                                 id_group_admin = uid_object+'-admin'
                                 p_groups.removePrincipalFromGroup(member, id_group_admin)
                         
-                        eval('item.set%s("%s")' % (field, value))
-                        
+                        if field in ['Manager', 'Vice_manager']:
+                            eval('item.set%s("%s")' % (field, value))
+                        else:
+                            eval('item.set%s(%s)' % (field, value))
+
                         new_members = eval('item.get%s()' % (field))
                         
                         if isinstance(new_members, str):
@@ -531,7 +543,6 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                             if field in ['Manager', 'Vice_manager']:
                                 id_group_admin = uid_object+'-admin'
                                 p_groups.addPrincipalToGroup(member, id_group_admin)
-                                
                     else:
                         eval('item.set%s("%s")' % (field, value))
                         
@@ -545,6 +556,6 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                 self.retorno['response'] = 'OK'
     
             else:
-                self.retorno['response'] = 'Não foi envido uid'
+                self.retorno['response'] = 'NOUID'
         except:
             self.retorno['response'] = 'Ocorreu um erro ao atualizar o content type'
