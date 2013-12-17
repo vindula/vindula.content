@@ -21,6 +21,7 @@ class ModelsContent(Storm, BaseStore):
     type = Unicode()
     uid = Unicode()
     username = Unicode()
+    deleted = Bool(default=False)
 
     date_created = DateTime()
     date_modified = DateTime()
@@ -39,6 +40,9 @@ class ModelsContent(Storm, BaseStore):
             return None
 
     def getContent_by_uid(self,uid):
+        if uid and isinstance(uid, str):
+            uid = uid.decode('utf-8')
+        
         data = self.store.find(ModelsContent, ModelsContent.uid==uid).one()
         return data
     
