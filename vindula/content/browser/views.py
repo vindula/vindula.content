@@ -504,7 +504,7 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                         if uo_pai:
                             uo_pai = uo_pai[0].getObject()
                             item.setStructures(uo_pai)
-                    if field in ['Manager', 'Vice_manager', 'Employees']:
+                    elif field in ['Manager', 'Vice_manager', 'Employees']:
                         try:
                             value = eval(value)
                         except NameError:
