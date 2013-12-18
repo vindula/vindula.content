@@ -74,7 +74,6 @@ class ModelsContent(Storm, BaseStore):
 
         return result
 
-
     def search_catalog_by_access(self, context, rs=True, **query):
         portal_catalog = getToolByName(context, 'portal_catalog')
         path = query.get('path')
@@ -92,3 +91,37 @@ class ModelsContent(Storm, BaseStore):
         result = portal_catalog(**query)
         
         return self.orderBy_access(result)
+    
+    @staticmethod
+    def getAllByContentType(type, deleted=False):
+        if isinstance(type, str):
+            type = type.decode('utf-8')
+        
+        if isinstance(type, unicode):
+            return ModelsContent().store.find(ModelsContent,
+                                              ModelsContent.type==type,
+                                              ModelsContent.deleted==deleted)
+
+        return None
+        
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
