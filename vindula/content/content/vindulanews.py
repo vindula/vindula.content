@@ -55,6 +55,15 @@ VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
         required=False,
     ),
 
+    StringField(
+        name='sub_titulo',
+        searchable = True,
+        widget = StringWidget(
+            label = 'Editoriais',
+            description='Digite um editoriais para a notícia.',
+        ),
+    ),
+
     ReferenceField('structures',
         multiValued=0,
         allowed_types=('OrganizationalStructure',),
