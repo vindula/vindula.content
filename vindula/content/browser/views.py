@@ -460,3 +460,102 @@ class VindulaWebServeCreateUserPlone(grok.View):
         else:
             self.retorno['response'] = 'Usuario não criado, dados invalidos'
         
+#Método para a atualização das unidades organizacionais vindas do Web Service
+class VindulaWebServeUpdateOrgStructure(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-update-org-structures')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        try:
+            dados = {}
+            uid_object = self.request.form.get('uid','')
+            field = self.request.form.get('field','')
+            if field:
+                field = field[0].upper() + field[1:]
+            value = self.request.form.get('value','')
+            
+            if uid_object:
+                p_catalog = getToolByName(self.context, 'portal_catalog')
+                p_membership = getToolByName(self.context, "portal_membership")
+                p_groups = getToolByName(self, 'portal_groups')
+                user_admin = p_membership.getMemberById('admin')
+    
+                # stash the existing security manager so we can restore it
+                old_security_manager = getSecurityManager()
+    
+                # create a new context, as the owner of the folder
+                newSecurityManager(self.request,user_admin)
+                
+                item = p_catalog(UID = uid_object)
+
+                if item:
+                    item = item[0]
+                    item = item.getObject()
+                    if field == 'Structures':
+                        uo_pai = p_catalog(portal_type='OrganizationalStructure', wsId=value)
+                        if uo_pai:
+                            uo_pai = uo_pai[0].getObject()
+                            item.setStructures(uo_pai)
+                    elif field in ['Manager', 'Vice_manager', 'Employees']:
+                        try:
+                            value = eval(value)
+                        except NameError:
+                            value = str(value)
+                        
+                        if isinstance(value, list):
+                            value = tuple(value)
+                        
+                        old_members = eval('item.get%s()' % (field))
+                        
+                        if isinstance(old_members, str):
+                            old_members = [old_members]
+                        elif isinstance(old_members, int):
+                            old_members = [str(old_members)]
+                            
+                        for member in old_members:
+                            id_group_view = uid_object+'-view'
+                            p_groups.removePrincipalFromGroup(member, id_group_view)
+                            if field in ['Manager', 'Vice_manager']:
+                                id_group_admin = uid_object+'-admin'
+                                p_groups.removePrincipalFromGroup(member, id_group_admin)
+                        
+                        if field in ['Manager', 'Vice_manager']:
+                            eval('item.set%s("%s")' % (field, value))
+                        else:
+                            eval('item.set%s(%s)' % (field, value))
+
+                        new_members = eval('item.get%s()' % (field))
+                        
+                        if isinstance(new_members, str):
+                            new_members = [new_members]
+                            
+                        for member in new_members:
+                            id_group_view = uid_object+'-view'
+                            p_groups.addPrincipalToGroup(member, id_group_view)
+                            if field in ['Manager', 'Vice_manager']:
+                                id_group_admin = uid_object+'-admin'
+                                p_groups.addPrincipalToGroup(member, id_group_admin)
+                    else:
+                        eval('item.set%s("%s")' % (field, value))
+                        
+                    item.reindexObject()
+                    
+                    
+    
+                # restore the original context
+                setSecurityManager(old_security_manager)
+    
+                self.retorno['response'] = 'OK'
+    
+            else:
+                self.retorno['response'] = 'NOUID'
+        except:
+            self.retorno['response'] = 'Ocorreu um erro ao atualizar o content type'

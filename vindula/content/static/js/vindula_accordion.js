@@ -12,19 +12,29 @@ $j(document).ready(function(){
         $hide_ele = $j('[accordion-id="'+this.id+ '"]');
         $hide_ele.toggle(300);
         
-        if($j(this).hasClass('arrow-left')) {
-            $j(this).removeClass('arrow-left');
-            $j(this).addClass('arrow-top');
-        }else if($j(this).hasClass('arrow-top')) {
-            $j(this).removeClass('arrow-top');
-            $j(this).addClass('arrow-left');
-        }
+        $this = $j(this);
         
+        if ($this.prev().hasClass('arrow')){
+            moveArrow($this.prev());
+        }else{
+            moveArrow($this);
+        }
+
         return false;
     });
     
     $j('[accordion-collapse=true]')
-      .each(function(){
-          $j(this).hide();
-      }); 
+    .each(function(){
+        $j(this).hide();
+    }); 
 });
+
+function moveArrow(ele){
+    if(ele.hasClass('arrow-left')) {
+        ele.removeClass('arrow-left');
+        ele.addClass('arrow-top');
+    }else if(ele.hasClass('arrow-top')) {
+        ele.removeClass('arrow-top');
+        ele.addClass('arrow-left');
+    }
+}
