@@ -559,3 +559,59 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                 self.retorno['response'] = 'NOUID'
         except:
             self.retorno['response'] = 'Ocorreu um erro ao atualizar o content type'
+
+
+#Método para a atualização das unidades organizacionais vindas do Web Service
+class VindulaWebServeUpdateStructuresTypes(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-update-structures-types')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        try:
+            list_types = self.request.form.get('list_types','')
+            if list_types:
+                p_catalog = getToolByName(self.context, 'portal_catalog')
+                p_membership = getToolByName(self.context, "portal_membership")
+                user_admin = p_membership.getMemberById('admin')
+    
+                # stash the existing security manager so we can restore it
+                old_security_manager = getSecurityManager()
+    
+                # create a new context, as the owner of the folder
+                newSecurityManager(self.request,user_admin)
+                
+                try:
+                    list_types = eval(list_types)
+                except:
+                    self.retorno['response'] = 'Ocorreu um erro atualizando o tipos, a variavel enviada para o Plone esta incorreta'
+                new_list = ''
+                
+                for type in list_types:
+                    new_list += type+'\n'
+                
+                if new_list[-1:] == '\n':
+                    new_list = new_list[:-1]
+                
+                obj_control = getSite().get('control-panel-objects')
+                vindula_categories = obj_control.get('vindula_categories')
+                vindula_categories.setTipoUnidade(new_list)
+
+                vindula_categories.reindexObject()
+    
+                # restore the original context
+                setSecurityManager(old_security_manager)
+    
+                self.retorno['response'] = 'OK'
+    
+            else:
+                self.retorno['response'] = 'NOLIST'
+        except:
+            self.retorno['response'] = 'Ocorreu um erro atualizando o tipos de unidades'

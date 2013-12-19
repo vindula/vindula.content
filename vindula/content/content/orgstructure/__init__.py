@@ -262,7 +262,7 @@ class OrganizationalStructure(ATFolder):
         return self.getSiglaunidade() or self.Title()
 
     def getSigla_and_Title(self):
-        text = '%s <br/> %s' %(self.getSiglaOrTitle(),
+        text = '%s - %s' %(self.getSiglaOrTitle(),
                                 self.Title())
         return text
 
