@@ -459,4 +459,9 @@ class ATBlob(ATCTFileContent, ImageMixin):
         else:
             return False
 
+    def getImageSize(self, size='mini'):
+        return self.absolute_url() +'/image_' + size
+
+
+
 registerType(ATBlob, packageName)
