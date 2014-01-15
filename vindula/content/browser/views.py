@@ -265,19 +265,27 @@ class VindulaWebServeObjectContent(grok.View):
                             'image': image_content}
 
             excludeField = ['title','description']
-            typesField = ['string','text']
+            typesField = ['string','text', 'lines']
+            otherFields = ['subject','themesNews']
+            
             extra_details = {}
 
             for field in context.Schema().fields():
                 if not field.getName() in excludeField and\
-                   field.type in typesField and field.accessor:
-                   accessor = getattr(context, field.accessor)
+                   (field.type in typesField or field.getName() in otherFields) and\
+                   field.accessor:
 
-                   if isinstance(accessor(), str) or isinstance(accessor(), unicode):
-                        extra_details[field.getName()] = accessor()
+                    accessor = getattr(context, field.accessor)
+                    if accessor:
+                        accessor = accessor()
+                        
+                        if isinstance(accessor, (tuple, list)):
+                            accessor = str(accessor)
+                            
+                        if isinstance(accessor, str) or isinstance(accessor, unicode):
+                            extra_details[field.getName()] = accessor
 
             D['extra_details'] = extra_details
-
 
         # restore the original context
         setSecurityManager(old_security_manager)
