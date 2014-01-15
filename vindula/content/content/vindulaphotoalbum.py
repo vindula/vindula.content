@@ -8,7 +8,7 @@ from vindula.content.content.interfaces import IVindulaPhotoAlbum
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from plone.app.folder.folder import ATFolder
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from zope.interface import implements
 from vindula.content.config import *
 from Products.Archetypes.atapi import *
@@ -87,7 +87,7 @@ class VindulaPhotoAlbum(ATFolder):
     """ VindulaPhotoAlbum """
     
     security = ClassSecurityInfo()
-    implements(IVindulaPhotoAlbum) #,INonStructuralFolder)
+    implements(IVindulaPhotoAlbum, IRuleAssignable) #,INonStructuralFolder)
     portal_type = 'VindulaPhotoAlbum'
     _at_rename_after_creation = True
     schema = VindulaPhotoAlbum_schema

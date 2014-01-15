@@ -7,7 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
 from vindula.content.content.interfaces import IVindulaEdital
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from AccessControl import ClassSecurityInfo
 from zope.interface import implements
 from Products.Archetypes.atapi import *
@@ -100,7 +100,7 @@ class VindulaEdital(ATNewsItem):
     """ Reserve Content for VindulaEdital"""
     security = ClassSecurityInfo()    
     
-    implements(IVindulaEdital)    
+    implements(IVindulaEdital, IRuleAssignable)    
     portal_type = 'VindulaEdital'
     _at_rename_after_creation = True
     schema = VindulaEdital_schema

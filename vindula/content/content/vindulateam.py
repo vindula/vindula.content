@@ -4,7 +4,7 @@ from five import grok
 from vindula.content import MessageFactory as _
 from AccessControl import ClassSecurityInfo
 from vindula.content.content.interfaces import IVindulaTeam
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 
 from plone.app.folder.folder import ATFolder
 
@@ -30,7 +30,7 @@ class VindulaTeam(ATFolder):
     """ VindulaTeam """
     
     security = ClassSecurityInfo()
-    implements(IVindulaTeam)
+    implements(IVindulaTeam, IRuleAssignable)
     portal_type = 'VindulaTeam'
     _at_rename_after_creation = True
     schema = VindulaTeam_schema

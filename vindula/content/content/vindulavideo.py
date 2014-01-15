@@ -5,7 +5,7 @@ from vindula.content import MessageFactory as _
 from AccessControl import ClassSecurityInfo
 from zope.interface import Interface
 from vindula.content.content.interfaces import IVindulaVideo
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from Products.ATContentTypes.content.document import ATDocumentSchema, ATDocumentBase
 from plone.app.blob.field import FileField, ImageField
 
@@ -85,7 +85,7 @@ class VindulaVideo(ATDocumentBase):
     """ VindulaVideo """
     
     security = ClassSecurityInfo()
-    implements(IVindulaVideo)
+    implements(IVindulaVideo, IRuleAssignable)
     portal_type = 'VindulaVideo'
     _at_rename_after_creation = True
     schema = VindulaVideo_schema

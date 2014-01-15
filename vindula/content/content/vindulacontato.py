@@ -4,7 +4,7 @@ from vindula.content import MessageFactory as _
 
 from zope.interface import Interface
 from vindula.content.content.interfaces import IVindulaContato
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from AccessControl import ClassSecurityInfo
 from zope.interface import implements
 from Products.Archetypes.atapi import *
@@ -114,7 +114,7 @@ class VindulaContato(ATCTContent):
     """ Reserve Content for VindulaContato"""
     security = ClassSecurityInfo()    
     
-    implements(IVindulaContato)    
+    implements(IVindulaContato, IRuleAssignable)    
     portal_type = 'VindulaContato'
     _at_rename_after_creation = True
     schema = VindulaContato_schema

@@ -16,6 +16,7 @@ from Products.ATContentTypes.content.newsitem import ATNewsItem
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
+from plone.contentrules.engine.interfaces import IRuleAssignable
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
 
@@ -151,7 +152,7 @@ class VindulaNews(ATNewsItem):
     """ Reserve Content for VindulaNews"""
     security = ClassSecurityInfo()
 
-    implements(IVindulaNews)
+    implements(IVindulaNews, IRuleAssignable)
     portal_type = 'VindulaNews'
     _at_rename_after_creation = True
     schema = VindulaNews_schema

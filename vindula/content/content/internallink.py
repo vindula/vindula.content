@@ -15,6 +15,8 @@ from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.permissions import View
+from plone.contentrules.engine.interfaces import IRuleAssignable
+
 from vindula.content.config import *
 import urlparse
 from urllib import quote
@@ -53,7 +55,7 @@ class InternalLink(ATLink):
     """ Reserve Content for InternalLink"""
     security = ClassSecurityInfo()    
     
-    implements(IInternalLink)    
+    implements(IInternalLink, IRuleAssignable)    
     portal_type = 'InternalLink'
     _at_rename_after_creation = True
     schema = InternalLink_schema

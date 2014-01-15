@@ -3,7 +3,7 @@ from five import grok
 from vindula.content import MessageFactory as _
 from vindula.content.content.interfaces import IUnit
 from Products.ATContentTypes.content.folder import ATFolder
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from AccessControl import ClassSecurityInfo
 
 from zope.interface import implements
@@ -33,7 +33,7 @@ class Unit(ATFolder):
     """ Unit Folder """
     security = ClassSecurityInfo()
 
-    implements(IUnit)
+    implements(IUnit, IRuleAssignable)
     portal_type = 'Unit'
     _at_rename_after_creation = True
     schema = Unit_schema

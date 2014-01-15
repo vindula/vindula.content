@@ -7,7 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from zope.interface import Interface
 from plone.app.discussion.interfaces import IConversation
 from vindula.content.content.interfaces import IVindulaRevista
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 from AccessControl import ClassSecurityInfo
 from zope.interface import implements
 from Products.Archetypes.atapi import *
@@ -138,7 +138,7 @@ class VindulaRevista(ATNewsItem):
     """ Reserve Content for VindulaNews"""
     security = ClassSecurityInfo()
 
-    implements(IVindulaRevista)
+    implements(IVindulaRevista, IRuleAssignable)
     portal_type = 'VindulaRevista'
     _at_rename_after_creation = True
     schema = VindulaRevista_schema

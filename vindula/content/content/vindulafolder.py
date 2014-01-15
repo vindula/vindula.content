@@ -5,7 +5,7 @@ from vindula.content import MessageFactory as _
 from zope.app.component.hooks import getSite
 from AccessControl import ClassSecurityInfo
 from vindula.content.content.interfaces import IVindulaFolder
-
+from plone.contentrules.engine.interfaces import IRuleAssignable
 
 from plone.app.folder.folder import ATFolder
 
@@ -45,7 +45,7 @@ class VindulaFolder(ATFolder):
     """ VindulaFolder """
     
     security = ClassSecurityInfo()
-    implements(IVindulaFolder)
+    implements(IVindulaFolder, IRuleAssignable)
     portal_type = 'VindulaFolder'
     _at_rename_after_creation = True
     schema = VindulaFolder_schema

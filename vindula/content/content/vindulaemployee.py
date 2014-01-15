@@ -9,6 +9,7 @@ from zope.interface import implements
 from vindula.content.config import *
 from Products.Archetypes.atapi import *
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from plone.contentrules.engine.interfaces import IRuleAssignable
    
 
 from zope.schema.interfaces import IVocabularyFactory   
@@ -72,7 +73,7 @@ class VindulaEmployee(VindulaNews):
     """ VindulaEmployee """
     
     security = ClassSecurityInfo()
-    implements(IVindulaEmployee)
+    implements(IVindulaEmployee, IRuleAssignable)
     portal_type = 'VindulaEmployee'
     _at_rename_after_creation = True
     schema = VindulaEmployee_schema

@@ -11,6 +11,7 @@ from Products.UserAndGroupSelectionWidget.at import widget
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from vindula.content.config import *
 from AccessControl import ClassSecurityInfo
+from plone.contentrules.engine.interfaces import IRuleAssignable
 
 from zope.app.component.hooks import getSite
 
