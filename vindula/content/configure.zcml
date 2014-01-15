@@ -5,6 +5,7 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="vindula.content">
 
   <!-- Include configuration for dependencies listed in setup.py -->
@@ -62,5 +63,12 @@
   <class class="vindula.content.content.vindulaphotoalbum.VindulaPhotoAlbum">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
   </class>
+
+  <!-- Necessario adicionar no buildout: eggs = z3c.jbot -->
+  <include package="z3c.jbot" file="meta.zcml" />
+    
+  <browser:jbot
+          directory="browser/templates" />  
+
 
 </configure>

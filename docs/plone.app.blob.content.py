@@ -34,6 +34,8 @@ from plone.app.blob.mixins import ImageMixin
 from plone.app.blob.markings import markAs
 
 from DateTime.DateTime import *
+from vindula.myvindula.tools.utils import UtilMyvindula
+
 
 ATBlobSchema = ATContentTypeSchema.copy()
 ATBlobSchema['title'].storage = AnnotationStorage()
@@ -71,7 +73,19 @@ ATBlobSchema += Schema((
             description=_(u'help_uploadDate',
                           default=u"Data do upload do procedimento"),
         ),
-    ),          
+    ),     
+
+    BooleanField(
+        name='activ_download',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Download do Arquivo?'),
+            description=_(u'Caso selecionado, permite que seja feito download do arquivo.'),
+        ),
+        required=False,
+    ),
+
+
 ))    
 
 
@@ -129,6 +143,25 @@ class ATBlob(ATCTFileContent, ImageMixin):
         return DateTime()
 
 
+    security.declareProtected(View, 'download')
+    def download(self, REQUEST=None, RESPONSE=None):
+        """Download the file (use default index_html)
+        """
+        if REQUEST is None:
+            REQUEST = self.REQUEST
+        if RESPONSE is None:
+            RESPONSE = REQUEST.RESPONSE
+
+        if self.activ_download:
+            field = self.getPrimaryField()
+            return field.download(self, REQUEST, RESPONSE)
+        else:
+            url = self.aq_parent.absolute_url()
+            UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+            self.REQUEST.RESPONSE.redirect(url)
+
+
+
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
         """ download the file inline or as an attachment """
@@ -136,9 +169,19 @@ class ATBlob(ATCTFileContent, ImageMixin):
         if IATBlobImage.providedBy(self):
             return field.index_html(self, REQUEST, RESPONSE)
         elif field.getContentType(self) in ATFile.inlineMimetypes:
-            return field.index_html(self, REQUEST, RESPONSE)
+            if self.activ_download:
+                return field.index_html(self, REQUEST, RESPONSE)
+            else:
+                url = self.aq_parent.absolute_url()
+                UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+                self.REQUEST.RESPONSE.redirect(url)
         else:
-            return field.download(self, REQUEST, RESPONSE)
+            if self.activ_download:
+                return field.download(self, REQUEST, RESPONSE)
+            else:
+                url = self.aq_parent.absolute_url()
+                UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
+                self.REQUEST.RESPONSE.redirect(url)
 
     # helper & explicit accessor and mutator methods
 
