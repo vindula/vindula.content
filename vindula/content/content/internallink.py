@@ -31,7 +31,19 @@ InternalLink_schema = ATLinkSchema.copy() + Schema((
             #default_search_index='SearchableText',
             typeview='list',
             label=_(u"Link Interno"),
-            description=_(u'Selecione um conteudo interno para fazer referencia.'))),                                                  
+            description=_(u'Selecione um conteudo interno para fazer referencia.'))),
+                                                    
+    BooleanField(
+        name='new_tab',
+        widget=BooleanWidget(
+            label=_(u"Abrir em uma nova aba"),
+            description=_(u"Selecione para abrir o link em uma nova aba"),
+            label_msgid='vindula_themedefault_label_recurrent',
+            description_msgid='vindula_themedefault_help_recurrent',
+            i18n_domain='vindula_themedefault',
+        ),
+        default=False         
+    ),                                                  
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
@@ -59,6 +71,14 @@ class InternalLink(ATLink):
     schema = InternalLink_schema
     
     security.declareProtected(ModifyPortalContent, 'setRemoteUrl')
+    
+    def get_NewTab(self):
+        newtab = self.getNew_tab()
+        if newtab:
+            str_url = '_blank'
+            return str_url
+
+    
     def setRemoteUrl(self, value, **kwargs):
         """remute url mutator
 
