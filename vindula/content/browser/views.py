@@ -623,3 +623,71 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
                 self.retorno['response'] = 'NOLIST'
         except:
             self.retorno['response'] = 'Ocorreu um erro atualizando o tipos de unidades'
+
+#Método para a atualização das unidades organizacionais vindas do Web Service
+class VindulaWebServeUpdateStructuresTypes(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-update-content-tags')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        try:
+            uid_content = self.request.form.get('uid_content','')
+
+            if uid_content:
+                p_catalog = getToolByName(self.context, 'portal_catalog')
+                p_membership = getToolByName(self.context, "portal_membership")
+                user_admin = p_membership.getMemberById('admin')
+
+                # stash the existing security manager so we can restore it
+                old_security_manager = getSecurityManager()
+
+                # create a new context, as the owner of the folder
+                newSecurityManager(self.request,user_admin)
+
+                results = p_catalog(UID=uid_content)
+                if results:
+                    content = results[0]
+                    content = content.getObject()
+
+                    themes = self.request.form.get('themes','')
+                    subjects = self.request.form.get('subjects','')
+                    typology = self.request.form.get('typology','')
+
+                    if themes:
+                        themes = eval(themes)
+                        themes = tuple(themes)
+                        content.setThemesNews(themes)
+
+                    if subjects:
+                        subjects = eval(subjects)
+                        subjects = tuple(subjects)
+                        content.setSubject(subjects)
+
+                    if typology:
+                        try:
+                            content.setTipo(typology)
+                        except AttributeError:
+                            self.retorno['response'] = 'ERROR'
+                            return
+
+                    content.reindexObject()
+                else:
+                    self.retorno['response'] = 'NO-OBJECT'
+                    return
+
+                # restore the original context
+                setSecurityManager(old_security_manager)
+
+                self.retorno['response'] = 'OK'
+            else:
+                self.retorno['response'] = 'NOUID'
+        except:
+            self.retorno['response'] = 'ERROR'
