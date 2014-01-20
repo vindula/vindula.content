@@ -664,7 +664,12 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
                     if themes:
                         themes = eval(themes)
                         themes = tuple(themes)
-                        content.setThemesNews(themes)
+                        try:
+                            content.setThemesNews(themes)
+                        except AttributeError:
+                            # self.retorno['response'] = 'ERROR'
+                            # return
+                            pass
 
                     if subjects:
                         subjects = eval(subjects)
@@ -675,8 +680,9 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
                         try:
                             content.setTipo(typology)
                         except AttributeError:
-                            self.retorno['response'] = 'ERROR'
-                            return
+                            # self.retorno['response'] = 'ERROR'
+                            # return
+                            pass
 
                     content.reindexObject()
                 else:
