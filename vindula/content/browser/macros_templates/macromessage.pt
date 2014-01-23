@@ -1,7 +1,15 @@
 <metal:view_macro define-macro="view"
-                  tal:define="view_macro python:context.restrictedTraverse('macro-message-content');">
+                  tal:define="view_macro python:context.restrictedTraverse('macro-message-content');
+                  			  button_responder button_responder|python:False">
 
-    <div id="new_message_button" class="vd_message_button" tal:attributes="data_uid UID|context/UID;
+    <div tal:condition="not: button_responder"
+    	 id="new_message_button" class="vd_message_button" tal:attributes="data_uid UID|context/UID;
                                                                            data_type TYPES|context/portal_type"></div>
+
+	
+	<div tal:condition="button_responder"
+		 id="new_reply_message_button" class="vd_reply_message_button" tal:attributes="data_uid UID|context/UID;
+		 																			   data_change_id change_id|nothing;
+                                                                          			   data_type TYPES|context/portal_type"></div>                                                                           
 
 </metal:view_macro>
