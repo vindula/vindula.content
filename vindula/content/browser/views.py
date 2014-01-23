@@ -265,7 +265,7 @@ class VindulaWebServeObjectContent(grok.View):
                             'image': image_content}
 
             excludeField = ['title','description']
-            typesField = ['string','text', 'lines']
+            typesField = ['string','text']
             otherFields = ['subject','themesNews']
             
             extra_details = {}
@@ -274,7 +274,6 @@ class VindulaWebServeObjectContent(grok.View):
                 if not field.getName() in excludeField and\
                    (field.type in typesField or field.getName() in otherFields) and\
                    field.accessor:
-
                     accessor = getattr(context, field.accessor)
                     if accessor:
                         accessor = accessor()
@@ -625,7 +624,7 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
             self.retorno['response'] = 'Ocorreu um erro atualizando o tipos de unidades'
 
 #Método para a atualização das unidades organizacionais vindas do Web Service
-class VindulaWebServeUpdateStructuresTypes(grok.View):
+class VindulaUpdateContentTags(grok.View):
     grok.context(Interface)
     grok.name('vindula-update-content-tags')
     grok.require('zope2.View')
@@ -640,7 +639,6 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
     def update(self):
         try:
             uid_content = self.request.form.get('uid_content','')
-
             if uid_content:
                 p_catalog = getToolByName(self.context, 'portal_catalog')
                 p_membership = getToolByName(self.context, "portal_membership")
@@ -692,6 +690,69 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
                 # restore the original context
                 setSecurityManager(old_security_manager)
 
+                self.retorno['response'] = 'OK'
+            else:
+                self.retorno['response'] = 'NOUID'
+        except:
+            self.retorno['response'] = 'ERROR'
+            
+#Método para a atualização das unidades organizacionais vindas do Web Service
+class VindulaUpdateTag(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-update-tag')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        try:
+            type = self.request.form.get('type','')
+            old_value = self.request.form.get('old_value','')
+            new_value = self.request.form.get('new_value','')
+
+            if new_value and type:
+                p_catalog = getToolByName(self.context, 'portal_catalog')
+                p_membership = getToolByName(self.context, "portal_membership")
+                user_admin = p_membership.getMemberById('admin')
+                dict_field_index = {'subject': 'Subject',
+                                    'themesNews': 'ThemeNews',
+                                    'typology': 'tipo',}
+
+                # stash the existing security manager so we can restore it
+                old_security_manager = getSecurityManager()
+
+                # create a new context, as the owner of the folder
+                newSecurityManager(self.request,user_admin)
+                if old_value:
+                    querySet = p_catalog({dict_field_index[type]: old_value})
+                    if querySet:
+                        for item in querySet:
+                            obj = item.getObject()
+                            method = getattr(obj, dict_field_index[type])
+                            if method:
+                                if type == 'typology':
+                                    indexList = new_value
+                                else:
+                                    indexList = list(method())
+                                    while (old_value in indexList) and (old_value <> new_value):
+                                        indexList[indexList.index(old_value)] = new_value      
+                                
+                                if type == 'themesNews':
+                                    set_attr = 'setThemesNews'
+                                else:
+                                    set_attr = 'set%s' % (dict_field_index[type][0].upper() + dict_field_index[type][1:])
+                                
+                                exec('obj.'+set_attr+'(indexList)')
+                                obj.reindexObject()
+                else:
+                    pass
+                
+                setSecurityManager(old_security_manager)
                 self.retorno['response'] = 'OK'
             else:
                 self.retorno['response'] = 'NOUID'
