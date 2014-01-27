@@ -261,7 +261,7 @@ class VindulaWebServeObjectContent(grok.View):
                             'date_created':context.creation_date.strftime('%Y-%m-%d %H:%M:%S'),
                             'date_modified':context.bobobase_modification_time().strftime('%Y-%m-%d %H:%M:%S'),
                             'workflow': status,
-                            'url': '/'+context.virtual_url_path(),
+                            'url': '/'+'/'.join(context.getPhysicalPath()[2:]),
                             'image': image_content}
 
             excludeField = ['title','description']
