@@ -4,13 +4,11 @@ from five import grok
 from vindula.content import MessageFactory as _
 from AccessControl import ClassSecurityInfo
 from zope.interface import Interface
-from vindula.content.content.interfaces import IVindulaPhotoAlbum
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from plone.app.folder.folder import ATFolder
 from plone.contentrules.engine.interfaces import IRuleAssignable
 from zope.interface import implements
-from vindula.content.config import *
 from Products.Archetypes.atapi import *
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
@@ -19,6 +17,10 @@ from zope.app.container.interfaces import IObjectAddedEvent
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping 
 from zope.component import getUtility, getMultiAdapter
 from collective.quickupload.portlet import quickuploadportlet as QuickUpload
+
+from vindula.content.config import *
+from vindula.content.content.interfaces import IVindulaPhotoAlbum
+from vindula.content.models.content_field import ContentField
 
 
 VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
@@ -62,7 +64,7 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
         name='height_photoAlbum',
         widget=IntegerWidget(
             label=_(u"Altura"),
-            description=_(u"Tamanho em pixels para a exibição do album. Atenção, utilize apenas números inteiros."),
+            description=_(u"Tamanho em pixels para a exibição do álbum. Atenção, utilize apenas números inteiros."),
             
             label_msgid='vindula_content_label_height_photoAlbum',
             description_msgid='vindula_content_help_height_photoAlbum',
@@ -70,8 +72,30 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
         ),
         default=500,
         required=True,
-    ),                                                             
+    ),
+    
+    StringField(
+        name='tipo',
+        searchable = True,
+        widget = SelectionWidget(
+            label=u"Tipologia",
+            description=u"Selecione a tipologia do álbum de fotos.",
+            format = 'select', 
+        ),
+        vocabulary='get_tipo',
+    ),
                                                              
+    LinesField(
+        'themesNews',
+        multiValued=1,
+        accessor="ThemeNews",
+        searchable=True,
+        schemata='categorization',
+        widget=KeywordWidget(
+            label=_(u'Temas'),
+            description=_(u'Selecione os temas da noticia.'),
+            ),
+    ),
                                                              
 ))
 
@@ -91,6 +115,14 @@ class VindulaPhotoAlbum(ATFolder):
     portal_type = 'VindulaPhotoAlbum'
     _at_rename_after_creation = True
     schema = VindulaPhotoAlbum_schema
+    
+    def get_tipo(self):
+        content_fields = ContentField().get_content_file_by_type(u'tipo')
+        L = [('', '-- Selecione --')]
+        for item in content_fields:
+            L.append((item,item))
+            
+        return DisplayList(tuple(L))
     
 registerType(VindulaPhotoAlbum, PROJECTNAME) 
 

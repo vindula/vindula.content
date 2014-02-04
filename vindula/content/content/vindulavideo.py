@@ -4,13 +4,11 @@ from five import grok
 from vindula.content import MessageFactory as _
 from AccessControl import ClassSecurityInfo
 from zope.interface import Interface
-from vindula.content.content.interfaces import IVindulaVideo
 from plone.contentrules.engine.interfaces import IRuleAssignable
 from Products.ATContentTypes.content.document import ATDocumentSchema, ATDocumentBase
 from plone.app.blob.field import FileField, ImageField
 
 from zope.interface import implements
-from vindula.content.config import *
 from Products.Archetypes.atapi import *
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
@@ -19,6 +17,10 @@ from zope.app.container.interfaces import IObjectAddedEvent
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping 
 from zope.component import getUtility, getMultiAdapter
 from collective.quickupload.portlet import quickuploadportlet as QuickUpload
+
+from vindula.content.config import *
+from vindula.content.content.interfaces import IVindulaVideo
+from vindula.content.models.content_field import ContentField
 
 
 VindulaVideo_schema =  ATDocumentSchema.copy() + Schema((
@@ -68,7 +70,18 @@ VindulaVideo_schema =  ATDocumentSchema.copy() + Schema((
             label=_(u'Temas'),
             description=_(u'Selecione os temas.'),
         ),
-    ),                   
+    ),  
+                                                         
+    StringField(
+        name='tipo',
+        searchable = True,
+        widget = SelectionWidget(
+            label=u"Tipologia",
+            description=u"Selecione a tipologia do vídeo.",
+            format = 'select', 
+        ),
+        vocabulary='get_tipo',
+    ),                 
 
 ))
 
@@ -89,6 +102,14 @@ class VindulaVideo(ATDocumentBase):
     portal_type = 'VindulaVideo'
     _at_rename_after_creation = True
     schema = VindulaVideo_schema
+    
+    def get_tipo(self):
+        content_fields = ContentField().get_content_file_by_type(u'tipo')
+        L = [('', '-- Selecione --')]
+        for item in content_fields:
+            L.append((item,item))
+            
+        return DisplayList(tuple(L))
     
 registerType(VindulaVideo, PROJECTNAME) 
     
