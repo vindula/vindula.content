@@ -62,3 +62,6 @@ class IVindulaRevista(Interface):
 
 class IVindulaEmployee(Interface):
     """ Interface for VindulaTeam content type """
+
+class IVindulaPage(Interface):
+    """ Interface for VindulaPage content type """

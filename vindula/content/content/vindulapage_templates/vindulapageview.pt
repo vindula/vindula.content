@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="vindula.content">
+        
+<head>
+    <metal:js fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script>
+    </metal:js>
+</head>
+
+<body>
+    <metal:block fill-slot="content-description">
+        <!-- Remoção da macro description padrão do plone-->
+        <span> </span>
+    </metal:block>
+    <metal:main fill-slot="content-core">
+            <!-- start: New -->
+            <tal:condition condition="context/getActiv_image">
+              <div id="newsImageContainer" tal:condition="context/getImageRelac">
+                <div id="parent-fieldname-image">
+                  <div class="bk_imagem">
+                    <a tal:attributes="href python: context.getImageRelac().absolute_url() +'/image_view_fullscreen'">
+                      <img tal:attributes="src python: context.getImageRelac().absolute_url()+'/image_mini';
+                                     alt context/imageCaption; title context/imageCaption;">
+                    </a>
+                    <p class="discreet img_legenda" tal:condition="context/imageCaption">
+                      <span id="parent-fieldname-imageCaption" tal:content="context/imageCaption"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </tal:condition>    
+               
+            <div class="descricao_destaque texto_pagina" tal:content="structure context/previewPage|nothing">Text</div>
+            
+            <tal:condition condition="view/enable_fulltext">
+                <div class="descricao_destaque texto_pagina" tal:content="structure context/getText|nothing">Text</div>
+            </tal:condition>
+          <div class="visualClear"></div>
+    </metal:main>
+</body>
+</html>

@@ -49,4 +49,7 @@
             
     <object	name="VindulaEmployee"
     		meta_type="Factory-based Type Information with dynamic views"/>   
+	
+	<object name="VindulaPage"	
+			meta_type="Factory-based Type Information with dynamic views"/>     		
 </object>

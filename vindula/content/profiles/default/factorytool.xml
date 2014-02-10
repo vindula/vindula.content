@@ -15,6 +15,7 @@
 		<type portal_type="VindulaContato"/>
 		<type portal_type="VindulaTeam"/>
 		<type portal_type="VindulaEmployee"/>
-        <type portal_type="VindulaRevista" />
+        <type portal_type="VindulaRevista" /> 
+        <type portal_type="VindulaPage"/>
 	</factorytypes>
 </object>
