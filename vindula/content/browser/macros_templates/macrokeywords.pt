@@ -1,6 +1,6 @@
 <div metal:define-macro="view">
     <div i18n:domain="plone" 
-         id="category" 
+         id="vindula-category" 
          tal:define="categories context/Subject|nothing;
          url_quote nocall:modules/Products.PythonScripts.standard/url_quote;"
          tal:condition="categories">
