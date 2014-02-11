@@ -134,11 +134,14 @@ class UpdateUserManageEmployeesValidator:
             
             group_manager = portalGroup.getGroupById(id_grupo_Manage)
             
-            if gestor_old != gestor_new:
-                #Limpa os usuarios de admin
-                if group_manager:
-                    for old_user in group_manager.getGroupMembers():
-                        group_manager.removeMember(old_user.getUserName())
+            
+            #TODO: Arrumar essa logica, sempre que esta salvando estou removendo os usarios do grupo de admin e adicionando o gestor novamente
+            #      isso está sendo feito pois a atualizaçao dinamica nao removia os usuarios antigos do campo de Grupo da UO
+            
+            #Limpa os usuarios de admin
+            if group_manager:
+                for old_user in group_manager.getGroupMembers():
+                    group_manager.removeMember(old_user.getUserName())
                     
             D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
             group_manager.addMember(gestor_new)
