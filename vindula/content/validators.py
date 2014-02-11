@@ -131,20 +131,17 @@ class UpdateUserManageEmployeesValidator:
                 tuple_admin.remove(gestor_old)
             tuple_admin.append(gestor_new)
             instance.Groups_admin = tuple(tuple_admin)
-
-            if gestor_old == gestor_new:
-                # ModelsDepartment().del_department(user=unicode(gestor_new), depUID=unicode(instance.UID()))
-                D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
-                # ModelsDepartment().set_department(**D)
-
-                portalGroup.getGroupById(id_grupo_Manage).addMember(gestor_new)
-            elif gestor_old != gestor_new:
-                D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
-                # ModelsDepartment().set_department(**D)
-                # ModelsDepartment().del_department(user=unicode(gestor_old), depUID=unicode(instance.UID()))
-
-                portalGroup.getGroupById(id_grupo_Manage).removeMember(gestor_old)
-                portalGroup.getGroupById(id_grupo_Manage).addMember(gestor_new)
-        
+            
+            group_manager = portalGroup.getGroupById(id_grupo_Manage)
+            
+            if gestor_old != gestor_new:
+                #Limpa os usuarios de admin
+                if group_manager:
+                    for old_user in group_manager.getGroupMembers():
+                        group_manager.removeMember(old_user.getUserName())
+                    
+            D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
+            group_manager.addMember(gestor_new)
+            
         # restore the original context
         setSecurityManager(old_security_manager)
