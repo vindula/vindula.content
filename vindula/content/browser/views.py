@@ -550,6 +550,10 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                             if field in ['Manager', 'Vice_manager']:
                                 id_group_admin = uid_object+'-admin'
                                 p_groups.addPrincipalToGroup(member, id_group_admin)
+                                
+                        item.setGroups_view([])
+                        item.setGroups_edit([])
+                        item.setGroups_admin([])
                     else:
                         eval('item.set%s("%s")' % (field, value))
                         
