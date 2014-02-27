@@ -105,7 +105,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         p_membership = getToolByName(self.context, 'portal_membership')
         current_user = p_membership.getAuthenticatedMember()
         current_username = current_user.getUserName()
-        
         if 'list_files[]' in self.request.keys() or 'list_files' in self.request.keys():
             values = self.request.get('list_files[]', self.request.get('list_files'))
             if values:
@@ -114,12 +113,10 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                         values = eval(values)
                 except (SyntaxError, NameError):
                     values = [values]
-
+                
                 if 'Pessoas' in portal_type:
-                    try:
-                        return [FuncDetails(self.Convert_utf8(username)) for username in values]
-                    except (SyntaxError, NameError):
-                        return [FuncDetails(self.Convert_utf8(values))]
+                    #Retorna a lista de usernames para a template trabalhar
+                    return values
                 else:
                     try:
                         objs = [uuidToObject(uuid) for uuid in values]
@@ -324,6 +321,7 @@ class MacroFilterView(grok.View):
 
     def list_filter(self, is_theme,is_structures):
         result = []
+
         if is_theme:
             result = self.pc.uniqueValuesFor("ThemeNews")
 

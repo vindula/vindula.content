@@ -81,8 +81,9 @@ class SearchFileterView(grok.View):
                     elif field == 'main-structure':
                         filter['unidadeprincipal'] = values_filter
                     elif field == 'SearchableText':
+                        filter['nickname'] = values_filter
                         filter['name'] = values_filter
-            
+
             users = FuncDetails.get_FuncDetailsByField(filter)
 
             for user in users:
