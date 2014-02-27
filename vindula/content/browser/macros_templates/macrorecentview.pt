@@ -42,7 +42,7 @@
                          tal:define="ctx item/getObject|nocall:item">
 
                         <div class="container-of-type">
-                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')">
+                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(), '/view')">
                               <div tal:attributes="class python:'container-image columns small-12 %s' % (ctx.portal_type in ['VindulaPhotoAlbum', 'VindulaVideo'] and (ctx.portal_type == 'VindulaVideo' and 'vindula-video all-image' or 'all-image') or 'default-image');">
                                   <img tal:attributes="src python: view_macro.get_url_typeIcone(ctx);" />
                                   <i></i>
@@ -60,7 +60,7 @@
 
                         <div class="columns small-12 title-box">
                             
-                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(),ctx.portal_type == 'File' and '/file_view' or '/view')"
+                            <a tal:attributes="href python:'%s%s' % (ctx.absolute_url(), '/view')"
                                tal:content="python:view_macro.limitTextSize(ctx.Title(), 35)" />
 
                         </div>

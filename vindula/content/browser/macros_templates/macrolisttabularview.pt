@@ -81,14 +81,14 @@
                                         <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
                                             
                                             <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and not value_field.get('type',False) == 'OrganizationalStructure'"
-                                               tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
+                                               tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
                                                                title value_field/name|nothing;">
                                                 <span tal:content="structure value_field/value|nothing"></span>
                                             </a>
                                             
                                             <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and value_field.get('type',False) == 'OrganizationalStructure'"
                                                class="structure-link"
-                                               tal:attributes="href python:'%s%s' % (value_field.get('url',False), value_field.get('type',False) == 'File' and '/file_view' or '/view');
+                                               tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
                                                                title value_field/name|nothing;
                                                                data-type string:Structure;
                                                                data-value item/UID|nothing;">
