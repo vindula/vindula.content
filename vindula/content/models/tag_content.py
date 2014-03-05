@@ -47,7 +47,7 @@ class TagContent(Storm, BaseStoreMyvindula):
         
         data = TagContent().store.find(TagContent, 
                                        TagContent.type==type,
-                                       TagContent.deleted==deleted)
+                                       TagContent.deleted==deleted).order_by(TagContent.value)
         
         if data.count():
             return data
