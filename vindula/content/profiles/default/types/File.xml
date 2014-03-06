@@ -5,17 +5,17 @@
 
     <!-- Basic metadata -->
 
-    <alias from="view" to="view"/>
+    <alias from="view" to="file_view"/>
 
-    <property name="immediate_view">view</property>
-    <property name="default_view">view</property>
+    <property name="immediate_view">file_view</property>
+    <property name="default_view">file_view</property>
 
     <property name="view_methods" purge="False">
-        <element value="view"/>
+        <element value="file_view"/>
     </property>
 
     <action title="View" action_id="view" category="object" condition_expr=""
-            url_expr="string:${object_url}/view" visible="True"
+            url_expr="string:${object_url}/file_view" visible="True"
             i18n:attributes="title">
         <permission value="View"/>
     </action>
