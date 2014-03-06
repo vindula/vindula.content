@@ -1,4 +1,4 @@
-function executaAjax(ctx, b_start, b_size, sort_on){
+function executaAjax(ctx, b_start, b_size, sort_on, params){
 	var url = ctx.find('input#absolute_url').val(),
         url_base = $j('base').attr('href'),
 		theme = ctx.find('input#theme').val(),
@@ -9,9 +9,12 @@ function executaAjax(ctx, b_start, b_size, sort_on){
         services = ctx.find('input#services').val(),
         list_files = ctx.find('input#list_files').val(),
         path = ctx.find('input#path').val(),
-		params = {},
         ctx_id = "#"+ctx.attr('id');
-
+	
+	//Se nao existir parametros ja ele instancia a variavel de parametros
+	if (!params) {
+		params = {};
+	}
 
 	if (b_start==null) {
         b_start = parseInt(ctx.find('input#b_start').val());
@@ -48,8 +51,13 @@ function executaAjax(ctx, b_start, b_size, sort_on){
     params['absolute_url'] = url
     params['list_files'] = list_files               
     params['context_path'] = path
-
-	ctx.find('.ajax_loader').show();
+    
+    
+    var $ajax_loader = ctx.find('.ajax_loader');
+    if ($ajax_loader) {
+    	$ajax_loader.show();
+    }
+	
 	ctx.find('div.see_also_news').addClass('display-none');
     ctx.find('div.content-pagination').css('opacity', '0.2');
 
@@ -105,8 +113,11 @@ function executaAjax(ctx, b_start, b_size, sort_on){
             
             ctx.find('.container').html(content);
             ctx.find('.ajax_pagination').html(paginator);
-            ctx.find('.ajax_loader').hide();
             ctx.find('div.content-pagination').css('opacity', '1');
+            
+            if ($ajax_loader) {
+            	$ajax_loader.hide();
+            }
     	}
     });
 }
