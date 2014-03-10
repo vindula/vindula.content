@@ -8,8 +8,8 @@
       	
 <head>
 	<metal:js fill-slot="javascript_head_slot">
-        <script type="text/javascript" src="" 
-                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script>
+        <!--script type="text/javascript" src="" 
+                tal:attributes="src string:${context/absolute_url|nothing}/++resource++vindula.content/js/ajax_veja_tambem.js"></script-->
     </metal:js>
 </head>
 
