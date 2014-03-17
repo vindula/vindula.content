@@ -97,14 +97,9 @@ $j(document).ready(function(){
                         
                         $container.html($contents[0]);
                         
-                        //Carega os actions depois de ser excutada uma paginação
-                        $('div.vd_combo_standard', $container)
-                        .each(function(event){
-                            var url = '/vindula-api/social/combo/standard/';
-                            url = url.concat(window.token+'/'+$(this).attr('data_type')+'/'+$(this).attr('data_uid')+'/');
-                            
-                            $j(window.parent.document).vindula('add_combo_standard', {'id': $(this).attr('data_uid'), 'src': url, 'iframe_class': 'new_combo_standard', 'left': '-17px'});
-                        });
+                        if ($container.find('.social-box').length){
+                        	$container.find('.social-box').vindula(null, {user_token: window.token});
+                        }
                         
                         if ($container.hasClass('hide')){
                             $container.removeClass('hide');
