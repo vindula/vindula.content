@@ -115,6 +115,15 @@ function executaAjax(ctx, b_start, b_size, sort_on, params){
             ctx.find('.ajax_pagination').html(paginator);
             ctx.find('div.content-pagination').css('opacity', '1');
             
+            //Carega os actions depois de ser excutada uma paginação
+            $('div.vd_combo_standard', ctx)
+            .each(function(event){
+                var url = '/vindula-api/social/combo/standard/';
+                url = url.concat(window.token+'/'+$(this).attr('data_type')+'/'+$(this).attr('data_uid')+'/');
+                
+                $j(window.parent.document).vindula('add_combo_standard', {'id': $(this).attr('data_uid'), 'src': url, 'iframe_class': 'new_combo_standard', 'left': '-17px'});
+            });
+            
             if ($ajax_loader) {
             	$ajax_loader.hide();
             }
