@@ -209,7 +209,7 @@
                                                tal:attributes="id item;
                                                                value item;">
                                         <span class="custom checkbox"></span>
-                                        <tal:rep tal:content="python:'%s' % (item)"></tal:rep>
+                                        <tal:rep tal:content="python:'%s (%s)' % (item, items.get(item))"></tal:rep>
                                     </label>
                                 </tal:rep>
                             </div>
