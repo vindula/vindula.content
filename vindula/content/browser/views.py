@@ -4,7 +4,9 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import View
 from zope.app.component.hooks import getSite
 from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
-
+import zope.event
+from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
+from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
 from Products.ATContentTypes.criteria import _criterionRegistry
 
@@ -19,13 +21,12 @@ from five import grok
 from zope.interface import Interface
 from datetime import datetime
 from itertools import chain
+import json
 
 from vindula.myvindula.registration import ImportUser
 
+
 MULTISPACE = u'\u3000'.encode('utf-8')
-
-
-import json
 
 def quote_chars(s):
     # We need to quote parentheses when searching text indices
@@ -554,6 +555,8 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                         item.setGroups_view([])
                         item.setGroups_edit([])
                         item.setGroups_admin([])
+                        
+                        zope.event.notify(OrgstructureModifiedEvent(item))
                     else:
                         eval('item.set%s("%s")' % (field, value))
                         
