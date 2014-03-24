@@ -114,6 +114,10 @@ function executaAjax(ctx, b_start, b_size, sort_on, params){
             ctx.find('.container').html(content);
             ctx.find('.ajax_pagination').html(paginator);
             ctx.find('div.content-pagination').css('opacity', '1');
+            
+            if ($ajax_loader) {
+            	$ajax_loader.hide();
+            }
     	}
     });
 }
