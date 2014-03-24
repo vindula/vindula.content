@@ -72,7 +72,6 @@ def CreatGroupInPloneSite(event):
         id_grupo = ctx.UID() +'-'+tipo['tipo']
         
         #Limpa todos os usuarios dos grupos antes de adicinonar os novos
-        import pdb;pdb.set_trace()
         [portalGroup.removePrincipalFromGroup(m.getUserName(), id_grupo) for m in portalGroup.getGroupById(id_grupo).getGroupMembers() if m and m.getUserName()]
             
 
