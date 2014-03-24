@@ -67,23 +67,36 @@ def CreatGroupInPloneSite(event):
              {'tipo':'edit' ,'name':' - Edição',      'permissao':['Reviewer','Reader','Contributor']           },
              {'tipo':'admin','name':' - Administração', 'permissao':['Editor','Reviewer','Reader','Contributor']}
             ]
-
+    
     for tipo in tipos:
         id_grupo = ctx.UID() +'-'+tipo['tipo']
+        
+        #Limpa todos os usuarios dos grupos antes de adicinonar os novos
+        import pdb;pdb.set_trace()
+        [portalGroup.removePrincipalFromGroup(m.getUserName(), id_grupo) for m in portalGroup.getGroupById(id_grupo).getGroupMembers() if m and m.getUserName()]
+            
 
         if not id_grupo in portalGroup.listGroupIds():
             if ctxPai.portal_type == 'OrganizationalStructure':
                 paiTitle = ctxPai.title
             else:
                 paiTitle = ''
-
             nome_grupo = 'EO: '+ paiTitle +"\\"  + ctx.title + tipo['name']
             portalGroup.addGroup(id_grupo, title=nome_grupo)
             #Adiciona o grupo a 'AuthenticatedUsers'
             portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)
 
             ctx.manage_setLocalRoles(id_grupo, tipo['permissao'])
-
+        
+        if tipo['tipo'] == 'admin':
+            admins = []
+            if ctx.getManager():
+                admins.append(ctx.getManager())
+            if ctx.getVice_manager():
+                admins.append(ctx.getVice_manager())
+            if admins:
+                ctx.setGroups_admin(tuple(admins))
+            
         for view in eval('ctx.getGroups_'+tipo['tipo']+'()'):
             portalGroup.getGroupById(id_grupo).addMember(view)
 
@@ -91,20 +104,16 @@ def CreatGroupInPloneSite(event):
             group_pai = ctxPai.UID()+"-view"
             portalGroup.getGroupById(group_pai).addMember(id_grupo)
 
-
     id_grupo_employees = ctx.UID() +'-view'
     new_tupla = list(ctx.Groups_view)
     for user in ctx.getEmployees():
         if new_tupla.count(user) == 0:
             new_tupla.append(user)
-
         portalGroup.getGroupById(id_grupo_employees).addMember(user)
     ctx.Groups_view = tuple(new_tupla)
 
     # restore the original context
     setSecurityManager(old_security_manager)
-
-
 
 @grok.subscribe(IOrganizationalStructure, IObjectAddedEvent)
 def CreatElemetsOrganizationalStructure(context, event):
