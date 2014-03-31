@@ -445,9 +445,9 @@ class VindulaWebServeCreateUserPlone(grok.View):
         dados['username'] = username
         dados['name'] = self.request.form.get('name','')
         dados['email'] = self.request.form.get('email','')
+        dados['password'] = self.request.form.get('password','')
 
         if username:
-
             portal_membership = getToolByName(self.context, "portal_membership")
             user_admin = portal_membership.getMemberById('admin')
 
