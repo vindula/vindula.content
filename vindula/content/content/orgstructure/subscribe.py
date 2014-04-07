@@ -72,8 +72,8 @@ def CreatGroupInPloneSite(event):
         id_grupo = ctx.UID() +'-'+tipo['tipo']
         
         #Limpa todos os usuarios dos grupos antes de adicinonar os novos
-        [portalGroup.removePrincipalFromGroup(m.getUserName(), id_grupo) for m in portalGroup.getGroupById(id_grupo).getGroupMembers() if m and m.getUserName()]
-            
+        if id_grupo:
+            [portalGroup.removePrincipalFromGroup(m.getUserName(), id_grupo) for m in portalGroup.getGroupById(id_grupo).getGroupMembers() if m and m.getUserName()]
 
         if not id_grupo in portalGroup.listGroupIds():
             if ctxPai.portal_type == 'OrganizationalStructure':
