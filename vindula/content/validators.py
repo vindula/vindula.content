@@ -143,8 +143,8 @@ class UpdateUserManageEmployeesValidator:
                 for old_user in group_manager.getGroupMembers():
                     group_manager.removeMember(old_user.getUserName())
                     
-            D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
-            group_manager.addMember(gestor_new)
+                D = {'UID' : unicode(instance.UID()), 'funcdetails_id': unicode(gestor_new)}
+                group_manager.addMember(gestor_new)
             
         # restore the original context
         setSecurityManager(old_security_manager)
