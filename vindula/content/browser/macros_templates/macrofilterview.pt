@@ -93,12 +93,14 @@
                      path path|request/context_path|nothing;">
 
         <div class="section-biblioteca-accordion filterFile" id="filter_file">
-            <p class="title-filter hasInput">
+            <p class="title-filter hasInput clear">
               <!-- tal:condition="not_filter|python:True" -->
-                <a href="#" >
+                <!-- TODO: Ver quais os filtros vão existir qando for a tabulacao padrão -->
+                <!--a href="#" >
                     <i class="more-itens vindula-icon-plus-sign"></i>
                     <span class="more-itens">Pesquisa Avançada</span>
-                </a>
+                </a-->
+                
                 <input type="text" class="filter right" name="SearchableTextFilter" placeholder="Palavra-chave" tal:attributes="value SearchableTextFilter" />
             </p>
             <div class="content-filter">
@@ -109,7 +111,8 @@
                     <input type="hidden" name="portal-type" id="portal-type"
                            tal:attributes="value portal_type">
                     
-                    <input type="hidden" id="path" tal:attributes="value path" />
+                    <input type="hidden" name="path" id="path" 
+                           tal:attributes="value path" />
 
                     <ul class="small-block-grid-2 large-block-grid-4">
                         <tal:rep repeat="item subjects">

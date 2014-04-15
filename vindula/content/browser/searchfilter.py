@@ -156,7 +156,7 @@ class SearchFileterView(grok.View):
                             unit_locations = self.getAllUnits()
                         else:
                             unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
-                    elif field == 'structure-selected':
+                    elif field == 'structure-selected' and not context_path:
                         query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
                     elif field == 'portal-type':
                         try:
@@ -168,7 +168,6 @@ class SearchFileterView(grok.View):
             
             key = 'Biblioteca:searchfilter::%s' % key
             cached_data = get_redis_cache(key)
-            
             if not cached_data:
                 if start or end:
                     if not start:

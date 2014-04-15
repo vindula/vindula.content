@@ -133,7 +133,6 @@ class MacroListtabularView(grok.View, UtilMyvindula):
             key = hashlib.md5('%s:%s:%s:%s:%s:%s:%s:%s' %(subject,keywords,structures,theme,portal_type,fields,path,current_username)).hexdigest()
             key = 'Biblioteca:list_files::%s' % key
             cached_data = get_redis_cache(key)
-            
             if 'Pessoas' in portal_type:
                 return FuncDetails.get_AllFuncUsernameList(self.Convert_utf8(subject))
             elif not cached_data:
@@ -199,15 +198,19 @@ class MacroListtabularView(grok.View, UtilMyvindula):
         if structures and structures != 'null':
             if not isinstance(structures,list):
                 structures = [structures]
-
+                
             result = []
             for structure in structures:
                 object = rtool.lookupObject(structure)
-
                 refs = rtool.getBackReferences(object, 'structures', targetObject=None)
+                
                 for ref in refs:
                     obj = ref.getSourceObject()
                     if obj.portal_type in portal_type:
+                        if path \
+                           and path not in '/'.join(obj.getPhysicalPath()):
+                            continue
+                        
                         if obj.portal_type == 'Servico':
                             #Verifico se o objeto do tipo SERVICO é publico, se não for verifico de o usuario que está acessando tem permissão de ver o conteúdo se sim adiciona o obj na listagem
                             if p_workflow.getInfoFor(obj, 'review_state') in ['published', 'internally_published', 'external'] \
