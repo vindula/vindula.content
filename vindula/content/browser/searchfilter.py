@@ -45,13 +45,14 @@ class SearchFileterView(grok.View):
         query = {}
         references = {}
         unit_locations = []
+        structures_selected = []
         self.result = []
         has_searchable_text = False
         
         context_path = form.get('path')
         
         if context_path:
-            query['path'] = {'query':context_path, 'depth': 99}
+            query['path'] = {'query':context_path }
         else:
             query['path'] = {'query':'/'.join(self.portal.getPhysicalPath()), 'depth': 99}
         
@@ -156,8 +157,9 @@ class SearchFileterView(grok.View):
                             unit_locations = self.getAllUnits()
                         else:
                             unit_locations = [uuidToObject(uuid) for uuid in values if uuid]
-                    elif field == 'structure-selected' and not context_path:
-                        query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
+                    elif field == 'structure-selected':
+                        structures_selected.append(uuidToObject(values)) 
+#                         query['path']['query'] = '/'.join(uuidToObject(values).getPhysicalPath())
                     elif field == 'portal-type':
                         try:
                             if isinstance(values, str):
@@ -168,6 +170,7 @@ class SearchFileterView(grok.View):
             
             key = 'Biblioteca:searchfilter::%s' % key
             cached_data = get_redis_cache(key)
+            
             if not cached_data:
                 if start or end:
                     if not start:
@@ -234,6 +237,15 @@ class SearchFileterView(grok.View):
                    not unit_locations and \
                    not references:
                      self.result = files
+                
+                if structures_selected:
+                    result_structures = []
+                    for structure_selected in structures_selected:
+                        path_struc = '/'.join(structure_selected.getPhysicalPath())
+                        for item in self.result:
+                            if path_struc in '/'.join(uuidToObject(item).getPhysicalPath()):
+                                result_structures.append(item)
+                    self.result = result_structures
                 
                 set_redis_cache(key,'Biblioteca:searchfilter:keys',self.result,600)
             else:
