@@ -241,12 +241,16 @@ class SearchFileterView(grok.View):
                 if structures_selected:
                     result_structures = []
                     for structure_selected in structures_selected:
-                        path_struc = '/'.join(structure_selected.getPhysicalPath())
                         for item in self.result:
-                            if path_struc in '/'.join(uuidToObject(item).getPhysicalPath()):
-                                result_structures.append(item)
+                            obj = uuidToObject(item)
+                            if obj:
+                                try:
+                                    if structure_selected == obj.getStructures():
+                                        result_structures.append(item)
+                                except AttributeError:
+                                    continue
                     self.result = result_structures
-                
+
                 set_redis_cache(key,'Biblioteca:searchfilter:keys',self.result,600)
             else:
                 self.result = cached_data
