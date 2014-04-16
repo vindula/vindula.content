@@ -517,6 +517,8 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
                             value = eval(value)
                         except NameError:
                             value = str(value)
+                        except SyntaxError:
+                            pass
                         
                         if isinstance(value, list):
                             value = tuple(value)

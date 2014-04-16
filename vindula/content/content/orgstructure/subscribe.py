@@ -110,7 +110,9 @@ def CreatGroupInPloneSite(event):
             new_tupla.append(user)
         portalGroup.getGroupById(id_grupo_employees).addMember(user)
     ctx.Groups_view = tuple(new_tupla)
-
+    
+    ctx.reindexObject()
+    
     # restore the original context
     setSecurityManager(old_security_manager)
 

@@ -251,7 +251,7 @@ class SearchFileterView(grok.View):
                                     continue
                     self.result = result_structures
 
-                set_redis_cache(key,'Biblioteca:searchfilter:keys',self.result,600)
+                set_redis_cache(key,'Biblioteca:searchfilter:keys', self.result, 600) #Tempo em segundos
             else:
                 self.result = cached_data
                 
