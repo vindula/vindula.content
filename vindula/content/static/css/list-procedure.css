@@ -5,3 +5,7 @@
 }
 
 .search-cell { text-align: center; }
+
+#column_codigo{
+	width:100px;
+}
