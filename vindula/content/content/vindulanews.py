@@ -19,8 +19,9 @@ from vindula.content.config import *
 from plone.contentrules.engine.interfaces import IRuleAssignable
 
 from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
+from vindula.content.content.requiredreadingschema import RequiredReadingSchema
 
-VindulaNews_schema = ATNewsItemSchema.copy() + Schema((
+VindulaNews_schema = ATNewsItemSchema.copy() + RequiredReadingSchema.copy() + Schema((
 
 
     LinesField(
@@ -146,6 +147,12 @@ VindulaNews_schema.changeSchemataForField('activ_discussion', 'settings')
 VindulaNews_schema.changeSchemataForField('themesNews', 'categorization')
 VindulaNews_schema.moveField('themesNews', before='subject')
 VindulaNews_schema.moveField('imageRelac', before='imageCaption')
+
+#Ordenação dos campos da funcionalidade de Leitura Obrigatória
+VindulaNews_schema.moveField("requiredReading", after="language")
+VindulaNews_schema.moveField("startDateReqRead", after="requiredReading")
+VindulaNews_schema.moveField("expirationDateReqRead", after="startDateReqRead")
+VindulaNews_schema.moveField("usersGroupsReqRead", after="expirationDateReqRead")
 
 
 class VindulaNews(ATNewsItem):

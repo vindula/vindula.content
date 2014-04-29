@@ -151,23 +151,22 @@ class VindulaPhotoAlbumView(grok.View):
         return url
      
     def jsConfigGalleria(self):
-        var = '''
-            Galleria.run('#galleria',{
-                // Localized strings, modify these if you want tooltips in your language
-                _locale: {
-                    show_thumbnails: "Mostrar Miniaturas",
-                    hide_thumbnails: "Esconder Miniaturas",
-                    play: "Iniciar Slideshow",
-                    pause: "Pausar Slideshow",
-                    enter_fullscreen: "Tela Cheia",
-                    exit_fullscreen: "Sair Tela Cheia",
-                    popout_image: "Image em Popup",
-                    showing_image: "Mostra image %s de %s"
-                },
-                // Initialize Galleria
-                autoplay:'''+ str(self.context.getTime_transitionsnews()) +'});'
-        
         if self.context.getFolderContents():
+            var = '''
+                Galleria.run('#galleria',{
+                    // Localized strings, modify these if you want tooltips in your language
+                    _locale: {
+                        show_thumbnails: "Mostrar Miniaturas",
+                        hide_thumbnails: "Esconder Miniaturas",
+                        play: "Iniciar Slideshow",
+                        pause: "Pausar Slideshow",
+                        enter_fullscreen: "Tela Cheia",
+                        exit_fullscreen: "Sair Tela Cheia",
+                        popout_image: "Image em Popup",
+                        showing_image: "Mostra image %s de %s"
+                    },
+                    // Initialize Galleria
+                    autoplay:'''+ str(self.context.getTime_transitionsnews()) +'});'
             return var
         else:
             return ''

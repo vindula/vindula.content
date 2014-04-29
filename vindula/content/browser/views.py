@@ -20,6 +20,7 @@ from AccessControl.SecurityManagement import newSecurityManager, getSecurityMana
 from five import grok
 from zope.interface import Interface
 from datetime import datetime
+from DateTime import DateTime
 from itertools import chain
 import json
 
@@ -265,22 +266,27 @@ class VindulaWebServeObjectContent(grok.View):
                             'url': '/'+'/'.join(context.getPhysicalPath()[2:]),
                             'image': image_content}
 
-            excludeField = ['title','description']
-            typesField = ['string','text']
-            otherFields = ['subject','themesNews']
-            
+            excludeField = ['title','description','blogger_bio','blogger_name','blog_entry', 'location', 'language']
+            typesField = ['string','text','lines','boolean','datetime']
+
             extra_details = {}
 
             for field in context.Schema().fields():
                 if not field.getName() in excludeField and\
-                   (field.type in typesField or field.getName() in otherFields) and\
+                   field.type in typesField and\
                    field.accessor:
+                    
                     accessor = getattr(context, field.accessor)
+                    
                     if accessor:
                         accessor = accessor()
                         
                         if isinstance(accessor, (tuple, list)):
+                            accessor = str(list(accessor))
+                        elif isinstance(accessor, bool):
                             accessor = str(accessor)
+                        elif isinstance(accessor, (datetime, DateTime)):
+                            accessor = accessor.strftime('%d/%m/%Y %H:%M:%S')
                             
                         if isinstance(accessor, str) or isinstance(accessor, unicode):
                             extra_details[field.getName()] = accessor

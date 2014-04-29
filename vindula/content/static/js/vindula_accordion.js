@@ -14,10 +14,16 @@ $j(document).ready(function(){
         
         $this = $j(this);
         
+        direction = $this.attr('accordion-direction');
+        
+        if (!direction){
+        	direction = "left-top";
+        }
+        
         if ($this.prev().hasClass('arrow')){
-            moveArrow($this.prev());
+            moveArrow($this.prev(), direction);
         }else{
-            moveArrow($this);
+            moveArrow($this, direction);
         }
 
         return false;
@@ -29,12 +35,22 @@ $j(document).ready(function(){
     }); 
 });
 
-function moveArrow(ele){
-    if(ele.hasClass('arrow-left')) {
-        ele.removeClass('arrow-left');
-        ele.addClass('arrow-top');
-    }else if(ele.hasClass('arrow-top')) {
-        ele.removeClass('arrow-top');
-        ele.addClass('arrow-left');
+function moveArrow(ele, direction){
+	direction = direction.split('-');
+	
+	if (direction.length == 2){
+		dir1 = direction[0];
+		dir2 = direction[1];
+	}else{
+		dir1 = "left";
+		dir2 = "top";
+	}
+	
+    if(ele.hasClass('arrow-'+dir1)) {
+        ele.removeClass('arrow-'+dir1);
+        ele.addClass('arrow-'+dir2);
+    }else if(ele.hasClass('arrow-'+dir2)) {
+        ele.removeClass('arrow-'+dir2);
+        ele.addClass('arrow-'+dir1);
     }
 }

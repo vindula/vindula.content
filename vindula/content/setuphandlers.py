@@ -34,6 +34,7 @@ def add_catalog_indexes(context, logger=None):
     # Specify the indexes you want, with ('index_name', 'index_type')
     wanted = (('tipo', 'KeywordIndex'),
               ('getStatus', 'BooleanIndex'),
+              ('requiredReading', 'BooleanIndex'),
               ('content_type', 'KeywordIndex'),
               ('tipounidade', 'FieldIndex'),
               ('wsId', 'FieldIndex'),)
