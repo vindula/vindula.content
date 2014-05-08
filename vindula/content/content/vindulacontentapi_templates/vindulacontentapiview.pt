@@ -7,9 +7,18 @@
       i18n:domain="vindula.content">
 
 <body>
+<metal:block fill-slot="top_slot">
+    <tal:cond tal:condition="not: context/activ_portletLeft">
+        <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>
+    </tal:cond>
+     <tal:cond tal:condition="not: context/activ_portletRight">
+        <tal:dummy tal:define="disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+    </tal:cond>
+</metal:block>
+
 <metal:main fill-slot="main">
     <metal:main define-macro="main">
-        
+      
         <tal:cond condition="not:context/deactivate_title">
             <metal:title define-slot="content-title">
                 <metal:comment tal:content="nothing">

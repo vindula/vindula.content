@@ -44,5 +44,14 @@ OSInf_schema =  Schema((
         schemata = 'Informações',
     ),
 
+    StringField(
+        name = 'centro_custo',
+        widget=StringWidget(
+            label= 'Valor do Centro de Custo',
+            description= 'Digite o valor do centro de custo dessa unidade.',
+        ),
+        required=False,
+        schemata = 'Informações'
+    ),
 
 ))

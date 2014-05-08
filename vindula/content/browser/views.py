@@ -267,7 +267,7 @@ class VindulaWebServeObjectContent(grok.View):
                             'image': image_content}
 
             excludeField = ['title','description','blogger_bio','blogger_name','blog_entry', 'location', 'language']
-            typesField = ['string','text','lines','boolean','datetime']
+            typesField = ['string','text','lines','boolean','datetime','reference']
 
             extra_details = {}
 
@@ -287,9 +287,13 @@ class VindulaWebServeObjectContent(grok.View):
                             accessor = str(accessor)
                         elif isinstance(accessor, (datetime, DateTime)):
                             accessor = accessor.strftime('%d/%m/%Y %H:%M:%S')
+                        elif field.type == 'reference':
+                            if accessor:
+                                accessor = accessor.UID()
                             
                         if isinstance(accessor, str) or isinstance(accessor, unicode):
                             extra_details[field.getName()] = accessor
+
 
             D['extra_details'] = extra_details
 

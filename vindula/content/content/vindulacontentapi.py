@@ -28,9 +28,21 @@ class IVindulaContentAPI(form.Schema):
         description=_(u'Selecione este campo para desativar o título do Content Macro'),
         required=False,
     )
+
+    activ_portletRight = schema.Bool(
+        title=_(u'Portlet Direita'),
+        description=_(u'Se selecionado, ativa a visualização dos portet na coluna da direita.'),
+        default=True,
+    )
+
+    activ_portletLeft = schema.Bool(
+        title=_(u'Portlet Esquerda'),
+        description=_(u'Se selecionado, ativa a visualização dos portet na coluna da esquerda.'),
+        default=True,
+    )
+
   
 # View
- 
 class VindulaContentAPIView(grok.View):
     grok.context(IVindulaContentAPI)
     grok.require('zope2.View')
