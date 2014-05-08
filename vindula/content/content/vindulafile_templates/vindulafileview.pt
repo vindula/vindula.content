@@ -128,7 +128,7 @@
                              <tal:cond condition="context/getVigencia">
                                  <li>
                                     <label class="alinhamento">Vigencia:</label>
-                                    <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y / %H:%m')"></span>
+                                    <span tal:content="python: context.getVigencia().strftime('%d/%m/%Y')"></span>
                                 </li>
                              </tal:cond>
                              <li>
