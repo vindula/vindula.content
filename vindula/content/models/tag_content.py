@@ -15,6 +15,8 @@ class TagContent(Storm, BaseStoreMyvindula):
     type =Unicode()
     value = Unicode()
     description = Unicode()
+    sort_on = Unicode()
+    order = Unicode()
     
     
     def getUrlIcon(self):
