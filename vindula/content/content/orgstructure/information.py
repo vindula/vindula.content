@@ -53,5 +53,15 @@ OSInf_schema =  Schema((
         required=False,
         schemata = 'Informações'
     ),
+    
+    StringField(
+        name = 'codigo',
+        widget=StringWidget(
+            label= 'Código',
+            description= 'Digite o codigo dessa unidade.',
+        ),
+        required=False,
+        schemata = 'Informações'
+    ),    
 
 ))
