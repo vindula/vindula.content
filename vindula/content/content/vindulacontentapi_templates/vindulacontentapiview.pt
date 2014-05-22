@@ -49,8 +49,9 @@
         
         <div id="_portlet_social" style="margin-top: 10px;">
 
-            <div class="action" tal:attributes="data_uid context/UID|nothing;
+            <div class="action" tal:attributes="data_uid view/get_data_uid|nothing;
                                                 data_type context/portal_type|nothing;
+
                                                 class string:vd_${view/get_action};"></div>
 
         </div>

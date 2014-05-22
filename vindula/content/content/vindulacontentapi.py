@@ -40,6 +40,10 @@ class IVindulaContentAPI(form.Schema):
         description=_(u'Se selecionado, ativa a visualização dos portet na coluna da esquerda.'),
         default=True,
     )
+    extra_parametros = schema.TextLine(title=_(u'Custon data_uid'),
+                                       description=_(u'Alteração do data_uid padrão.'),
+                                       required=False,
+                                       default=u'')
 
   
 # View
@@ -50,3 +54,8 @@ class VindulaContentAPIView(grok.View):
   
     def get_action(self):
         return self.context.action
+
+    def get_data_uid(self):
+        if not self.context.extra_parametros:
+            return self.context.UID
+        return self.context.extra_parametros
