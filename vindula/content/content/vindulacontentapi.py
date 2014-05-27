@@ -40,7 +40,7 @@ class IVindulaContentAPI(form.Schema):
         description=_(u'Se selecionado, ativa a visualização dos portet na coluna da esquerda.'),
         default=True,
     )
-    extra_parametros = schema.TextLine(title=_(u'Custon data_uid'),
+    extra_parametros = schema.TextLine(title=_(u'Custom data_uid'),
                                        description=_(u'Alteração do data_uid padrão.'),
                                        required=False,
                                        default=u'')
