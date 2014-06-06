@@ -44,15 +44,15 @@ OSInf_schema =  Schema((
         schemata = 'Informações',
     ),
 
-    # StringField(
-    #     name = 'centro_custo',
-    #     widget=StringWidget(
-    #         label= 'Valor do Centro de Custo',
-    #         description= 'Digite o valor do centro de custo dessa unidade.',
-    #     ),
-    #     required=False,
-    #     schemata = 'Informações'
-    # ),
+    BooleanField(
+        name='is_unidade_negocio',
+        default=False,
+        widget=BooleanWidget(
+            label="Unidade de Negocio",
+            description='Se selecionado, Marca essa unidade como uma unidade de Negocio.',
+        ),
+        schemata = 'Informações'
+    ),
     
     StringField(
         name = 'codigo',
