@@ -754,8 +754,8 @@ class MacroSeeAlso(grok.View):
 
     def getItens(self):
         context = self.context
-        query = {'portal_type':(context.portal_type)}
-        query['Subject'] = context.getRawSubject()
+        query = {'portal_type': (context.portal_type),
+                 'Subject': context.getRawSubject()}
 
         result = ModelsContent().search_catalog_by_access(context=context, **query)
         items = [brain for brain in result if brain.get('content').uid != context.UID()]

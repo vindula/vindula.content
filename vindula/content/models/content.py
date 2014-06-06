@@ -50,7 +50,7 @@ class ModelsContent(Storm, BaseStore):
         data = self.store.find(ModelsContent, ModelsContent.id==id).one()
         return data
 
-    def orderBy_access(self,result_query ):
+    def orderBy_access(self, result_query, limit=None):
         UIDs = []
         contentAccess = []
         result = []
@@ -63,7 +63,7 @@ class ModelsContent(Storm, BaseStore):
 
         if UIDs:
             #Acesso dirreto ao models do vindulaapp
-            result = ModelsContentAccess().getContAccess(UIDs)
+            result = ModelsContentAccess().getContAccess(UIDs, limit)
 
         # for content in contentAccess:
         #     uid = content.get('content').uid
@@ -74,7 +74,7 @@ class ModelsContent(Storm, BaseStore):
 
         return result
 
-    def search_catalog_by_access(self, context, rs=True, **query):
+    def search_catalog_by_access(self, context, rs=True, limit=None, **query):
         portal_catalog = getToolByName(context, 'portal_catalog')
         path = query.get('path')
 
@@ -90,7 +90,7 @@ class ModelsContent(Storm, BaseStore):
         
         result = portal_catalog(**query)
         
-        return self.orderBy_access(result)
+        return self.orderBy_access(result, limit)
     
     @staticmethod
     def getAllByContentType(type, deleted=False):
