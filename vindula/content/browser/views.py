@@ -17,6 +17,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
 
 from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
+from Products.CMFCore.permissions import ModifyPortalContent
 from five import grok
 from zope.interface import Interface
 from datetime import datetime
@@ -320,7 +321,8 @@ class VindulaWebServeObjectUser(grok.View):
 
         self.portal_membership = getToolByName(self.context, "portal_membership")
         self.groups_tool = getToolByName(self, 'portal_groups')
-
+        self.reference_catalog = getToolByName(self.context, "reference_catalog")
+    
         super(VindulaWebServeObjectUser,self).__init__(context, request)
 
 
@@ -359,6 +361,49 @@ class VindulaWebServeObjectUser(grok.View):
         setSecurityManager(old_security_manager)
 
         self.retorno = D
+
+
+class VindulaWebServeContentPermission(VindulaWebServeObjectUser):
+    grok.context(Interface)
+    grok.name('vindula-content-permission')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def checkContentPermission(self, username,UID):
+        D ={}
+        D['has_permission'] =  False
+        user_obj = self.portal_membership.getMemberById(username)
+
+        context = self.reference_catalog.lookupObject(UID)
+        if context:
+            if getSecurityManager().checkPermission(ModifyPortalContent, context):
+                D['has_permission'] =  True
+      
+        return D
+
+
+    def update(self):
+        user_admin = self.portal_membership.getMemberById('admin')
+
+        # stash the existing security manager so we can restore it
+        old_security_manager = getSecurityManager()
+
+        # create a new context, as the owner of the folder
+        newSecurityManager(self.request,user_admin)
+
+        username = self.request.form.get('username','')
+        D = {}
+        D.update(self.checkPermission(username))
+
+        UID = self.request.form.get('uid','')
+        D.update(self.checkContentPermission(username,UID))
+
+        # restore the original context
+        setSecurityManager(old_security_manager)
+
+        self.retorno = D
+
 
 
 
