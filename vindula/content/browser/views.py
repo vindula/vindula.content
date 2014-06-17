@@ -297,6 +297,8 @@ class VindulaWebServeObjectContent(grok.View):
 
 
             D['extra_details'] = extra_details
+        else:
+            D['deleted'] = True
 
         # restore the original context
         setSecurityManager(old_security_manager)
