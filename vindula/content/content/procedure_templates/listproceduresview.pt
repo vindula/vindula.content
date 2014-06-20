@@ -33,7 +33,7 @@
             <table class="listing">
                 <thead>
                     <tr>
-                        <th>Código</th>
+                        <th id="column_codigo">CÓDIGO</th>
                         <th>TÍTULO DO DOCUMENTO</th>
                         <th>REVISÃO</th>
                         <th>DATA</th>
