@@ -53,15 +53,18 @@
   <!-- -*- extra stuff goes here -*- -->
   
   <include file="skins.zcml" />
+  <include file="contentrules.zcml" />
   
   <exclude package="collective.quickupload" file="configure.zcml" />
   <include package="collective.quickupload" file="minimal.zcml" />
   
   <class class="vindula.content.content.vindulafolder.VindulaFolder">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
   </class>
   <class class="vindula.content.content.vindulaphotoalbum.VindulaPhotoAlbum">
     <implements interface="collective.quickupload.browser.interfaces.IQuickUploadCapable" />
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
   </class>
 
   <!-- Necessario adicionar no buildout: eggs = z3c.jbot -->

@@ -55,6 +55,7 @@ class InternalLink(ATLink):
     
     implements(IInternalLink)    
     portal_type = 'InternalLink'
+    meta_type = "InternalLink"
     _at_rename_after_creation = True
     schema = InternalLink_schema
     
