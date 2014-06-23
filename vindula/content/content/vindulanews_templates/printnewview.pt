@@ -1,0 +1,38 @@
+<tal:define define="plone_view context/@@plone;">
+    
+    <!--head>
+         <base tal:attributes="href plone_view/renderBase" />
+         <tal:content tal:define="scss nocall: context/@@load-scss;"
+                 content="structure scss/load"></tal:content>
+    </head-->
+    
+    <head>
+        
+        <title tal:content="context/Title|nothing"></title>
+        
+        <style type="text/css" media="all">
+            #newsImageContainer {
+                float: left;
+                margin-right: 20px;
+                margin-bottom: 10px;
+            }
+        </style>
+        
+    </head>
+    
+    <div class="titulo_info">
+        <h2 tal:content="context/Title"></h2>
+        <hr >
+        <div class="descricao_titulo">
+            <p tal:content="context/Description"></p>
+        </div>
+    </div>
+    
+    
+    <metal:macro use-macro="context/@@view/macros/content-core"></metal:macro>
+    
+    <script>
+        window.print();
+    </script>
+    
+</tal:define>

@@ -129,6 +129,17 @@ VindulaNews_schema = ATNewsItemSchema.copy() + RequiredReadingSchema.copy() + Sc
         ),
         required=False,
     ),
+                                                                                      
+    BooleanField(
+        name='activ_print',
+        default=False,
+        widget=BooleanWidget(
+            label="Botão impressão",
+            description='Exibir o botão de impressão da página.',
+        ),
+        required=False,
+        schemata='settings',
+    ),
 
 ))
 invisivel = {'view':'invisible','edit':'invisible',}
@@ -215,5 +226,10 @@ class ShareView(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('vindula-content-share')
+    
+class PrintNewView(grok.View):
+    grok.context(Interface)
+    grok.require('zope2.View')
+    grok.name('print-new')
 
 
