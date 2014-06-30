@@ -1,0 +1,43 @@
+<metal:view_macro define-macro="page"
+                  tal:define="view_macro python:context.restrictedTraverse('view_vagas_abertas');">
+
+    
+    <div class="">
+
+	    <tal:rep repeat="item view_macro/list_itens">
+	        
+	        <div class="container-services">
+	            <div class="title-no-margin">
+	                <h5 class="left">
+						
+	                	<a class="accordion arrow arrow-left left" 
+	                	    tal:attributes="id string: ${item/title|string: }_${repeat/item/number}" ></a>
+	                	<a class="accordion"
+						   tal:attributes="id string: ${item/title|string: }_${repeat/item/number}"
+						   tal:content="item/title|string:" ></a>
+	                </h5>
+	                <hr/>
+	            </div>
+	            
+	            <div tal:attributes="accordion-id string: ${item/title|string: }_${repeat/item/number};
+	                                 accordion-collapse string:true">
+
+	                <div class="list_file" tal:attributes="id string: ${item/title|string: }_${repeat/item/number}">
+	                   
+	                    <div class="container clear" >
+							<tal:rep repeat="obj_campo view_macro/getFields">
+								<div class="clear" style="padding: 5px 0;"
+									 tal:condition="python: obj_campo.name_field != 'title'">
+									<b tal:content="obj_campo/title">CAMPO</b>: <span tal:content="python: item.get(obj_campo.name_field)">VALOS</span>
+								</div>
+							</tal:rep>
+
+	                    </div>
+	                </div> 
+	            </div>
+	        </div>
+	    </tal:rep>
+            
+    </div>
+
+</metal:view_macro>
