@@ -1,0 +1,8 @@
+<div class="clear" tal:condition="context/activ_print|nothing">
+    <div class="right">
+        <a tal:attributes="onclick string: window.open('${context/absolute_url}/print-new','${context/Title}','width=900, height=500');;return false;" 
+           href="javascript: void(0)" title="Imprimir página" alt="Imprimir página" style="font-size: 14px;">
+            <i class="vindula-icon-printer"></i> Imprimir
+        </a>
+    </div>
+</div>
