@@ -463,13 +463,6 @@ class VindulaWebServeAllUsersPlone(grok.View):
         self.request.response.setHeader("charset", "UTF-8")
         return json.dumps(self.retorno,ensure_ascii=False)
 
-    def __init__(self, context, request):
-        self.request = request
-        self.context = context
-
-        super(VindulaWebServeAllUsersPlone,self).__init__(context, request)
-
-
     def update(self):
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
