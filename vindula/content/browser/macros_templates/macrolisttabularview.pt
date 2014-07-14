@@ -67,49 +67,59 @@
                         <thead>
                             <tr>
                                 <tal:rep repeat="field fields">
-                                     <th tal:attributes="width field/width|nothing" tal:content="field/label"></th>
+                                     <tal:def define="index_rep repeat/field/number;
+                                                      class_col python:index_rep > 2 and (index_rep == 3 and 'hide-for-small' or 'hide-for-medium-down') or '';">
+                                         
+                                         <th tal:attributes="width field/width|nothing;
+                                                             class class_col;" tal:content="field/label"></th>
+                                                                                  
+                                     </tal:def>
                                 </tal:rep>
                             </tr>
                         </thead>
                         <tbody>
                                 <tr tal:repeat="item batch">
                                     <tal:rep repeat="field item/fields"
-                                    define="item_object item/getObject|python:item;">
-                                        <td tal:define="value_field python:field.get('data_value')"
-                                        tal:attributes="class python:field.get('is_image', None) and 'table-image' or '';
-                                        width field/width|nothing;">
-                                        <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
-
-                                            <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and not value_field.get('type',False) == 'OrganizationalStructure'"
-                                            tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
-                                            title value_field/name|nothing;"> <span tal:content="structure value_field/value|nothing"></span> </a>
-
-                                            <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and value_field.get('type',False) == 'OrganizationalStructure'"
-                                               class="structure-link"
-                                                tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
-                                                                title value_field/name|nothing;
-                                                                data-type string:Structure;
-                                                                data-value item/UID|nothing;"> 
-                                                <span tal:content="structure value_field/value|nothing"></span> 
-                                            </a>
-
-                                            <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
-                                                  tal:content="structure value_field/value|nothing"></span>
-                                        </tal:cond>
-                                        
-                                        <tal:cond condition="field/is_image|nothing">
-                                            <img tal:attributes="src value_field/value;
-                                                                 width field/width|nothing;" />
-                                        </tal:cond>
-                                        
-                                        <tal:cond condition="field/is_action|nothing">
-                                            <div class="social-box">
-                                                <div class="vd_combo_standard" 
-                                                     tal:attributes="id item/UID|nothing;
-                                                                     data_uid item/UID|nothing;
-                                                                     data_type item/portal_type|nothing;"></div>
-                                            </div>
-                                        </tal:cond></td>
+                                             define="item_object item/getObject|python:item;">
+                                        <tal:def define="index_rep repeat/field/number;
+                                                         class_col python:index_rep > 2 and (index_rep == 3 and 'hide-for-small' or 'hide-for-medium-down') or '';">
+                                            <td tal:define="value_field python:field.get('data_value')"
+                                                tal:attributes="class python:field.get('is_image', None) and class_col + 'table-image' or class_col;
+                                                                width field/width|nothing;">
+                                                <tal:cond condition="python: not field.get('is_image', None) and not field.get('is_action', None)">
+        
+                                                    <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and not value_field.get('type',False) == 'OrganizationalStructure'"
+                                                    tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
+                                                    title value_field/name|nothing;"> <span tal:content="structure value_field/value|nothing"></span> </a>
+        
+                                                    <a tal:condition="python:value_field.get('url',False) and not field.get('without_link',False) and value_field.get('type',False) == 'OrganizationalStructure'"
+                                                       class="structure-link"
+                                                        tal:attributes="href python:'%s%s' % (value_field.get('url',False), '/view');
+                                                                        title value_field/name|nothing;
+                                                                        data-type string:Structure;
+                                                                        data-value item/UID|nothing;"> 
+                                                        <span tal:content="structure value_field/value|nothing"></span> 
+                                                    </a>
+        
+                                                    <span tal:condition="python:not value_field.get('url',False) or field.get('without_link',False)"
+                                                          tal:content="structure value_field/value|nothing"></span>
+                                                </tal:cond>
+                                                
+                                                <tal:cond condition="field/is_image|nothing">
+                                                    <img tal:attributes="src value_field/value;
+                                                                         width field/width|nothing;" />
+                                                </tal:cond>
+                                                
+                                                <tal:cond condition="field/is_action|nothing">
+                                                    <div class="social-box">
+                                                        <div class="vd_combo_standard" 
+                                                             tal:attributes="id item/UID|nothing;
+                                                                             data_uid item/UID|nothing;
+                                                                             data_type item/portal_type|nothing;"></div>
+                                                    </div>
+                                                </tal:cond>
+                                            </td>
+                                        </tal:def>
                                     </tal:rep>
                                 </tr>
                             </tbody>
@@ -171,10 +181,10 @@
                                 <th>
                                     Unidade
                                 </th>
-                                <th>
+                                <th class="hide-for-small">
                                     Contato
                                 </th>
-                                <th>
+                                <th class="hide-for-medium-down">
                                     Açoes
                                 </th>
                             </tr>
@@ -200,11 +210,11 @@
                                            tal:content="item/get_sigla_unidadeprincipal|nothing"></a>
                                     </td>
                                     
-                                    <td class="contact-column">
+                                    <td class="contact-column hide-for-small">
                                         <p tal:replace="structure item/getContato|nothing"></p>
                                     </td>
                                     
-                                    <td class="action-column">
+                                    <td class="action-column hide-for-medium-down">
                                         <a href="#" class="button-action"
                                            tal:attributes="id item/username|nothing;
                                                            type_object string:UserObject;">
