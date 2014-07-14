@@ -2206,8 +2206,8 @@ Galleria = function() {
             $( lightbox.elems.overlay ).show().css( 'visibility', 'visible' );
             $( lightbox.elems.box ).show();
 			
-			var frame = '<iframe src="'+ data.link +'/view_comments_imagens" style="width:100%;height:100%;overflow-x: hidden;"> </iframe>';
-			$(lightbox.elems.commnets).html(frame);
+			//var frame = '<iframe src="'+ data.link +'/view_comments_imagens" style="width:100%;height:100%;overflow-x: hidden;"> </iframe>';
+			//$(lightbox.elems.commnets).html(frame);
         }
     };
 
