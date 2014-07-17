@@ -83,6 +83,15 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSIn
         searchable = True,
     ),
 
+    BooleanField(
+        name='enable_organograma',
+        default=True,
+        widget=BooleanWidget(
+            label="Visível no Organograma",
+            description='Caso ativado, Unidade Organizacional será exibida no bloco de organograma.',
+        ),
+    ),
+
     LinesField(
             name="employees",
             multiValued=1,

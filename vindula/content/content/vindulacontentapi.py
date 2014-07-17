@@ -57,5 +57,5 @@ class VindulaContentAPIView(grok.View):
 
     def get_data_uid(self):
         if not self.context.extra_parametros:
-            return self.context.UID
+            return self.context.UID()
         return self.context.extra_parametros
