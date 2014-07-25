@@ -14,10 +14,10 @@
 
                tal:condition="enable">
 
-        <!--h4 class="title">
-           Comentários
+        <h4 class="title">
+           Deixe seu comentário aqui
            <hr />
-        </h4-->
+        </h4>
 
         <div class="vd_comment" tal:attributes="data_uid context/UID;
                                                 data_type context/portal_type"></div>
