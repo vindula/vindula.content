@@ -6,6 +6,7 @@ from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.app.textfield import RichText
 from vindula.content import MessageFactory as _
 from z3c.relationfield.schema import RelationChoice
+from plone.uuid.interfaces import IUUID 
 
 from plone.app.layout.viewlets.interfaces import IBelowContent
 from zope.app.component.hooks import getSite 
@@ -57,5 +58,5 @@ class VindulaContentAPIView(grok.View):
 
     def get_data_uid(self):
         if not self.context.extra_parametros:
-            return self.context.UID()
+            return IUUID(self.context)
         return self.context.extra_parametros

@@ -157,7 +157,7 @@ CONTEUDOS = [{'id':'discussoes',     'titulo':u'Discussões',      'tipo':'Plone
              {'id':'evento',         'titulo':u'Evento',          'tipo':'VindulaFolder' },
              {'id':'links',          'titulo':u'Links',           'tipo':'VindulaFolder' },
              {'id':'classificado',   'titulo':u'Classificados',   'tipo':'Classifieds'   },
-             {'id':'reserva',        'titulo':u'Reserva',         'tipo':'ContentReserve'},
+             #{'id':'reserva',        'titulo':u'Reserva',         'tipo':'ContentReserve'},
              {'id':'formulario',     'titulo':u'Formulário',      'tipo':'VindulaFolder' },
              {'id':'home_principal', 'titulo':u'Home Principal',  'tipo':'Layout'        },
              {'id':'portlet_esquerdo','titulo':u'Portlet Esquerdo','tipo':'Layout'       }
