@@ -39,12 +39,16 @@ class ModelsContent(Storm, BaseStore):
         else:
             return None
 
-    def getContent_by_uid(self,uid):
-        if uid and isinstance(uid, str):
-            uid = uid.decode('utf-8')
-        
-        data = self.store.find(ModelsContent, ModelsContent.uid==uid).one()
-        return data
+    def getContent_by_uid(self,uid,is_user_object=False):
+        if uid:
+            if isinstance(uid, str):
+                uid = uid.decode('utf-8')
+            
+            data = self.store.find(ModelsContent, ModelsContent.uid==uid)
+            if data and not is_user_object:
+                    data = data[0]
+            return data
+        return None
     
     def getContent_by_id(self,id):
         data = self.store.find(ModelsContent, ModelsContent.id==id).one()
