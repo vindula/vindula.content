@@ -493,9 +493,9 @@ class VindulaWebServeCreateUserPlone(grok.View):
         username = self.request.form.get('username','')
 
         dados['username'] = username
-        dados['name'] = self.request.form.get('name','')
-        dados['email'] = self.request.form.get('email','')
-        dados['password'] = self.request.form.get('password','')
+        dados['name'] = self.request.form.get('name', username)
+        dados['email'] = self.request.form.get('email', '')
+        dados['password'] = self.request.form.get('password', '')
 
         if username:
             portal_membership = getToolByName(self.context, "portal_membership")
@@ -508,13 +508,15 @@ class VindulaWebServeCreateUserPlone(grok.View):
             newSecurityManager(self.request,user_admin)
 
 
-            ImportUser().importUser(self,{},user=dados) 
+            result = ImportUser().importUser(self,{},user=dados) 
 
             # restore the original context
             setSecurityManager(old_security_manager)
 
-            self.retorno['response'] = 'Usuario criado com sucesso'
-
+            if result:
+                self.retorno['response'] = 'Usuario criado com sucesso'
+            else:
+                self.retorno['response'] = 'Usuario não criado, dados invalidos'
         else:
             self.retorno['response'] = 'Usuario não criado, dados invalidos'
         
