@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 from five import grok
-from zope.interface import Interface
-from vindula.content.content.interfaces import IVindulaNews
 from plone.app.layout.viewlets.interfaces import IBelowContentTitle
-from Products.CMFCore.utils import getToolByName
-from zope.app.component.hooks import getSite
 
-from Products.CMFPlone import utils
-from Products.CMFPlone.browser.navigation import get_view_url
-from plone.app.layout.navigation.root import getNavigationRoot
+from vindula.content.content.interfaces import IVindulaNews
+
 
 # grok.context(Interface)
 

@@ -4,7 +4,7 @@
     <tal:block tal:define="view_coments python:context.restrictedTraverse('@@myvindula-comments');
 
                            activ_vindula context/activ_comment|context/isDiscussable|nothing;
-                           activ_discussion context/getActiv_discussion|nothing;
+                           activ_discussion context/getActiv_discussion|context/isDiscussable|nothing;
 
                            context_discussion python: activ_vindula or activ_discussion;
 

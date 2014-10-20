@@ -1,31 +1,23 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner
-from AccessControl import ClassSecurityInfo
-from Products.CMFCore.permissions import View
-from zope.app.component.hooks import getSite
-from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
-import zope.event
-from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
-from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
-
-from Products.ATContentTypes.criteria import _criterionRegistry
-
-from plone.app.layout.viewlets.content import ContentHistoryView
-
-from Products.Five import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.WorkflowCore import WorkflowException
-
-from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
-from Products.CMFCore.permissions import ModifyPortalContent
-from five import grok
-from zope.interface import Interface
-from datetime import datetime
-from DateTime import DateTime
-from itertools import chain
 import json
+from datetime import datetime
 
+import zope.event
+from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
+from Acquisition import aq_inner
+from DateTime import DateTime
+from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
+from five import grok
+from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.myvindula.registration import ImportUser
+from zope.app.component.hooks import getSite
+from zope.component import getMultiAdapter
+from zope.interface import Interface
+
+from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
 
 MULTISPACE = u'\u3000'.encode('utf-8')

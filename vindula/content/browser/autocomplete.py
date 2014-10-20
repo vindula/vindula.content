@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
-from five import grok
 import hashlib
-from zope.interface import Interface
-from Products.CMFCore.interfaces import ISiteRoot
-from AccessControl import ClassSecurityInfo
-
-from vindula.content.models.content import ModelsContent
-from vindula.content.browser.macros import Search, PDF, DOC, PPT, EXCEL
-
-from Products.CMFCore.utils import getToolByName
-from vindula.content.models.content_field import ContentField
-
-from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
-from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
-from plone.app.uuid.utils import uuidToObject
-
 import json
 
-#from redis_cache import cache_it
+from Products.CMFCore.utils import getToolByName
+from five import grok
+from plone.app.uuid.utils import uuidToObject
 from vindula.myvindula.cache import *
+from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
+from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
+from zope.interface import Interface
+
+from vindula.content.browser.macros import PDF, DOC, PPT, EXCEL
+
+
+#from redis_cache import cache_it
 
 class AutocompleteView(grok.View):
     grok.context(Interface)

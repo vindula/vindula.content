@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
-from five import grok
-from zope.interface import Interface
-from Products.CMFCore.interfaces import ISiteRoot
-from AccessControl import ClassSecurityInfo
-from plone.app.uuid.utils import uuidToObject
-
-from vindula.content.models.content import ModelsContent
-from vindula.content.browser.macros import Search, PDF, DOC, PPT, EXCEL
-
-from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
-from vindula.myvindula.models.funcdetails import FuncDetails
+import json
+from datetime import datetime
 
 from Products.CMFCore.utils import getToolByName
-from vindula.content.models.content_field import ContentField
-
+from five import grok
+from plone.app.uuid.utils import uuidToObject
 from vindula.myvindula.cache import *
+from vindula.myvindula.models.funcdetails import FuncDetails
+from zope.interface import Interface
 
-from datetime import datetime
-import json
 
 class SearchFileterView(grok.View):
     grok.context(Interface)

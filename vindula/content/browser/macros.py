@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
 import hashlib
-from five import grok
-from zope.interface import Interface
-from Products.CMFCore.utils import getToolByName
+from collections import OrderedDict
+from datetime import datetime
 
+from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from five import grok
 from plone.app.layout.viewlets.content import ContentHistoryView
+from plone.app.uuid.utils import uuidToObject
+from vindula.myvindula.cache import *
+from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
+from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
+from vindula.myvindula.models.funcdetails import FuncDetails
+from vindula.myvindula.tools.utils import UtilMyvindula
+from zope.interface import Interface
+
 from vindula.content.models.content import ModelsContent
 from vindula.content.models.content_access import ModelsContentAccess
 
-from vindula.myvindula.models.funcdetails import FuncDetails
-from vindula.myvindula.models.confgfuncdetails import ModelsConfgMyvindula
-from vindula.myvindula.models.dados_funcdetail import ModelsDadosFuncdetails
-from vindula.myvindula.tools.utils import UtilMyvindula
-
-from plone.app.uuid.utils import uuidToObject
-from Products.ZCatalog.Lazy import LazyMap
-
-from datetime import datetime
-from DateTime import DateTime
 
 #from redis_cache import cache_it
-from vindula.myvindula.cache import *
 
-from collections import OrderedDict
 
 PDF = ['application/pdf', 'application/x-pdf', 'image/pdf']
 DOC = ['application/msword']
@@ -678,7 +676,7 @@ class MacroRecentView(MacroMoreAccessViews):
 
 
     def contaTitulo(self, titulo):
-	       return len(titulo())
+           return len(titulo())
 
     def list_files(self, portal_type, path=None):
         list_files = []

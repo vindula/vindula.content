@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-from five import grok
-from zope.interface import Interface
-from Products.CMFCore.interfaces import ISiteRoot
-from AccessControl import ClassSecurityInfo
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from zope.component import getUtility
-
-from vindula.content.models.content import ModelsContent
-from vindula.content.browser.macros import Search
+from collections import OrderedDict
 
 from Products.CMFCore.utils import getToolByName
+from five import grok
 from plone.app.uuid.utils import uuidToObject
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.component import getUtility
+from zope.interface import Interface
 
-from collections import OrderedDict
+from vindula.content.browser.macros import Search
+from vindula.content.models.content import ModelsContent
 
 
 class BlibliotecaView(grok.View):
