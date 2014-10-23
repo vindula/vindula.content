@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
+from AccessControl import ClassSecurityInfo
+from Products.ATContentTypes.content.document import ATDocumentSchema, ATDocumentBase
+from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.Archetypes.atapi import *
 from five import grok
+from plone.app.blob.field import FileField, ImageField
+from plone.contentrules.engine.interfaces import IRuleAssignable
+from zope.interface import implements
 
 from vindula.content import MessageFactory as _
-from AccessControl import ClassSecurityInfo
-from zope.interface import Interface
-from plone.contentrules.engine.interfaces import IRuleAssignable
-from Products.ATContentTypes.content.document import ATDocumentSchema, ATDocumentBase
-from plone.app.blob.field import FileField, ImageField
-
-from zope.interface import implements
-from Products.Archetypes.atapi import *
-from Products.ATContentTypes.content.schemata import finalizeATCTSchema
-
-from zope.component import adapter
-from zope.app.container.interfaces import IObjectAddedEvent
-from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping 
-from zope.component import getUtility, getMultiAdapter
-from collective.quickupload.portlet import quickuploadportlet as QuickUpload
-
 from vindula.content.config import *
 from vindula.content.content.interfaces import IVindulaVideo
 from vindula.content.models.content_field import ContentField
@@ -81,7 +72,17 @@ VindulaVideo_schema =  ATDocumentSchema.copy() + Schema((
             format = 'select', 
         ),
         vocabulary='get_tipo',
-    ),                 
+    ),
+
+    BooleanField(
+        name='activ_share',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar barra social",
+            description='Caso selecionado, ativa a barra social.',
+        ),
+        required=False,
+    ),              
 
 ))
 
@@ -89,7 +90,7 @@ finalizeATCTSchema(VindulaVideo_schema, folderish=True)
 invisivel = {'view':'invisible','edit':'invisible',}
 
 VindulaVideo_schema['text'].widget.visible = invisivel 
-
+VindulaVideo_schema.changeSchemataForField('activ_share', 'settings')
 VindulaVideo_schema.changeSchemataForField('activ_portlteRight', 'settings')
 VindulaVideo_schema.changeSchemataForField('activ_portletLeft', 'settings')
 
@@ -118,3 +119,7 @@ class VindulaVideoView(grok.View):
     grok.context(IVindulaVideo)
     grok.require('zope2.View')
     grok.name('view')
+
+    def check_share(self):
+        panel = self.context.restrictedTraverse('@@myvindula-conf-userpanel')
+        return panel.check_share()

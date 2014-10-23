@@ -1,23 +1,17 @@
 # -*- coding: utf-8 -*-
-from five import grok
-
-from vindula.content import MessageFactory as _
 from AccessControl import ClassSecurityInfo
-from zope.interface import Interface
-
-from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.Archetypes.atapi import *
+from collective.quickupload.portlet import quickuploadportlet as QuickUpload
+from five import grok
 from plone.app.folder.folder import ATFolder
 from plone.contentrules.engine.interfaces import IRuleAssignable
-from zope.interface import implements
-from Products.Archetypes.atapi import *
-from Products.ATContentTypes.content.schemata import finalizeATCTSchema
-
-from zope.component import adapter
-from zope.app.container.interfaces import IObjectAddedEvent
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping 
-from zope.component import getUtility, getMultiAdapter
-from collective.quickupload.portlet import quickuploadportlet as QuickUpload
+from zope.app.container.interfaces import IObjectAddedEvent
+from zope.component import adapter, getUtility, getMultiAdapter
+from zope.interface import Interface, implements
 
+from vindula.content import MessageFactory as _
 from vindula.content.config import *
 from vindula.content.content.interfaces import IVindulaPhotoAlbum
 from vindula.content.models.content_field import ContentField
@@ -96,11 +90,22 @@ VindulaPhotoAlbum_schema =  ATFolder.schema.copy() + Schema((
             description=_(u'Selecione os temas da noticia.'),
             ),
     ),
+
+    BooleanField(
+        name='activ_share',
+        default=True,
+        widget=BooleanWidget(
+            label="Ativar barra social",
+            description='Caso selecionado, ativa a barra social.',
+        ),
+        required=False,
+    ),
                                                              
 ))
 
 finalizeATCTSchema(VindulaPhotoAlbum_schema, folderish=True)
 invisivel = {'view':'invisible','edit':'invisible',}
+VindulaPhotoAlbum_schema.changeSchemataForField('activ_share', 'settings')
 VindulaPhotoAlbum_schema.changeSchemataForField('time_transitionsnews', 'settings')
 VindulaPhotoAlbum_schema.changeSchemataForField('height_photoAlbum', 'settings')
 VindulaPhotoAlbum_schema.changeSchemataForField('activ_portlteRight', 'settings')
@@ -170,6 +175,10 @@ class VindulaPhotoAlbumView(grok.View):
             return var
         else:
             return ''
+
+    def check_share(self):
+        panel = self.context.restrictedTraverse('@@myvindula-conf-userpanel')
+        return panel.check_share()
     
 # View Comentarios
 class VindulaPhotoAlbumCommentsView(grok.View):
