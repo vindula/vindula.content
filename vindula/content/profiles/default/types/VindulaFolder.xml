@@ -60,5 +60,14 @@
          visible="True">
   <permission value="Modify portal content"/>
  </action>
+ 
+ <action title="Habilitar Sync" 
+         action_id="sync"
+         category="object" 
+         condition_expr=""
+         url_expr="string:${object_url}/enable-sync" 
+         visible="True">
+  <permission value="Modify portal content"/>
+ </action>
 
 </object>

@@ -48,8 +48,8 @@ OSTheme_schema =  Schema((
 
         searchable = True,
         widget=RichWidget(
-            label=_(u"Sub Rodape"),
-            description=_(u"Texto para o subrodapé."),
+            label=_(u"Rodape"),
+            description=_(u"Texto para o rodapé."),
             rows=10,
         ),
         required=False,

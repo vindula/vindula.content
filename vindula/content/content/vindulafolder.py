@@ -21,6 +21,7 @@ from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from zope.schema.interfaces import IVocabularyFactory   
 from zope.component import queryUtility
 
+from hashlib import md5
 
 VindulaFolder_schema =  ATFolder.schema.copy() + Schema((
     
@@ -64,3 +65,22 @@ registerType(VindulaFolder, PROJECTNAME)
 #    grok.name('view')
 #    
 
+class VindulaFolderSync(grok.View):
+    grok.context(IVindulaFolder)
+    grok.require('zope2.View')
+    grok.name('enable-sync')
+
+    def __init__(self,context,request):
+        super(VindulaFolderSync,self).__init__(context,request)
+        context = self.context
+        self.portal_type = context.portal_type
+        self.UID = context.UID()
+
+    def get_id_frame(self):
+        return md5(self.portal_type + self.UID).hexdigest()
+
+    def get_url_frame(self):
+        url = self.context.portal_url()
+        user_token = self.request.SESSION.get('user_token')
+
+        return '%s/vindula-api/sync/habilitar/%s/%s/%s?iframe_id=%s' %(url,user_token,self.portal_type,self.UID,self.get_id_frame())

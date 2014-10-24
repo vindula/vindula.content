@@ -12,6 +12,7 @@ from Products.CMFCore.utils import getToolByName
 from zExceptions import BadRequest
 from OFS.CopySupport import CopyError
 import transaction
+from Acquisition import aq_parent
 
 
 @grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)
@@ -61,7 +62,8 @@ def CreatGroupInPloneSite(event):
     # create a new context, as the owner of the folder
     newSecurityManager(ctx,user_admin)
 
-    ctxPai = ctx.aq_parent
+#    ctxPai = ctx.aq_parent
+    ctxPai = aq_parent(ctx)
     portalGroup =  ctx.portal_url.getPortalObject().portal_groups
     tipos = [{'tipo':'view' ,'name':'',              'permissao':['Reader']                                    },
              {'tipo':'edit' ,'name':' - Edição',      'permissao':['Reviewer','Reader','Contributor']           },
