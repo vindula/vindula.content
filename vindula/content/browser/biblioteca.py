@@ -11,6 +11,8 @@ from zope.interface import Interface
 from vindula.content.browser.macros import Search
 from vindula.content.models.content import ModelsContent
 
+from Acquisition import ImplicitAcquisitionWrapper
+
 
 class BlibliotecaView(grok.View):
     grok.context(Interface)
@@ -99,7 +101,7 @@ class MacroListFileView(grok.View):
                     try:
                         if isinstance(values, str):
                             values = eval(values)
-                            
+
                         for uuid in values:
                             obj = uuidToObject(uuid)
                             if obj:
@@ -123,6 +125,9 @@ class MacroListFileView(grok.View):
                         return self.getAllKeyword('ThemeNews').keys()
 
     def getStructures_byUID(self,UID):
+        if isinstance(UID, ImplicitAcquisitionWrapper)
+            return UID.getObject()
+
         if UID:
             object = self.rtool.lookupObject(UID)
             return object #.Title()
@@ -149,14 +154,14 @@ class MacroListFileView(grok.View):
                 obj = ref.getSourceObject()
                 if obj.portal_type == 'File':
                     result_query.append(obj)
-            
+
             if result_query:
                 if sort_on == 'access':
                     for item in ModelsContent().orderBy_access(result_query):
                         result.append(item.get('content').getObject())
                 else:
                     result = sorted(result_query, key=lambda res: res.created(), reverse=True)
-                    
+
         return result
 
     def searchFile_byTheme(self, keywords=[], sort_on='access'):
@@ -164,12 +169,12 @@ class MacroListFileView(grok.View):
         result = []
 
         query['portal_type'] = ('File',)
-        
+
         context_biblioteca = self.context.restrictedTraverse('myvindula-conf-userpanel').check_context_biblioteca()
         if context_biblioteca:
             if "context_path" in self.request.keys():
                 context_path = self.request['context_path']
-                query['path'] = {'query': context_path, 'depth':99}    
+                query['path'] = {'query': context_path, 'depth':99}
             else:
                 context_path = self.context.aq_parent.getPhysicalPath()
                 query['path'] = {'query':'/'.join(context_path), 'depth':99}
@@ -205,7 +210,7 @@ class MacroListFileView(grok.View):
                 url = photos[0].absolute_url()+'/image_preview'
             else:
                 url = base + "icon-default.png"
-        
+
         elif obj.portal_type in ['VindulaVideo']:
             photo = obj.getImage_preview()
             if photo:
@@ -243,7 +248,7 @@ class MacroListFileView(grok.View):
                 else:
                     stats[str(key)] = 1
         return stats
-    
+
     def sortItems(self, type, items):
         D = {}
         for item in items:
@@ -251,21 +256,21 @@ class MacroListFileView(grok.View):
                 objects = self.searchFile_byStructures(item)
             else:
                 objects = self.searchFile_byTheme(item)
-            
+
             D[item] = len(objects)
-        
+
         od = OrderedDict(sorted(D.items(), key=lambda t: t[1]))
         items = od.items()
         items.reverse()
-        
+
         return OrderedDict(items)
-    
+
     def normalizeString(self, string=''):
         if string:
             normalizer = getUtility(IIDNormalizer)
-            return normalizer.normalize(string) 
+            return normalizer.normalize(string)
         return ''
-            
+
 
 class FilterItensView(grok.View):
     grok.context(Interface)
