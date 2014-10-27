@@ -125,7 +125,7 @@ class MacroListFileView(grok.View):
                         return self.getAllKeyword('ThemeNews').keys()
 
     def getStructures_byUID(self,UID):
-        if isinstance(UID, ImplicitAcquisitionWrapper)
+        if isinstance(UID, ImplicitAcquisitionWrapper):
             return UID.getObject()
 
         if UID:
