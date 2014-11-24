@@ -93,9 +93,10 @@
                                                         <a tal:attributes="href string:${item_object/absolute_url}/view">
                                                             <strong tal:content="item_object/Title"></strong></a>
                                                         <p tal:condition="item_object/getStructures|nothing"
+                                                           tal:define="bobobase_mod item_object/bobobase_modification_time"
                                                            tal:content="python:'%s%s' %
                                                                         (item_object.getStructures() and item_object.getStructures().getSiglaOrTitle()+' / ',
-                                                                        item_object.bobobase_modification_time().strftime('%d/%m/%Y'))"></p>
+                                                                        bobobase_mod.strftime('%d/%m/%Y'))"></p>
                                                     </div>
                                                 </div>
                                             </metal:define>

@@ -68,7 +68,8 @@
 
                             <small tal:condition="ctx/getStructures|nothing"
                                    tal:content="python:ctx.getStructures().getSiglaOrTitle()+' /'">ASCOM </small>
-                            <small tal:content="python:ctx.bobobase_modification_time().strftime('%d/%m/%Y')"> 27/03/2013 </small>
+                            <small tal:define="bobobase_mod ctx/bobobase_modification_time"
+                                   tal:content="python:bobobase_mod.strftime('%d/%m/%Y')"> 27/03/2013 </small>
 
                         </div>
                         <div class="columns small-12">
