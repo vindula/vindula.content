@@ -34,6 +34,7 @@ OrganizationalStructure_schema =  ATFolder.schema.copy() + OSTheme_schema + OSIn
                 # rows="10",
             ),
             required=True,
+            searchable = True,
     ),
 
     ReferenceField('structures',
