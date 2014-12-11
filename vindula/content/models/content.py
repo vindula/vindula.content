@@ -45,9 +45,9 @@ class ModelsContent(Storm, BaseStore):
                 uid = uid.decode('utf-8')
             
             data = self.store.find(ModelsContent, ModelsContent.uid==uid)
-            if data and not is_user_object:
-                    data = data[0]
-            return data
+            if data and data.count() and not is_user_object:
+                data = data[0]
+                return data
         return None
     
     def getContent_by_id(self,id):

@@ -148,38 +148,20 @@ def CreatElemetsOrganizationalStructure(context, event):
     setSecurityManager(old_security_manager)
 
 
-CONTEUDOS = [{'id':'discussoes',     'titulo':u'Discussões',      'tipo':'Ploneboard'    },
-             {'id':'paginas',        'titulo':u'Páginas',         'tipo':'VindulaFolder' },
-             {'id':'arquivos',       'titulo':u'Arquivos',        'tipo':'VindulaFolder' },
-             {'id':'blog',           'titulo':u'Blog',            'tipo':'VindulaFolder' },
-             {'id':'questionarios',  'titulo':u'Questionários',   'tipo':'VindulaFolder' },
-             {'id':'projetos',       'titulo':u'Projetos',        'tipo':'VindulaFolder' },
-             {'id':'video-audio',    'titulo':u'Video/Audio',     'tipo':'VindulaFolder' },
-             {'id':'album-de-fotos', 'titulo':u'Álbum de Fotos',  'tipo':'VindulaFolder' },
-             {'id':'evento',         'titulo':u'Evento',          'tipo':'VindulaFolder' },
-             {'id':'links',          'titulo':u'Links',           'tipo':'VindulaFolder' },
-             {'id':'classificado',   'titulo':u'Classificados',   'tipo':'Classifieds'   },
-             #{'id':'reserva',        'titulo':u'Reserva',         'tipo':'ContentReserve'},
-             {'id':'formulario',     'titulo':u'Formulário',      'tipo':'VindulaFolder' },
-             {'id':'home_principal', 'titulo':u'Home Principal',  'tipo':'Layout'        },
-             {'id':'portlet_esquerdo','titulo':u'Portlet Esquerdo','tipo':'Layout'       }
-            ]
-
-
-# LAYOUT_HOME_PRINCIPAL = [{'id':'banner',       'titulo':u'Banner em Destaques',  'tipo':'VindulaFolder'},
-#                          {'id':'macro_abas',   'titulo':u'Áreas Principais',     'tipo':'VindulaFolder'},
-#                          {'id':'informacoes',  'titulo':u'INFORMAÇÔES',          'tipo':'VindulaFolder'},
-#                          {'id':'destaque',     'titulo':u'INFORME',              'tipo':'VindulaFolder'},
-#                          {'id':'servicos',     'titulo':u'SERVIÇOS',             'tipo':'VindulaFolder'},
-#                          {'id':'noticias',     'titulo':u'NOTÍCIAS',             'tipo':'VindulaFolder'},
-#                          {'id':'links',        'titulo':u'LINKS ÚTEIS',          'tipo':'VindulaFolder'},
-#                          {'id':'agenda',       'titulo':u'AGENDA',               'tipo':'VindulaFolder'},
-#                          {'id':'proximo',      'titulo':u'PRÓXIMOS EVENTOS',     'tipo':'VindulaFolder'},
-#                         ]
-
-# LAYOUT_PORTLET_ESQUERDO = [{'id':'ultimos_documentos', 'titulo':u'ÚLTIMOS DOCUMENTOS',  'tipo':'VindulaFolder'},
-#                            {'id':'aniversariantes',    'titulo':u'ANIVERSARIANTES',     'tipo':'VindulaFolder'},
-#                           ]
+CONTEUDOS = [{'id':'discussoes',      'titulo':u'Discussões',      'tipo':'Ploneboard'    },
+             {'id':'paginas',         'titulo':u'Páginas',         'tipo':'VindulaFolder' },
+             {'id':'arquivos',        'titulo':u'Arquivos',        'tipo':'VindulaFolder' },
+             {'id':'blog',            'titulo':u'Blog',            'tipo':'VindulaFolder' },
+             {'id':'questionarios',   'titulo':u'Questionários',   'tipo':'VindulaFolder' },
+             {'id':'projetos',        'titulo':u'Projetos',        'tipo':'VindulaFolder' },
+             {'id':'video-audio',     'titulo':u'Video/Audio',     'tipo':'VindulaFolder' },
+             {'id':'album-de-fotos',  'titulo':u'Álbum de Fotos',  'tipo':'VindulaFolder' },
+             {'id':'evento',          'titulo':u'Evento',          'tipo':'VindulaFolder' },
+             {'id':'links',           'titulo':u'Links',           'tipo':'VindulaFolder' },
+             {'id':'classificado',    'titulo':u'Classificados',   'tipo':'Classifieds'   },
+             {'id':'formulario',      'titulo':u'Formulário',      'tipo':'VindulaFolder' },
+             {'id':'home_principal',  'titulo':u'Home Principal',  'tipo':'Layout'        },
+             {'id':'portlet_esquerdo','titulo':u'Portlet Esquerdo','tipo':'Layout'        },]
 
 def _cria_objeto(objeto, conteudos):
     """ Metodo para a criacao de conteudo
@@ -219,8 +201,36 @@ def _cria_componentes_layout(objeto):
     if not 'home_principal' in objeto.keys() and\
        not 'portlet_esquerdo' in objeto.keys():
 
+        # ['TileInfoStructure', 'TileOrganogram', 'TileTabularList', 'TileTeam',]
+        # 'TileReferenceList'
         objs = obj_folder.manage_copyObjects(['home_principal', 'portlet_esquerdo'])
+        
         try:
             objeto.manage_pasteObjects(objs)
+            
+            #Montando as referencias nos Blocos de Referencia
+            bloco_refencia_old = obj_folder['home_principal'].listFolderContents(contentFilter={"portal_type" : "TileReferenceList"})
+            if bloco_refencia_old:
+                bloco_refencia_old = bloco_refencia_old[0]
+                bloco_refencia_new = objeto['home_principal'].listFolderContents(contentFilter={"portal_type" : "TileReferenceList"})
+                if bloco_refencia_new:
+                    bloco_refencia_new = bloco_refencia_new[0]
+
+                    ref_list_old = bloco_refencia_old.getReference_list()
+                    ref_list_new = []
+                    for item in ref_list_old:
+                        old_brain = catalog(UID=item.get('uid', ''))
+                        if old_brain:
+                            old_brain = old_brain[0]
+                            new_ref_obj = objeto['home_principal'].get(old_brain.id, '')
+                            if new_ref_obj:
+                                ref_list_new.append({'default_title': item['default_title'],
+                                                     'link': '/'.join(new_ref_obj.getPhysicalPath()),
+                                                     'title': item['title'],
+                                                     'uid': new_ref_obj.UID(),
+                                                     'url': new_ref_obj.absolute_url() ,})
+                    bloco_refencia_new.setReference_list(ref_list_new)
+                    bloco_refencia_new.reindexObject()
+
         except CopyError:
             print 'Error ao copiar o arquivo'
