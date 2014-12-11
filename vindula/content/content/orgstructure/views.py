@@ -21,33 +21,6 @@ class OrganizationalStructureView(grok.View, UtilMyvindula):
 
         return layout
 
-    # def get_UID(self):
-    #     return IUUID(self.context)
-
-    # def get_howareu_departament(self, departament):
-    #     D={}
-    #     D['visible_area'] = departament
-    #     return ModelsMyvindulaHowareu().get_myvindula_howareu(**D)
-
-    # def get_department(self, user):
-    #     try:
-    #         user_id = unicode(user, 'utf-8')
-    #     except:
-    #         user_id = user
-
-    #     # return ModelsDepartment().get_departmentByUsername(user_id)
-    #     return 'TODO MUDAR DEPOIS'
-
-    # def get_LastContent(self):
-    #     ctool = getSite().portal_catalog
-    #     objs = ctool(path = {'query': '/'.join(self.context.getPhysicalPath()), 'depth': 1},
-    #                   sort_on='modified', sort_order='decrescent')
-
-    #     if objs:
-    #         return objs
-    #     else:
-    #         return []
-
 
 class FolderOrganizationalStructureView(grok.View, UtilMyvindula):
     grok.context(Interface)

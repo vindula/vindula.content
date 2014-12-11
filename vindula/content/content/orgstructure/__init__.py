@@ -200,6 +200,8 @@ L += ['subject','relatedItems','language']
 L += ['creators','contributors','rights']
 # Settings
 L += ['allowDiscussion','excludeFromNav', 'nextPreviousEnabled']
+# Layout
+L += ['layout_content', 'layout_accessory']
 
 for i in L:
     OrganizationalStructure_schema[i].widget.visible = invisivel

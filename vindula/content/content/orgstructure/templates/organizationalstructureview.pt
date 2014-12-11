@@ -31,22 +31,21 @@
 
 				<div class="columns large-9"
                      tal:define="defaulValue python: view.getDefaultValue('home_principal')"
-					 tal:condition="python: context.getLayout_content() or defaulValue">
+					 tal:condition="nocall:defaulValue">
 
-					<tal:def define="context python:context.getLayout_content() or defaulValue">
+					<tal:def define="context nocall:defaulValue">
      					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
      				</tal:def>
 
 				</div>
 				<div class="columns large-3"
                      tal:define="defaulValue python: view.getDefaultValue('portlet_esquerdo')"
-					 tal:condition="python: context.getLayout_accessory() or defaulValue">
+					 tal:condition="nocall:defaulValue">
 
-					<tal:def define="context python:context.getLayout_accessory() or defaulValue;
+					<tal:def define="context nocall:defaulValue;
 									 columns_accessory python:True" >
       					<metal:block metal:use-macro="context/@@layout-view/macros/page"/>
 					</tal:def>
-
 				</div>
 			</div>
 		</metal:main>

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
-from vindula.content import MessageFactory as _
 from Products.Archetypes.atapi import *
 
-from Products.SmartColorWidget.Widget import SmartColorWidget
-from vindula.controlpanel.browser.at.widget import VindulaReferenceSelectionWidget
+from vindula.content import MessageFactory as _
+
 
 OSInf_schema =  Schema((
 
