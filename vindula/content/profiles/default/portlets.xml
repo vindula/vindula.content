@@ -4,19 +4,38 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
 
-	<portlet
+    <portlet
+        addview="vindula.content.PortletVindulaSocial"
+        title="Portlet de Ações do Vindula Api"
+        description="Portlet de Ações do Vindula Api">
+    </portlet>
+
+    <portlet addview="collective.blogging.SharePortlet" remove="true" />
+    <portlet addview="collective.blogging.ArchivePortlet" remove="true" />
+    <portlet addview="collective.blogging.FilterPortlet" remove="true" />
+    <portlet addview="portlets.Classic" remove="true" />
+    <portlet addview="portlets.Events" remove="true" />
+    <portlet addview="portlets.Calendar" remove="true" />
+    <portlet addview="collective.blogging.ManagePortlet" remove="true" />
+    <portlet addview="portlets.Login" remove="true" />
+    <portlet addview="portlets.News" remove="true" />
+    <portlet addview="portlet.banner" remove="true" />
+    <portlet addview="portlets.Popoll" remove="true" />
+    <portlet addview="portlets.Recent" remove="true" />
+    <portlet addview="portlets.Review" remove="true" />
+    <portlet addview="portlets.Search" remove="true" />
+    <portlet addview="plone.portlet.static.Static" remove="true" />
+
+	<!--portlet
 		addview="vindula.content.PortletEstruturaHierarquica"
 		title="Portlet Estrutura Hierárquica"
 		description="Portlet Estrutura Hierárquica">
-
-			<!--for interface="vindula.content.content.orgstructure.IOrganizationalStructure" /-->
 	</portlet>
 
 	<portlet
 		addview="vindula.content.VindulaCarregaPortlet"
 		title="Vindula Carrega Portlet"
 		description="Vindula Carrega Portlet">
-
 	</portlet>
 
 	<portlet
@@ -52,14 +71,6 @@
 		title="Portlet de Veja Também"
 		description="Portlet de Veja Também">
 
-	</portlet>
-
-    <portlet
-        addview="vindula.content.PortletVindulaSocial"
-        title="Portlet de Ações do Vindula Api"
-        description="Portlet de Ações do Vindula Api">
-
-    </portlet>
-
+	</portlet-->
 
 </portlets>
