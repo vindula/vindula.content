@@ -1,0 +1,44 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="vindula.content">
+
+ 
+  <class class="vindula.content.content.internallink.InternalLink">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.orgstructure.OrganizationalStructure">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.procedure.Procedure">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.unit.Unit">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.vindulacontato.VindulaContato">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.vindulaedital.VindulaEdital">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.vindulafolder.VindulaFolder">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.vindulanews.VindulaNews">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+  <class class="vindula.content.content.vindulaportlet.VindulaPortlet">
+    <implements interface="plone.contentrules.engine.interfaces.IRuleAssignable" />
+  </class>
+
+</configure>
