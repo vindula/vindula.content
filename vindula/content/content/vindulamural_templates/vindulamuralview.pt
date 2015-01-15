@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="pt-br"
+    metal:use-macro="context/main_template/macros/master"
+    i18n:domain="vindula.content">
+
+    <body>
+        
+        <metal:main fill-slot="content-core">
+            
+            <iframe src="" frameborder="0" class="new_vindula_mentions" width="100%" scrolling="no"
+                    tal:attributes="src string:${view/portal_url}/vindula-api/social/mentions/${view/token_user}/${view/UID}?iframe_id=${view/UID};
+                                    id view/UID;">
+            </iframe>
+
+        </metal:main>
+    </body>
+</html>

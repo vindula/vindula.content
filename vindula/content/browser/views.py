@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 import json, logging
 from datetime import datetime
+from itertools import chain
 
 import zope.event
+from plone.app.uuid.utils import uuidToObject
 from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
-from Products.CMFCore.permissions import ManagePortal
 from Acquisition import aq_inner
 from DateTime import DateTime
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import normalizeString
 from Products.Five import BrowserView
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 from five import grok
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.myvindula.registration import ImportUser
@@ -21,8 +22,6 @@ from zope.interface import Interface
 
 from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
-from itertools import chain
 
 MULTISPACE = u'\u3000'.encode('utf-8')
 logger = logging.getLogger('vindula.content')
@@ -942,3 +941,45 @@ class VindulaUpdateTag(grok.View):
 
             exec('obj.'+set_attr+'(indexList)')
             obj.reindexObject()
+
+#TODO: Continuar a criação do metodo do plone que retorna todos os privilégios do usurio em determinado conteúdo
+
+# class VindulaRolesInContent(grok.View):
+#     grok.context(Interface)
+#     grok.name('vindula-roles-in-content')
+#     grok.require('zope2.View')
+
+#     retorno = []
+
+#     def render(self):
+#         self.request.response.setHeader("Content-type","application/json")
+#         self.request.response.setHeader("charset", "UTF-8")
+#         return json.dumps(self.retorno,ensure_ascii=False)
+
+#     def update(self):
+#         uid_obj = self.request.form.get('uid', '')
+#         p_membership = getToolByName(self.context, "portal_membership")
+#         current_user = p_membership.getAuthenticatedMember()
+
+#         import pdb; pdb.set_trace()
+#         if uid_obj:
+#             # p_catalog = getToolByName(self.context, 'portal_catalog')
+#             # obj = p_catalog(UID=uid_obj)
+#             user_admin = p_membership.getMemberById('admin')
+
+#             # stash the existing security manager so we can restore it
+#             old_security_manager = getSecurityManager()
+
+#             # create a new context, as the owner of the folder
+#             newSecurityManager(self.request,user_admin)
+
+#             obj = uuidToObject(uid_obj)
+
+#             # restore the original context
+#             setSecurityManager(old_security_manager)
+
+#             if obj:
+#                 user_roles = current_user.getRolesInContext(obj)
+#                 self.retorno = user_roles
+
+#         self.retorno = 'ERROR'

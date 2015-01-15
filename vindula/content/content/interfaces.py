@@ -65,3 +65,6 @@ class IVindulaEmployee(Interface):
 
 class IVindulaPage(Interface):
     """ Interface for VindulaPage content type """
+
+class IVindulaMural(Interface):
+    """ Interface for VindulaMural content type """
