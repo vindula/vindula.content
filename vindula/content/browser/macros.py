@@ -53,13 +53,18 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
 
     def __init__(self,context,request):
         super(MacroPropertiesView,self).__init__(context,request)
-        owner = context.getOwner()
-        username = owner.getUserName()
-        self.dadosUser = self.get_prefs_user(username)
+        # import pdb; pdb.set_trace()
+        #TODO: ver porque não está funcionando isso quando o usuário que cria o conteúdo é o admin
+        try:
+            owner = context.getOwner()
+            username = owner.getUserName()
+            self.dadosUser = self.get_prefs_user(username)
 
-        self.creator = self.dadosUser.get('name')
-        self.creation_date = context.creation_date.strftime('%d/%m/%Y')
-        self.responsible = self.dadosUser.get('email')
+            self.creator = self.dadosUser.get('name')
+            self.creation_date = context.creation_date.strftime('%d/%m/%Y')
+            self.responsible = self.dadosUser.get('email')
+        except:
+            pass
 
 
     def gethistory(self):

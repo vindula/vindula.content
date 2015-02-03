@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import json, logging
+import json, mimetypes
 from datetime import datetime
 from itertools import chain
 
 import zope.event
-from plone.app.uuid.utils import uuidToObject
 from AccessControl.SecurityManagement import newSecurityManager, getSecurityManager, setSecurityManager
 from Acquisition import aq_inner
 from DateTime import DateTime
@@ -13,6 +12,9 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from collective.documentviewer.async import queueJob
+from collective.quickupload.browser.uploadcapable import get_id_from_filename, MissingExtension
+from collective.quickupload.interfaces import IQuickUploadFileFactory, IQuickUploadFileUpdater
 from five import grok
 from plone.app.layout.viewlets.content import ContentHistoryView
 from vindula.myvindula.registration import ImportUser
@@ -20,12 +22,13 @@ from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.interface import Interface
 
+from vindula.content import logger
+from vindula.content.browser.utils import (normalize_id_to_file_name, create_or_set_folder_path, 
+    vindula_file_factory, vindula_file_updater)
 from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
 
 MULTISPACE = u'\u3000'.encode('utf-8')
-logger = logging.getLogger('vindula.content')
-
 
 def quote_chars(s):
     # We need to quote parentheses when searching text indices
@@ -942,44 +945,106 @@ class VindulaUpdateTag(grok.View):
             exec('obj.'+set_attr+'(indexList)')
             obj.reindexObject()
 
-#TODO: Continuar a criação do metodo do plone que retorna todos os privilégios do usurio em determinado conteúdo
 
-# class VindulaRolesInContent(grok.View):
-#     grok.context(Interface)
-#     grok.name('vindula-roles-in-content')
-#     grok.require('zope2.View')
 
-#     retorno = []
+class VindulaSyncFile(grok.View):
+    grok.context(Interface)
+    grok.name('vindula-sync-file')
+    grok.require('zope2.View')
 
-#     def render(self):
-#         self.request.response.setHeader("Content-type","application/json")
-#         self.request.response.setHeader("charset", "UTF-8")
-#         return json.dumps(self.retorno,ensure_ascii=False)
+    retorno = {}
 
-#     def update(self):
-#         uid_obj = self.request.form.get('uid', '')
-#         p_membership = getToolByName(self.context, "portal_membership")
-#         current_user = p_membership.getAuthenticatedMember()
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
 
-#         import pdb; pdb.set_trace()
-#         if uid_obj:
-#             # p_catalog = getToolByName(self.context, 'portal_catalog')
-#             # obj = p_catalog(UID=uid_obj)
-#             user_admin = p_membership.getMemberById('admin')
+    def update(self):
+        try:
+            # import pdb; pdb.set_trace()
+            context = aq_inner(self.context)
 
-#             # stash the existing security manager so we can restore it
-#             old_security_manager = getSecurityManager()
+            #TODO: Alterar os nomes das variaveis
+            file_data = self.request.form.get('file', '')
+            new_file = self.request.form.get('new_file', '')
+            try:
+                new_file = eval(new_file)
+            except:
+                new_file = False
 
-#             # create a new context, as the owner of the folder
-#             newSecurityManager(self.request,user_admin)
+            folder_path = self.request.form.get('folder_path', '')
 
-#             obj = uuidToObject(uid_obj)
+            p_membership = getToolByName(context, "portal_membership")
+            user_admin = p_membership.getMemberById('admin')
 
-#             # restore the original context
-#             setSecurityManager(old_security_manager)
+            # stash the existing security manager so we can restore it
+            old_security_manager = getSecurityManager()
+            # create a new context, as the owner of the folder
+            newSecurityManager(self.request,user_admin)
 
-#             if obj:
-#                 user_roles = current_user.getRolesInContext(obj)
-#                 self.retorno = user_roles
+            if file_data:
 
-#         self.retorno = 'ERROR'
+                #Mudando de contexto de acordo com o meu folder_path
+                if folder_path and folder_path != '/':
+                    context = create_or_set_folder_path(folder_path.split('/'), context)
+
+                title = file_name = file_data.filename
+
+                id_file_name = normalize_id_to_file_name(title, context)
+
+                description = ''
+                mime_type = mimetypes.guess_type(file_name)[0]
+                portal_type = 'File'
+                upload_with = "CLASSIC FORM POST"
+
+                #Verifico aqui se existe o arquivo no meu contexto
+                try:
+                    newid = get_id_from_filename(file_name, context)
+                except MissingExtension:
+                    raise 'missingExtensionFile'
+
+                if newid in context or id_file_name in context:
+                    updated_object = context.get(newid, False) or context[id_file_name]
+                    mtool = getToolByName(context, 'portal_membership')
+                    if mtool.checkPermission(ModifyPortalContent, updated_object):
+                        can_overwrite = True
+                    else:
+                        can_overwrite = False
+
+                    if not can_overwrite:
+                        logger.debug("The file id for %s already exists, upload rejected" % file_name)
+                        raise 'serverErrorAlreadyExists'
+
+                    overwritten_file = updated_object
+                else:
+                    overwritten_file = None
+
+                if overwritten_file is not None:
+                    logger.info("reuploading %s file with %s : title=%s, description=%s, mime_type=%s" % \
+                            (overwritten_file.absolute_url(), upload_with, title, description, mime_type))
+                    try :
+                        f = vindula_file_updater(overwritten_file, file_name, title, description, mime_type, file_data)
+                        if f['success'] is not None:
+                            queueJob(f['success'])
+                    except Exception, e:
+                        logger.error("Error updating %s file : %s", file_name, str(e))
+                        raise "Error updating %s file : %s" % (file_name, str(e))
+                else:
+                    logger.info("uploading file with %s : filename=%s, title=%s, description=%s, mime_type=%s, portal_type=%s" % \
+                            (upload_with, file_name, title, description, mime_type, portal_type))
+                    try :
+                        f = vindula_file_factory(context, file_name, title, description, mime_type, file_data, portal_type)
+                    except Exception, e:
+                        logger.error("Error creating %s file : %s", file_name, str(e))
+                        raise  "Error updating %s file : %s" % (file_name, str(e))
+
+                if f['success'] is not None :
+                    o = f['success']
+                    self.retorno['uid'] = o.UID()
+                    logger.info("file url: %s" % o.absolute_url())
+            
+            setSecurityManager(old_security_manager)
+            self.retorno['status'] = 'success'
+        except Exception, e:
+            self.retorno['status'] = u'error'
+            self.retorno['message'] = u'serverError: %s' % (str(e))
