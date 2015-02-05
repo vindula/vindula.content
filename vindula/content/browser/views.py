@@ -11,20 +11,20 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 from collective.documentviewer.async import queueJob
 from collective.quickupload.browser.uploadcapable import get_id_from_filename, MissingExtension
-from collective.quickupload.interfaces import IQuickUploadFileFactory, IQuickUploadFileUpdater
 from five import grok
 from plone.app.layout.viewlets.content import ContentHistoryView
+from vindula.myvindula.models.user_session_token import UserSessionToken
 from vindula.myvindula.registration import ImportUser
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.interface import Interface
+from plone.app.uuid.utils import uuidToObject
 
 from vindula.content import logger
 from vindula.content.browser.utils import (normalize_id_to_file_name, create_or_set_folder_path, 
-    vindula_file_factory, vindula_file_updater)
+    vindula_file_factory, vindula_file_updater, set_folder_context_path)
 from vindula.content.content.orgstructure.subscribe import OrgstructureModifiedEvent
 
 
@@ -422,6 +422,9 @@ class VindulaWebServeObjectGroup(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         portal_membership = getToolByName(self.context, "portal_membership")
         user_admin = portal_membership.getMemberById('admin')
 
@@ -464,45 +467,12 @@ class VindulaWebServeAllUsersPlone(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
-#         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-
-# #        plone_ad_user = searchView.merge(chain(*[searchView.searchUsers(**{field: ''}) for field in ['login', 'fullname', 'email']]), 'userid')
-#         plone_ad_user = searchView.searchUsers()
-#         plone_ad_user = [i.get('login') for i in plone_ad_user]
-#         self.retorno = plone_ad_user
-#         return self.retorno
+        #Zerando a variavel de retorno
+        self.retorno = {}
 
         searchString=''
-        searchUsers=True
-        searchGroups=True
-        ignore=[]
-
-        acl = getToolByName(self, 'acl_users')
-        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
-
         mtool = getToolByName(self, 'portal_membership')
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-
-        # First, search for all inherited roles assigned to each group.
-        # We push this in the request so that IRoles plugins are told provide
-        # the roles inherited from the groups to which the principal belongs.
-        # self.request.set('__ignore_group_roles__', False)
-        # self.request.set('__ignore_direct_roles__', True)
-        # inheritance_enabled_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-        # allInheritedRoles = {}
-        # for user_info in inheritance_enabled_users:
-        #     userId = user_info['id']
-        #     user = acl.getUserById(userId)
-        #     # play safe, though this should never happen
-        #     if user is None:
-        #         logger.warn('Skipped user without principal object: %s' % userId)
-        #         continue
-        #     # allAssignedRoles = []
-        #     # for rolemaker_id, rolemaker in rolemakers:
-        #     #     # getRolesForPrincipal can return None
-        #     #     roles = rolemaker.getRolesForPrincipal(user) or ()
-        #     #     allAssignedRoles.extend(roles)
-        #     # allInheritedRoles[userId] = allAssignedRoles
 
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
@@ -510,9 +480,7 @@ class VindulaWebServeAllUsersPlone(grok.View):
         self.request.set('__ignore_direct_roles__', False)
         explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
 
-
         # Tack on some extra data, including whether each role is explicitly
-        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
         results = []
         for user_info in explicit_users:
             userId = user_info['id']
@@ -521,54 +489,13 @@ class VindulaWebServeAllUsersPlone(grok.View):
             if user is None:
                 logger.warn('Skipped user without principal object: %s' % userId)
                 continue
-            # explicitlyAssignedRoles = []
-            # for rolemaker_id, rolemaker in rolemakers:
-            #     # getRolesForPrincipal can return None
-            #     roles = rolemaker.getRolesForPrincipal(user) or ()
-            #     explicitlyAssignedRoles.extend(roles)
 
-            # roleList = {}
-            # for role in self.portal_roles:
-            #     canAssign = user.canAssignRole(role)
-            #     if role == 'Manager' and not self.is_zope_manager:
-            #         canAssign = False
-            #     roleList[role]={'canAssign': canAssign,
-            #                     'explicit': role in explicitlyAssignedRoles,
-            #                     'inherited': role in allInheritedRoles[userId]}
-
-            # canDelete = user.canDelete()
-            # canPasswordSet = user.canPasswordSet()
-            # if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
-            #     if not self.is_zope_manager:
-            #         canDelete = False
-            #         canPasswordSet = False
-
-            # user_info['roles'] = roleList
-            # user_info['fullname'] = user.getProperty('fullname', '')
-            # user_info['email'] = user.getProperty('email', '')
-            # user_info['username'] = user.getUserName()
-            # user_info['can_delete'] = canDelete
-            # user_info['can_set_email'] = user.canWriteProperty('email')
-            # user_info['can_set_password'] = canPasswordSet
-            # results.append(user_info)
             results.append(user.getUserName())
-
-        # Sort the users by fullname
-        # results.sort(key=lambda x: x is not None and x['fullname'] is not None and normalizeString(x['fullname']) or '')
-
-        # import pdb;pdb.set_trace()
-
 
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
         self.retorno = results
         return results
-
-
-
-    # @property
-    # def is_zope_manager(self):
-    #     return getSecurityManager().checkPermission(ManagePortal, self.context)
 
 
 # Metodo que criar o usuario no acl_user do plone
@@ -585,6 +512,9 @@ class VindulaWebServeCreateUserPlone(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         dados = {}
         username = self.request.form.get('username','')
 
@@ -602,7 +532,6 @@ class VindulaWebServeCreateUserPlone(grok.View):
 
             # create a new context, as the owner of the folder
             newSecurityManager(self.request,user_admin)
-
 
             result = ImportUser().importUser(self,{},user=dados)
 
@@ -630,8 +559,10 @@ class VindulaWebServeUpdateOrgStructure(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         try:
-            dados = {}
             uid_object = self.request.form.get('uid','')
             field = self.request.form.get('field','')
             if field:
@@ -739,10 +670,12 @@ class VindulaWebServeUpdateStructuresTypes(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         try:
             list_types = self.request.form.get('list_types','')
             if list_types:
-                p_catalog = getToolByName(self.context, 'portal_catalog')
                 p_membership = getToolByName(self.context, "portal_membership")
                 user_admin = p_membership.getMemberById('admin')
 
@@ -794,6 +727,9 @@ class VindulaUpdateContentTags(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         try:
             uid_content = self.request.form.get('uid_content','')
             if uid_content:
@@ -870,6 +806,9 @@ class VindulaUpdateTag(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         try:
             type = self.request.form.get('type', '')
             old_value = self.request.form.get('old_value', '')
@@ -960,6 +899,9 @@ class VindulaSyncFile(grok.View):
         return json.dumps(self.retorno,ensure_ascii=False)
 
     def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
         try:
             # import pdb; pdb.set_trace()
             context = aq_inner(self.context)
@@ -1001,7 +943,7 @@ class VindulaSyncFile(grok.View):
                 try:
                     newid = get_id_from_filename(file_name, context)
                 except MissingExtension:
-                    raise 'missingExtensionFile'
+                    raise Exception('missingExtensionFile')
 
                 if newid in context or id_file_name in context:
                     updated_object = context.get(newid, False) or context[id_file_name]
@@ -1013,7 +955,7 @@ class VindulaSyncFile(grok.View):
 
                     if not can_overwrite:
                         logger.debug("The file id for %s already exists, upload rejected" % file_name)
-                        raise 'serverErrorAlreadyExists'
+                        raise Exception('serverErrorAlreadyExists')
 
                     overwritten_file = updated_object
                 else:
@@ -1028,7 +970,7 @@ class VindulaSyncFile(grok.View):
                             queueJob(f['success'])
                     except Exception, e:
                         logger.error("Error updating %s file : %s", file_name, str(e))
-                        raise "Error updating %s file : %s" % (file_name, str(e))
+                        raise Exception("Error updating %s file : %s" % (file_name, str(e)))
                 else:
                     logger.info("uploading file with %s : filename=%s, title=%s, description=%s, mime_type=%s, portal_type=%s" % \
                             (upload_with, file_name, title, description, mime_type, portal_type))
@@ -1036,7 +978,7 @@ class VindulaSyncFile(grok.View):
                         f = vindula_file_factory(context, file_name, title, description, mime_type, file_data, portal_type)
                     except Exception, e:
                         logger.error("Error creating %s file : %s", file_name, str(e))
-                        raise  "Error updating %s file : %s" % (file_name, str(e))
+                        raise  Exception("Error updating %s file : %s" % (file_name, str(e)))
 
                 if f['success'] is not None :
                     o = f['success']
@@ -1045,6 +987,130 @@ class VindulaSyncFile(grok.View):
             
             setSecurityManager(old_security_manager)
             self.retorno['status'] = 'success'
+
+        except Exception, e:
+            self.retorno['status'] = u'error'
+            self.retorno['message'] = u'serverError: %s' % (str(e))
+
+class VindulaCheckFolderFiles(grok.View):
+    grok.context(Interface)
+    grok.name('check-folder-files')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
+        try:
+            context = aq_inner(self.context)
+
+            #TODO: Alterar os nomes das variaveis
+            token = self.request.form.get('t', '')
+            folder_path = self.request.form.get('folder_path', '')
+
+            if UserSessionToken.token_exits(token):
+                if folder_path:
+                    p_catalog = getToolByName(self.context, 'portal_catalog')
+                    p_membership = getToolByName(context, "portal_membership")
+                    user_admin = p_membership.getMemberById('admin')
+                    
+                    # stash the existing security manager so we can restore it
+                    old_security_manager = getSecurityManager()
+
+                    # create a new context, as the owner of the folder
+                    newSecurityManager(self.request,user_admin)
+
+                    if folder_path != '/':
+                        path_folder_splited = folder_path.split('/')
+                        context = set_folder_context_path(path_folder_splited, context)
+                    
+                    if context:
+                        data_contents = {}
+                        path_context = context.getPhysicalPath()
+                        path_context = "/".join(path_context)
+                        results = p_catalog(portal_type="File",
+                                            path={"query": path_context, "depth": 1})
+
+                        for item in results:
+                            data_contents[item.UID] = item.Title
+
+                        self.retorno['status'] = u'success'
+                        self.retorno['data_contents'] = data_contents
+
+                        setSecurityManager(old_security_manager)
+                    else:
+                        raise Exception('folderDoesNotExist')
+                else:
+                    raise Exception('pathFolderEmpty')
+            else:
+                raise Exception('invalidToken')
+
+        except Exception, e:
+            self.retorno['status'] = u'error'
+            self.retorno['message'] = u'serverError: %s' % (str(e))
+
+class VindulaRemoveFile(grok.View):
+    grok.context(Interface)
+    grok.name('remove-file')
+    grok.require('zope2.View')
+
+    retorno = {}
+
+    def render(self):
+        self.request.response.setHeader("Content-type","application/json")
+        self.request.response.setHeader("charset", "UTF-8")
+        return json.dumps(self.retorno,ensure_ascii=False)
+
+    def update(self):
+        #Zerando a variavel de retorno
+        self.retorno = {}
+
+        try:
+            context = aq_inner(self.context)
+
+            #TODO: Alterar os nomes das variaveis
+            token = self.request.form.get('t', '')
+            uid_obj = self.request.form.get('uid_obj', '')
+
+            if UserSessionToken.token_exits(token):
+                if uid_obj:
+                    p_membership = getToolByName(context, "portal_membership")
+                    user_admin = p_membership.getMemberById('admin')
+                    
+                    # stash the existing security manager so we can restore it
+                    old_security_manager = getSecurityManager()
+
+                    # create a new context, as the owner of the folder
+                    newSecurityManager(self.request,user_admin)
+
+                    obj = uuidToObject(uid_obj)
+
+                    if obj:
+                        try:
+                            logger.info("Deleting:" + obj.absolute_url() + " " + str(obj.created()))
+                            obj.aq_parent.manage_delObjects([obj.getId()])
+                        except Exception, e:
+                            logger.error("Could not remove item:" + obj.absolute_url())
+                            raise Exception("Could not remove item:" + obj.absolute_url())
+
+                        self.retorno['status'] = u'success'
+                        self.retorno['uid_obj'] = uid_obj
+
+                        setSecurityManager(old_security_manager)
+                    else:
+                        raise Exception('uidObjectDoesNotExist')
+                else:
+                    raise Exception('uidEmpty')
+            else:
+                raise Exception('invalidToken')
+
         except Exception, e:
             self.retorno['status'] = u'error'
             self.retorno['message'] = u'serverError: %s' % (str(e))

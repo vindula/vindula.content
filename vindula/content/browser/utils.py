@@ -12,6 +12,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope import component
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+from Products.CMFCore.interfaces import IFolderish
 
 
 upload_lock = allocate_lock()
@@ -44,19 +45,52 @@ def create_or_set_folder_path(path, context):
         path = [i for i in path if i]
         if path:
             p = path[0]
-            if context.get(p, False):
-                folder = context[p]
+            normalizer = component.getUtility(IIDNormalizer)
+            id = normalizer.normalize(p)
+            if context.get(id, False):
+                folder = context[id]
                 if len(path) <= 1:
                     return folder
             else:
-                normalizer = component.getUtility(IIDNormalizer)
-                id = normalizer.normalize(p)
                 folder = context.invokeFactory(type_name="VindulaFolder", id=id, title=p, description='')
                 folder = context[folder]
                 folder.processForm()
                 folder.reindexObject()
 
             return create_or_set_folder_path(path[1:], folder)
+    else:
+        return context
+
+def set_folder_context_path(path, context):
+    """
+    Retorna o contexto da pas
+
+    Args:
+        path (list): Do caminho onde a pasta será criada
+        context (plone context): Contexto de onde irá criar a pasta
+
+    Returns:
+        Retorna o contexto da ultima pasta criada 
+    """
+
+    if path:
+        #Remove espacos em branco da lista
+        path = [i for i in path if i]
+        if path:
+            p = path[0]
+            normalizer = component.getUtility(IIDNormalizer)
+            id = normalizer.normalize(p)
+            if context.get(id, False):
+                folder = context[id]
+                if IFolderish.providedBy(folder):
+                    if len(path) <= 1:
+                        return folder
+                else:
+                    return False
+            else:
+                return False
+
+            return set_folder_context_path(path[1:], folder)
     else:
         return context
 
@@ -104,7 +138,7 @@ def vindula_file_factory(context, filename, title, description, content_type, da
                         obj.processForm()
 
                 #@TODO : rollback if there has been an error
-                transaction.commit()
+                # transaction.commit()
             finally:
                 upload_lock.release()
 
