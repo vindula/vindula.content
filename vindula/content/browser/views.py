@@ -469,28 +469,37 @@ class VindulaWebServeAllUsersPlone(grok.View):
     def update(self):
         #Zerando a variavel de retorno
         self.retorno = {}
-
-        searchString=''
-        mtool = getToolByName(self, 'portal_membership')
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-
-        # We push this in the request such IRoles plugins don't provide
-        # the roles from the groups the principal belongs.
-        self.request.set('__ignore_group_roles__', True)
-        self.request.set('__ignore_direct_roles__', False)
-        explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-
-        # Tack on some extra data, including whether each role is explicitly
         results = []
-        for user_info in explicit_users:
-            userId = user_info['id']
-            user = mtool.getMemberById(userId)
-            # play safe, though this should never happen
-            if user is None:
-                logger.warn('Skipped user without principal object: %s' % userId)
-                continue
 
-            results.append(user.getUserName())
+        group_name = self.request.get('group_name', '')
+
+        if group_name:
+            groups_tool = getToolByName(self.context, 'portal_groups')
+            group = groups_tool.getGroupById(group_name)
+            if group:
+                members = group.getGroupMembers()
+                results = [m.getUserName() for m in members]
+        else:
+            searchString=''
+            mtool = getToolByName(self, 'portal_membership')
+            searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+            # We push this in the request such IRoles plugins don't provide
+            # the roles from the groups the principal belongs.
+            self.request.set('__ignore_group_roles__', True)
+            self.request.set('__ignore_direct_roles__', False)
+            explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+
+            # Tack on some extra data, including whether each role is explicitly
+            for user_info in explicit_users:
+                userId = user_info['id']
+                user = mtool.getMemberById(userId)
+                # play safe, though this should never happen
+                if user is None:
+                    logger.warn('Skipped user without principal object: %s' % userId)
+                    continue
+
+                results.append(user.getUserName())
 
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
@@ -903,7 +912,6 @@ class VindulaSyncFile(grok.View):
         self.retorno = {}
 
         try:
-            # import pdb; pdb.set_trace()
             context = aq_inner(self.context)
 
             #TODO: Alterar os nomes das variaveis
