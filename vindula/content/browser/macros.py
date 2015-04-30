@@ -53,7 +53,6 @@ class MacroPropertiesView(grok.View, UtilMyvindula):
 
     def __init__(self,context,request):
         super(MacroPropertiesView,self).__init__(context,request)
-        # import pdb; pdb.set_trace()
         #TODO: ver porque não está funcionando isso quando o usuário que cria o conteúdo é o admin
         try:
             owner = context.getOwner()
@@ -224,6 +223,12 @@ class MacroListtabularView(grok.View, UtilMyvindula):
                         else:
                             result.append(obj)
             list_files = result
+            if list_files:
+                try:
+                    list_files = sorted(list_files, key=lambda x: x.created(), reverse=True)
+                except AttributeError:
+                    pass
+                    
         return list_files
     
     #Verifica se o usuario tem permissao de ver o objeto ou se é manager 
