@@ -8,8 +8,6 @@ $j(document).ready(function(){
         $accordion.toggleClass('active');
     });
 
-    Código comentado pois está dando problema e não foi acahada utilidade para ele!!
-
     $j('.container-typologies .accordion, .container-services .accordion').click(function(ev){
         $hide_ele = $j('[accordion-id="'+this.id+ '"]');
         $hide_ele.toggle(300);
