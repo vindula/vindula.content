@@ -13,6 +13,7 @@ from zExceptions import BadRequest
 from OFS.CopySupport import CopyError
 import transaction
 from Acquisition import aq_parent
+from AccessControl import Unauthorized
 
 
 @grok.subscribe(IOrganizationalStructure, IObjectRemovedEvent)
@@ -85,7 +86,10 @@ def CreatGroupInPloneSite(event):
             nome_grupo = 'EO: '+ paiTitle +"\\"  + ctx.title + tipo['name']
             portalGroup.addGroup(id_grupo, title=nome_grupo)
             #Adiciona o grupo a 'AuthenticatedUsers'
-            portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)
+            try:
+                portalGroup.getGroupById('AuthenticatedUsers').addMember(id_grupo)
+            except Unauthorized:
+                portalGroup.addPrincipalToGroup(id_grupo, "AuthenticatedUsers")
 
             ctx.manage_setLocalRoles(id_grupo, tipo['permissao'])
         
@@ -99,18 +103,28 @@ def CreatGroupInPloneSite(event):
                 ctx.setGroups_admin(tuple(admins))
             
         for view in eval('ctx.getGroups_'+tipo['tipo']+'()'):
-            portalGroup.getGroupById(id_grupo).addMember(view)
+            try:
+                portalGroup.getGroupById(id_grupo).addMember(view)
+            except Unauthorized:
+                portalGroup.addPrincipalToGroup(view, id_grupo)
 
         if ctxPai.portal_type == 'OrganizationalStructure':
             group_pai = ctxPai.UID()+"-view"
-            portalGroup.getGroupById(group_pai).addMember(id_grupo)
+            try:
+                portalGroup.getGroupById(group_pai).addMember(id_grupo)
+            except Unauthorized:
+                portalGroup.addPrincipalToGroup(id_grupo, group_pai)
 
     id_grupo_employees = ctx.UID() +'-view'
     new_tupla = list(ctx.Groups_view)
     for user in ctx.getEmployees():
         if new_tupla.count(user) == 0:
             new_tupla.append(user)
-        portalGroup.getGroupById(id_grupo_employees).addMember(user)
+        try:
+            portalGroup.getGroupById(id_grupo_employees).addMember(user)
+        except Unauthorized:
+            portalGroup.addPrincipalToGroup(user, id_grupo_employees)
+            
     ctx.Groups_view = tuple(new_tupla)
     
     ctx.reindexObject()
