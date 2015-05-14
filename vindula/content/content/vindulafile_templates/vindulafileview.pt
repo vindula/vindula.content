@@ -151,7 +151,7 @@
                         <div id="overlay"></div>
                         <script type="text/javascript" tal:content="structure view/javascript"></script>
 
-                        <p tal:condition="context/activ_download">
+                        <p tal:condition="context/activ_download|nothing">
                           <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
                         </p>
                         
