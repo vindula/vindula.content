@@ -150,10 +150,14 @@
                         </div>
                         <div id="overlay"></div>
                         <script type="text/javascript" tal:content="structure view/javascript"></script>
-
-                        <p tal:condition="context/activ_download|nothing">
-                          <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
+                        <p style="margin: 0px 0px 0px 365px;">
+                            <a href=""    tal:define="    url python:context.absolute_url();
+                                                          url_donwload python:'%s/at_download/file' % url;"
+                                          tal:attributes="href url_donwload">
+                                <input type="submit" value="Download do arquivo" align="center">
+                            </a>
                         </p>
+                          <!--metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field-->
                         
                         <tal:cond condition="not: active_accessory">
                             
