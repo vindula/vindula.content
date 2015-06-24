@@ -118,9 +118,8 @@
                                      <span tal:content="context/numero|nothing"></span>
                                  </tal:cond>
                                  
-                                 <tal:cond condition="context/revisao|nothing">
+                                 <tal:cond condition="python: hasattr(context, 'revisao')">
                                     <tal:cond condition="python: context.revisao is not None">
-                                        <span tal:condition="context/numero|nothing">/</span>
                                         <label class="alinhamento">Revisão:</label>
                                         <span tal:content="context/revisao|nothing"></span>
                                     </tal:cond>
