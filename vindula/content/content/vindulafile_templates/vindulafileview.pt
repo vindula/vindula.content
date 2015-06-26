@@ -150,9 +150,10 @@
                         <div id="overlay"></div>
                         <script type="text/javascript" tal:content="structure view/javascript"></script>
                         <p style="margin: 0px 0px 0px 365px;">
-                            <a href=""    tal:define="    url python:context.absolute_url();
-                                                          url_donwload python:'%s/at_download/file' % url;"
-                                          tal:attributes="href url_donwload">
+                            <a href="" tal:define="url python:context.absolute_url();
+                                                   url_donwload python:'%s/at_download/file' % url;"
+                                        tal:attributes="href url_donwload"
+                                        tal:condition="context/activ_download">
                                 <input type="submit" value="Download do arquivo" align="center">
                             </a>
                         </p>
