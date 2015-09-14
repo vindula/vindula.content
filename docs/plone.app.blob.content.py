@@ -48,7 +48,7 @@ ATBlobSchema = ATContentTypeSchema.copy()
 
 ATBlobSchema += Schema((
 
-    ImageField('image',
+    ImageField('image_capa',
         required=True,
         languageIndependent=True,
         storage=AnnotationStorage(migrate=True),
@@ -72,6 +72,7 @@ ATBlobSchema += Schema((
             show_content_type=False,
         ),
     ),
+
 
     ReferenceField('structures',
         multiValued=0,
@@ -495,10 +496,5 @@ class ATBlob(ATCTFileContent, ImageMixin):
             return True
         else:
             return False
-
-    def getImageSize(self, size='mini'):
-        return self.absolute_url() +'/image_' + size
-
-
 
 registerType(ATBlob, packageName)

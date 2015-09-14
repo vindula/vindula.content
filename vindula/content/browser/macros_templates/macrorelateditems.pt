@@ -1,6 +1,6 @@
 <metal:view_macro define-macro="view_portlet"
-                  tal:define="view_macro python:context.restrictedTraverse('macro-related_content');
-                              items view_macro/getItens;">
+                  tal:define="view_macro python:context.restrictedTraverse('macro-relateditens-content');
+                              items python:context.computeRelatedItems();">
     <div class="row" id="tile-see-also"
          tal:condition="items">
 
