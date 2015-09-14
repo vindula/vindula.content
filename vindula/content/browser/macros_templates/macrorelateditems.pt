@@ -19,26 +19,27 @@
                                      title_box string:Relacionados;
                                      accordion python:True;
                                      absolute_url string:${context/absolute_url}/macro-relateditens-content">
-                        <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
+                        <tal:rep repeat="item related">
+                        <div class="columns large-12" tal:define="obj item/content/getObject">
+                            <div class="tile-item row">
+                                <div class="columns small-2 image-box " id="image_tile">
+                                    <img width="30" height="30" src=""
+                                         tal:attributes="src python: obj.getImage" />
+                                </div>
+                                <div class="columns small-10 data-box">
+                                    <a href="#"
+                                       tal:attributes="href string:${obj/absolute_url}/view"
+                                       tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
+                                </div>
+                            </div>
+                        </div>
+                        </tal:rep>
                     </tal:def>
                 </tal:block>
             </tal:relatedItems>
 
-                <!--<tal:rep repeat="item items">-->
-                    <!--<div class="columns large-12" tal:define="obj item/content/getObject">-->
-                        <!--<div class="tile-item row">-->
-                            <!--<div class="columns small-2 image-box " id="image_tile">-->
-                                <!--<img width="30" height="30" src="++theme++vindula.themedefault/images/demos/demo1-th.png"-->
-                                     <!--tal:attributes="src python: view_macro.getImagem(obj)" />-->
-                            <!--</div>-->
-                            <!--<div class="columns small-10 data-box">-->
-                                <!--<a href="#" tal:attributes="href string:${obj/absolute_url}/view"-->
-                                                    <!--tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</tal:rep>-->
-            <!--</div>-->
+
+            </div>
         </metal:view_macro>
     </div>
 </metal:view_macro>

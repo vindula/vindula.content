@@ -24,7 +24,9 @@ from Products.ATContentTypes.content.base import ATCTFileContent
 from Products.ATContentTypes.content.file import ATFile
 from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
+from Products.ATContentTypes.configuration import zconf
 from Products.MimetypesRegistry.common import MimeTypeException
+from Products.validation import V_REQUIRED
 
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.blob.interfaces import IATBlob, IATBlobFile, IATBlobImage
@@ -45,6 +47,31 @@ from vindula.myvindula.tools.utils import UtilMyvindula
 ATBlobSchema = ATContentTypeSchema.copy()
 
 ATBlobSchema += Schema((
+
+    ImageField('image',
+        required=True,
+        languageIndependent=True,
+        storage=AnnotationStorage(migrate=True),
+        swallowResizeExceptions=zconf.swallowImageResizeExceptions.enable,
+        pil_quality=zconf.pil_config.quality,
+        pil_resize_algo=zconf.pil_config.resize_algo,
+        max_size=zconf.ATImage.max_image_dimension,
+        sizes={'large': (768, 768),
+               'preview': (400, 400),
+               'mini': (200, 200),
+               'thumb': (128, 128),
+               'tile': (64, 64),
+               'icon': (32, 32),
+               'listing': (16, 16),
+               },
+        validators=(('isNonEmptyFile', V_REQUIRED),
+                    ('checkImageMaxSize', V_REQUIRED)),
+        widget=ImageWidget(
+            description='',
+            label=_(u'Imagem da capa'),
+            show_content_type=False,
+        ),
+    ),
 
     ReferenceField('structures',
         multiValued=0,
