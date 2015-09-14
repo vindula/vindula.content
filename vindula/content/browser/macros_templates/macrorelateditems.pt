@@ -24,7 +24,7 @@
                             <div class="tile-item row">
                                 <div class="columns small-2 image-box " id="image_tile">
                                     <img width="30" height="30" src=""
-                                         tal:attributes="src python: obj.getImage" />
+                                         tal:attributes="src python: obj.getImage_capa" />
                                 </div>
                                 <div class="columns small-10 data-box">
                                     <a href="#"
