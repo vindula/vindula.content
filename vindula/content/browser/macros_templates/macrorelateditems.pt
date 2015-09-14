@@ -37,9 +37,6 @@
                     </tal:def>
                 </tal:block>
             </tal:relatedItems>
-
-
-            </div>
         </metal:view_macro>
     </div>
 </metal:view_macro>
