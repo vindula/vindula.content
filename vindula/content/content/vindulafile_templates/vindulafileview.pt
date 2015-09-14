@@ -199,8 +199,6 @@
                         <metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
                         
                         <metal:block metal:use-macro="context/macro-propertis-content/macros/changes_view" />
-:q
-                        
 
                     <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
 
