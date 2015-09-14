@@ -20,11 +20,13 @@
                                      accordion python:True;
                                      absolute_url string:${context/absolute_url}/macro-relateditens-content">
                         <tal:rep repeat="item list_itens">
-                        <div class="columns large-12" tal:define="obj item/getObject|nocall:item">
+                        <div class="columns large-12"
+                             tal:define="obj item/getObject|nocall:item;
+                                         item_url obj/absolute_url;">
                             <div class="tile-item row">
                                 <div class="columns small-2 image-box " id="image_tile">
                                     <img width="30" height="30" src=""
-                                         tal:attributes="src python: obj.getImage_capa()" />
+                                         tal:attributes="src string:${item_url}/image_thumb" />
                                 </div>
                                 <div class="columns small-10 data-box">
                                     <a href="#"
