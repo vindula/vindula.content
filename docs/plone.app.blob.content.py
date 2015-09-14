@@ -469,6 +469,23 @@ class ATBlob(ATCTFileContent, ImageMixin):
                     return image
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
 
+    def exportImage(self, format, width, height):
+        return '', ''
+
+    security.declareProtected(ModifyPortalContent, 'setImage_capa')
+    def setImage_capa(self, value, refresh_exif=True, **kwargs):
+        """Set ID to uploaded file name if Title is empty."""
+        # set exif first because rotation might screw up the exif data
+        # the exif methods can handle str, Pdata, OFSImage and file
+        # like objects
+        self.getEXIF(value, refresh=refresh_exif)
+        self._setATCTFileContent(value, **kwargs)
+
+    security.declareProtected(View, 'tag')
+    def tag(self, **kwargs):
+        """Generate image tag using the api of the ImageField
+        """
+        return self.getField('image').tag(self, **kwargs)
 
     def getImageIcone(self):
         obj = self
