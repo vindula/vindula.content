@@ -1,3 +1,48 @@
+<metal:view_macro define-macro="view_portlet"
+                  tal:define="view_macro python:context.restrictedTraverse('macro-related_content');
+                              items view_macro/getItens;">
+    <div class="row" id="tile-see-also"
+         tal:condition="items">
+
+        <div class="columns small-12">
+            <h5 class="subheader">
+                <strong>Conteúdos Relacionados</strong>
+            </h5>
+        </div>
+
+        <metal:view_macro define-macro="portlet"
+                          tal:define="tools context/@@plone_tools;
+                                      getInfoFor python:tools.workflow().getInfoFor;">
+            <tal:relatedItems tal:define="related python:context.computeRelatedItems();">
+                <tal:block tal:condition="python:related">
+                    <tal:def define="list_itens related;
+                                     title_box string:Relacionados;
+                                     accordion python:True;
+                                     absolute_url string:${context/absolute_url}/macro-relateditens-content">
+                        <metal:block metal:use-macro="context/macro_recent_content/macros/view" />
+                    </tal:def>
+                </tal:block>
+            </tal:relatedItems>
+
+                <!--<tal:rep repeat="item items">-->
+                    <!--<div class="columns large-12" tal:define="obj item/content/getObject">-->
+                        <!--<div class="tile-item row">-->
+                            <!--<div class="columns small-2 image-box " id="image_tile">-->
+                                <!--<img width="30" height="30" src="++theme++vindula.themedefault/images/demos/demo1-th.png"-->
+                                     <!--tal:attributes="src python: view_macro.getImagem(obj)" />-->
+                            <!--</div>-->
+                            <!--<div class="columns small-10 data-box">-->
+                                <!--<a href="#" tal:attributes="href string:${obj/absolute_url}/view"-->
+                                                    <!--tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</tal:rep>-->
+            <!--</div>-->
+        </metal:view_macro>
+    </div>
+</metal:view_macro>
+
 <div metal:define-macro="view"
     class="relatedItems"
     tal:define="tools context/@@plone_tools;

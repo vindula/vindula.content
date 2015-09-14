@@ -154,6 +154,16 @@ ATBlobSchema += Schema((
         required=False,
     ),
 
+    BooleanField(
+        name='activ_portletRelated',
+        default=True,
+        widget=BooleanWidget(
+            label=_(u'Portlet Relacionado'),
+            description=_(u'Se selecionado, ativa a visualização do portlet de conteúdos relacionados.'),
+        ),
+        required=False,
+    ),
+
      BooleanField(
         name='activ_download',
         default=True,

@@ -52,6 +52,7 @@
 	        <metal:main-macro define-macro="main"
                               tal:define="size python:here.getObjSize(here);
                                           active_accessory context/getActiv_portletAccessory;
+                                          active_related context/getActiv_portletRelated;
                                           content_type here/get_content_type|here/Format;
                                           block_below_content python:request.set('block_below_content', 1);">
 
@@ -61,7 +62,7 @@
                                                data_type context/portal_type|nothing" />
                 <div class="row">
                     <div id="file" class="columns large-9 content-core file"
-                         tal:attributes="class python: not active_accessory and 'columns content-core file large-12' or 'columns large-9 content-core file' ">
+                         tal:attributes="class python: not (active_accessory or active_related) and 'columns content-core file large-12' or 'columns large-9 content-core file' ">
 						 <div class="right">
                        		 <div metal:use-macro="context/macro-comboStandard-content/macros/view" />
                          </div>
@@ -188,22 +189,30 @@
                             </div>
 
                         </tal:cond>
+                        <tal:cond condition="not: active_related">
                         
-                        <metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
+                            <metal:block metal:use-macro="context/macro-relateditens-content/macros/view" />
+                        </tal:cond>
 
                         <metal:block metal:use-macro="context/macro-keywords-content/macros/view" />
 
                         <metal:block metal:use-macro="context/macro-propertis-content/macros/view" />
                         
                         <metal:block metal:use-macro="context/macro-propertis-content/macros/changes_view" />
-
+:q
+                        
 
                     <metal:block metal:use-macro="context/macro-comments-content/macros/view" />
 
                 </div>
-                <div class="columns large-3" tal:condition="active_accessory">
+                <div class="columns large-3" tal:condition="python: active_accessory or active_related">
+                    <tal:cond condition="active_accessory">
                     <metal:block metal:use-macro="context/macro-last_access-content/macros/view" />
                     <metal:block metal:use-macro="context/macro-see_also-content/macros/view" />
+                        </tal:cond>
+                    <tal:cond condition="active_related">
+                        <metal:block metal:use-macro="context/macro-relateditens-content/macros/view_portlet" />
+                    </tal:cond>
                 </div>
                 
                 <!--div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" /-->
