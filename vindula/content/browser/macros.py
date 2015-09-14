@@ -588,6 +588,26 @@ class MacroRelatedItems(grok.View):
     grok.context(Interface)
     grok.require('zope2.View')
     grok.name('macro-relateditens-content')
+    
+    def list_files(self, portal_type, path=None):
+        list_files = []
+        if isinstance(portal_type, str):
+            try:
+                portal_type = eval(portal_type)
+            except NameError:
+                pass
+            except TypeError:
+                pass
+        
+        query = {'portal_type': portal_type}
+
+        if path:
+            query['path'] = {'query': path }
+        
+        search = Search(self.context, query, rs=False)
+        list_files = search.result
+
+        return list_files
 
 
 class MacroKeywords(grok.View):

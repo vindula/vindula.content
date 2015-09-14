@@ -19,8 +19,8 @@
                                      title_box string:Relacionados;
                                      accordion python:True;
                                      absolute_url string:${context/absolute_url}/macro-relateditens-content">
-                        <tal:rep repeat="item related">
-                        <div class="columns large-12" tal:define="obj item/content/getObject">
+                        <tal:rep repeat="item list_itens">
+                        <div class="columns large-12" tal:define="obj item/getObject|nocall:item">
                             <div class="tile-item row">
                                 <div class="columns small-2 image-box " id="image_tile">
                                     <img width="30" height="30" src=""
