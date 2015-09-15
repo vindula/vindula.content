@@ -21,20 +21,19 @@
                                      title_box string:Relacionados;
                                      accordion python:True;
                                      absolute_url string:${context/absolute_url}/macro-relateditens-content">
+                        <div class="columns large-12">
                         <tal:rep repeat="item list_itens">
-                        <div class="columns large-12"
-                             tal:define="obj item/getObject|nocall:item;
-                                         item_url obj/absolute_url;">
-                                         
-                            <div>
-                                <a href="" style="font-size: 40px color: #DE5056"
+                            <div tal:define="obj item/getObject|nocall:item;
+                                             item_url obj/absolute_url;">
+                                <a href="" style="font-size: 20px; color: #DE5056"
                                    tal:attributes="href string:${obj/absolute_url}/view">
                                    <p tal:content="obj/Title" />
                                     <img tal:attributes="src string:${item_url}/image_mini" />
                                 </a>
                             </div>
-                        </div>
+                            <br />
                         </tal:rep>
+                        </div>
                     </tal:def>
                 </div>
                 </tal:block>
