@@ -5,10 +5,10 @@
          tal:condition="items">
 
         <div class="columns small-12">
-            <h4>
-                <cont>Conteúdos Relacionados</cont>
+            <h5>
+                Conteúdos Relacionados
                 <hr>
-            </h4>
+            </h5>
         </div>
 
         <metal:view_macro define-macro="portlet"
