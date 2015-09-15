@@ -5,9 +5,10 @@
          tal:condition="items">
 
         <div class="columns small-12">
-            <h5 class="subheader">
-                <strong>Conteúdos Relacionados</strong>
-            </h5>
+            <h4>
+                <cont>Conteúdos Relacionados</cont>
+                <hr>
+            </h4>
         </div>
 
         <metal:view_macro define-macro="portlet"
@@ -15,6 +16,7 @@
                                       getInfoFor python:tools.workflow().getInfoFor;">
             <tal:relatedItems tal:define="related python:context.computeRelatedItems();">
                 <tal:block tal:condition="python:related">
+                <div class="row">
                     <tal:def define="list_itens related;
                                      title_box string:Relacionados;
                                      accordion python:True;
@@ -23,20 +25,18 @@
                         <div class="columns large-12"
                              tal:define="obj item/getObject|nocall:item;
                                          item_url obj/absolute_url;">
-                            <div class="tile-item row">
-                                <div class="columns small-2 image-box " id="image_tile">
-                                    <img width="30" height="30" src=""
-                                         tal:attributes="src string:${item_url}/image_thumb" />
-                                </div>
-                                <div class="columns small-10 data-box">
-                                    <a href="#"
-                                       tal:attributes="href string:${obj/absolute_url}/view"
-                                       tal:content="obj/Title">Nova diretoria da Opas visita Bio</a>
-                                </div>
+                                         
+                            <div>
+                                <a href="" style="font-size: 40px color: #DE5056"
+                                   tal:attributes="href string:${obj/absolute_url}/view">
+                                   <p tal:content="obj/Title" />
+                                    <img tal:attributes="src string:${item_url}/image_mini" />
+                                </a>
                             </div>
                         </div>
                         </tal:rep>
                     </tal:def>
+                </div>
                 </tal:block>
             </tal:relatedItems>
         </metal:view_macro>
