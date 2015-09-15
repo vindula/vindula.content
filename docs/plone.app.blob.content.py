@@ -48,8 +48,8 @@ ATBlobSchema = ATContentTypeSchema.copy()
 
 ATBlobSchema += Schema((
 
-    ImageField('image_capa',
-        required=True,
+    ImageField('image',
+        required=False,
         languageIndependent=True,
         storage=AnnotationStorage(migrate=True),
         swallowResizeExceptions=zconf.swallowImageResizeExceptions.enable,
@@ -472,8 +472,8 @@ class ATBlob(ATCTFileContent, ImageMixin):
     def exportImage(self, format, width, height):
         return '', ''
 
-    security.declareProtected(ModifyPortalContent, 'setImage_capa')
-    def setImage_capa(self, value, refresh_exif=True, **kwargs):
+    security.declareProtected(ModifyPortalContent, 'setImage')
+    def setImage(self, value, refresh_exif=True, **kwargs):
         """Set ID to uploaded file name if Title is empty."""
         # set exif first because rotation might screw up the exif data
         # the exif methods can handle str, Pdata, OFSImage and file
