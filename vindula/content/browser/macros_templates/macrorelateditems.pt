@@ -16,7 +16,7 @@
                                       getInfoFor python:tools.workflow().getInfoFor;">
             <tal:relatedItems tal:define="related python:context.computeRelatedItems();">
                 <tal:block tal:condition="python:related">
-                <div class="row">
+                <div>
                     <tal:def define="list_itens related;
                                      title_box string:Relacionados;
                                      accordion python:True;
