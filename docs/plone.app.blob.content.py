@@ -48,7 +48,21 @@ ATBlobSchema = ATContentTypeSchema.copy()
 
 ATBlobSchema += Schema((
 
-    ImageField('image',
+    TextField('text1',
+              required=False,
+              searchable=True,
+              storage=AnnotationStorage(migrate=True),
+              validators=('isTidyHtmlWithCleanup',),
+              #validators=('isTidyHtml',),
+              default_output_type='text/x-html-safe',
+              widget=RichWidget(
+                        description='',
+                        label=_(u'Texto 01'),
+                        rows=25,
+                        allow_file_upload=zconf.ATDocument.allow_document_upload),
+    ),
+
+    ImageField('image_capa',
         required=False,
         languageIndependent=True,
         storage=AnnotationStorage(migrate=True),
@@ -71,6 +85,20 @@ ATBlobSchema += Schema((
             label=_(u'Imagem da capa'),
             show_content_type=False,
         ),
+    ),
+
+    TextField('text2',
+              required=False,
+              searchable=True,
+              storage=AnnotationStorage(migrate=True),
+              validators=('isTidyHtmlWithCleanup',),
+              #validators=('isTidyHtml',),
+              default_output_type='text/x-html-safe',
+              widget=RichWidget(
+                        description='',
+                        label=_(u'Texto 2'),
+                        rows=25,
+                        allow_file_upload=zconf.ATDocument.allow_document_upload),
     ),
 
 
@@ -227,7 +255,6 @@ invisivel = {'view':'invisible','edit':'invisible',}
 ATBlobSchema['allowDiscussion'].widget.visible = invisivel
 ATBlobSchema.changeSchemataForField('activ_discussion', 'settings')
 
-
 try:
     from Products.CMFCore.CMFCatalogAware import WorkflowAware
     WorkflowAware       # make pyflakes happy...
@@ -235,6 +262,7 @@ try:
     hasCMF22 = True
 except ImportError:
     hasCMF22 = False
+
 
 def addATBlob(container, id, subtype='Blob', **kwargs):
     """ extended at-constructor copied from ClassGen.py """
@@ -252,8 +280,10 @@ def addATBlob(container, id, subtype='Blob', **kwargs):
         notify(ObjectModifiedEvent(obj))
     return obj.getId()
 
+
 def addATBlobFile(container, id, **kwargs):
     return addATBlob(container, id, subtype='File', **kwargs)
+
 
 def addATBlobImage(container, id, **kwargs):
     return addATBlob(container, id, subtype='Image', **kwargs)
@@ -284,7 +314,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
             
         return DisplayList(tuple(L))
 
-
     security.declareProtected(View, 'download')
     def download(self, REQUEST=None, RESPONSE=None):
         """Download the file (use default index_html)
@@ -301,9 +330,6 @@ class ATBlob(ATCTFileContent, ImageMixin):
             url = self.aq_parent.absolute_url()
             UtilMyvindula().setStatusMessage('error','Este arquivo não está autorizado para download')
             self.REQUEST.RESPONSE.redirect(url)
-
-
-
 
     security.declareProtected(View, 'index_html')
     def index_html(self, REQUEST, RESPONSE):
@@ -456,6 +482,18 @@ class ATBlob(ATCTFileContent, ImageMixin):
     def __bobo_traverse__(self, REQUEST, name):
         """ helper to access image scales the old way during
             `unrestrictedTraverse` calls """
+        if name.startswith('image_capa'):
+            field = self.getField('image_capa')
+            image = None
+            if name == 'image_capa':
+                image = field.getScale(self)
+            else:
+                scalename = name[len('image_capa_'):]
+                if scalename in field.getAvailableSizes(self):
+                    image = field.getScale(self, scale=scalename)
+            if image is not None and not isinstance(image, basestring):
+                # image might be None or '' for empty images
+                return image
         if isinstance(REQUEST, dict):
             if '_' in name:
                 fieldname, scale = name.split('_', 1)
@@ -469,23 +507,11 @@ class ATBlob(ATCTFileContent, ImageMixin):
                     return image
         return super(ATBlob, self).__bobo_traverse__(REQUEST, name)
 
-    def exportImage(self, format, width, height):
-        return '', ''
-
-    security.declareProtected(ModifyPortalContent, 'setImage')
-    def setImage(self, value, refresh_exif=True, **kwargs):
-        """Set ID to uploaded file name if Title is empty."""
-        # set exif first because rotation might screw up the exif data
-        # the exif methods can handle str, Pdata, OFSImage and file
-        # like objects
-        self.getEXIF(value, refresh=refresh_exif)
-        self._setATCTFileContent(value, **kwargs)
-
     security.declareProtected(View, 'tag')
     def tag(self, **kwargs):
         """Generate image tag using the api of the ImageField
         """
-        return self.getField('image').tag(self, **kwargs)
+        return self.getField('image_capa').tag(self, **kwargs)
 
     def getImageIcone(self):
         obj = self

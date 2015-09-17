@@ -28,7 +28,7 @@
                                 <a href="" style="font-size: 20px; color: #DE5056"
                                    tal:attributes="href string:${obj/absolute_url}/view">
                                    <p tal:content="obj/Title" />
-                                    <img tal:attributes="src string:${item_url}/image_mini" />
+                                    <img tal:attributes="src string:${item_url}/image_capa_mini" />
                                 </a>
                             </div>
                             <br />
