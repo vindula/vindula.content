@@ -148,9 +148,9 @@
                              </tal:cond>
                         </ul>
 
-                        <!--div tal:condition="context/getText1">
+                        <div tal:condition="context/getText1">
                             <span tal:replace="structure context/getText1" />
-                        </div-->
+                        </div>
                         <div id="DV-container">
                             <div class="DV-loadingDocument">
                                 <span>Loading</span>
@@ -169,9 +169,9 @@
                                 <input type="submit" value="Download do arquivo" align="center">
                             </a>
                         </p>
-                        <!--div tal:condition="context/getText2">
+                        <div tal:condition="context/getText2">
                             <span tal:replace="structure context/getText2" />
-                        </div-->
+                        </div>
                           <!--metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field-->
                         
                         <tal:cond condition="not: active_accessory">
